@@ -479,13 +479,13 @@
         width: 100%;
         max-width: 100%;
         min-width: 0;
-        padding: 24px;
+        padding: 28px 30px 32px;
         border: 1px solid var(--line);
         border-radius: 10px;
-        background: transparent;
-        color: #fff;
+        background: color-mix(in srgb, var(--panel) 88%, var(--bg));
+        color: var(--text);
         font:
-          15px/1.7 Georgia,
+          15px/1.65 Georgia,
           "Times New Roman",
           serif;
         white-space: normal;
@@ -499,8 +499,116 @@
         overflow-wrap: anywhere;
         word-break: break-word;
       }
+      .warrant-preview .wa-head {
+        margin: 0 0 1.6em;
+        padding-bottom: 1.1em;
+        border-bottom: 2px solid color-mix(in srgb, var(--beige) 55%, var(--line));
+        text-align: center;
+      }
+      .warrant-preview .wa-agency {
+        margin: 0 0 2px;
+        color: var(--beige);
+        font: 700 11px/1.3 Inter, system-ui, sans-serif;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .warrant-preview .wa-dept {
+        margin: 0 0 12px;
+        font: 700 13px/1.3 Inter, system-ui, sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .warrant-preview .wa-title {
+        margin: 0;
+        font: 700 18px/1.25 Georgia, "Times New Roman", serif;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
       .warrant-preview p {
-        margin-bottom: 1.4em !important;
+        margin: 0 0 1.15em;
+      }
+      .warrant-preview .wa-em {
+        color: var(--beige);
+        font-weight: 700;
+      }
+      .warrant-preview .wa-muted {
+        color: var(--mute);
+        font-style: italic;
+      }
+      .warrant-preview .wa-label {
+        margin: 1.35em 0 0.45em;
+        color: var(--beige);
+        font: 700 11px/1.3 Inter, system-ui, sans-serif;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .warrant-preview .wa-charges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0.35em 0 1.25em;
+      }
+      .warrant-preview .wa-charge {
+        padding: 6px 11px;
+        border: 1px solid color-mix(in srgb, var(--beige) 40%, var(--line));
+        border-left: 3px solid var(--beige);
+        border-radius: 6px;
+        background: color-mix(in srgb, var(--beige) 10%, transparent);
+        color: var(--text);
+        font: 600 13px/1.35 Inter, system-ui, sans-serif;
+      }
+      .warrant-preview .wa-body {
+        margin: 0 0 1.15em;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: color-mix(in srgb, var(--bg) 55%, transparent);
+      }
+      .warrant-preview ul {
+        margin: 0.35em 0 1.25em;
+        padding-left: 1.35em;
+      }
+      .warrant-preview li {
+        margin: 0 0 0.35em;
+      }
+      .warrant-preview .wa-jurat {
+        margin: 1.4em 0 1.5em;
+        padding-top: 1em;
+        border-top: 1px solid var(--line);
+        font-style: italic;
+      }
+      .warrant-preview .wa-sig {
+        margin-top: 0.4em;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--beige);
+        border-radius: 8px;
+        background: color-mix(in srgb, var(--bg) 40%, transparent);
+      }
+      .warrant-preview .wa-sig-name {
+        margin: 0 0 2px;
+        color: var(--beige);
+        font: 700 17px/1.3 Georgia, "Times New Roman", serif;
+      }
+      .warrant-preview .wa-sig-line {
+        margin: 0;
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      .warrant-preview .wa-date {
+        margin-top: 8px;
+        color: var(--mute);
+        font: 600 12px/1.3 Inter, system-ui, sans-serif;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .warrant-preview .wa-evidence-foot {
+        margin-top: 2.6em;
+        padding-top: 0.2em;
+      }
+      .warrant-preview .wa-evidence-foot .wa-label {
+        margin-top: 0;
       }
       main {
         flex: 1;
@@ -3930,7 +4038,7 @@ main>#f-updates{max-width:900px}
         </div>
         <div class="card">
           <h2><small>Live</small>Preview</h2>
-          <div class="body"><pre id="arrest-preview" class="warrant-preview"></pre></div>
+          <div class="body"><div id="arrest-preview" class="warrant-preview"></div></div>
         </div>
         <div class="actions">
           <button class="b p" onclick="copy('arrest-warrant')">Copy</button
@@ -5475,32 +5583,96 @@ main>#f-updates{max-width:900px}
         row.innerHTML = `<div class='eg'><textarea class='arrest-evidence-item' placeholder='Describe evidence discovered'></textarea><button class='b' type='button' aria-label='Remove evidence' onclick="this.closest('.item').remove()">−</button></div>`;
         $("arrest-evidence").appendChild(row);
       }
+      function waEscape(value) {
+        return String(value || "").replace(
+          /[&<>"]/g,
+          (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char],
+        );
+      }
+      function waText(value, fallback) {
+        const text = String(value || "").trim();
+        return text || fallback;
+      }
+      function waParagraph(value, fallback) {
+        const text = String(value || "").trim();
+        if (!text)
+          return `<span class="wa-muted">${waEscape(fallback || "[Not provided]")}</span>`;
+        return waEscape(text).replace(/\r?\n/g, "<br>");
+      }
+      function waEm(value, fallback) {
+        const text = String(value || "").trim();
+        if (!text) return `<span class="wa-muted">${waEscape(fallback || "[Not provided]")}</span>`;
+        return `<span class="wa-em">${waEscape(text)}</span>`;
+      }
+      function waCharges(crimes) {
+        const parts = String(crimes || "")
+          .split(",")
+          .map((part) => part.trim())
+          .filter(Boolean);
+        if (!parts.length)
+          return `<div class="wa-charges"><span class="wa-muted">[No charges selected]</span></div>`;
+        return `<div class="wa-charges">${parts
+          .map((part) => `<div class="wa-charge">${waEscape(part)}</div>`)
+          .join("")}</div>`;
+      }
+      function waEvidence(items) {
+        if (!items.length)
+          return `<p class="wa-muted" style="margin:0">[No evidence listed]</p>`;
+        return `<ul style="margin:0.35em 0 0">${items
+          .map((item) => `<li>${waParagraph(item)}</li>`)
+          .join("")}</ul>`;
+      }
+      function waHeader(title) {
+        return `<div class="wa-head"><div class="wa-agency">County of Los Santos</div><div class="wa-dept">Sheriff's Department</div><h3 class="wa-title">${waEscape(title)}</h3></div>`;
+      }
+      function waSignature(name, rank, date) {
+        return `<div class="wa-sig"><div class="wa-sig-name">${waText(name, "[Affiant Name]")}</div><p class="wa-sig-line">${waText(rank, "[Rank]")}</p><p class="wa-sig-line">Los Santos County Sheriff's Department</p><div class="wa-date">Dated: ${waText(date, "DD MONTH YYYY")}</div></div>`;
+      }
+      function waEvidenceFoot(items) {
+        return `<div class="wa-evidence-foot"><div class="wa-label">Evidence Discovered</div>${waEvidence(items)}</div>`;
+      }
       function buildArrestWarrant() {
         const val = (id) => $(id).value.trim(),
           date = formatPickerDate(val("arrest-date"), "caps") || "DD MONTH YYYY",
           evidence = [...document.querySelectorAll(".arrest-evidence-item")]
             .map((field) => field.value.trim())
-            .filter(Boolean);
+            .filter(Boolean),
+          crimes = val("arrest-crimes") || "[No charges selected]",
+          suspect = val("arrest-suspect") || "[Suspect]",
+          rank = val("arrest-rank") || "[Rank]",
+          name = val("arrest-deputy-name") || "[Affiant Name]",
+          badge = val("arrest-badge") || "N/A",
+          bureau = val("arrest-bureau") || "[Bureau]",
+          years = val("arrest-years") || "[years]";
         return [
-          "Affidavit in Support of Arrest Warrant",
+          "AFFIDAVIT IN SUPPORT OF ARREST WARRANT",
+          "County of Los Santos — Sheriff's Department",
           "",
-          `I, ${val("arrest-rank")} ${val("arrest-deputy-name")} (#${val("arrest-badge")}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to ${val("arrest-bureau")}. I have been employed by this agency for ${val("arrest-years")} years and have extensive experience in several crime scene investigations, including crime scene processing, evidence collection, interview procedures and preliminary field investigations.`,
+          `I, ${rank} ${name} (#${badge}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to ${bureau}. I have been employed by this agency for ${years} years and have extensive experience in crime scene investigations, including crime scene processing, evidence collection, interview procedures, and preliminary field investigations.`,
           "",
-          `I submit this affidavit in support of an Arrest Warrant for ${val("arrest-suspect")}. This request is based on an ongoing investigation into the following crimes: ${val("arrest-crimes")}.`,
+          `I submit this affidavit in support of an Arrest Warrant for ${suspect}. This request is based on an ongoing investigation into the following crimes:`,
+          crimes
+            .split(",")
+            .map((part) => part.trim())
+            .filter(Boolean)
+            .map((part) => `• ${part}`)
+            .join("\n") || "• [No charges selected]",
           "",
-          "The following facts establish probable cause for this warrant:",
-          val("arrest-probable-cause"),
+          "PROBABLE CAUSE",
+          val("arrest-probable-cause") || "[Not provided]",
           "",
-          "The evidence discovered:",
-          ...evidence.map((item) => `• ${item}`),
+          `Based on the facts and probable cause set forth above, I respectfully request that this Court issue an Arrest Warrant for ${suspect} for violation of ${crimes}.`,
           "",
-          `Based on the outlined facts and probable cause, I am requesting an arrest warrant for ${val("arrest-suspect")} for violation of ${val("arrest-crimes")}.`,
           "I declare under penalty of perjury that the foregoing is true and correct.",
           "",
-          val("arrest-deputy-name"),
-          val("arrest-rank"),
+          name,
+          rank,
           "Los Santos County Sheriff's Department",
           `DATED: ${date}`,
+          "",
+          "",
+          "EVIDENCE DISCOVERED",
+          ...(evidence.length ? evidence.map((item) => `• ${item}`) : ["• [No evidence listed]"]),
         ].join("\n");
       }
       function updateArrestPreview() {
@@ -5508,17 +5680,20 @@ main>#f-updates{max-width:900px}
             id === "arrest-date"
               ? formatPickerDate($(id).value, "caps") || "DD MONTH YYYY"
               : $(id).value.trim(),
-          escape = (value) =>
-            value.replace(
-              /[&<>"]/g,
-              (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char],
-            ),
-          paragraph = (value) => escape(value).replace(/\r?\n/g, "<br>"),
           evidence = [...document.querySelectorAll(".arrest-evidence-item")]
             .map((field) => field.value.trim())
-            .filter(Boolean);
+            .filter(Boolean),
+          years = val("arrest-years") || "[years]";
         $("arrest-preview").innerHTML =
-          `<h3 style="margin:0 0 1.5em;text-align:center;font-size:1.1em">Affidavit in Support of Arrest Warrant</h3><p style="margin:0 0 1.4em">I, ${escape(val("arrest-rank"))} ${escape(val("arrest-deputy-name"))} (#${escape(val("arrest-badge"))}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to ${escape(val("arrest-bureau"))}. I have been employed by this agency for ${escape(val("arrest-years"))} years and have extensive experience in several crime scene investigations, including crime scene processing, evidence collection, interview procedures and preliminary field investigations.</p><p style="margin:0 0 1.4em">I submit this affidavit in support of an Arrest Warrant for ${escape(val("arrest-suspect"))}. This request is based on an ongoing investigation into the following crimes: ${escape(val("arrest-crimes"))}.</p><p style="margin:0 0 1.4em">The following facts establish probable cause for this warrant:<br>${paragraph(val("arrest-probable-cause"))}</p><p style="margin:0 0 .4em">The evidence discovered:</p>${evidence.length ? `<ul style="margin:0 0 1.4em;padding-left:2em">${evidence.map((item) => `<li>${paragraph(item)}</li>`).join("")}</ul>` : ""}<p style="margin:0 0 1.4em">Based on the outlined facts and probable cause, I am requesting an arrest warrant for ${escape(val("arrest-suspect"))} for violation of ${escape(val("arrest-crimes"))}.<br>I declare under penalty of perjury that the foregoing is true and correct.</p><p style="margin:0"><strong>${escape(val("arrest-deputy-name"))}</strong><br>${escape(val("arrest-rank"))}<br>Los Santos County Sheriff's Department<br>DATED: ${escape(val("arrest-date"))}</p>`;
+          waHeader("Affidavit in Support of Arrest Warrant") +
+          `<p>I, ${waEm(val("arrest-rank"), "[Rank]")} ${waEm(val("arrest-deputy-name"), "[Affiant Name]")} (${waEm("#" + (val("arrest-badge") || "N/A"))}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to ${waEm(val("arrest-bureau"), "[Bureau]")}. I have been employed by this agency for ${waEm(years)} years and have extensive experience in crime scene investigations, including crime scene processing, evidence collection, interview procedures, and preliminary field investigations.</p>` +
+          `<p>I submit this affidavit in support of an Arrest Warrant for ${waEm(val("arrest-suspect"), "[Suspect]")}. This request is based on an ongoing investigation into the following crimes:</p>` +
+          waCharges(val("arrest-crimes")) +
+          `<div class="wa-label">Probable Cause</div><div class="wa-body">${waParagraph(val("arrest-probable-cause"))}</div>` +
+          `<p>Based on the facts and probable cause set forth above, I respectfully request that this Court issue an Arrest Warrant for ${waEm(val("arrest-suspect"), "[Suspect]")} for violation of the listed charges.</p>` +
+          `<p class="wa-jurat">I declare under penalty of perjury that the foregoing is true and correct.</p>` +
+          waSignature(val("arrest-deputy-name"), val("arrest-rank"), val("arrest-date")) +
+          waEvidenceFoot(evidence);
       }
       async function copyArrestWarrant() {
         const preview = $("arrest-preview"),
@@ -5590,27 +5765,44 @@ main>#f-updates{max-width:900px}
               : $(id).value.trim(),
           evidence = [...document.querySelectorAll(".search-evidence-item")]
             .map((field) => field.value.trim())
-            .filter(Boolean);
+            .filter(Boolean),
+          crimes = val("search-crimes") || "[No charges selected]",
+          property = val("search-property") || "[Property / location]",
+          scope = val("search-scope") || "[Items to be seized]",
+          rank = val("search-rank") || "[Rank]",
+          name = val("search-deputy-name") || "[Affiant Name]",
+          badge = val("search-badge") || "N/A",
+          bureau = val("search-bureau") || "[Bureau]",
+          years = val("search-years") || "[years]";
         return [
-          "Affidavit in Support of Search Warrant",
+          "AFFIDAVIT IN SUPPORT OF SEARCH WARRANT",
+          "County of Los Santos — Sheriff's Department",
           "",
-          `I, ${val("search-rank")} ${val("search-deputy-name")} (#${val("search-badge")}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to the ${val("search-bureau")}. I have been employed by this agency for ${val("search-years")} years and have extensive experience in several crime scene investigations, including crime scene processing, evidence collection, interview procedures and preliminary field investigations.`,
+          `I, ${rank} ${name} (#${badge}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to ${bureau}. I have been employed by this agency for ${years} years and have extensive experience in crime scene investigations, including crime scene processing, evidence collection, interview procedures, and preliminary field investigations.`,
           "",
-          `I submit this affidavit in support of a Search Warrant for ${val("search-property")}. This request is based on an ongoing investigation into the following crimes: ${val("search-crimes")}.`,
+          `I submit this affidavit in support of a Search Warrant for ${property}. This request is based on an ongoing investigation into the following crimes:`,
+          crimes
+            .split(",")
+            .map((part) => part.trim())
+            .filter(Boolean)
+            .map((part) => `• ${part}`)
+            .join("\n") || "• [No charges selected]",
           "",
-          "The following facts establish probable cause for this warrant:",
-          val("search-probable-cause"),
+          "PROBABLE CAUSE",
+          val("search-probable-cause") || "[Not provided]",
           "",
-          "The evidence discovered:",
-          ...evidence.map((item) => `• ${item}`),
+          `Based on the information contained in this affidavit, I respectfully request that this Court issue a Search Warrant authorizing a search of the described premises to locate and seize ${scope}.`,
           "",
-          `Based on the information contained in this affidavit, I respectfully request that this court issue the requested Search Warrant in attempt to locate ${val("search-scope")}.`,
           "I declare under penalty of perjury that the foregoing is true and correct.",
           "",
-          val("search-deputy-name"),
-          val("search-rank"),
+          name,
+          rank,
           "Los Santos County Sheriff's Department",
           `DATED: ${val("search-date")}`,
+          "",
+          "",
+          "EVIDENCE DISCOVERED",
+          ...(evidence.length ? evidence.map((item) => `• ${item}`) : ["• [No evidence listed]"]),
         ].join("\n");
       }
       function updateSearchPreview() {
@@ -5618,17 +5810,20 @@ main>#f-updates{max-width:900px}
             id === "search-date"
               ? formatPickerDate($(id).value, "caps") || "DD MONTH YYYY"
               : $(id).value.trim(),
-          escape = (value) =>
-            value.replace(
-              /[&<>"]/g,
-              (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char],
-            ),
-          paragraph = (value) => escape(value).replace(/\r?\n/g, "<br>"),
           evidence = [...document.querySelectorAll(".search-evidence-item")]
             .map((field) => field.value.trim())
-            .filter(Boolean);
+            .filter(Boolean),
+          years = val("search-years") || "[years]";
         $("search-preview").innerHTML =
-          `<h3 style="margin:0 0 1.5em;text-align:center;font-size:1.1em">Affidavit in Support of Search Warrant</h3><p style="margin:0 0 1.4em">I, ${escape(val("search-rank"))} ${escape(val("search-deputy-name"))} (#${escape(val("search-badge"))}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to the ${escape(val("search-bureau"))}. I have been employed by this agency for ${escape(val("search-years"))} years and have extensive experience in several crime scene investigations, including crime scene processing, evidence collection, interview procedures and preliminary field investigations.</p><p style="margin:0 0 1.4em">I submit this affidavit in support of a Search Warrant for ${escape(val("search-property"))}. This request is based on an ongoing investigation into the following crimes: ${escape(val("search-crimes"))}.</p><p style="margin:0 0 1.4em">The following facts establish probable cause for this warrant:<br>${paragraph(val("search-probable-cause"))}</p><p style="margin:0 0 .4em">The evidence discovered:</p>${evidence.length ? `<ul style="margin:0 0 1.4em;padding-left:2em">${evidence.map((item) => `<li>${paragraph(item)}</li>`).join("")}</ul>` : ""}<p style="margin:0 0 1.4em">Based on the information contained in this affidavit, I respectfully request that this court issue the requested Search Warrant in attempt to locate ${paragraph(val("search-scope"))}.<br>I declare under penalty of perjury that the foregoing is true and correct.</p><p style="margin:0"><strong>${escape(val("search-deputy-name"))}</strong><br>${escape(val("search-rank"))}<br>Los Santos County Sheriff's Department<br>DATED: ${escape(val("search-date"))}</p>`;
+          waHeader("Affidavit in Support of Search Warrant") +
+          `<p>I, ${waEm(val("search-rank"), "[Rank]")} ${waEm(val("search-deputy-name"), "[Affiant Name]")} (${waEm("#" + (val("search-badge") || "N/A"))}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to ${waEm(val("search-bureau"), "[Bureau]")}. I have been employed by this agency for ${waEm(years)} years and have extensive experience in crime scene investigations, including crime scene processing, evidence collection, interview procedures, and preliminary field investigations.</p>` +
+          `<p>I submit this affidavit in support of a Search Warrant for ${waEm(val("search-property"), "[Property / location]")}. This request is based on an ongoing investigation into the following crimes:</p>` +
+          waCharges(val("search-crimes")) +
+          `<div class="wa-label">Probable Cause</div><div class="wa-body">${waParagraph(val("search-probable-cause"))}</div>` +
+          `<p>Based on the information contained in this affidavit, I respectfully request that this Court issue a Search Warrant authorizing a search of the described premises to locate and seize ${waEm(val("search-scope"), "[Items to be seized]")}.</p>` +
+          `<p class="wa-jurat">I declare under penalty of perjury that the foregoing is true and correct.</p>` +
+          waSignature(val("search-deputy-name"), val("search-rank"), val("search-date")) +
+          waEvidenceFoot(evidence);
       }
       async function copySearchWarrant() {
         const preview = $("search-preview"),
@@ -5701,30 +5896,47 @@ main>#f-updates{max-width:900px}
               : $(id).value.trim(),
           evidence = [...document.querySelectorAll(".electronic-evidence-item")]
             .map((field) => field.value.trim())
-            .filter(Boolean);
+            .filter(Boolean),
+          crimes = val("electronic-crimes") || "[No charges selected]",
+          subject = val("electronic-suspect") || "[Subject]",
+          rank = val("electronic-rank") || "[Rank]",
+          name = val("electronic-deputy-name") || "[Affiant Name]",
+          badge = val("electronic-badge") || "N/A",
+          bureau = val("electronic-bureau") || "[Bureau]",
+          years = val("electronic-years") || "[years]",
+          targets = val("electronic-targets") || "[No targets specified]";
         return [
-          "Affidavit for Electronic Search Warrant",
+          "AFFIDAVIT IN SUPPORT OF ELECTRONIC SEARCH WARRANT",
+          "County of Los Santos — Sheriff's Department",
           "",
-          `I, ${val("electronic-rank")} ${val("electronic-deputy-name")} (#${val("electronic-badge")}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to the ${val("electronic-bureau")}. I have been employed by this agency for ${val("electronic-years")} years and have extensive experience in several crime scene investigations, including crime scene processing, evidence collection, and interview procedures.`,
+          `I, ${rank} ${name} (#${badge}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to ${bureau}. I have been employed by this agency for ${years} years and have extensive experience in crime scene investigations, including crime scene processing, evidence collection, and interview procedures.`,
           "",
-          `I submit this affidavit in support of an Electronic Search Warrant for ${val("electronic-suspect")}. This request is based on an ongoing investigation into the following crimes: ${val("electronic-crimes")}.`,
+          `I submit this affidavit in support of an Electronic Search Warrant concerning ${subject}. This request is based on an ongoing investigation into the following crimes:`,
+          crimes
+            .split(",")
+            .map((part) => part.trim())
+            .filter(Boolean)
+            .map((part) => `• ${part}`)
+            .join("\n") || "• [No charges selected]",
           "",
-          "The following facts establish probable cause for this warrant:",
-          val("electronic-probable-cause"),
+          "PROBABLE CAUSE",
+          val("electronic-probable-cause") || "[Not provided]",
           "",
-          "The evidence discovered:",
-          ...evidence.map((item) => `• ${item}`),
+          "SEARCH, SEIZURE, AND/OR MONITORING TARGETS",
+          targets,
           "",
-          "Based on the probable cause outlined above, I request authorization to search, seize, and/or monitor the following:",
-          val("electronic-targets") || "[NO TARGETS SPECIFIED]",
+          "Based on the information contained in this affidavit, I respectfully request that this Court issue the requested Electronic Search Warrant.",
           "",
-          "Based on the information contained in this affidavit, I respectfully request that this court issue the requested Electronic Search Warrant.",
           "I declare under penalty of perjury that the foregoing is true and correct.",
           "",
-          val("electronic-deputy-name"),
-          val("electronic-rank"),
+          name,
+          rank,
           "Los Santos County Sheriff's Department",
           `DATED: ${val("electronic-date")}`,
+          "",
+          "",
+          "EVIDENCE DISCOVERED",
+          ...(evidence.length ? evidence.map((item) => `• ${item}`) : ["• [No evidence listed]"]),
         ].join("\n");
       }
       function updateElectronicPreview() {
@@ -5732,17 +5944,21 @@ main>#f-updates{max-width:900px}
             id === "electronic-date"
               ? formatPickerDate($(id).value, "caps") || "DD MONTH YYYY"
               : $(id).value.trim(),
-          escape = (value) =>
-            value.replace(
-              /[&<>"]/g,
-              (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char],
-            ),
-          paragraph = (value) => escape(value).replace(/\r?\n/g, "<br>"),
           evidence = [...document.querySelectorAll(".electronic-evidence-item")]
             .map((field) => field.value.trim())
-            .filter(Boolean);
+            .filter(Boolean),
+          years = val("electronic-years") || "[years]";
         $("electronic-preview").innerHTML =
-          `<h3 style="margin:0 0 1.5em;text-align:center;font-size:1.1em">Affidavit for Electronic Search Warrant</h3><p style="margin:0 0 1.4em">I, ${escape(val("electronic-rank"))} ${escape(val("electronic-deputy-name"))} (#${escape(val("electronic-badge"))}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to the ${escape(val("electronic-bureau"))}. I have been employed by this agency for ${escape(val("electronic-years"))} years and have extensive experience in several crime scene investigations, including crime scene processing, evidence collection, and interview procedures.</p><p style="margin:0 0 1.4em">I submit this affidavit in support of an Electronic Search Warrant for ${escape(val("electronic-suspect"))}. This request is based on an ongoing investigation into the following crimes: ${escape(val("electronic-crimes"))}.</p><p style="margin:0 0 1.4em">The following facts establish probable cause for this warrant:<br>${paragraph(val("electronic-probable-cause"))}</p><p style="margin:0 0 .4em">The evidence discovered:</p>${evidence.length ? `<ul style="margin:0 0 1.4em;padding-left:2em">${evidence.map((item) => `<li>${paragraph(item)}</li>`).join("")}</ul>` : ""}<p style="margin:0 0 1.4em">Based on the probable cause outlined above, I request authorization to search, seize, and/or monitor the following:<br>${paragraph(val("electronic-targets") || "[NO TARGETS SPECIFIED]")}</p><p style="margin:0 0 1.4em">Based on the information contained in this affidavit, I respectfully request that this court issue the requested Electronic Search Warrant.<br>I declare under penalty of perjury that the foregoing is true and correct.</p><p style="margin:0"><strong>${escape(val("electronic-deputy-name"))}</strong><br>${escape(val("electronic-rank"))}<br>Los Santos County Sheriff's Department<br>DATED: ${escape(val("electronic-date"))}</p>`;
+          waHeader("Affidavit in Support of Electronic Search Warrant") +
+          `<p>I, ${waEm(val("electronic-rank"), "[Rank]")} ${waEm(val("electronic-deputy-name"), "[Affiant Name]")} (${waEm("#" + (val("electronic-badge") || "N/A"))}), am a peace officer employed with the Los Santos County Sheriff's Department, currently assigned to ${waEm(val("electronic-bureau"), "[Bureau]")}. I have been employed by this agency for ${waEm(years)} years and have extensive experience in crime scene investigations, including crime scene processing, evidence collection, and interview procedures.</p>` +
+          `<p>I submit this affidavit in support of an Electronic Search Warrant concerning ${waEm(val("electronic-suspect"), "[Subject]")}. This request is based on an ongoing investigation into the following crimes:</p>` +
+          waCharges(val("electronic-crimes")) +
+          `<div class="wa-label">Probable Cause</div><div class="wa-body">${waParagraph(val("electronic-probable-cause"))}</div>` +
+          `<div class="wa-label">Search, Seizure, and/or Monitoring Targets</div><div class="wa-body">${waParagraph(val("electronic-targets"), "[No targets specified]")}</div>` +
+          `<p>Based on the information contained in this affidavit, I respectfully request that this Court issue the requested Electronic Search Warrant.</p>` +
+          `<p class="wa-jurat">I declare under penalty of perjury that the foregoing is true and correct.</p>` +
+          waSignature(val("electronic-deputy-name"), val("electronic-rank"), val("electronic-date")) +
+          waEvidenceFoot(evidence);
       }
       async function copyElectronicWarrant() {
         const preview = $("electronic-preview"),
