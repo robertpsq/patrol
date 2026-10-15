@@ -5695,10 +5695,62 @@ main>#f-updates{max-width:900px}
           waSignature(val("arrest-deputy-name"), val("arrest-rank"), val("arrest-date")) +
           waEvidenceFoot(evidence);
       }
+
+      function buildWarrantClipboardHtml(preview) {
+        const clone = preview.cloneNode(true);
+        clone.removeAttribute("id");
+        const originals = [preview, ...preview.querySelectorAll("*")];
+        const copies = [clone, ...clone.querySelectorAll("*")];
+        const keep = new Set(["color","font-family","font-size","font-weight","font-style","font-variant","font-stretch","letter-spacing","word-spacing","line-height","text-align","text-transform","text-decoration-line","text-decoration-style","text-decoration-color","text-indent","white-space","padding-top","padding-right","padding-bottom","padding-left","margin-top","margin-right","margin-bottom","margin-left","border-top-width","border-top-style","border-top-color","border-right-width","border-right-style","border-right-color","border-bottom-width","border-bottom-style","border-bottom-color","border-left-width","border-left-style","border-left-color","border-top-left-radius","border-top-right-radius","border-bottom-right-radius","border-bottom-left-radius","list-style-type","list-style-position"]);
+        const toRgb = (value) => {
+          const m = String(value).match(/^color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)(?: \/ ([\d.]+))?\)$/);
+          if (!m) return value;
+          const f = (x) => Math.round(parseFloat(x) * 255);
+          return `rgb(${f(m[1])}, ${f(m[2])}, ${f(m[3])})`;
+        };
+        copies.forEach((node, index) => {
+          const source = originals[index];
+          if (!source) return;
+          const computed = getComputedStyle(source);
+          for (let i = 0; i < computed.length; i++) {
+            const property = computed[i];
+            if (!keep.has(property)) continue;
+            if (/^border-(top|right|bottom|left)-color$/.test(property)) {
+              const side = property.match(/^border-(top|right|bottom|left)-color$/)[1];
+              if (computed.getPropertyValue("border-" + side + "-style") === "none") continue;
+            }
+            let value = computed.getPropertyValue(property);
+            if (/^color\(/.test(value)) value = toRgb(value);
+            if (value && value !== "normal" && value !== "none" && value !== "0px" && value !== "0px 0px" && value !== "medium" && value !== "auto") node.style.setProperty(property, value);
+          }
+          node.removeAttribute("class");
+          node.removeAttribute("contenteditable");
+          node.removeAttribute("draggable");
+        });
+        clone.style.cssText += ";display:block;width:100%;max-width:760px;margin:0;padding:0;border:0;border-radius:0;color:#e8e4d6;font-family:Georgia,'Times New Roman',serif;font-size:12pt;line-height:1.6;";
+        return clone.outerHTML;
+      }
+      function fallbackCopyHtml(html) {
+        const holder = document.createElement("div");
+        holder.contentEditable = "true";
+        holder.style.cssText = "position:fixed;left:-10000px;top:0;width:760px;";
+        holder.innerHTML = html;
+        document.body.appendChild(holder);
+        const selection = getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(holder);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        const copied = document.execCommand("copy");
+        selection.removeAllRanges();
+        holder.remove();
+        if (!copied) throw new Error("Rich-text clipboard copy was rejected");
+      }
+
       async function copyArrestWarrant() {
         const preview = $("arrest-preview"),
           plain = buildArrestWarrant(),
-          html = `<div style="font-family:Georgia,'Times New Roman',serif;font-size:12pt;line-height:1.6;color:#fff">${preview.innerHTML}</div>`;
+          html = buildWarrantClipboardHtml(preview);
         let clipboardError;
         try {
           if (navigator.clipboard && window.ClipboardItem) {
@@ -5715,14 +5767,7 @@ main>#f-updates{max-width:900px}
           clipboardError = error;
         }
         try {
-          const selection = getSelection(),
-            range = document.createRange();
-          range.selectNodeContents(preview);
-          selection.removeAllRanges();
-          selection.addRange(range);
-          const copied = document.execCommand("copy");
-          selection.removeAllRanges();
-          if (!copied) throw new Error("Rich-text clipboard copy was rejected");
+          fallbackCopyHtml(html);
           toast("Copied!");
         } catch (error) {
           console.error("Could not copy the formatted arrest warrant:", clipboardError || error);
@@ -5828,7 +5873,7 @@ main>#f-updates{max-width:900px}
       async function copySearchWarrant() {
         const preview = $("search-preview"),
           plain = buildSearchWarrant(),
-          html = `<div style="font-family:Georgia,'Times New Roman',serif;font-size:12pt;line-height:1.6;color:#fff">${preview.innerHTML}</div>`;
+          html = buildWarrantClipboardHtml(preview);
         let clipboardError;
         try {
           if (navigator.clipboard && window.ClipboardItem) {
@@ -5845,14 +5890,7 @@ main>#f-updates{max-width:900px}
           clipboardError = error;
         }
         try {
-          const selection = getSelection(),
-            range = document.createRange();
-          range.selectNodeContents(preview);
-          selection.removeAllRanges();
-          selection.addRange(range);
-          const copied = document.execCommand("copy");
-          selection.removeAllRanges();
-          if (!copied) throw new Error("Rich-text clipboard copy was rejected");
+          fallbackCopyHtml(html);
           toast("Copied!");
         } catch (error) {
           console.error("Could not copy the formatted search warrant:", clipboardError || error);
@@ -5963,7 +6001,7 @@ main>#f-updates{max-width:900px}
       async function copyElectronicWarrant() {
         const preview = $("electronic-preview"),
           plain = buildElectronicWarrant(),
-          html = `<div style="font-family:Georgia,'Times New Roman',serif;font-size:12pt;line-height:1.6;color:#fff">${preview.innerHTML}</div>`;
+          html = buildWarrantClipboardHtml(preview);
         let clipboardError;
         try {
           if (navigator.clipboard && window.ClipboardItem) {
@@ -5980,14 +6018,7 @@ main>#f-updates{max-width:900px}
           clipboardError = error;
         }
         try {
-          const selection = getSelection(),
-            range = document.createRange();
-          range.selectNodeContents(preview);
-          selection.removeAllRanges();
-          selection.addRange(range);
-          const copied = document.execCommand("copy");
-          selection.removeAllRanges();
-          if (!copied) throw new Error("Rich-text clipboard copy was rejected");
+          fallbackCopyHtml(html);
           toast("Copied!");
         } catch (error) {
           console.error(
