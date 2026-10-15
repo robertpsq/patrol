@@ -1502,12 +1502,9 @@ main>#f-updates{max-width:900px}
 .setup{margin-top:16px;padding:0;border:0;background:none;color:var(--beige);font:600 14px Inter,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .home-h{margin:30px 0 12px;font:600 22px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em}
 .home-h span{margin-left:8px;color:var(--mute);font:500 13px Inter,sans-serif;letter-spacing:0}
-.home-sub{display:flex;align-items:center;gap:10px;margin:18px 0 10px;padding:0 2px;font:700 12px/1.2 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.home-sub::after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--line) 85%,transparent)}
-.home-sub-block:first-child .home-sub,.home-h + .home-sub-block .home-sub{margin-top:4px}
 .chips,.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr))}
 .chip,.tile{display:block;width:100%;padding:13px 16px;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
-.chip[hidden],.tile[hidden],#home-groups section[hidden],.home-sub-block[hidden],.home-empty[hidden],#recent[hidden]{display:none!important}
+.chip[hidden],.tile[hidden],#home-groups section[hidden],.home-empty[hidden],#recent[hidden]{display:none!important}
 .chip{font-weight:600}
 .tile b{display:block;font:600 20px/1.15 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em}
 .tile span{display:block;margin-top:3px;color:var(--mute);font-size:13px;line-height:1.4}
@@ -1974,7 +1971,7 @@ main>#f-updates{max-width:900px}
       <div class="top">
         <div>
           <div class="eyebrow" id="crumb">Paperwork</div>
-          <h1 id="ttl">Home</h1>
+          <h1 id="ttl">Sheriff's Report System - NOT OFFICIAL</h1>
           <p class="lede" id="lede"></p>
         </div>
       </div>
@@ -1984,7 +1981,7 @@ main>#f-updates{max-width:900px}
           <img class="hero-badge" id="home-badge" alt="" />
           <p class="hero-hello" id="hello"></p>
           <h2>What are you filing today?</h2>
-          <p class="hero-sub">Pick a form, fill it in, copy the BBCode and paste it on the forum.</p>
+          <p class="hero-sub">Pick a form, fill it in, copy the BBCode and paste it on the forum. Unofficial tool.</p>
           <div class="hero-search">
             <input type="text" id="hq" placeholder="Search forms, e.g. incident, warrant, citation" autocomplete="off" aria-label="Search forms" />
             <kbd aria-hidden="true">/</kbd>
@@ -8196,7 +8193,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
 (() => {
   const G = [
     ["Patrol Reports", [
-      ["sheriff", "Sheriff's Report", "Answer the checklist and write up the report."],
+      ["sheriff", "Sheriff's Report", "Unofficial report. Use with caution."],
       ["incident", "Incident Report", "Fill in an incident report."],
       ["supp", "Supplemental Report", "Add a supplemental to an incident report."],
       ["task-list", "Task List", "Establish clear tasks and who handles them on an incident report."],
@@ -8215,19 +8212,13 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate."],
       ["dforensics", "Digital Forensics Request", "Request digital forensics on evidence."]]],
     ["Divisional Generators", [
-      ["Davis Station · OSS", [
-        ["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets."],
-        ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets."]]],
-      ["Senora Station", [
-        ["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station."]]],
-      ["Senora Station · NCCIT", [
-        ["nccit", "NCCIT Personnel File", "North County Crime Impact Team."],
-        ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team."]]],
-      ["Senora Station · K9", [
-        ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team."]]],
-      ["Senora Station · TSD", [
-        ["citation", "TSD Citation", "Traffic Services Detail citation."]]],
-    ]],
+      ["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets."],
+      ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets."],
+      ["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station."],
+      ["nccit", "NCCIT Personnel File", "North County Crime Impact Team."],
+      ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team."],
+      ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team."],
+      ["citation", "TSD Citation", "Traffic Services Detail citation."]]],
     ["Generators", [
       ["card", "Business Card Generator", "Design your business card and download it as a PNG."],
       ["email", "Email Template", "Use the official BBCode format for emails."]]],
@@ -8235,15 +8226,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["deputy", "Character Details", "Save your name, badge and rank to prefill forms."],
       ["updates", "Updates", "See what's new on this site."]]],
   ];
-  const isSubGrouped = (items) =>
-    Array.isArray(items?.[0]) && typeof items[0][0] === "string" && Array.isArray(items[0][1]);
-  const flatForms = (items) => (isSubGrouped(items) ? items.flatMap((entry) => entry[1]) : items);
   const info = {};
-  G.forEach(([g, items]) => {
-    flatForms(items).forEach(([k, t, d]) => {
-      info[k] = { g, t, d };
-    });
-  });
+  G.forEach(([g, items]) => items.forEach(([k, t, d]) => (info[k] = { g, t, d })));
   const RK = "lssd-recent", base = window.show;
   const recents = () => { try { return JSON.parse(localStorage.getItem(RK)) || []; } catch (e) { return []; } };
   const remember = (k) => {
@@ -8274,41 +8258,18 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     const box = $("home-groups");
     if (!box.children.length) {
       G.forEach(([g, items]) => {
-        const forms = flatForms(items);
-        const sec = el("section");
-        sec.dataset.g = g;
-        const h = el("h3", "home-h", g);
-        h.append(el("span", "", forms.length + (forms.length === 1 ? " form" : " forms")));
-        sec.appendChild(h);
-
-        const addTile = (grid, k, t, desc) => {
-          const b = el("button", "tile");
-          b.type = "button";
-          b.onclick = open(k);
-          b.dataset.title = String(t).toLowerCase();
-          b.append(el("b", "", t), el("span", "", desc));
-          grid.appendChild(b);
-        };
-
-        if (isSubGrouped(items)) {
-          items.forEach(([sub, subForms]) => {
-            const block = el("div", "home-sub-block");
-            block.appendChild(el("div", "home-sub", sub));
-            const grid = el("div", "tiles");
-            subForms.forEach(([k, t, desc]) => addTile(grid, k, t, desc));
-            block.appendChild(grid);
-            sec.appendChild(block);
-          });
-        } else {
-          const grid = el("div", "tiles");
-          items.forEach(([k, t, desc]) => addTile(grid, k, t, desc));
-          sec.appendChild(grid);
-        }
-        box.appendChild(sec);
+        const sec = el("section"); sec.dataset.g = g;
+        const h = el("h3", "home-h", g); h.append(el("span", "", items.length + (items.length === 1 ? " form" : " forms")));
+        const grid = el("div", "tiles");
+        items.forEach(([k, t, desc]) => {
+          const b = el("button", "tile"); b.type = "button"; b.onclick = open(k);
+          b.dataset.title = t.toLowerCase();
+          b.append(el("b", "", t), el("span", "", desc)); grid.append(b);
+        });
+        sec.append(h, grid); box.append(sec);
       });
     }
-    $("hq").value = "";
-    filterHome("");
+    $("hq").value = ""; filterHome("");
   }
   function filterHome(v) {
     v = v.trim().toLowerCase();
@@ -8322,15 +8283,11 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         t.hidden = !ok;
         if (ok) c++;
       });
-      s.querySelectorAll(".home-sub-block").forEach((block) => {
-        block.hidden = ![...block.querySelectorAll(".tile")].some((t) => !t.hidden);
-      });
       s.hidden = !c;
       n += c;
     });
     $("home-empty").hidden = !!n || !v;
-    $("home-empty").textContent =
-      'No form matches "' + v + '". Try the exact form name, e.g. "incident report" or "arrest warrant".';
+    $("home-empty").textContent = 'No form matches "' + v + '". Try the exact form name, e.g. "incident report" or "arrest warrant".';
     $("recent").hidden = !!v || !recents().length;
   }
   $("hq").addEventListener("input", (e) => filterHome(e.target.value));
@@ -8589,6 +8546,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   }
   picker("i2", "resetI");
   picker("oss-ir-penal-code", "resetOssIncident");
+  picker("arrest-crimes", "resetArrestWarrant");
+  picker("search-crimes", "resetSearchWarrant");
+  picker("electronic-crimes", "resetElectronicWarrant");
 })();
     </script>
   </body>
