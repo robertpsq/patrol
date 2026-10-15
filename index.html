@@ -1409,6 +1409,130 @@
           align-items: flex-start;
         }
       }
+
+/* ===== Redesign layer ===== */
+:root{--px:clamp(16px,3.5vw,44px)}
+body{font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.nav:focus-visible,.tile:focus-visible,.chip:focus-visible,button.b:focus-visible,.outline a:focus-visible,.setup:focus-visible{outline:2px solid var(--beige);outline-offset:2px}
+aside{width:264px;padding:18px 12px 14px;gap:2px}
+.brand{padding:2px 8px 16px;gap:12px}
+.logo{width:42px;height:46px}
+.brand b{font:700 18px/1.05 "Barlow Condensed",Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.brand span{display:block;margin-top:3px;font-size:12px}
+#q{border-radius:9px;margin:0 0 12px}
+.nav-group,.nav-group.active{padding:0;margin:0 0 14px;border:0;border-radius:0;background:none;box-shadow:none}
+.grp{padding:4px 10px 6px;font:600 12px/1.3 Inter,sans-serif;letter-spacing:.02em;text-transform:none;color:var(--mute)}
+.grp-count{height:19px;min-width:19px;border-radius:99px;font-size:11px}
+.nav{padding:8px 10px;font-size:14px}
+.nav:hover:not([disabled]){transform:none;background:color-mix(in srgb,var(--green) 16%,var(--side))}
+.nav.home{font-weight:600;font-size:15px;margin:0 0 12px;padding:10px 12px}
+.nav.station{text-transform:none;letter-spacing:.02em;font-size:12px}
+.side-credit{margin:0;padding:14px 10px 0;font-size:12px;color:var(--mute)}
+.side-credit b{color:var(--beige);font-weight:600}
+@media(min-width:761px){.side-in{display:flex;flex-direction:column;flex:1}.side-credit{margin-top:auto}}
+
+main{flex:1;min-width:0;max-width:1320px;margin-inline:auto;padding:0 var(--px) 72px}
+.top{display:block;margin:0;padding:28px 0 6px}
+.eyebrow{font:500 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--beige)}
+h1{margin:4px 0 0;font:700 clamp(30px,4vw,42px)/1.02 "Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
+.lede{margin:8px 0 0;max-width:60ch;color:var(--mute)}
+.pill{display:none}
+body[data-view="home"] .top{display:none}
+
+/* form layout: fields left, actions rail right */
+main>[id^="f-"]{padding-top:18px}
+main>[id^="f-"]:not([hidden]){display:block}
+main>[id^="f-"]>.rail{margin-top:2px}
+.card{max-width:none;border-radius:12px;box-shadow:none;scroll-margin-top:64px}
+.card h2{display:flex;align-items:center;gap:10px;padding:14px 20px;font:600 21px/1.1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em;text-transform:none;background:color-mix(in srgb,var(--green2) 20%,var(--panel))}
+.card h2 small{order:2;margin:0 0 0 auto;padding:2px 10px;border:1px solid var(--line);border-radius:99px;font:500 12px Inter,sans-serif;letter-spacing:0}
+.body{padding:8px 20px 20px}
+.f>span{color:color-mix(in srgb,var(--text) 75%,var(--mute));font-weight:500;font-size:13px;margin-bottom:6px}
+.card input[type="text"],.card input[type="time"],.card textarea,.card select{padding:11px 13px;transition:border-color .15s,box-shadow .15s}
+.card input[type="text"]:hover,.card textarea:hover,.card select:hover{border-color:var(--mute)}
+.card input[type="text"]:focus,.card input[type="time"]:focus,.card textarea:focus,.card select:focus{outline:0;border-color:var(--beige);box-shadow:0 0 0 3px color-mix(in srgb,var(--beige) 22%,transparent)}
+.yn label{min-width:58px;padding:7px 18px;text-align:center;font-weight:600;transition:background .15s,color .15s}
+.yn label:hover{border-color:var(--beige);color:var(--text)}
+.item{border-radius:10px;background:color-mix(in srgb,var(--bg) 45%,var(--panel))}
+button.b{border-radius:9px;transition:filter .15s,border-color .15s,background .15s}
+button.b:not(.p):hover{border-color:var(--beige);filter:none}
+button.b.add{border-style:dashed;color:var(--beige);width:100%}
+.sheriff-paper{max-width:860px;margin:0 auto 18px}
+
+.rail{display:flex;flex-direction:column;gap:16px}
+.rail .actions,.rail .report-actions{flex-direction:column;max-width:none;margin:0;padding:16px;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.rail .b{width:100%;justify-content:center;padding:13px 16px;font-size:15px}
+.rail button.b.p{padding:15px 16px;font-size:16px}
+.outline{padding:2px 0;border-left:2px solid var(--line)}
+.outline b{display:block;padding:0 14px 6px;font:600 12px Inter,sans-serif;color:var(--mute)}
+.outline a{display:block;padding:6px 14px;margin-left:-2px;border-left:2px solid transparent;color:var(--mute);text-decoration:none;font-size:14px;transition:color .15s}
+.outline a:hover{color:var(--text)}
+.outline a[aria-current="true"]{color:var(--text);border-left-color:var(--beige);font-weight:600}
+
+@media(min-width:1240px){
+ main>[id^="f-"]:not([hidden]):not(.norail):not(#f-home){display:grid;grid-template-columns:minmax(0,1fr) 288px;column-gap:28px;align-items:start}
+ main>[id^="f-"]:not(.norail)>*{grid-column:1;min-width:0}
+ main>[id^="f-"]:not(.norail)>.rail{grid-column:2;grid-row:1/span 40;position:sticky;top:64px;align-self:start}
+}
+main>#f-card:not([hidden]){display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,430px),1fr));column-gap:18px;align-items:start}
+main>#f-updates{max-width:900px}
+@media(max-width:1239px){
+ .outline{display:none}
+ .rail{position:sticky;bottom:0;z-index:15;margin:4px calc(-1*var(--px)) 0;padding:12px var(--px) calc(12px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+ .rail .actions,.rail .report-actions{flex-direction:row;flex-wrap:wrap;padding:0;border:0;background:none;gap:8px}
+ .rail .b{width:auto;flex:1 1 130px;padding:11px 14px}
+ .rail button.b.p{flex:2 1 200px}
+ #toast,#character-details-prompt{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+ .credits{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+
+/* start screen */
+#f-home{padding-top:28px}
+.hero{position:relative;overflow:hidden;padding:clamp(22px,4vw,46px);border:1px solid var(--line);border-left:4px solid var(--beige);border-radius:14px;background:var(--panel)}
+.hero-badge{position:absolute;right:clamp(-10px,2vw,36px);top:50%;height:180%;max-height:340px;transform:translateY(-50%);opacity:.09;pointer-events:none}
+.hero>*:not(.hero-badge){position:relative}
+.hero-hello{margin:0;color:var(--beige);font-weight:500}
+.hero h2{margin:6px 0 8px;font:700 clamp(34px,5.5vw,58px)/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
+.hero-sub{margin:0 0 22px;max-width:56ch;color:var(--mute)}
+.hero-search{position:relative;max-width:640px}
+#hq{padding:16px 54px 16px 48px;border-radius:12px;font-size:17px;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%238fa196' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") no-repeat 16px center}
+#hq:focus{outline:0;border-color:var(--beige);box-shadow:0 0 0 3px color-mix(in srgb,var(--beige) 22%,transparent)}
+.hero kbd{position:absolute;right:14px;top:50%;transform:translateY(-50%);padding:2px 8px;border:1px solid var(--line);border-radius:6px;color:var(--mute);font:600 13px Inter,sans-serif}
+@media(hover:none){.hero kbd{display:none}}
+.setup{margin-top:16px;padding:0;border:0;background:none;color:var(--beige);font:600 14px Inter,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.home-h{margin:30px 0 12px;font:600 22px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em}
+.home-h span{margin-left:8px;color:var(--mute);font:500 13px Inter,sans-serif;letter-spacing:0}
+.chips,.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr))}
+.chip,.tile{display:block;width:100%;padding:13px 16px;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.chip{font-weight:600}
+.tile b{display:block;font:600 20px/1.15 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em}
+.tile span{display:block;margin-top:3px;color:var(--mute);font-size:13px;line-height:1.4}
+.chip:hover,.tile:hover{border-color:var(--line);border-left-color:var(--beige);background:color-mix(in srgb,var(--green) 12%,var(--panel))}
+.home-empty{margin:28px 0;color:var(--mute)}
+
+@media(max-width:760px){
+ body{display:block}
+ aside{position:sticky;top:0;z-index:18;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:8px 14px;border-right:0;border-bottom:1px solid var(--line)}
+ .brand{padding:0}
+ #menu{margin-left:auto;margin-right:78px;padding:8px 14px}
+ .side-in.open{position:fixed;inset:60px 0 0;z-index:17;overflow:auto;padding:14px 14px 40px;background:var(--side)}
+ .top{padding:20px 0 4px}
+ .body{padding:6px 16px 16px}
+ .hero-badge{opacity:.06}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* charge picker */
+.cp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.cp-chips:not(:empty){margin-bottom:8px}
+.cp-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 6px 4px 10px;border:1px solid var(--line);border-left:3px solid var(--beige);border-radius:8px;background:var(--bg);font-size:13px}
+.cp-chip button{padding:0 5px;border:0;background:none;color:var(--mute);font-size:17px;line-height:1;cursor:pointer}
+.cp-chip button:hover{color:var(--text)}
+.cp-list{margin-top:6px;max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.cp-opt{display:flex;gap:12px;padding:9px 12px;cursor:pointer}
+.cp-opt b{flex:0 0 34px;color:var(--beige)}
+.cp-opt:hover,.cp-opt[aria-selected="true"]{background:color-mix(in srgb,var(--green) 18%,var(--bg))}
+.cp-none{padding:12px;color:var(--mute)}
     </style>
   </head>
   <body>
@@ -1449,12 +1573,13 @@
         ☰ Menu
       </button>
       <div class="side-in" id="si">
+        <button class="nav home on" id="nv-home" onclick="show('home')"><span>Home</span></button>
         <input id="q" placeholder="Search forms…" oninput="filt(this.value)" />
-        <section class="nav-group active" data-group="patrol reports">
+        <section class="nav-group" data-group="patrol reports">
           <div class="grp">
             <span class="grp-label">Patrol Reports</span><span class="grp-count">10</span>
           </div>
-          <button class="nav on" id="nv-sheriff" data-k="sheriff report" onclick="show('sheriff')">
+          <button class="nav" id="nv-sheriff" data-k="sheriff report" onclick="show('sheriff')">
             <span>Sheriff's Report</span>
           </button>
           <button class="nav" id="nv-incident" data-k="incident report" onclick="show('incident')">
@@ -1844,13 +1969,29 @@
     <main>
       <div class="top">
         <div>
-          <div class="eyebrow">County of Los Santos · Sheriff's Department Headquarters</div>
+          <div class="eyebrow" id="crumb">Paperwork</div>
           <h1 id="ttl">Sheriff's Report System - NOT OFFICIAL</h1>
-          <span class="pill"><i></i>LOS SANTOS SHERIFF'S DEPARTMENT</span>
+          <p class="lede" id="lede"></p>
         </div>
       </div>
 
-      <div id="f-sheriff">
+      <div id="f-home">
+        <section class="hero">
+          <img class="hero-badge" id="home-badge" alt="" />
+          <p class="hero-hello" id="hello"></p>
+          <h2>What are you filing today?</h2>
+          <p class="hero-sub">Pick a form, fill it in, copy the BBCode and paste it on the forum. Unofficial tool.</p>
+          <div class="hero-search">
+            <input type="text" id="hq" placeholder="Search forms, e.g. incident, warrant, citation" autocomplete="off" aria-label="Search forms" />
+            <kbd aria-hidden="true">/</kbd>
+          </div>
+          <button class="setup" id="setup" type="button" onclick="show('deputy')" hidden>Save your Character Details so forms fill themselves in</button>
+        </section>
+        <section id="recent" hidden><h3 class="home-h">Pick up where you left off</h3><div class="chips" id="recent-list"></div></section>
+        <p class="home-empty" id="home-empty" hidden></p>
+        <div id="home-groups"></div>
+      </div>
+      <div id="f-sheriff" hidden>
         <div class="sheriff-paper" id="sheriff-paper">
           <div class="report-masthead">
             <img class="report-mark" id="sheriff-report-logo" alt="LSSD badge" />
@@ -3955,6 +4096,85 @@
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v1.0.5</h2>
+          <div class="body">
+            <h3>v1.0.5</h3>
+            <h3>All Forms</h3>
+            <ul>
+              <li>
+                Redesigned layout: cards now use the full width of the page instead of a narrow column on the left, with clearer section headers, larger Yes/No buttons, a visible highlight on the field you are typing in, and full-width dashed Add buttons.
+              </li>
+              <li>
+                On wide screens every form has a right-hand column with a Sections outline (click to jump, and it highlights where you are) and the Copy BBCode, Forum and Reset buttons, which stay on screen while you scroll.
+              </li>
+              <li>
+                On tablets and phones the same buttons sit in a bar fixed to the bottom of the screen, so you never have to scroll to the end to copy.
+              </li>
+              <li>
+                Each form page now shows its category and a one-line description under the title.
+              </li>
+              <li>
+                The Business Card Generator uses two columns on wide screens.
+              </li>
+              <li>
+                The generated BBCode is unchanged for every form.
+              </li>
+            </ul>
+            <h3>Patrol Reports</h3>
+            <ul>
+              <li>
+                Incident Report: new multi-charge picker for Penal Code. Search by number or name, select multiple charges as chips, and remove any with ×. When three or more charges are selected, the report title switches to a longer format that can fit the full list.
+              </li>
+            </ul>
+            <h3>Warrant Services</h3>
+            <ul>
+              <li>
+                Arrest Warrant, Search Warrant, and Electronic Surveillance Warrant: Crimes field uses the same multi-charge picker as Incident Report. Search by number or name, select multiple charges as chips, and remove any with ×.
+              </li>
+            </ul>
+            <h3>Technology &amp; Support</h3>
+            <ul>
+              <li>No changes in this release.</li>
+            </ul>
+            <h3>Divisional Generators</h3>
+            <ul>
+              <li>
+                OSS Incident Report: same multi-charge picker as Incident Report. Search and select multiple penal codes; with three or more charges the title uses the longer format so the full list remains readable.
+              </li>
+            </ul>
+            <h3>Navigation &amp; Settings</h3>
+            <ul>
+              <li>
+                New Home start screen, now the page the site opens on, with a Home button at the top of the sidebar.
+              </li>
+              <li>
+                Home has a search box (press / to focus it, Enter opens the first match), a Pick up where you left off row with your last four forms, and every form listed by category with a short description.
+              </li>
+              <li>
+                Home greets you using your saved Character Details, and links to Character Details if none are saved yet.
+              </li>
+              <li>
+                Sidebar restyled: categories are now open lists instead of boxed groups, with a cleaner look for the active form.
+              </li>
+              <li>
+                On phones, the sidebar is now a sticky top bar and the menu opens as a full-screen panel.
+              </li>
+            </ul>
+            <h3>Generators</h3>
+            <ul>
+              <li>No changes in this release.</li>
+            </ul>
+            <h3>Useful Links</h3>
+            <ul>
+              <li>No changes in this release.</li>
+            </ul>
+            <h3>Tips</h3>
+            <ul>
+              <li>No changes in this release.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v1.0.4</h2>
           <div class="body">
             <h3>v1.0.4</h3>
@@ -4805,8 +5025,12 @@
           date = formatPickerDate($("uof-date").value, "time-date", $("uof-time").value) || "Date";
         $("uof-title").value = `UOF - ${location} / ${date}`;
       }
+      function chargeTitle(id) {
+        const e = $(id), c = e.value.trim() ? e._ch || [] : [];
+        return c.length >= 3 ? c.map((x) => x[0]).join(", ") : e.value.trim();
+      }
       function updateIncidentTitle() {
-        const charge = $("i2").value.trim() || "Charge or Description",
+        const charge = chargeTitle("i2") || "Charge or Description",
           location = $("i3").value.trim() || "Location",
           date = formatPickerDate($("i1").value, "time-date", $("incident-time").value) || "Date";
         $("incident-title").value = `IR - ${charge} / ${location} / ${date}`;
@@ -5741,7 +5965,7 @@
         applyDeputyDetails();
       }
       function updateOssIncidentTitle() {
-        const penalCodes = $("oss-ir-penal-code").value.trim() || "CHARGE",
+        const penalCodes = chargeTitle("oss-ir-penal-code") || "CHARGE",
           location = $("oss-ir-location").value.trim() || "LOCATION";
         $("oss-ir-title").value =
           `[IR] ${penalCodes} - ${location} - ${formatPickerDate($("oss-ir-date").value, "short") || "DD/MMM/YYYY"}`;
@@ -7192,6 +7416,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       }
       function show(k) {
         [
+          "home",
           "sheriff",
           "incident",
           "uof",
@@ -7227,6 +7452,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           .querySelectorAll(".nav-group")
           .forEach((group) => group.classList.toggle("active", !!group.querySelector(".nav.on")));
         $("ttl").textContent = {
+          home: "Home",
           sheriff: "Sheriff's Report System",
           incident: "Incident Report",
           uof: "Use of Force Report",
@@ -7967,6 +8193,360 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         applyDeputyDetails();
         drawSheriffReport();
       }
+    </script>
+    <script>
+(() => {
+  const G = [
+    ["Patrol Reports", [
+      ["sheriff", "Sheriff's Report", "Answer the checklist and write up the report."],
+      ["incident", "Incident Report", "Involved persons, narrative and evidence in one report."],
+      ["supp", "Supplemental Report", "Add new details to an incident report."],
+      ["task-list", "Task List", "Track follow-up tasks for an incident."],
+      ["subject", "Subject Information", "Record details on a subject."],
+      ["tc", "Traffic Collision Report", "Document a traffic collision."],
+      ["uof", "Use of Force Report", "Document a use of force."],
+      ["king-patrol", "King Patrol Report", "Log a King Patrol report."],
+      ["apb", "APB", "Build an APB bulletin."]]],
+    ["Warrant Services", [
+      ["arrest-warrant", "Arrest Warrant", "Draft an arrest warrant."],
+      ["search-warrant", "Search Warrant", "Draft a search warrant."],
+      ["electronic-surveillance-warrant", "Electronic Surveillance Warrant", "Draft a surveillance warrant."],
+      ["financial-service-warrant", "Financial Service Warrant Request", "Draft a financial service warrant request."]]],
+    ["Technology & Support", [
+      ["lab", "Laboratory Services Request", "Request lab services for evidence."],
+      ["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate."],
+      ["dforensics", "Digital Forensics Request", "Request digital forensics on evidence."]]],
+    ["Divisional Generators", [
+      ["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets."],
+      ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets."],
+      ["senora-logbook", "Senora Station Logbook", "Log calls for Senora Station."],
+      ["nccit", "NCCIT Personnel File", "North County Crime Impact Team."],
+      ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team."],
+      ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 team."],
+      ["citation", "TSD Citation", "Traffic Services Detail citation."]]],
+    ["Generators", [
+      ["card", "Business Card Generator", "Design your card and download it as a PNG."],
+      ["email", "Email Template", "Write a department email in BBCode."]]],
+    ["Miscellaneous", [
+      ["deputy", "Character Details", "Save your name, badge and rank to prefill forms."],
+      ["updates", "Updates", "See what's new on this site."]]],
+  ];
+  const info = {};
+  G.forEach(([g, items]) => items.forEach(([k, t, d]) => (info[k] = { g, t, d })));
+  const RK = "lssd-recent", base = window.show;
+  const recents = () => { try { return JSON.parse(localStorage.getItem(RK)) || []; } catch (e) { return []; } };
+  const remember = (k) => {
+    try { localStorage.setItem(RK, JSON.stringify([k, ...recents().filter((x) => x !== k)].slice(0, 4))); }
+    catch (e) { console.warn("Could not save recent forms:", e); }
+  };
+  const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt) n.textContent = txt; return n; };
+  const open = (k) => () => show(k);
+
+  window.show = function (k) {
+    base(k);
+    document.body.dataset.view = k;
+    const m = info[k];
+    $("crumb").textContent = m ? m.g : "Paperwork";
+    $("lede").textContent = m ? m.d : "";
+    if (k === "home") renderHome(); else remember(k);
+    window.scrollTo(0, 0);
+  };
+
+  function renderHome() {
+    const d = typeof deputyDetails === "object" ? deputyDetails : {};
+    const name = (d.fullName || "").trim(), last = name.split(/\s+/).pop();
+    $("hello").textContent = name ? "Welcome back, " + ((d.rank || "").trim() ? d.rank.trim() + " " : "") + last + "." : "Welcome to the paperwork desk.";
+    $("setup").hidden = Object.values(d).some((v) => String(v).trim());
+    const rc = recents().filter((k) => info[k]), rl = $("recent-list");
+    rl.replaceChildren(...rc.map((k) => { const c = el("button", "chip", info[k].t); c.type = "button"; c.onclick = open(k); return c; }));
+    $("recent").hidden = !rc.length;
+    const box = $("home-groups");
+    if (!box.children.length) {
+      G.forEach(([g, items]) => {
+        const sec = el("section"); sec.dataset.g = g;
+        const h = el("h3", "home-h", g); h.append(el("span", "", items.length + (items.length === 1 ? " form" : " forms")));
+        const grid = el("div", "tiles");
+        items.forEach(([k, t, desc]) => {
+          const b = el("button", "tile"); b.type = "button"; b.onclick = open(k);
+          b.dataset.s = (t + " " + desc + " " + g + " " + ($("nv-" + k).dataset.k || "")).toLowerCase();
+          b.append(el("b", "", t), el("span", "", desc)); grid.append(b);
+        });
+        sec.append(h, grid); box.append(sec);
+      });
+    }
+    $("hq").value = ""; filterHome("");
+  }
+  function filterHome(v) {
+    v = v.trim().toLowerCase(); let n = 0;
+    document.querySelectorAll("#home-groups section").forEach((s) => {
+      let c = 0;
+      s.querySelectorAll(".tile").forEach((t) => { const ok = !v || v.split(/\s+/).every((w) => t.dataset.s.includes(w)); t.hidden = !ok; if (ok) c++; });
+      s.hidden = !c; n += c;
+    });
+    $("home-empty").hidden = !!n || !v;
+    $("home-empty").textContent = 'No form matches "' + v + '". Try a shorter word such as "report" or "warrant".';
+    $("recent").hidden = !!v || !recents().length;
+  }
+  $("hq").addEventListener("input", (e) => filterHome(e.target.value));
+  $("hq").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { const t = document.querySelector("#home-groups .tile:not([hidden])"); if (t) t.click(); }
+    if (e.key === "Escape") { e.target.value = ""; filterHome(""); }
+  });
+  addEventListener("keydown", (e) => {
+    if (e.key !== "/" || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+    e.preventDefault(); ($("hq").offsetParent ? $("hq") : $("q")).focus();
+  });
+  $("home-badge").src = document.querySelector(".logo").src;
+
+  // actions rail + section outline for every form
+  const smooth = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  document.querySelectorAll('main > [id^="f-"]:not(#f-home)').forEach((f) => {
+    const act = f.querySelector(":scope > .actions, :scope > .report-actions");
+    if (!act) { f.classList.add("norail"); return; }
+    const rail = el("div", "rail"), heads = [...f.querySelectorAll(":scope > .card > h2")];
+    if (heads.length > 1) {
+      const nav = el("nav", "outline"); nav.setAttribute("aria-label", "Sections"); nav.append(el("b", "", "Sections"));
+      heads.forEach((h) => {
+        const t = [...h.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim();
+        const a = el("a", "", t); a.href = "#";
+        a.onclick = (e) => { e.preventDefault(); h.parentElement.scrollIntoView({ behavior: smooth, block: "start" }); };
+        h._a = a; nav.append(a);
+      });
+      rail.append(nav);
+      let tick = 0;
+      addEventListener("scroll", () => {
+        if (f.hidden || tick) return;
+        tick = requestAnimationFrame(() => {
+          tick = 0; let cur = heads[0];
+          heads.forEach((h) => { if (h.parentElement.getBoundingClientRect().top < 140) cur = h; });
+          heads.forEach((h) => h._a.setAttribute("aria-current", h === cur));
+        });
+      }, { passive: true });
+    }
+    rail.append(act); f.append(rail);
+  });
+  show("home");
+})();
+    </script>
+    <script>
+(() => {
+  const C = `001|Treason (F)
+002|Espionage (F)
+003|Domestic Terrorism (F)
+004|Domestic Terror Threats (F)
+101|Tax Evasion (F)
+102|Voter Fraud (F)
+103|Corruption of Public Office (F)
+104|Neglect of Public Duty (F)
+105|Bribery of a Public Official (F)
+106|Incitement To Riot (F)
+107|Unlawful Assembly (M)
+108|Tampering with Evidence (F)
+109|Intimidating a Witness or Victim (F)
+110|Contempt of Court (M)
+111|Perjury (F)
+112|Obstruction of a Public Duty (M/F)
+113|Obstructing a Peace Officer's Animal (M)(F)
+114|Escape from Lawful Custody (F)
+115|Evading a Peace Officer (F)
+116|Resisting Arrest (M)
+117|Lying to Government Agents (M)
+118|Misuse of an Emergency Hotline (M)
+119|False Impersonation (M)
+120|Assault & Battery on a Government Worker (F)
+121|Forgery (M)
+122|Fraud (M)(F)
+123|Money Laundering (F)
+124|Defacing U.S. Currency (M)
+125|Disturbing the Peace (M)
+126|Racketeering (F)
+127|Violation of EFCE Act - Signal Jamming (F)
+128|Violation of EFCE Act - Card Skimming (F)
+129|Violation of EFCE Act - Vehicle Tracking (F)
+130|Rescuing A Prisoner (F)
+131|Bringing Contraband Into A Correctional Facility (F)
+132|Possession Of Communications In A Correctional Facility (M)
+133|Possession Of Tobacco In A Correctional Facility (I)
+134|Possession Of Handcuff Keys In A Correctional Facility (M)
+135|Murder of a Peace Officer Canine (F)
+136|Aggravated Battery of a Peace Officer Canine (F)
+137|Battery of a Peace Officer Canine (M)
+138|Obstruction of a Peace Officer Canine (M)
+139|Misuse of the Mobile Data Computer (F)
+140|Unauthorized Sharing of Information from the Mobile Data Computer (F)
+141|Unlawful Communication with an Inmate (M)
+142|Failure to Appear at Court (M)(F)
+201|Capital Murder (F)
+202|First Degree Murder (F)
+203|Second Degree Murder (F)
+204|Voluntary Manslaughter (F)
+205|Involuntary Manslaughter (F)
+206|Assault (M)
+207|Assault with a Deadly Weapon (F)
+208|Battery (M)
+209|Aggravated Battery (F)
+210|Kidnapping (F)
+211|Human Trafficking (F)
+212|Unlawful Imprisonment (M)
+213|Torture (F)
+214|Criminal Threats (M)
+215|Robbery (F)
+216|Armed Robbery (F)
+217|Rape (F)
+218|Statutory Rape (F)
+219|Sexual Battery (F)
+220|Harassment (M)
+221|Domestic Violence (M)
+222|Assault with Caustic Chemicals (F)
+301|Arson (F)
+302|Burglary (F)
+303|Home Invasion (F)
+304|Grand Theft (F)
+305|Petty Theft (M)
+306|Grand Theft Auto (F)
+307|Grand Theft Of A Firearm (F)
+308|Possession of Burglary Tools (M)
+309|Receiving Stolen Property (M)
+310|Trespassing (M)
+311|Vandalism (M)
+312|Embezzlement (M)(F)
+313|Vehicle Registration Theft (M)(F)
+314|Vandalism of Prison Property (M)(F)
+401|Driving Without a Valid License (M)
+402|Driving On A Suspended License (M)
+403|Failure to Produce Driver's License (I)
+404|Failure to Produce Vehicle Registration (I)
+405|Failure to Produce Proof of Insurance (I)
+406|Unregistered Vehicle (I)
+407|No Insurance (I)
+408|Hit and Run (M/F)
+409|Reckless Operation Of an Off-Road or Naval Vehicle (M)
+410|Speeding (I)
+411|Excessive Speeding (I)
+412|Failure to Yield/Stop to a Traffic Control Device (I)
+413|Failure to Yield at Intersection (I)
+414|Failure to Yield Entering Roadway (I)
+415|Failure to Yield for Crosswalk (I)
+416|Failure to Yield to an Emergency Vehicle (I)
+417|Improper Lane Entry while Turning (I)
+418|Prohibited Parking (I)
+419|Reckless Driving (M)
+420|Vehicular Endangerment (F)
+421|Drive Without Headlights (I)
+422|Unsafe Reversing (I)
+423|Obstructing Traffic (I)
+424|Driving Against One-Way Traffic (I)
+425|Imprudent Driving (I)
+426|Use of an Electronic Device while Driving (I)
+427|Vehicular Noise Violation (I)
+428|Illegal Usage of Hydraulics (I)
+429|Tinted Windows (I)
+430|Impaired Driving [DUI] (M)
+431|Refusal to Submit to Testing (M)
+432|Motor Vehicle Contest (M/F)
+433|Jaywalking (I)
+434|Possession of Open Container (I)
+435|Failure to Wear a Seatbelt/Safety Equipment (I)
+436|Operation of Unsafe Motor Vehicle (I)
+437|Operating an Aircraft Without A License (M)
+438|Reckless Operation Of An Aircraft (F)
+439|Failure To Adhere To ATC (F)
+440|Aerial Evasion (F)
+441|Negligent Operation of Bicycle (I)
+442|Operation of an Unauthorized Vehicle on Vespucci Beach (I)
+443|Street Takeover (F)
+501|Indecent Exposure (M)
+502|Lewd or Dissolute Conduct in Public (M)
+503|Prostitution (M)
+504|Pandering/Pimping (F)
+505|Stalking (M)
+506|Gaming Fraud (M)(F)
+507|Child Abuse (F)
+508|Child Neglect (F)
+509|Sale of Alcohol / Tobacco to a Minor (M)
+510|Minor Alcohol / Tobacco Violation (M)
+511|Animal Abuse (F)
+512|Sexual Activity With An Inmate (F)
+601|Manufacturing A Controlled Substance (F)
+602|Possession Of A Controlled Substance (M)
+603|Possession Of A Controlled Substance with Intent to Distribute (M)
+604|Criminal Sale Of a Controlled Substance (F)
+605|Drug Smuggling (F)
+606|Drug Trafficking (F)
+607|Possession of Drug Paraphernalia (M)
+609|Eavesdropping (F)
+610|Facial Obstruction (M)
+611|Fire Code Violation (I)
+612|Littering (I)
+613|SRCB Violation (M)
+701|Criminal Possession of a Firearm (M)
+702|Possession of a Prohibited Firearm (F)
+703|Aggravated Firearm Possession (F)
+704|Possession of an Explosive or Incendiary Device (F)
+705|Unlicensed Sale of Firearm or Explosives (F)
+706|Brandishing a Deadly Weapon (F)
+707|Discharging A Firearm in Public (F)
+708|Discharging A Firearm From A Motor Vehicle (F)
+709|Reckless Handling of Firearms (M)
+710|SHAFT Code Violation (M)
+711|Possession of a Firearm by Convicted Felon (F)
+712|Unlawful Possession of Ammunition (F)
+713|Possession Of Deadly Weapons In A Correctional Facility (F)`.split("\n").map((l) => l.split("|"));
+  const fmt = (c) => c[0] + " " + c[1];
+  const mk = (t, cls) => { const n = document.createElement(t); if (cls) n.className = cls; return n; };
+  function picker(id, resetFn) {
+    const src = $(id); src.hidden = true; src._ch = [];
+    const box = mk("div", "cp");
+    const chips = mk("div", "cp-chips"), list = mk("div", "cp-list"), q = mk("input");
+    q.type = "text"; q.className = "cp-q"; q.autocomplete = "off"; q.placeholder = "Search by number or charge name";
+    q.setAttribute("role", "combobox"); q.setAttribute("aria-label", "Search penal codes"); q.setAttribute("aria-expanded", "false");
+    list.setAttribute("role", "listbox"); list.hidden = true;
+    box.append(chips, q, list); src.after(box);
+    let hits = [], sel = 0;
+    const sync = () => {
+      src.value = src._ch.map(fmt).join(", ");
+      chips.replaceChildren(...src._ch.map((c, i) => {
+        const s = mk("span", "cp-chip"), b = mk("button");
+        s.append(fmt(c)); b.type = "button"; b.textContent = "×"; b.setAttribute("aria-label", "Remove " + fmt(c));
+        b.onclick = () => { src._ch.splice(i, 1); sync(); };
+        s.append(b); return s;
+      }));
+      src.dispatchEvent(new Event("input", { bubbles: true }));
+    };
+    const render = () => {
+      const w = q.value.toLowerCase().split(/\s+/).filter(Boolean);
+      hits = C.filter((c) => w.every((x) => fmt(c).toLowerCase().includes(x)));
+      sel = Math.min(sel, Math.max(hits.length - 1, 0));
+      list.replaceChildren(...(hits.length ? hits.map((c, i) => {
+        const d = mk("div", "cp-opt"), n = mk("b"), t = mk("span");
+        n.textContent = c[0]; t.textContent = c[1]; d.append(n, t);
+        d.setAttribute("role", "option"); d.setAttribute("aria-selected", i === sel);
+        d.onmousedown = (e) => { e.preventDefault(); add(c); };
+        return d;
+      }) : [Object.assign(mk("div", "cp-none"), { textContent: "No charge matches. Try a number or a shorter word." })]));
+    };
+    const open = (v) => { list.hidden = !v; q.setAttribute("aria-expanded", v); if (v) render(); };
+    const add = (c) => { src._ch.push(c); q.value = ""; sel = 0; sync(); render(); };
+    const move = (d) => { if (!hits.length) return; sel = (sel + d + hits.length) % hits.length; render(); list.children[sel].scrollIntoView({ block: "nearest" }); };
+    q.addEventListener("focus", () => open(true));
+    q.addEventListener("click", () => open(true));
+    q.addEventListener("blur", () => open(false));
+    q.addEventListener("input", () => { sel = 0; open(true); });
+    q.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") { e.preventDefault(); if (list.hidden) open(true); else move(1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+      else if (e.key === "Enter") { e.preventDefault(); if (!list.hidden && hits[sel]) add(hits[sel]); }
+      else if (e.key === "Escape") open(false);
+    });
+    const orig = window[resetFn];
+    window[resetFn] = function () { orig.apply(this, arguments); src._ch = []; q.value = ""; sync(); };
+  }
+  picker("i2", "resetI");
+  picker("oss-ir-penal-code", "resetOssIncident");
+  picker("arrest-crimes", "resetArrestWarrant");
+  picker("search-crimes", "resetSearchWarrant");
+  picker("electronic-crimes", "resetElectronicWarrant");
+})();
     </script>
   </body>
 </html>
