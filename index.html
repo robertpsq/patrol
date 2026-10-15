@@ -1595,29 +1595,78 @@ main>#f-updates{max-width:900px}
 }
 
 /* start screen */
-#f-home{padding-top:28px}
-.hero{position:relative;overflow:hidden;padding:clamp(22px,4vw,46px);border:1px solid var(--line);border-left:4px solid var(--beige);border-radius:14px;background:var(--panel)}
-.hero-badge{position:absolute;right:clamp(-10px,2vw,36px);top:50%;height:180%;max-height:340px;transform:translateY(-50%);opacity:.09;pointer-events:none}
-.hero>*:not(.hero-badge){position:relative}
-.hero-hello{margin:0;color:var(--beige);font-weight:500}
-.hero h2{margin:6px 0 8px;font:700 clamp(34px,5.5vw,58px)/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
-.hero-sub{margin:0 0 22px;max-width:56ch;color:var(--mute)}
-.hero-search{position:relative;max-width:640px}
-#hq{padding:16px 54px 16px 48px;border-radius:12px;font-size:17px;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%238fa196' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") no-repeat 16px center}
+#f-home{padding-top:var(--home-pad,22px);padding-bottom:var(--home-pad,40px)}
+body[data-view="home"] main{padding-bottom:0}
+/* larger screens: scale the whole home tab up ~10% and widen its container to match */
+@media(min-width:1440px) and (min-height:820px){
+ body[data-view="home"] main{max-width:1452px}
+ #f-home>*{zoom:1.1}
+}
+.hero{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) minmax(280px,520px);align-items:center;gap:6px 18px;padding:16px 20px;border:1px solid var(--line);border-left:4px solid var(--beige);border-radius:14px;background:var(--panel)}
+.hero-badge{grid-row:1/span 2;width:52px;height:52px;object-fit:contain}
+.hero-text{min-width:0}
+.hero-hello{margin:0;color:var(--beige);font-size:13px;font-weight:500}
+.hero h2{margin:2px 0 0;font:700 clamp(24px,2.6vw,32px)/1.05 "Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
+.hero-search{position:relative;grid-column:3}
+#hq{width:100%;padding:11px 46px 11px 40px;border-radius:10px;font-size:15px;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238fa196' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") no-repeat 13px center}
 #hq:focus{outline:0;border-color:var(--beige);box-shadow:0 0 0 3px color-mix(in srgb,var(--beige) 22%,transparent)}
-.hero kbd{position:absolute;right:14px;top:50%;transform:translateY(-50%);padding:2px 8px;border:1px solid var(--line);border-radius:6px;color:var(--mute);font:600 13px Inter,sans-serif}
+.hero kbd{position:absolute;right:10px;top:50%;transform:translateY(-50%);padding:1px 7px;border:1px solid var(--line);border-radius:6px;color:var(--mute);font:600 12px Inter,sans-serif}
 @media(hover:none){.hero kbd{display:none}}
-.setup{margin-top:16px;padding:0;border:0;background:none;color:var(--beige);font:600 14px Inter,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.home-h{margin:30px 0 12px;font:600 22px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em}
-.home-h span{margin-left:8px;color:var(--mute);font:500 13px Inter,sans-serif;letter-spacing:0}
-.chips,.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr))}
-.chip,.tile{display:block;width:100%;padding:13px 16px;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
-.chip[hidden],.tile[hidden],#home-groups section[hidden],.home-empty[hidden],#recent[hidden]{display:none!important}
-.chip{font-weight:600}
-.tile b{display:block;font:600 20px/1.15 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em}
-.tile span{display:block;margin-top:3px;color:var(--mute);font-size:13px;line-height:1.4}
-.chip:hover,.tile:hover{border-color:var(--line);border-left-color:var(--beige);background:color-mix(in srgb,var(--green) 12%,var(--panel))}
-.home-empty{margin:28px 0;color:var(--mute)}
+.hero-foot{grid-column:2/-1;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;min-height:0}
+.hero-foot:empty{display:none}
+.setup{padding:0;border:0;background:none;color:var(--beige);font:600 13px Inter,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#recent{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+#recent>b{margin-right:2px;color:var(--mute);font:600 11px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.chips{display:contents}
+.chip{padding:4px 11px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--text);font:600 13px Inter,sans-serif;cursor:pointer;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--beige)}
+.chip[hidden],.tile[hidden],#home-groups section[hidden],.home-empty[hidden],#recent[hidden],.home-sub[hidden],.setup[hidden]{display:none!important}
+
+/* category panels */
+#home-groups{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"patrol patrol warrant tech" "divis divis divis divis" "gen gen misc misc";align-items:start}
+#home-groups>section{min-width:0;padding:12px 14px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+#home-groups>[data-a="patrol"]{grid-area:patrol}
+#home-groups>[data-a="warrant"]{grid-area:warrant}
+#home-groups>[data-a="tech"]{grid-area:tech}
+#home-groups>[data-a="divis"]{grid-area:divis}
+#home-groups>[data-a="gen"]{grid-area:gen}
+#home-groups>[data-a="misc"]{grid-area:misc}
+#home-groups.searching{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));grid-template-areas:none}
+#home-groups.searching>section{grid-area:auto}
+#home-groups.searching .home-station{flex-basis:100%}
+#home-groups.searching .home-divs{grid-auto-flow:row;grid-auto-columns:auto}
+.home-h{display:flex;align-items:baseline;gap:8px;margin:0 0 10px;font:600 19px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em}
+.home-h span{padding:2px 7px;border-radius:999px;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--mute);font:600 11px/1.3 Inter,sans-serif;letter-spacing:0}
+.tiles{display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.tile{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:36px;padding:7px 11px;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:600 15px/1.15 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.tile::after{content:"\203A";color:var(--mute);font:500 17px/1 Inter,sans-serif;opacity:0;transition:opacity .15s,transform .15s}
+.tile:hover{border-left-color:var(--beige);background:color-mix(in srgb,var(--green) 14%,var(--bg))}
+.tile:hover::after{opacity:1;transform:translateX(2px)}
+.home-empty{margin:18px 0;color:var(--mute)}
+
+/* divisional: stations as header bands over equal-width division columns */
+.home-stations{display:flex;flex-wrap:wrap;gap:12px 24px}
+.home-station{flex:1 1 0;min-width:0}
+.home-station-h{margin:0 0 10px;padding-bottom:7px;border-bottom:2px solid var(--beige);color:var(--beige);font:700 12px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.home-divs{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:10px}
+.home-div{min-width:0}
+.home-div-h{margin:0 0 6px;color:var(--text);font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.home-div-h.plain{color:var(--mute)}
+.home-div .tiles{grid-template-columns:1fr}
+
+@media(max-width:1180px){
+ #home-groups{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"patrol patrol" "warrant tech" "divis divis" "gen misc"}
+}
+@media(max-width:1180px){
+ .hero{grid-template-columns:auto minmax(0,1fr)}
+ .hero-search,.hero-foot{grid-column:1/-1}
+ .hero-badge{grid-row:auto;width:42px;height:42px}
+}
+@media(max-width:700px){
+ #home-groups{grid-template-columns:1fr;grid-template-areas:"patrol" "warrant" "tech" "divis" "gen" "misc"}
+ .home-station{flex-basis:100%}
+ .home-divs{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 
 @media(max-width:760px){
  body{display:block}
@@ -1627,7 +1676,6 @@ main>#f-updates{max-width:900px}
  .side-in.open{position:fixed;inset:60px 0 0;z-index:17;overflow:auto;padding:14px 14px 40px;background:var(--side)}
  .top{padding:20px 0 4px}
  .body{padding:6px 16px 16px}
- .hero-badge{opacity:.06}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
@@ -2087,16 +2135,19 @@ main>#f-updates{max-width:900px}
       <div id="f-home">
         <section class="hero">
           <img class="hero-badge" id="home-badge" alt="" />
-          <p class="hero-hello" id="hello"></p>
-          <h2>What are you filing today?</h2>
-          <p class="hero-sub">Pick a form, fill it in, copy the BBCode and paste it on the forum. Unofficial tool.</p>
+          <div class="hero-text">
+            <p class="hero-hello" id="hello"></p>
+            <h2>What are you filing today?</h2>
+          </div>
           <div class="hero-search">
-            <input type="text" id="hq" placeholder="Search forms, e.g. incident, warrant, citation" autocomplete="off" aria-label="Search forms" />
+            <input type="text" id="hq" placeholder="Search forms, e.g. incident, warrant, senora" autocomplete="off" aria-label="Search forms" />
             <kbd aria-hidden="true">/</kbd>
           </div>
-          <button class="setup" id="setup" type="button" onclick="show('deputy')" hidden>Save your Character Details so forms fill themselves in</button>
+          <div class="hero-foot">
+            <div id="recent" hidden><b>Recent</b><div class="chips" id="recent-list"></div></div>
+            <button class="setup" id="setup" type="button" onclick="show('deputy')" hidden>Save your Character Details so forms fill themselves in</button>
+          </div>
         </section>
-        <section id="recent" hidden><h3 class="home-h">Pick up where you left off</h3><div class="chips" id="recent-list"></div></section>
         <p class="home-empty" id="home-empty" hidden></p>
         <div id="home-groups"></div>
       </div>
@@ -8459,13 +8510,13 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate."],
       ["dforensics", "Digital Forensics Request", "Request digital forensics on evidence."]]],
     ["Divisional Generators", [
-      ["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets."],
-      ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets."],
-      ["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station."],
-      ["nccit", "NCCIT Personnel File", "North County Crime Impact Team."],
-      ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team."],
-      ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team."],
-      ["citation", "TSD Citation", "Traffic Services Detail citation."]]],
+      ["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets.", ["Davis Station", "OSS", "Incident Report"]],
+      ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets.", ["Davis Station", "OSS", "Supplemental"]],
+      ["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", ["Senora Station", "", "Logbook"]],
+      ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", ["Senora Station", "NCCIT", "Personnel File"]],
+      ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", ["Senora Station", "NCCIT", "Supplemental"]],
+      ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", ["Senora Station", "K9", "Deployment Log"]],
+      ["citation", "TSD Citation", "Traffic Services Detail citation.", ["Senora Station", "TSD", "Citation"]]]],
     ["Generators", [
       ["card", "Business Card Generator", "Design your business card and download it as a PNG."],
       ["email", "Email Template", "Use the official BBCode format for emails."]]],
@@ -8504,20 +8555,65 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("recent").hidden = !rc.length;
     const box = $("home-groups");
     if (!box.children.length) {
+      const AREA = { "Patrol Reports": "patrol", "Warrant Services": "warrant", "Technology & Support": "tech", "Divisional Generators": "divis", "Generators": "gen", "Miscellaneous": "misc" };
+      const tile = ([k, t, desc, path]) => {
+        const b = el("button", "tile", t); b.type = "button"; b.onclick = open(k);
+        b.title = desc;
+        b.dataset.title = [t, ...(path || [])].join(" ").toLowerCase();
+        return b;
+      };
+      const tiles = (list) => { const grid = el("div", "tiles"); list.forEach((it) => grid.append(tile(it))); return grid; };
       G.forEach(([g, items]) => {
-        const sec = el("section"); sec.dataset.g = g;
-        const h = el("h3", "home-h", g); h.append(el("span", "", items.length + (items.length === 1 ? " form" : " forms")));
-        const grid = el("div", "tiles");
-        items.forEach(([k, t, desc]) => {
-          const b = el("button", "tile"); b.type = "button"; b.onclick = open(k);
-          b.dataset.title = t.toLowerCase();
-          b.append(el("b", "", t), el("span", "", desc)); grid.append(b);
+        const sec = el("section"); sec.dataset.g = g; if (AREA[g]) sec.dataset.a = AREA[g];
+        const h = el("h3", "home-h", g); h.append(el("span", "", String(items.length)));
+        sec.append(h);
+        if (!items.some((it) => it[3])) { sec.append(tiles(items)); box.append(sec); return; }
+        // Station > Division > forms, stations side by side
+        const stations = new Map();
+        items.forEach((it) => {
+          const [st, dv] = it[3] || ["Other", ""];
+          if (!stations.has(st)) stations.set(st, new Map());
+          const dvs = stations.get(st);
+          if (!dvs.has(dv)) dvs.set(dv, []);
+          dvs.get(dv).push(it);
         });
-        sec.append(h, grid); box.append(sec);
+        const wrap = el("div", "home-stations");
+        stations.forEach((dvs, st) => {
+          const sb = el("div", "home-sub home-station");
+          sb.style.flexGrow = dvs.size;
+          sb.append(el("h4", "home-station-h", st));
+          const cols = el("div", "home-divs");
+          dvs.forEach((list, dv) => {
+            const col = el("div", "home-sub home-div");
+            col.append(el("h5", "home-div-h" + (dv ? "" : " plain"), dv || "Station"));
+            const grid = el("div", "tiles");
+            list.forEach((it) => {
+              const b = tile(it);
+              b.textContent = (it[3] && it[3][2]) || it[1];
+              b.title = it[1] + " \u2014 " + it[2];
+              grid.append(b);
+            });
+            col.append(grid); cols.append(col);
+          });
+          sb.append(cols); wrap.append(sb);
+        });
+        sec.append(wrap); box.append(sec);
       });
     }
     $("hq").value = ""; filterHome("");
+    fitHome();
   }
+  // vertically center the home content: equal space above and below
+  function fitHome() {
+    const f = $("f-home");
+    if (!f || f.hidden || $("hq").value.trim()) return;
+    if (innerWidth <= 760) { f.style.removeProperty("--home-pad"); return; }
+    const cs = getComputedStyle(f);
+    const content = f.scrollHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    f.style.setProperty("--home-pad", Math.max(22, Math.floor((innerHeight - content) / 2)) + "px");
+  }
+  addEventListener("resize", fitHome);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHome);
   function filterHome(v) {
     v = v.trim().toLowerCase();
     const words = v.split(/\s+/).filter(Boolean);
@@ -8530,12 +8626,19 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         t.hidden = !ok;
         if (ok) c++;
       });
+      s.querySelectorAll(".home-div").forEach((d) => (d.hidden = !d.querySelector(".tile:not([hidden])")));
+      s.querySelectorAll(".home-station").forEach((d) => {
+        d.hidden = !d.querySelector(".tile:not([hidden])");
+        d.style.flexGrow = d.querySelectorAll(".home-div:not([hidden])").length || 1;
+      });
       s.hidden = !c;
+      const cnt = s.querySelector(".home-h span"); if (cnt) cnt.textContent = words.length ? c + " of " + s.querySelectorAll(".tile").length : String(s.querySelectorAll(".tile").length);
       n += c;
     });
+    $("home-groups").classList.toggle("searching", !!v);
     $("home-empty").hidden = !!n || !v;
     $("home-empty").textContent = 'No form matches "' + v + '". Try the exact form name, e.g. "incident report" or "arrest warrant".';
-    $("recent").hidden = !!v || !recents().length;
+    $("recent").hidden = !!v || !recents().filter((k) => info[k]).length;
   }
   $("hq").addEventListener("input", (e) => filterHome(e.target.value));
   $("hq").addEventListener("keydown", (e) => {
