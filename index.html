@@ -1633,7 +1633,7 @@ body[data-view="home"] main{padding-bottom:0}
 #home-groups>[data-a="misc"]{grid-area:misc}
 #home-groups.searching{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));grid-template-areas:none}
 #home-groups.searching>section{grid-area:auto}
-#home-groups.searching .home-station{flex-basis:100%}
+#home-groups.searching .home-station{flex-basis:100%;max-width:none}
 #home-groups.searching .home-divs{grid-auto-flow:row;grid-auto-columns:auto}
 .home-h{display:flex;align-items:baseline;gap:8px;margin:0 0 10px;font:600 19px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em}
 .home-h span{padding:2px 7px;border-radius:999px;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--mute);font:600 11px/1.3 Inter,sans-serif;letter-spacing:0}
@@ -1644,11 +1644,42 @@ body[data-view="home"] main{padding-bottom:0}
 .tile:hover::after{opacity:1;transform:translateX(2px)}
 .home-empty{margin:18px 0;color:var(--mute)}
 
+/* SIB story form */
+.sib-img{margin-top:12px;min-height:120px;display:grid;place-items:center;overflow:hidden;border:1px dashed var(--line);border-radius:10px;background:var(--bg)}
+.sib-img img{display:block;width:100%;max-height:340px;object-fit:cover}
+.sib-img p{margin:0;padding:24px 16px;color:var(--mute);font-size:13px;text-align:center}
+.sib-img p[hidden]{display:none}
+.sib-content{min-height:260px}
+.sib-tags{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.sib-tag{position:relative}
+.sib-tag i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--beige);font-style:normal;font-weight:700;pointer-events:none}
+.sib-tag input[type="text"]{padding-left:30px}
+.sib-prev{overflow:hidden;border-radius:6px;background:#f0f0f0;color:#333;overflow-wrap:anywhere}
+.sp-head{padding:20px 16px 12px;background:#344b1e;color:#fff;text-align:center;font-family:"Barlow Condensed",Inter,sans-serif;text-transform:uppercase}
+.sp-by{font-size:16px;font-weight:600;letter-spacing:.04em}
+.sp-title{margin:4px 0 0;font:700 26px/1.15 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em;color:#fff}
+.sp-main{padding:22px 8px 18px;text-align:center;font-family:Arial,Helvetica,sans-serif}
+.sp-imgph{font-size:12px;color:#444}
+.sp-img{display:block;max-width:100%;max-height:340px;margin:0 auto}
+.sp-img[hidden],.sp-imgph[hidden]{display:none}
+.sp-sub{margin:22px 0 18px;color:#3c3c3c;font:800 24px/1.2 Montserrat,Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.sp-text{padding:0 4px;text-align:justify;white-space:pre-wrap;font-size:14px;line-height:1.35}
+.sp-tags{margin-top:20px;color:#777;font-size:11px;line-height:1.5}
+.sp-tags b{color:#000;font-weight:400}
+.sp-foot{display:flex;align-items:center;gap:26px;padding:22px 20px;background:#344b1e;color:#fff}
+.sp-badge{flex:0 0 auto;width:110px;height:110px;object-fit:contain;margin-left:40px}
+.sp-info{flex:1;min-width:0;font:700 13px/1.35 "Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
+.sp-info>div{display:flex;gap:10px;align-items:flex-start;padding:7px 0}
+.sp-info>div+div{border-top:1px solid #fff}
+.sp-info svg{flex:0 0 auto;width:13px;height:13px;margin-top:2px;fill:#fff}
+@media(max-width:560px){.sp-badge{width:72px;height:72px;margin-left:0}.sp-foot{gap:14px;padding:16px 12px}.sp-sub{font-size:19px}}
+@media(max-width:560px){.sib-tags{grid-template-columns:1fr}.sib-prev-title{font-size:23px}}
+
 /* divisional: stations as header bands over equal-width division columns */
 .home-stations{display:flex;flex-wrap:wrap;gap:12px 24px}
-.home-station{flex:1 1 0;min-width:0}
+.home-station{flex:var(--cols,1) 1 calc(var(--cols,1)*150px);min-width:0;max-width:calc(var(--cols,1)*330px)}
 .home-station-h{margin:0 0 10px;padding-bottom:7px;border-bottom:2px solid var(--beige);color:var(--beige);font:700 12px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase}
-.home-divs{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:10px}
+.home-divs{display:grid;grid-template-columns:repeat(auto-fit,minmax(max(138px,calc((100% - 10px*(var(--cols,1) - 1))/var(--cols,1) - 1px)),1fr));gap:12px 10px}
 .home-div{min-width:0}
 .home-div-h{margin:0 0 6px;color:var(--text);font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .home-div-h.plain{color:var(--mute)}
@@ -1899,7 +1930,7 @@ body[data-view="home"] main{padding-bottom:0}
         </section>
         <section class="nav-group" data-group="divisional generators">
           <div class="grp">
-            <span class="grp-label">Divisional Generators</span><span class="grp-count">7</span>
+            <span class="grp-label">Divisional Generators</span><span class="grp-count">8</span>
           </div>
           <button
             class="nav station"
@@ -2021,6 +2052,25 @@ body[data-view="home"] main{padding-bottom:0}
             onclick="show('citation')"
           >
             <span>Citation</span>
+          </button>
+          <button
+            class="nav division"
+            id="nv-sib-parent"
+            data-k="sib story news release"
+            data-parent="nv-senora-station-parent"
+            disabled
+            aria-disabled="true"
+          >
+            <span>SIB</span>
+          </button>
+          <button
+            class="nav sub"
+            id="nv-sib-story"
+            data-k="sib story news release article"
+            data-parent="nv-sib-parent"
+            onclick="show('sib-story')"
+          >
+            <span>Story</span>
           </button>
         </section>
         <section class="nav-group" data-group="generators">
@@ -3990,6 +4040,123 @@ body[data-view="home"] main{padding-bottom:0}
           ><button class="b" onclick="resetSenoraLogbook()">Reset</button>
         </div>
       </div>
+      <div id="f-sib-story" hidden>
+        <div class="card">
+          <h2><small>SIB</small>Headline</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f">
+                <span>Release Date</span><input type="text" id="sib-story-date" />
+              </div>
+              <div class="f">
+                <span>Title</span
+                ><input type="text" id="sib-story-title" placeholder="TITLE" autocomplete="off" />
+              </div>
+            </div>
+            <div class="f">
+              <span>Subtitle</span
+              ><input type="text" id="sib-story-subtitle" placeholder="SUBTITLE" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>SIB</small>Cover Image</h2>
+          <div class="body">
+            <div class="f">
+              <span>Image URL</span
+              ><input type="text" id="sib-story-image" placeholder="https://i.imgur.com/..." autocomplete="off" />
+            </div>
+            <div class="sib-img" id="sib-story-img-box">
+              <img id="sib-story-img" alt="" hidden />
+              <p id="sib-story-img-msg">Paste an image link above to preview it here.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>SIB</small>Story</h2>
+          <div class="body">
+            <div class="f">
+              <span>Content</span
+              ><textarea id="sib-story-content" class="sib-content" placeholder="Write the story here. BBCode is allowed."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>SIB</small>Tags</h2>
+          <div class="body">
+            <div class="sib-tags">
+              <div class="f">
+                <span>Tag 1</span
+                ><div class="sib-tag"><i aria-hidden="true">#</i><input type="text" id="sib-story-tag1" placeholder="TAG1" autocomplete="off" /></div>
+              </div>
+              <div class="f">
+                <span>Tag 2</span
+                ><div class="sib-tag"><i aria-hidden="true">#</i><input type="text" id="sib-story-tag2" placeholder="TAG2" autocomplete="off" /></div>
+              </div>
+              <div class="f">
+                <span>Tag 3</span
+                ><div class="sib-tag"><i aria-hidden="true">#</i><input type="text" id="sib-story-tag3" placeholder="TAG3" autocomplete="off" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>SIB</small>Preview</h2>
+          <div class="body">
+            <article class="sib-prev" aria-live="polite">
+              <header class="sp-head">
+                <div class="sp-by">BY SIB STAFF/ <span id="sib-prev-date"></span></div>
+                <h3 class="sp-title" id="sib-prev-title"></h3>
+              </header>
+              <div class="sp-main">
+                <div class="sp-imgph" id="sib-prev-imgph">Image</div>
+                <img class="sp-img" id="sib-prev-img" alt="Image" hidden />
+                <div class="sp-sub" id="sib-prev-sub"></div>
+                <div class="sp-text" id="sib-prev-body"></div>
+                <div class="sp-tags"><div id="sib-prev-source"></div><div id="sib-prev-tags"></div></div>
+              </div>
+              <footer class="sp-foot">
+                <img class="sp-badge" id="sib-prev-badge" alt="" />
+                <div class="sp-info">
+                  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v3h16v-3c0-2.8-3.6-5-8-5z"/></svg>Los Santos County Sheriff's Department</div>
+                  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 12h3v8h5v-6h4v6h5v-8h3z"/></svg>100 Innocence Boulevard, Los Santos, SA 90012</div>
+                  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02z"/></svg>901</div>
+                </div>
+              </footer>
+            </article>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('sib-story')">Copy BBCode</button
+          ><a
+            class="b forum-link"
+            href="https://lssd.gta.world/viewforum.php?f=1260"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Open Story Forum<svg
+              aria-hidden="true"
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 2.75h4.25V7M13 3 7.5 8.5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg></a
+          ><button class="b" onclick="resetSibStory()">Reset</button>
+        </div>
+      </div>
       <div id="f-oss-incident" hidden>
         <div class="card">
           <h2><small>OSS</small>Incident Report</h2>
@@ -4368,6 +4535,18 @@ body[data-view="home"] main{padding-bottom:0}
               </li>
               <li>
                 The badge seal is slightly smaller.
+              </li>
+            </ul>
+            <h3>Divisional Generators</h3>
+            <ul>
+              <li>
+                Added the SIB division under Senora Station with a new Story form (news release): release date, title, subtitle, cover image link, story content and three editable hashtags.
+              </li>
+              <li>
+                The Story page shows a live image preview and a live article preview, and the Open Story Forum button leads to the SIB story thread.
+              </li>
+              <li>
+                Home page: Divisional Generators now sizes each station by its number of divisions, so Senora Station's five divisions and Davis Station's single one both fit cleanly on every screen size.
               </li>
             </ul>
             <h3>All Forms</h3>
@@ -6371,6 +6550,100 @@ body[data-view="home"] main{padding-bottom:0}
         if (!$("senora-logbook-reports").children.length) addSenoraLogbookReport("", "N/A");
         applyDeputyDetails();
       }
+      function sibTag(id) {
+        return $(id).value.trim().replace(/^#+\s*/, "").replace(/\s+/g, "");
+      }
+      function buildSibStory() {
+        const val = (id) => $(id).value.trim(),
+          date = formatPickerDate(val("sib-story-date")).toUpperCase() || "MONTH DD, YYYY",
+          title = (val("sib-story-title") || "TITLE").replace(/\|/g, "-"),
+          tags = [1, 2, 3].map((n) => sibTag("sib-story-tag" + n) || "TAG" + n),
+          hash = (t) => `[color=#000000]#[/color]${t}`;
+        return [
+          `[newsrelease=${date}|${title}][center]`,
+          `[img]${val("sib-story-image") || "INSERT PICTURE"}[/img]`,
+          "",
+          `[font=Montserrat][size=180][b]${val("sib-story-subtitle") || "SUBTITLE"}[/b][/size][/font][/center]`,
+          "",
+          "",
+          "[font=Arial][size=115][justify]",
+          val("sib-story-content") || "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "[/justify][/size][/font]",
+          "[size=90][center][color=#777]" + "LSSDHQ",
+          tags.map(hash).join("\u2003"),
+          "[/color][/center][/size]",
+          "[/newsrelease]",
+        ].join("\n");
+      }
+      function updateSibStoryPreview() {
+        const val = (id) => $(id).value.trim(),
+          url = val("sib-story-image"),
+          img = $("sib-story-img"),
+          msg = $("sib-story-img-msg"),
+          pimg = $("sib-prev-img");
+        $("sib-prev-date").textContent =
+          formatPickerDate(val("sib-story-date")).toUpperCase() || "MONTH DD, YYYY";
+        $("sib-prev-title").textContent = val("sib-story-title") || "TITLE";
+        if (!$("sib-prev-badge").src) $("sib-prev-badge").src = document.querySelector(".logo").src;
+        $("sib-prev-sub").textContent = val("sib-story-subtitle") || "SUBTITLE";
+        $("sib-prev-body").textContent =
+          val("sib-story-content") || "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+        $("sib-prev-source").textContent = "LSSDHQ";
+        $("sib-prev-tags").replaceChildren(
+          ...[1, 2, 3].flatMap((n) => {
+            const h = document.createElement("b");
+            h.textContent = "#";
+            return [h, document.createTextNode(sibTag("sib-story-tag" + n) || "TAG" + n)];
+          }),
+        );
+        if (img.dataset.src !== url) {
+          img.dataset.src = url;
+          img.hidden = pimg.hidden = true;
+          $("sib-prev-imgph").hidden = false;
+          if (url) {
+            img.onload = () => {
+              img.hidden = pimg.hidden = false;
+              $("sib-prev-imgph").hidden = true;
+              msg.hidden = true;
+            };
+            img.onerror = () => {
+              img.hidden = pimg.hidden = true;
+          $("sib-prev-imgph").hidden = false;
+              msg.hidden = false;
+              msg.textContent = "This image could not be loaded. The link is still used in the BBCode.";
+            };
+            img.src = pimg.src = url;
+            msg.hidden = false;
+            msg.textContent = "Loading preview…";
+          } else {
+            img.removeAttribute("src");
+            pimg.removeAttribute("src");
+            msg.hidden = false;
+            msg.textContent = "Paste an image link above to preview it here.";
+          }
+        }
+      }
+      function resetSibStory() {
+        [
+          "sib-story-title",
+          "sib-story-subtitle",
+          "sib-story-image",
+          "sib-story-content",
+          "sib-story-tag1",
+          "sib-story-tag2",
+          "sib-story-tag3",
+        ].forEach((id) => ($(id).value = ""));
+        $("sib-story-date").value = taskListTodayDate();
+        updateTaskListDateLabel("sib-story-date");
+        updateSibStoryPreview();
+      }
+      function initializeSibStory() {
+        if (!$("sib-story-date").value) $("sib-story-date").value = taskListTodayDate();
+        const f = $("f-sib-story"),
+          refresh = () => requestAnimationFrame(updateSibStoryPreview);
+        ["input", "change", "click"].forEach((ev) => f.addEventListener(ev, refresh));
+        updateSibStoryPreview();
+      }
       function updateOssIncidentTitle() {
         const penalCodes = chargeTitle("oss-ir-penal-code") || "CHARGE",
           location = $("oss-ir-location").value.trim() || "LOCATION";
@@ -7837,6 +8110,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "senora-k9-deployment",
           "senora-logbook",
           "citation",
+          "sib-story",
           "oss-incident",
           "oss-supplemental",
           "arrest-warrant",
@@ -7873,6 +8147,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "senora-k9-deployment": "K9 — Deployment Log",
           "senora-logbook": "Senora Station — Logbook",
           citation: "TSD — Citation",
+          "sib-story": "SIB — Story",
           "oss-incident": "OSS — Incident Report",
           "oss-supplemental": "OSS — Supplemental",
           "arrest-warrant": "Arrest Warrant",
@@ -8114,6 +8389,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "oss-ir-date",
         "oss-supp-date",
         "senora-logbook-date",
+        "sib-story-date",
         "nccit-supp-date",
         "k9-date",
         "email-date",
@@ -8620,6 +8896,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       initializeDeputyDetails();
       initializeSenoraK9Deployment();
       initializeSenoraLogbook();
+      initializeSibStory();
       initializeCitation();
       initializeOssGenerators();
       $("f-oss-incident").addEventListener("input", updateOssIncidentTitle);
@@ -8709,7 +8986,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
                 ? buildApb()
                 : k === "senora-k9-deployment"
                   ? buildSenoraK9Deployment()
-                  : k === "senora-logbook"
+                  : k === "sib-story"
+                    ? buildSibStory()
+                    : k === "senora-logbook"
                     ? buildSenoraLogbook()
                     : k === "oss-incident"
                       ? buildOssIncident()
@@ -8798,7 +9077,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", ["Senora Station", "NCCIT", "Personnel File"]],
       ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", ["Senora Station", "NCCIT", "Supplemental"]],
       ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", ["Senora Station", "K9", "Deployment Log"]],
-      ["citation", "TSD Citation", "Traffic Services Detail citation.", ["Senora Station", "TSD", "Citation"]]]],
+      ["citation", "TSD Citation", "Traffic Services Detail citation.", ["Senora Station", "TSD", "Citation"]],
+      ["sib-story", "SIB Story", "Write a news release story for SIB.", ["Senora Station", "SIB", "Story"]]]],
     ["Generators", [
       ["card", "Business Card Generator", "Design your business card and download it as a PNG."],
       ["email", "Email Template", "Use the official BBCode format for emails."]]],
@@ -8862,7 +9142,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         const wrap = el("div", "home-stations");
         stations.forEach((dvs, st) => {
           const sb = el("div", "home-sub home-station");
-          sb.style.flexGrow = dvs.size;
+          sb.style.setProperty("--cols", dvs.size);
           sb.append(el("h4", "home-station-h", st));
           const cols = el("div", "home-divs");
           dvs.forEach((list, dv) => {
@@ -8911,7 +9191,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       s.querySelectorAll(".home-div").forEach((d) => (d.hidden = !d.querySelector(".tile:not([hidden])")));
       s.querySelectorAll(".home-station").forEach((d) => {
         d.hidden = !d.querySelector(".tile:not([hidden])");
-        d.style.flexGrow = d.querySelectorAll(".home-div:not([hidden])").length || 1;
+        d.style.setProperty("--cols", d.querySelectorAll(".home-div:not([hidden])").length || 1);
       });
       s.hidden = !c;
       const cnt = s.querySelector(".home-h span"); if (cnt) cnt.textContent = words.length ? c + " of " + s.querySelectorAll(".tile").length : String(s.querySelectorAll(".tile").length);
