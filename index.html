@@ -4320,6 +4320,18 @@ body[data-view="home"] main{padding-bottom:0}
                 Reworked the involved person fields in both forms: the name now takes the full width, Relation to Incident is a full-width field, and the MDC link and image options are tucked into a collapsible section (still generated automatically and still editable). The new checks use a styled pill toggle and PK / CK and Male / Female use segmented buttons.
               </li>
             </ul>
+            <h3>Business Card Generator</h3>
+            <ul>
+              <li>
+                Redesigned the business card to match the real Los Angeles County Sheriff's Department card: white card with a thin border, the badge on the left, "County of Los Santos" over "SHERIFF'S DEPARTMENT", the tagline, and "Grant Mendez - Sheriff".
+              </li>
+              <li>
+                The deputy name, rank / title and bureau are centered in the middle of the card. The station (Hall of Justice, Davis Station or Senora Station) and its address are shown at the bottom left.
+              </li>
+              <li>
+                Bottom right now shows Office: 901 and Cell with the number the deputy fills in. Fax, the email line, the badge number field and the Dark / White toggle were removed. The website line now reads LSSD.gta.world.
+              </li>
+            </ul>
             <h3>All Forms</h3>
             <ul>
               <li>No changes in this release.</li>
@@ -4794,9 +4806,6 @@ body[data-view="home"] main{padding-bottom:0}
                   <span>Last name</span><input type="text" id="b2" placeholder="Enter last name" />
                 </div>
                 <div class="f">
-                  <span>Badge number</span><input type="text" id="b3" placeholder="e.g. 00000" />
-                </div>
-                <div class="f">
                   <span>Phone number</span
                   ><input type="text" id="b4" placeholder="e.g. (555) 123-4567" />
                 </div>
@@ -4827,11 +4836,7 @@ body[data-view="home"] main{padding-bottom:0}
         <div class="card">
           <h2><small>Preview</small>Card Preview</h2>
           <div class="body">
-            <div class="actions" style="justify-content: space-between; padding-top: 14px">
-              <div style="display: flex; gap: 8px">
-                <button class="b p" id="bt-dark" onclick="setT('dark')">Dark</button
-                ><button class="b" id="bt-white" onclick="setT('white')">White</button>
-              </div>
+            <div class="actions" style="justify-content: flex-end; padding-top: 14px">
               <button class="b" onclick="dlCard()">Download PNG</button>
             </div>
             <canvas
@@ -5058,7 +5063,6 @@ body[data-view="home"] main{padding-bottom:0}
           ],
           ["b1", parts.first],
           ["b2", parts.last],
-          ["b3", deputyDetails.badgeNumber],
           ["b6", deputyDetails.bureau],
           ["b7", rank],
         ].forEach(([id, value]) => prefillDeputyField(id, value));
@@ -8324,20 +8328,13 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         addTaskListRow();
       }
       const EMD = "lssd.gov";
-      let TH = "dark";
-      function setT(t) {
-        TH = t;
-        $("bt-dark").classList.toggle("p", t === "dark");
-        $("bt-white").classList.toggle("p", t === "white");
-        drawC();
-      }
       function mail() {
         const f = $("b1").value.trim(),
           l = $("b2").value.trim();
         return f && l ? (f[0] + l).toLowerCase().replace(/[^a-z0-9]/g, "") + "@" + EMD : "";
       }
       function resetB() {
-        ["b1", "b2", "b3", "b4", "b6", "b7"].forEach((i) => ($(i).value = ""));
+        ["b1", "b2", "b4", "b6", "b7"].forEach((i) => ($(i).value = ""));
         $("b8").selectedIndex = 0;
         applyDeputyDetails();
         drawC();
@@ -8354,62 +8351,80 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         updateCardCommands();
         const c = $("cv"),
           x = c.getContext("2d"),
-          dk = TH === "dark",
-          W = 1050,
-          H = 600;
-        const bg = dk ? "#1c1c1e" : "#f7f4ea",
-          ac = dk ? "#c9a74a" : "#7a5f14",
-          tx = dk ? "#ffffff" : "#1c1c1e";
-        x.clearRect(0, 0, W, H);
-        x.fillStyle = bg;
-        x.beginPath();
-        x.roundRect(0, 0, W, H, 28);
-        x.fill();
-        const F = (w, s) => `${w} ${s}px 'Barlow Condensed',Arial Narrow,sans-serif`;
-        const T = (t, px, y, col, w, al, sp, xx) => {
-          x.font = F(w, px);
-          x.fillStyle = col;
+          W = 1000,
+          H = 573;
+        x.setTransform(1, 0, 0, 1, 0, 0);
+        x.clearRect(0, 0, c.width, c.height);
+        x.setTransform(c.width / W, 0, 0, c.height / H, 0, 0);
+        x.fillStyle = "#ffffff";
+        x.fillRect(0, 0, W, H);
+        x.strokeStyle = "#000000";
+        x.lineWidth = 2;
+        x.strokeRect(1, 1, W - 2, H - 2);
+        const SERIF = "'Times New Roman',Times,serif",
+          SANS = "Arial,Helvetica,sans-serif",
+          FANCY = "'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif";
+        const T = (t, font, y, al, xx, col) => {
+          x.font = font;
+          x.fillStyle = col || "#000000";
           x.textAlign = al;
-          x.letterSpacing = sp + "px";
+          x.letterSpacing = "0px";
           x.fillText(t, xx, y);
         };
-        const lg = document.querySelector(".logo");
-        if (lg && lg.complete) x.drawImage(lg, 50, 45, 96, 106);
-        T("LOS SANTOS COUNTY", 24, 86, ac, 600, "left", 3, 170);
-        T(`SHERIFF'S DEPARTMENT`, 40, 130, tx, 700, "left", 2, 170);
-        const nm = ($("b1").value.trim() + " " + $("b2").value.trim()).trim().toUpperCase() || "—";
-        T(nm, 56, 262, tx, 700, "center", 4, W / 2);
-        T($("b7").value.toUpperCase(), 38, 322, tx, 600, "center", 5, W / 2);
-        T($("b6").value.toUpperCase(), 32, 370, ac, 600, "center", 3, W / 2);
-        const v = (s) => s || "—";
-        const LV = (lab, val, xx, y, r) => {
-          x.letterSpacing = "1px";
-          x.font = F(500, 28);
-          const lw = x.measureText(lab + " ").width,
-            vw = x.measureText(val).width,
-            sx = r ? xx - lw - vw : xx;
+        const lg = document.querySelector(".brand .logo");
+        if (lg && lg.complete && lg.naturalWidth) {
+          const bw = 230,
+            bh = 256,
+            r = Math.min(bw / lg.naturalWidth, bh / lg.naturalHeight),
+            w = lg.naturalWidth * r,
+            h = lg.naturalHeight * r;
+          x.drawImage(lg, 200 - w / 2, 217 - h / 2, w, h);
+        }
+        T("County of Los Santos", "italic bold 35px " + SERIF, 95, "right", 927);
+        const caps = (txt, big, small, y, xr) => {
+          const parts = [];
+          txt.split(" ").forEach((word, i, a) => {
+            parts.push([word[0], big]);
+            parts.push([word.slice(1), small]);
+            if (i < a.length - 1) parts.push([" ", big]);
+          });
+          let tw = 0;
+          parts.forEach(([t, sz]) => {
+            x.font = "bold " + sz + "px " + SANS;
+            tw += x.measureText(t).width;
+          });
+          let cx = xr - tw;
           x.textAlign = "left";
-          x.fillStyle = ac;
-          x.fillText(lab + " ", sx, y);
-          x.fillStyle = tx;
-          x.fillText(val, sx + lw, y);
+          x.fillStyle = "#000000";
+          x.letterSpacing = "0px";
+          parts.forEach(([t, sz]) => {
+            x.font = "bold " + sz + "px " + SANS;
+            x.fillText(t, cx, y);
+            cx += x.measureText(t).width;
+          });
         };
-        LV("TEL:", v($("b4").value.trim()), 55, 440);
-        LV("BADGE:", v($("b3").value.trim()), W - 55, 440, 1);
-        LV("EMAIL:", v(mail()), 55, 484);
-        x.fillStyle = dk ? "#3a3a3d" : "#cfc8b0";
-        x.fillRect(55, 508, W - 110, 2);
+        caps("SHERIFF'S DEPARTMENT", 46, 36, 141, 922);
+        x.fillStyle = "#000000";
+        x.fillRect(338, 157, 589, 3);
+        T("A Tradition of Service", "italic bold 22px " + FANCY, 188, "left", 345);
+        T("Since 1850", "italic bold 22px " + FANCY, 214, "left", 345);
+        T("Grant Mendez - Sheriff", "bold 20px " + SERIF, 190, "right", 927);
+        const nm = ($("b1").value.trim() + " " + $("b2").value.trim()).trim() || "Deputy Name";
+        T(nm, "bold 44px " + SERIF, 284, "center", 620);
+        T($("b7").value.trim(), "27px " + SANS, 319, "center", 620);
+        T($("b6").value.trim(), "27px " + SANS, 353, "center", 620);
         const st = $("b8").value,
-          addr =
+          info =
             st === "Hall of Justice"
-              ? "100 INNOCENCE BOULEVARD, CITY OF DAVIS, SA 90012"
+              ? ["Hall of Justice", "100 Innocence Boulevard", "City of Davis, SA 90012"]
               : st === "Davis Sheriff's Station"
-                ? "300 INNOCENCE BOULEVARD, CITY OF DAVIS, SA 90220"
-                : st === "Senora Sheriff's Station"
-                  ? "501 JOSHUA ROAD, SANDY SHORES, SA 90021"
-                  : "";
-        T(st.toUpperCase(), 26, 543, ac, 700, "center", 2, W / 2);
-        if (addr) T(addr, 22, 576, tx, 700, "center", 1, W / 2);
+                ? ["Davis Sheriff's Station", "300 Innocence Boulevard", "City of Davis, SA 90220"]
+                : ["Senora Sheriff's Station", "501 Joshua Road", "Sandy Shores, SA 90021"];
+        info.push("LSSD.gta.world");
+        info.forEach((ln, i) => T(ln, "26px " + SANS, 397 + i * 34, "left", 73));
+        T("Office: 901", "26px " + SANS, 397, "right", 927);
+        const cell = $("b4").value.trim();
+        T("Cell: " + (cell || "—"), "26px " + SANS, 431, "right", 927);
       }
       async function dlCard() {
         try {
