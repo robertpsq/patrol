@@ -1690,6 +1690,46 @@ body[data-view="home"] main{padding-bottom:0}
 .cp-opt b{flex:0 0 34px;color:var(--beige)}
 .cp-opt:hover,.cp-opt[aria-selected="true"]{background:color-mix(in srgb,var(--green) 18%,var(--bg))}
 .cp-none{padding:12px;color:var(--mute)}
+
+/* ===== Involved persons: deceased / PK / CK ===== */
+.pd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.pd-title{font-size:13px;font-weight:500;color:color-mix(in srgb,var(--text) 75%,var(--mute))}
+.pchk{position:relative;display:inline-flex;align-items:center;gap:8px;padding:4px 13px 4px 8px;border:1px solid var(--line);border-radius:99px;background:var(--bg);color:var(--mute);font-size:13px;font-weight:600;line-height:1.4;cursor:pointer;user-select:none;transition:background .15s,border-color .15s,color .15s}
+.pchk input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.pchk .mk{display:grid;place-items:center;width:17px;height:17px;border:1.5px solid var(--mute);border-radius:5px;transition:background .15s,border-color .15s}
+.pchk .mk::after{content:"";width:8px;height:4px;margin-top:-2px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg);opacity:0;transition:opacity .12s}
+.pchk:hover{border-color:var(--beige);color:var(--text)}
+.pchk:has(input:checked){background:color-mix(in srgb,var(--green) 18%,var(--bg));border-color:var(--green);color:var(--text)}
+.pchk:has(input:checked) .mk{background:var(--green);border-color:var(--green)}
+.pchk:has(input:checked) .mk::after{opacity:1}
+.pchk:has(input:focus-visible){outline:2px solid var(--beige);outline-offset:2px}
+.pchk.dead:has(input:checked){background:color-mix(in srgb,#b5483f 20%,var(--bg));border-color:#b5483f}
+.pchk.dead:has(input:checked) .mk{background:#b5483f;border-color:#b5483f}
+.pd-panel{grid-column:1/-1;display:grid;gap:12px;padding:12px 14px 14px;border:1px solid color-mix(in srgb,#b5483f 50%,var(--line));border-left-width:3px;border-radius:10px;background:color-mix(in srgb,#b5483f 7%,var(--panel))}
+.pd-panel[hidden],.pd-grp[hidden]{display:none!important}
+.pd-line{display:flex;flex-wrap:wrap;gap:12px 28px}
+.pd-grp{display:flex;flex-direction:column;gap:6px}
+.pd-lbl{font-size:12px;font-weight:500;color:var(--mute)}
+.seg{position:relative;display:inline-flex;align-self:flex-start;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--bg)}
+.seg input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.seg label{min-width:66px;padding:7px 18px;text-align:center;font-size:13px;font-weight:600;color:var(--mute);cursor:pointer;user-select:none;border-right:1px solid var(--line);transition:background .15s,color .15s}
+.seg label:last-of-type{border-right:0}
+.seg label:hover{color:var(--text)}
+.seg input:checked+label{background:var(--green);color:#fff}
+.seg input:focus-visible+label{outline:2px solid var(--beige);outline-offset:-2px}
+.pd-preview{font-size:13px;color:var(--mute)}
+.pd-preview b{color:var(--text);font-weight:600}
+.pd-hint{color:var(--beige)}
+.pd-panel .f{padding-top:0}
+.pd-panel textarea{min-height:76px}
+.p-adv{grid-column:1/-1;border:1px dashed var(--line);border-radius:9px;padding:0 14px}
+.p-adv summary{padding:10px 0;font-size:13px;font-weight:500;color:var(--mute);cursor:pointer}
+.p-adv summary:hover,.p-adv[open] summary{color:var(--text)}
+.p-adv .padv{display:grid;gap:12px;padding-bottom:14px}
+.p-adv .padv .f{padding-top:0}
+.p-adv .padv .pchk{align-self:flex-start;width:fit-content}
+.p-full{grid-column:1/-1}
+.p-rel textarea{min-height:76px}
     </style>
   </head>
   <body>
@@ -4256,6 +4296,37 @@ body[data-view="home"] main{padding-bottom:0}
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v1.0.6</h2>
+          <div class="body">
+            <h3>v1.0.6</h3>
+            <h3>Patrol Reports</h3>
+            <ul>
+              <li>
+                Incident Report and OSS Incident Report: every involved person now has a Deceased check next to the Forename Surname field. Once checked, you choose between PK and CK.
+              </li>
+              <li>
+                PK: a Male / Female choice appears and the name in the generated BBCode becomes John Doe (( Forename Surname )) or Jane Doe (( Forename Surname )). CK: the name stays as Forename Surname.
+              </li>
+              <li>
+                The MDC profile link and the person image link are always built from the real Forename Surname, regardless of PK or CK.
+              </li>
+              <li>
+                A new OOC Death Details field appears for deceased persons, suggesting: Collect a picture of /cdna, /cexamine and /cdamages. It is added to that person's BBCode as an altspoiler named OOC Death Details.
+              </li>
+              <li>
+                A live "Name in report" preview under the Deceased options shows exactly how the name will be written.
+              </li>
+              <li>
+                Reworked the involved person fields in both forms: the name now takes the full width, Relation to Incident is a full-width field, and the MDC link and image options are tucked into a collapsible section (still generated automatically and still editable). The new checks use a styled pill toggle and PK / CK and Male / Female use segmented buttons.
+              </li>
+            </ul>
+            <h3>All Forms</h3>
+            <ul>
+              <li>No changes in this release.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v1.0.5</h2>
           <div class="body">
             <h3>v1.0.5</h3>
@@ -6289,10 +6360,8 @@ body[data-view="home"] main{padding-bottom:0}
             <button class='b' type='button' onclick="this.closest('.oss-person').remove();numberOssPeople()">Remove</button>
           </div>
           <div class='g'>
-            <div class='f'>
-              <span>Forename Surname</span>
-              <input type='text' class='oss-person-name' placeholder='Forename Surname'>
-            </div>
+            ${personNameHead("oss-person-name", "Forename Surname")}
+            ${personDeathPanel()}
             <div class='f'>
               <span>Classification</span>
               <select class='oss-person-class'>
@@ -6304,8 +6373,12 @@ body[data-view="home"] main{padding-bottom:0}
               </select>
             </div>
             <div class='f'>
-              <span>MDC Profile URL (optional)</span>
-              <input type='text' class='oss-person-profile' placeholder='Auto-generated from name'>
+              <span>Gang Member</span>
+              <select class='oss-person-gang'>
+                <option value=''>Not specified</option>
+                <option value='yes'>Yes</option>
+                <option value='no'>No</option>
+              </select>
             </div>
             <div class='f'>
               <span>Date of Birth</span>
@@ -6320,29 +6393,19 @@ body[data-view="home"] main{padding-bottom:0}
               <input type='text' class='oss-person-residence'>
             </div>
             <div class='f'>
-              <span>Gang Member</span>
-              <select class='oss-person-gang'>
-                <option value=''>Not specified</option>
-                <option value='yes'>Yes</option>
-                <option value='no'>No</option>
-              </select>
-            </div>
-            <div class='f'>
               <span>Moniker</span>
               <input type='text' class='oss-person-moniker'>
             </div>
-            <div class='f'>
+            <div class='f p-full p-rel'>
               <span>Relation to Incident</span>
               <textarea class='oss-person-relation' placeholder='Describe relation to incident'></textarea>
             </div>
-            <div class='f'>
-              <label class='row'>
-                <span>Use default image</span>
-                <input type='checkbox' class='oss-person-image-default'>
-              </label>
-              <span>Image URL (editable)</span>
-              <input type='text' class='oss-person-image' value='https://i.imgur.com/4FqUxmw.png' placeholder='https://mdc.gta.world/img/persons/Jane_Doe.png'>
-            </div>
+            ${personAdvanced(
+              `<div class='f'><span>MDC Profile URL (optional, generated from the real name)</span><input type='text' class='oss-person-profile' placeholder='Auto-generated from name'></div>
+              <label class='pchk'><input type='checkbox' class='oss-person-image-default'><i class='mk' aria-hidden='true'></i><span>Use default image</span></label>
+              <div class='f'><span>Image URL (editable, generated from the real name)</span><input type='text' class='oss-person-image' value='https://i.imgur.com/4FqUxmw.png' placeholder='https://mdc.gta.world/img/persons/Jane_Doe.png'></div>`,
+              "MDC link &amp; person image",
+            )}
           </div>
         `;
         $("oss-ir-persons").appendChild(row);
@@ -6388,6 +6451,7 @@ body[data-view="home"] main{padding-bottom:0}
             fillImage();
           }
         });
+        initPersonDeath(row, () => name.value.trim());
         numberOssPeople();
       }
       function numberOssPeople() {
@@ -6413,6 +6477,8 @@ body[data-view="home"] main{padding-bottom:0}
             (row, index) => {
               const get = (selector) => row.querySelector(selector).value.trim(),
                 name = get(".oss-person-name") || "Forename Surname",
+                shownName = personDisplayName(row, name),
+                death = personDeathState(row),
                 profile =
                   get(".oss-person-profile") ||
                   "https://mdc.gta.world/record/" + name.replace(/\s+/g, "_"),
@@ -6422,7 +6488,7 @@ body[data-view="home"] main{padding-bottom:0}
                 gangValue = gang === "yes" ? "[cbc][/cbc]" : gang === "no" ? "[cb][/cb]" : "[cb]",
                 image = get(".oss-person-image");
               return [
-                `[b]Person #${index + 1} -[/b] [url=${profile}]${name}[/url]`,
+                `[b]Person #${index + 1} -[/b] [url=${profile}]${shownName}[/url]`,
                 `[b]Classification:[/b] ${classification}`,
                 `[aligntable=right,0,0,50,0,0,0][img]${image || "https://i.imgur.com/4FqUxmw.png"}[/img][/aligntable]`,
                 `[b]Date of Birth:[/b] ${get(".oss-person-dob")}`,
@@ -6431,6 +6497,7 @@ body[data-view="home"] main{padding-bottom:0}
                 `[b]Gang Member[/b]: ${gangValue}`,
                 `[b]Moniker[/b]: ${get(".oss-person-moniker")}`,
                 `[b]Relation to Incident:[/b] ${get(".oss-person-relation") || "RELATION TO INCIDENT"}`,
+                ...(death.dead ? [`[altspoiler=OOC Death Details]${death.ooc}[/altspoiler]`] : []),
               ].join("\n");
             },
           );
@@ -7782,10 +7849,67 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           .querySelectorAll("#persons .item .pn")
           .forEach((e, i) => (e.textContent = "Person #" + (i + 1)));
       }
+      let personUid = 0;
+      function personNameHead(nameClass, placeholder) {
+        return `<div class='f p-full'><div class='pd-head'><span class='pd-title'>Forename Surname</span><label class='pchk dead'><input type='checkbox' class='pd-dead'><i class='mk' aria-hidden='true'></i><span>Deceased</span></label></div><input type='text' class='${nameClass}' placeholder='${placeholder || ""}'></div>`;
+      }
+      function personDeathPanel() {
+        const u = ++personUid;
+        const seg = (cls, name, items) =>
+          `<div class='seg' role='radiogroup'>${items
+            .map(
+              ([val, text], i) =>
+                `<input type='radio' class='${cls}' name='${name}-${u}' id='${name}-${u}-${i}' value='${val}'><label for='${name}-${u}-${i}'>${text}</label>`,
+            )
+            .join("")}</div>`;
+        return `<div class='pd-panel' hidden><div class='pd-line'><div class='pd-grp'><span class='pd-lbl'>Death type</span>${seg("pd-type", "pd-type", [["PK", "PK"], ["CK", "CK"]])}</div><div class='pd-grp pd-gender-grp' hidden><span class='pd-lbl'>Gender (for John / Jane Doe)</span>${seg("pd-gender", "pd-gender", [["Male", "Male"], ["Female", "Female"]])}</div></div><div class='pd-preview'>Name in report: <b class='pd-out'></b> <span class='pd-hint'></span></div><div class='f'><span>OOC Death Details</span><textarea class='pd-ooc' placeholder='Collect a picture of /cdna, /cexamine and /cdamages.'></textarea></div></div>`;
+      }
+      function personDeathState(row) {
+        const type = row.querySelector(".pd-type:checked"),
+          gender = row.querySelector(".pd-gender:checked");
+        return {
+          dead: row.querySelector(".pd-dead").checked,
+          type: type ? type.value : "",
+          gender: gender ? gender.value : "",
+          ooc: row.querySelector(".pd-ooc").value.trim(),
+        };
+      }
+      // Name as it appears in the BBCode. MDC link / image always use the real name.
+      function personDisplayName(row, real) {
+        const s = personDeathState(row);
+        if (s.dead && s.type === "PK" && s.gender)
+          return `${s.gender === "Female" ? "Jane" : "John"} Doe (( ${real || "Forename Surname"} ))`;
+        return real;
+      }
+      function initPersonDeath(row, getReal) {
+        const panel = row.querySelector(".pd-panel"),
+          genderGrp = row.querySelector(".pd-gender-grp"),
+          out = row.querySelector(".pd-out"),
+          hint = row.querySelector(".pd-hint");
+        const refresh = () => {
+          const s = personDeathState(row);
+          panel.hidden = !s.dead;
+          genderGrp.hidden = !(s.dead && s.type === "PK");
+          out.textContent = personDisplayName(row, getReal()) || getReal() || "Forename Surname";
+          hint.textContent = !s.dead
+            ? ""
+            : !s.type
+              ? "- choose PK or CK"
+              : s.type === "PK" && !s.gender
+                ? "- choose Male or Female"
+                : "";
+        };
+        row.addEventListener("input", refresh);
+        row.addEventListener("change", refresh);
+        refresh();
+      }
+      function personAdvanced(inner, summary) {
+        return `<details class='p-adv'><summary>${summary}</summary><div class='padv'>${inner}</div></details>`;
+      }
       function addP() {
         const d = document.createElement("div");
         d.className = "item";
-        d.innerHTML = `<div class='ih'><b class='pn'></b><button class='b' onclick="this.closest('.item').remove();num()">Remove</button></div><div class='g'><div class='f'><span>Forename Surname</span><input type='text' class='p-name'></div><div class='f'><span>Classification</span><select class='p-cls'><option>Victim</option><option>Suspect</option><option>Witness</option><option>Informant</option></select></div><div class='f'><span>Date of Birth</span><input type='text' class='p-dob'></div><div class='f'><span>Phone Number</span><input type='text' class='p-ph'></div><div class='f'><span>Residence</span><input type='text' class='p-res'></div><div class='f'><span>Relation to Incident</span><input type='text' class='p-rel'></div><div class='f' style='grid-column:1/-1'><label class='row'><span>Use default image</span><input type='checkbox' class='p-img-default'></label><span>Image URL (editable)</span><input type='text' class='p-img' value='https://i.imgur.com/4FqUxmw.png' placeholder='https://mdc.gta.world/img/persons/Jane_Doe.png'></div></div>`;
+        d.innerHTML = `<div class='ih'><b class='pn'></b><button class='b' onclick="this.closest('.item').remove();num()">Remove</button></div><div class='g'>${personNameHead("p-name")}${personDeathPanel()}<div class='f'><span>Classification</span><select class='p-cls'><option>Victim</option><option>Suspect</option><option>Witness</option><option>Informant</option></select></div><div class='f'><span>Date of Birth</span><input type='text' class='p-dob'></div><div class='f'><span>Phone Number</span><input type='text' class='p-ph'></div><div class='f'><span>Residence</span><input type='text' class='p-res'></div><div class='f p-full'><span>Relation to Incident</span><input type='text' class='p-rel'></div>${personAdvanced(`<label class='pchk'><input type='checkbox' class='p-img-default'><i class='mk' aria-hidden='true'></i><span>Use default image</span></label><div class='f'><span>Image URL (editable, generated from the real name)</span><input type='text' class='p-img' value='https://i.imgur.com/4FqUxmw.png' placeholder='https://mdc.gta.world/img/persons/Jane_Doe.png'></div>`, "Person image")}</div>`;
         $("persons").appendChild(d);
         num();
         const nm = d.querySelector(".p-name"),
@@ -7811,6 +7935,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           if (useDefault.checked) im.value = defaultImg;
           else fillImg();
         });
+        initPersonDeath(d, () => nm.value.trim());
       }
       function addE(t = "evs") {
         const d = document.createElement("div");
@@ -7839,7 +7964,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         const P = [...document.querySelectorAll("#persons .item")]
           .map((e, i) => {
             const v = (c) => e.querySelector(c).value.trim(),
-              n = v(".p-name");
+              n = personDisplayName(e, v(".p-name")),
+              death = personDeathState(e);
             return (
               `[u]Person #${i + 1}${n ? " - " + n : ""}[/u]\n` +
               [
@@ -7849,6 +7975,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
                 f("Phone Number", v(".p-ph")),
                 f("Residence", v(".p-res")),
                 f("Relation to Incident", v(".p-rel")),
+                ...(death.dead ? [`[altspoiler=OOC Death Details]${death.ooc}[/altspoiler]`] : []),
               ].join("\n")
             );
           })
