@@ -4976,27 +4976,58 @@ body[data-view="home"] main{padding-bottom:0}
         <div class="card">
           <h2><small>Generator</small>Email Template</h2>
           <div class="body">
+            <h3>Sender</h3>
             <div class="g">
               <div class="f">
-                <span>Deputy Name</span
-                ><input type="text" id="email-deputy-name" placeholder="Deputy name" />
+                <span>Sender Name</span
+                ><input type="text" id="email-deputy-name" placeholder="Forename Surname" />
               </div>
               <div class="f">
-                <span>Rank</span><input type="text" id="email-rank" placeholder="Rank" />
+                <span>Sender Rank (header)</span
+                ><input type="text" id="email-rank" placeholder="e.g. A/Sergeant" />
               </div>
               <div class="f">
-                <span>Bureau</span><input type="text" id="email-bureau" placeholder="Bureau" />
+                <span>Sender Unit</span
+                ><input type="text" id="email-unit" placeholder="e.g. Pre-Employment Unit" />
               </div>
-              <div class="f">
-                <span>Date</span><input type="text" id="email-date" placeholder="DD MONTH YYYY" />
-              </div>
-              <div class="f"><span>Recipient</span><input type="text" id="email-recipient" /></div>
-              <div class="f"><span>CC</span><input type="text" id="email-cc" /></div>
             </div>
-            <div class="f"><span>Email Title</span><input type="text" id="email-title" /></div>
+            <h3>Recipient</h3>
+            <div class="g">
+              <div class="f">
+                <span>Recipient Name</span
+                ><input type="text" id="email-recipient-name" placeholder="Forename Surname" />
+              </div>
+              <div class="f">
+                <span>Recipient Rank</span
+                ><input type="text" id="email-recipient-rank" placeholder="e.g. Deputy Sheriff" />
+              </div>
+              <div class="f">
+                <span>Recipient Station / Unit</span
+                ><input type="text" id="email-recipient-station" placeholder="e.g. Senora Station" />
+              </div>
+            </div>
+            <div class="f"><span>Email Title</span><input type="text" id="email-title" placeholder="e.g. PEU — Application Verdict" /></div>
             <div class="f">
               <span>Body</span
-              ><textarea id="email-body" placeholder="Write the email body here."></textarea>
+              ><textarea id="email-body" placeholder="Write the email body here (greeting included). BBCode is allowed."></textarea>
+            </div>
+            <h3>Signature</h3>
+            <div class="g">
+              <div class="f">
+                <span>Closing</span
+                ><input type="text" id="email-closing" value="Kind regards," placeholder="Kind regards," />
+              </div>
+              <div class="f">
+                <span>Signature Image URL (optional)</span
+                ><input type="text" id="email-signature" placeholder="https://i.imgur.com/..." />
+              </div>
+              <div class="f">
+                <span>Signature Rank / Title</span
+                ><input type="text" id="email-sig-title" placeholder="e.g. A/Pre-Employment Sergeant" />
+              </div>
+              <div class="f">
+                <span>Bureau</span><input type="text" id="email-bureau" placeholder="e.g. Training Bureau" />
+              </div>
             </div>
           </div>
         </div>
@@ -5253,6 +5284,8 @@ body[data-view="home"] main{padding-bottom:0}
           ["email-deputy-name", fullName],
           ["email-rank", rank],
           ["email-bureau", deputyDetails.bureau],
+          ["email-unit", deputyDetails.bureau],
+          ["email-sig-title", rank],
           ["arrest-rank", rank],
           ["arrest-deputy-name", fullName],
           ["arrest-badge", deputyDetails.badgeNumber],
@@ -5894,27 +5927,40 @@ body[data-view="home"] main{padding-bottom:0}
       }
       function buildEmailTemplate() {
         const val = (id) => $(id).value.trim(),
-          body = $("email-body").value.trim() || "_\n_\n_\n_";
-        return `[depmail=${val("email-deputy-name")}|${formatPickerDate(val("email-date"), "caps") || "DD MONTH YYYY"}| ${val("email-recipient")} | ${val("email-cc") || "-"} |${val("email-title")}|Normal]\n\n${body}\n\n[font=times][b]${val("email-deputy-name")}[/b]\n${val("email-rank")}, ${val("email-bureau")}[aligntable=right,0,0,40,0,0,0]\n[/font]\n[/depmail]`;
+          join = (...parts) => parts.filter(Boolean).join(", "),
+          body = val("email-body") || "_\n_\n_\n_",
+          image = val("email-signature");
+        return [
+          `[depcor=${join(val("email-deputy-name"), val("email-rank"))}|${val("email-unit")}|${join(val("email-recipient-name"), val("email-recipient-rank"))}|${val("email-recipient-station")}|${val("email-title")}]`,
+          "",
+          body,
+          "",
+          val("email-closing"),
+          ...(image ? [`[img]${image}[/img]`] : []),
+          val("email-deputy-name"),
+          join(val("email-sig-title"), val("email-bureau")),
+          "[/depcor]",
+        ].join("\n");
       }
       function emailTodayDate() {
         return taskListTodayDate();
       }
-      function initializeEmailDate() {
-        if (!$("email-date").value) $("email-date").value = emailTodayDate();
-      }
+      function initializeEmailDate() {}
       function resetEmail() {
         [
           "email-deputy-name",
           "email-rank",
-          "email-bureau",
-          "email-recipient",
-          "email-cc",
+          "email-unit",
+          "email-recipient-name",
+          "email-recipient-rank",
+          "email-recipient-station",
           "email-title",
           "email-body",
+          "email-signature",
+          "email-sig-title",
+          "email-bureau",
         ].forEach((id) => ($(id).value = ""));
-        $("email-date").value = emailTodayDate();
-        updateTaskListDateLabel("email-date");
+        $("email-closing").value = "Kind regards,";
         applyDeputyDetails();
       }
       function addArrestEvidence() {
@@ -8388,7 +8434,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "sib-story-date",
         "nccit-supp-date",
         "k9-date",
-        "email-date",
         "citation-date",
       ];
       function datePickerIds(name) {
@@ -9078,7 +9123,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["sib-story", "SIB Story", "Write a news release story for SIB.", ["SIB", "Story"]]]],
     ["Generators", [
       ["card", "Business Card Generator", "Design your business card and download it as a PNG."],
-      ["email", "Email Template", "Use the official BBCode format for emails."]]],
+      ["email", "Email Template", "Departmental correspondence in the official BBCode format."]]],
     ["Miscellaneous", [
       ["deputy", "Character Details", "Save your name, badge and rank to prefill forms."],
       ["updates", "Updates", "See what's new on this site."]]],
