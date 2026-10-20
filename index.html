@@ -1926,7 +1926,7 @@ body[data-view="home"] main{padding-bottom:0}
         </section>
         <section class="nav-group" data-group="divisional generators">
           <div class="grp">
-            <span class="grp-label">Divisional Generators</span><span class="grp-count">8</span>
+            <span class="grp-label">Divisional Generators</span><span class="grp-count">9</span>
           </div>
           <button
             class="nav station"
@@ -1964,6 +1964,25 @@ body[data-view="home"] main{padding-bottom:0}
             onclick="show('oss-supplemental')"
           >
             <span>Supplemental</span>
+          </button>
+          <button
+            class="nav division"
+            id="nv-davis-k9-parent"
+            data-k="davis k9 canine team k9"
+            data-parent="nv-davis-station-parent"
+            disabled
+            aria-disabled="true"
+          >
+            <span>K9</span>
+          </button>
+          <button
+            class="nav sub"
+            id="nv-davis-k9-deployment"
+            data-k="davis k9 deployment log canine report"
+            data-parent="nv-davis-k9-parent"
+            onclick="show('davis-k9-deployment')"
+          >
+            <span>Deployment Log</span>
           </button>
           <button
             class="nav station"
@@ -3637,6 +3656,97 @@ body[data-view="home"] main{padding-bottom:0}
           ><button class="b" onclick="resetSenoraK9Deployment()">Reset</button>
         </div>
       </div>
+      <div id="f-davis-k9-deployment" hidden>
+        <div class="card">
+          <h2><small>K9</small>Deployment Log</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f">
+                <span>Date</span><input type="text" id="dk9-date" placeholder="DD/MMM/YYYY" />
+              </div>
+              <div class="f">
+                <span>Time</span><input type="text" id="dk9-time" placeholder="HH:MM" />
+              </div>
+              <div class="f">
+                <span>Street</span><input type="text" id="dk9-street" placeholder="Street" />
+              </div>
+              <div class="f">
+                <span>Area</span><input type="text" id="dk9-area" placeholder="Area" />
+              </div>
+              <div class="f">
+                <span>Callsign</span><input type="text" id="dk9-callsign" placeholder="Callsign" />
+              </div>
+            </div>
+            <div class="f">
+              <span>Deployment Type</span>
+              <div class="g">
+                <label class="row"
+                  ><span>Bite</span><input type="checkbox" id="dk9-type-bite"
+                /></label>
+                <label class="row"
+                  ><span>Search Warrant</span><input type="checkbox" id="dk9-type-warrant"
+                /></label>
+                <label class="row"
+                  ><span>Tracking</span><input type="checkbox" id="dk9-type-tracking"
+                /></label>
+                <label class="row"
+                  ><span>Other (detail in narrative)</span
+                  ><input type="checkbox" id="dk9-type-other"
+                /></label>
+              </div>
+            </div>
+            <div class="f">
+              <span>Deployment Narrative</span
+              ><textarea id="dk9-narrative" placeholder="Fill in the narrative here."></textarea>
+            </div>
+            <div class="f">
+              <span>Evidence Found</span
+              ><textarea id="dk9-evidence" placeholder="List the evidence here."></textarea>
+            </div>
+            <div class="f">
+              <span>Signed By — Name</span
+              ><input type="text" id="dk9-signature-name" placeholder="First name Last name" />
+            </div>
+            <div class="f">
+              <span>Rank</span><input type="text" id="dk9-signature-rank" placeholder="Rank" />
+            </div>
+            <div class="f">
+              <span>Badge Number</span
+              ><input type="text" id="dk9-signature-badge" placeholder="#00000" />
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('davis-k9-deployment')">Copy BBCode</button
+          ><a
+            class="b forum-link"
+            href="https://lssd.gta.world/viewforum.php?f=1458"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Open K9 Forum<svg
+              aria-hidden="true"
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 2.75h4.25V7M13 3 7.5 8.5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg></a
+          ><button class="b" onclick="resetDavisK9Deployment()">Reset</button>
+        </div>
+      </div>
       <div id="f-citation" hidden>
         <div class="card">
           <h2><small>TSD</small>Citation — General &amp; Officer</h2>
@@ -4491,6 +4601,21 @@ body[data-view="home"] main{padding-bottom:0}
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v1.0.7</h2>
+          <div class="body">
+            <h3>v1.0.7</h3>
+            <h3>Divisional Generators</h3>
+            <ul>
+              <li>
+                Added the K9 division under Davis Station with a new Deployment Log form (Canine Deployment Report): date, time, street, area, callsign, selectable deployment types, narrative, evidence found and signature, with Character Details autofill for name, rank and badge number.
+              </li>
+              <li>
+                The Davis K9 BBCode uses its own header image and title, always ends the location with San Andreas, and the Open K9 Forum button goes to the Davis K9 forum.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v1.0.6</h2>
           <div class="body">
             <h3>v1.0.6</h3>
@@ -5173,6 +5298,7 @@ body[data-view="home"] main{padding-bottom:0}
         "citation",
         "oss-incident",
         "oss-supplemental",
+        "davis-k9-deployment",
       ]);
       function updateCharacterDetailsPrompt() {
         const prompt = $("character-details-prompt");
@@ -6533,6 +6659,91 @@ body[data-view="home"] main{padding-bottom:0}
       function initializeSenoraK9Deployment() {
         if (!$("k9-date").value) $("k9-date").value = taskListTodayDate();
         applySenoraK9DeputyDetails();
+      }
+      function applyDavisK9DeputyDetails() {
+        const badge = $("deputy-badge-number").value.trim().replace(/^#/, "");
+        prefillDeputyField("dk9-signature-name", $("deputy-full-name").value.trim());
+        prefillDeputyField("dk9-signature-rank", $("deputy-rank").value);
+        prefillDeputyField("dk9-signature-badge", badge ? "#" + badge : "");
+      }
+      function buildDavisK9Deployment() {
+        const val = (id) =>
+            id === "dk9-date" ? formatPickerDate($(id).value, "short") : $(id).value.trim(),
+          types = [
+            ["dk9-type-bite", "Bite"],
+            ["dk9-type-warrant", "Search Warrant"],
+            ["dk9-type-tracking", "Tracking"],
+            ["dk9-type-other", "Other: (Please detail in the narrative)"],
+          ]
+            .map(([id, label]) => `${$(id).checked ? "[cbc][/cbc]" : "[cb][/cb]"} ${label}`)
+            .join("\n"),
+          signature = [
+            `${val("dk9-signature-name") || "FIRSTNAME LASTNAME"}${val("dk9-signature-rank") ? `, ${val("dk9-signature-rank")}` : ", RANK"}`,
+            val("dk9-signature-badge") || "#BADGE",
+          ].join(" ");
+        return [
+          "[divbox=white]",
+          "[center][img]https://i.imgur.com/Q2JgKiN.png[/img][/center]",
+          "[b][u][center]Canine Deployment Report[/center][/u][/b]",
+          "",
+          "[center][table=Arial]",
+          "[tr]",
+          "[td][b]TIME AND DATE:[/b][/td]",
+          "[td][b]LOCATION:[/b][/td]",
+          "[td][b]CALLSIGN:[/b][/td]",
+          "[/tr]",
+          "[tr]",
+          `[td]${val("dk9-date") || "DD/MMM/YYYY"} - ${val("dk9-time") || "HH:MM"}[/td]`,
+          `[td]${val("dk9-street") || "STREET"}, ${val("dk9-area") || "AREA"}, San Andreas[/td]`,
+          `[td]${val("dk9-callsign") || "CALLSIGN HERE"}[/td]`,
+          "[/tr]",
+          "[/table][/center]",
+          "[divbox=white]",
+          "DEPLOYMENT TYPE:",
+          "",
+          types,
+          "",
+          "[hr][/hr]",
+          "[center][b][u]DEPLOYMENT NARRATIVE:[/u][/b][/center]",
+          "",
+          val("dk9-narrative") || "FILL IN THE NARRATIVE HERE.",
+          "",
+          "[hr][/hr]",
+          "",
+          "[u][b][center]EVIDENCE FOUND:[/center][/b][/u]",
+          "",
+          val("dk9-evidence") || "LIST THE EVIDENCE HERE",
+          "",
+          "[hr][/hr]",
+          "",
+          "Signed by:",
+          "",
+          signature,
+          "[/divbox]",
+        ].join("\n");
+      }
+      function resetDavisK9Deployment() {
+        [
+          "dk9-time",
+          "dk9-street",
+          "dk9-area",
+          "dk9-callsign",
+          "dk9-narrative",
+          "dk9-evidence",
+          "dk9-signature-name",
+          "dk9-signature-rank",
+          "dk9-signature-badge",
+        ].forEach((id) => ($(id).value = ""));
+        $("dk9-date").value = taskListTodayDate();
+        updateTaskListDateLabel("dk9-date");
+        ["dk9-type-bite", "dk9-type-warrant", "dk9-type-tracking", "dk9-type-other"].forEach(
+          (id) => ($(id).checked = false),
+        );
+        applyDavisK9DeputyDetails();
+      }
+      function initializeDavisK9Deployment() {
+        if (!$("dk9-date").value) $("dk9-date").value = taskListTodayDate();
+        applyDavisK9DeputyDetails();
       }
       function addSenoraLogbookReport(url = "", text = "") {
         const row = document.createElement("div");
@@ -8155,6 +8366,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "sib-story",
           "oss-incident",
           "oss-supplemental",
+          "davis-k9-deployment",
           "arrest-warrant",
           "search-warrant",
           "electronic-surveillance-warrant",
@@ -8192,6 +8404,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "sib-story": "SIB — Story",
           "oss-incident": "OSS — Incident Report",
           "oss-supplemental": "OSS — Supplemental",
+          "davis-k9-deployment": "K9 — Deployment Log (Davis)",
           "arrest-warrant": "Arrest Warrant",
           "search-warrant": "Search Warrant",
           "electronic-surveillance-warrant": "Electronic Surveillance Warrant",
@@ -8434,6 +8647,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "sib-story-date",
         "nccit-supp-date",
         "k9-date",
+        "dk9-date",
         "citation-date",
       ];
       function datePickerIds(name) {
@@ -8936,6 +9150,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       initializeNcCitRows();
       initializeDeputyDetails();
       initializeSenoraK9Deployment();
+      initializeDavisK9Deployment();
       initializeSenoraLogbook();
       initializeSibStory();
       initializeCitation();
@@ -8943,8 +9158,14 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       $("f-oss-incident").addEventListener("input", updateOssIncidentTitle);
       $("deputy-full-name").addEventListener("input", applySenoraK9DeputyDetails);
       $("deputy-rank").addEventListener("change", applySenoraK9DeputyDetails);
+      $("deputy-full-name").addEventListener("input", applyDavisK9DeputyDetails);
+      $("deputy-rank").addEventListener("change", applyDavisK9DeputyDetails);
+      $("deputy-badge-number").addEventListener("input", applyDavisK9DeputyDetails);
       $("f-deputy").addEventListener("click", (event) => {
-        if (event.target.closest("button")) applySenoraK9DeputyDetails();
+        if (event.target.closest("button")) {
+          applySenoraK9DeputyDetails();
+          applyDavisK9DeputyDetails();
+        }
       });
       initializeKingPatrol();
       initializeApb();
@@ -9025,7 +9246,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
               ? buildKingPatrol()
               : k === "apb"
                 ? buildApb()
-                : k === "senora-k9-deployment"
+                : k === "davis-k9-deployment"
+                  ? buildDavisK9Deployment()
+                  : k === "senora-k9-deployment"
                   ? buildSenoraK9Deployment()
                   : k === "sib-story"
                     ? buildSibStory()
@@ -9113,7 +9336,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["dforensics", "Digital Forensics Request", "Request digital forensics on evidence."]]],
     ["Davis Station", [
       ["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets.", ["OSS", "Incident Report"]],
-      ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets.", ["OSS", "Supplemental"]]]],
+      ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets.", ["OSS", "Supplemental"]],
+      ["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", ["K9", "Deployment Log"]]]],
     ["Senora Station", [
       ["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", ["", "Logbook"]],
       ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", ["NCCIT", "Personnel File"]],
