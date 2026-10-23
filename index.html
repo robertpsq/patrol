@@ -1926,7 +1926,7 @@ body[data-view="home"] main{padding-bottom:0}
         </section>
         <section class="nav-group" data-group="divisional generators">
           <div class="grp">
-            <span class="grp-label">Divisional Generators</span><span class="grp-count">9</span>
+            <span class="grp-label">Divisional Generators</span><span class="grp-count">10</span>
           </div>
           <button
             class="nav station"
@@ -2086,6 +2086,15 @@ body[data-view="home"] main{padding-bottom:0}
             onclick="show('sib-story')"
           >
             <span>Story</span>
+          </button>
+          <button
+            class="nav sub"
+            id="nv-sib-activity"
+            data-k="sib activity tracker media interview social post event"
+            data-parent="nv-sib-parent"
+            onclick="show('sib-activity')"
+          >
+            <span>Activity Tracker</span>
           </button>
         </section>
         <section class="nav-group" data-group="generators">
@@ -4263,6 +4272,70 @@ body[data-view="home"] main{padding-bottom:0}
           ><button class="b" onclick="resetSibStory()">Reset</button>
         </div>
       </div>
+      <div id="f-sib-activity" hidden>
+        <div class="card">
+          <h2><small>SIB</small>Activity Tracker</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f">
+                <span>Name</span
+                ><input type="text" id="sib-activity-name" placeholder="Firstname Lastname" autocomplete="off" />
+              </div>
+              <div class="f">
+                <span>Date</span
+                ><input type="text" id="sib-activity-date" placeholder="DD/MMM/YYYY" />
+              </div>
+              <div class="f">
+                <span>Activity Type</span
+                ><select id="sib-activity-type">
+                  <option value="">Select an activity type</option>
+                  <option>Media Interview</option>
+                  <option>Social Media Post</option>
+                  <option>Information Page</option>
+                  <option>Story</option>
+                  <option>Event Organization</option>
+                  <option>Event Attendance</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="f">
+              <span>Summary</span
+              ><textarea id="sib-activity-summary" placeholder="Brief summary of the activity conducted"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('sib-activity')">Copy BBCode</button
+          ><a
+            class="b forum-link"
+            href="https://lssd.gta.world/viewtopic.php?t=82157"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Open Activity Forum<svg
+              aria-hidden="true"
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 2.75h4.25V7M13 3 7.5 8.5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg></a
+          ><button class="b" onclick="resetSibActivity()">Reset</button>
+        </div>
+      </div>
       <div id="f-oss-incident" hidden>
         <div class="card">
           <h2><small>OSS</small>Incident Report</h2>
@@ -4611,6 +4684,9 @@ body[data-view="home"] main{padding-bottom:0}
               </li>
               <li>
                 The Davis K9 BBCode uses its own header image and title, always ends the location with San Andreas, and the Open K9 Forum button goes to the Davis K9 forum.
+              </li>
+              <li>
+                Added a new Activity Tracker form under the SIB division: name (autofilled from Character Details), date, activity type (Media Interview, Social Media Post, Information Page, Story, Event Organization, Event Attendance or Other) and a brief summary. The Open Activity Forum button leads to the SIB activity thread.
               </li>
             </ul>
           </div>
@@ -5295,6 +5371,7 @@ body[data-view="home"] main{padding-bottom:0}
         "electronic-surveillance-warrant",
         "senora-k9-deployment",
         "senora-logbook",
+        "sib-activity",
         "citation",
         "oss-incident",
         "oss-supplemental",
@@ -5399,6 +5476,7 @@ body[data-view="home"] main{padding-bottom:0}
           ["apb-name", fullName],
           ["apb-bureau", deputyDetails.bureau],
           ["senora-logbook-deputy", rankAndName],
+          ["sib-activity-name", fullName],
           ["oss-ir-filed-by", rankAndName],
           ["oss-supp-filed-by", rankAndName],
           ["lab-name", fullName],
@@ -6897,6 +6975,26 @@ body[data-view="home"] main{padding-bottom:0}
         ["input", "change", "click"].forEach((ev) => f.addEventListener(ev, refresh));
         updateSibStoryPreview();
       }
+      function buildSibActivity() {
+        const val = (id) => $(id).value.trim();
+        return [
+          `[b]NAME[/b]: ${val("sib-activity-name") || "Firstname Lastname"}`,
+          `[b]DATE[/b]: ${formatPickerDate(val("sib-activity-date"), "short") || "DD/MMM/YYYY"}`,
+          `[b]ACTIVITY TYPE[/b]: ${val("sib-activity-type") || "Media Interview/Social Media Post/Information Page/Story/Event Organization/Event Attendance/Other"}`,
+          `[b]SUMMARY[/b]: ${val("sib-activity-summary") || "Brief summary of the activity conducted"}`,
+        ].join("\n");
+      }
+      function resetSibActivity() {
+        ["sib-activity-name", "sib-activity-summary"].forEach((id) => ($(id).value = ""));
+        $("sib-activity-type").selectedIndex = 0;
+        $("sib-activity-date").value = taskListTodayDate();
+        updateTaskListDateLabel("sib-activity-date");
+        applyDeputyDetails();
+      }
+      function initializeSibActivity() {
+        if (!$("sib-activity-date").value) $("sib-activity-date").value = taskListTodayDate();
+        applyDeputyDetails();
+      }
       function updateOssIncidentTitle() {
         const penalCodes = chargeTitle("oss-ir-penal-code") || "CHARGE",
           location = $("oss-ir-location").value.trim() || "LOCATION";
@@ -8364,6 +8462,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "senora-logbook",
           "citation",
           "sib-story",
+          "sib-activity",
           "oss-incident",
           "oss-supplemental",
           "davis-k9-deployment",
@@ -8402,6 +8501,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "senora-logbook": "Senora Station — Logbook",
           citation: "TSD — Citation",
           "sib-story": "SIB — Story",
+          "sib-activity": "SIB — Activity Tracker",
           "oss-incident": "OSS — Incident Report",
           "oss-supplemental": "OSS — Supplemental",
           "davis-k9-deployment": "K9 — Deployment Log (Davis)",
@@ -8645,6 +8745,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "oss-supp-date",
         "senora-logbook-date",
         "sib-story-date",
+        "sib-activity-date",
         "nccit-supp-date",
         "k9-date",
         "dk9-date",
@@ -9153,6 +9254,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       initializeDavisK9Deployment();
       initializeSenoraLogbook();
       initializeSibStory();
+      initializeSibActivity();
       initializeCitation();
       initializeOssGenerators();
       $("f-oss-incident").addEventListener("input", updateOssIncidentTitle);
@@ -9250,7 +9352,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
                   ? buildDavisK9Deployment()
                   : k === "senora-k9-deployment"
                   ? buildSenoraK9Deployment()
-                  : k === "sib-story"
+                  : k === "sib-activity"
+                    ? buildSibActivity()
+                    : k === "sib-story"
                     ? buildSibStory()
                     : k === "senora-logbook"
                     ? buildSenoraLogbook()
@@ -9344,7 +9448,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", ["NCCIT", "Supplemental"]],
       ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", ["K9", "Deployment Log"]],
       ["citation", "TSD Citation", "Traffic Services Detail citation.", ["TSD", "Citation"]],
-      ["sib-story", "SIB Story", "Write a news release story for SIB.", ["SIB", "Story"]]]],
+      ["sib-story", "SIB Story", "Write a news release story for SIB.", ["SIB", "Story"]],
+      ["sib-activity", "SIB Activity Tracker", "Log an SIB activity for the tracker.", ["SIB", "Activity Tracker"]]]],
     ["Generators", [
       ["card", "Business Card Generator", "Design your business card and download it as a PNG."],
       ["email", "Email Template", "Departmental correspondence in the official BBCode format."]]],
