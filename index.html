@@ -3652,6 +3652,10 @@ body[data-view="home"] main{padding-bottom:0}
             <div class="f">
               <span>Rank</span><input type="text" id="k9-signature-rank" placeholder="Rank" />
             </div>
+            <div class="f">
+              <span>Badge Number</span
+              ><input type="text" id="k9-signature-badge" placeholder="#00000" />
+            </div>
           </div>
         </div>
         <div class="actions">
@@ -6835,6 +6839,8 @@ body[data-view="home"] main{padding-bottom:0}
       function applySenoraK9DeputyDetails() {
         prefillDeputyField("k9-signature-name", $("deputy-full-name").value.trim());
         prefillDeputyField("k9-signature-rank", $("deputy-rank").value);
+        const badge = $("deputy-badge-number").value.trim().replace(/^#/, "");
+        prefillDeputyField("k9-signature-badge", badge ? "#" + badge : "");
       }
       function buildSenoraK9Deployment() {
         const val = (id) =>
@@ -6887,7 +6893,9 @@ body[data-view="home"] main{padding-bottom:0}
           "[hr][/hr]",
           "",
           "Signed by:",
-          `${val("k9-signature-name") || "FIRSTNAME LASTNAME"}${val("k9-signature-rank") ? `, ${val("k9-signature-rank")}` : ", RANK"}`,
+          `${val("k9-signature-name") || "FIRSTNAME LASTNAME"},`,
+          `${val("k9-signature-rank") || "RANK"},`,
+          val("k9-signature-badge") || "#BADGE",
           "[/divbox]",
         ].join("\n");
       }
@@ -6900,6 +6908,7 @@ body[data-view="home"] main{padding-bottom:0}
           "k9-evidence",
           "k9-signature-name",
           "k9-signature-rank",
+          "k9-signature-badge",
         ].forEach((id) => ($(id).value = ""));
         $("k9-date").value = taskListTodayDate();
         updateTaskListDateLabel("k9-date");
@@ -6933,9 +6942,10 @@ body[data-view="home"] main{padding-bottom:0}
             .map(([id, label]) => `${$(id).checked ? "[cbc][/cbc]" : "[cb][/cb]"} ${label}`)
             .join("\n"),
           signature = [
-            `${val("dk9-signature-name") || "FIRSTNAME LASTNAME"}${val("dk9-signature-rank") ? `, ${val("dk9-signature-rank")}` : ", RANK"}`,
+            `${val("dk9-signature-name") || "FIRSTNAME LASTNAME"},`,
+            `${val("dk9-signature-rank") || "RANK"},`,
             val("dk9-signature-badge") || "#BADGE",
-          ].join(" ");
+          ].join("\n");
         return [
           "[divbox=white]",
           "[center][img]https://i.imgur.com/Q2JgKiN.png[/img][/center]",
@@ -9447,6 +9457,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       $("deputy-full-name").addEventListener("input", applyDavisK9DeputyDetails);
       $("deputy-rank").addEventListener("change", applyDavisK9DeputyDetails);
       $("deputy-badge-number").addEventListener("input", applyDavisK9DeputyDetails);
+      $("deputy-badge-number").addEventListener("input", applySenoraK9DeputyDetails);
       $("f-deputy").addEventListener("click", (event) => {
         if (event.target.closest("button")) {
           applySenoraK9DeputyDetails();
