@@ -3611,7 +3611,7 @@ body[data-view="home"] main{padding-bottom:0}
               <span>Deployment Type</span>
               <div class="g">
                 <label class="row"
-                  ><span>Bite</span><input type="checkbox" id="k9-type-bite"
+                  ><span>Bite</span><input type="checkbox" id="k9-type-bite" onchange="updateK9Medical('k9')"
                 /></label>
                 <label class="row"
                   ><span>Search Warrant</span><input type="checkbox" id="k9-type-warrant"
@@ -3625,6 +3625,18 @@ body[data-view="home"] main{padding-bottom:0}
                 /></label>
               </div>
             </div>
+            <fieldset class="item" id="k9-medical-wrap" hidden>
+              <legend>Bite — Medical Care Provided</legend>
+              <div class="yn" style="flex-wrap: wrap">
+                <input type="radio" name="k9-medical" id="k9-medical-cleared" value="cleared" onchange="updateK9Medical('k9')" /><label for="k9-medical-cleared">Yes, cleared on Scene</label>
+                <input type="radio" name="k9-medical" id="k9-medical-er" value="er" onchange="updateK9Medical('k9')" /><label for="k9-medical-er">Yes, taken to ER</label>
+                <input class="no" type="radio" name="k9-medical" id="k9-medical-none" value="none" onchange="updateK9Medical('k9')" /><label for="k9-medical-none">No</label>
+              </div>
+              <div class="f" id="k9-medical-unit-wrap" hidden>
+                <span id="k9-medical-unit-label">Providing Unit</span
+                ><input type="text" id="k9-medical-unit" placeholder="e.g. Rescue 99" />
+              </div>
+            </fieldset>
             <div class="f">
               <span>Deployment Narrative</span
               ><textarea id="k9-narrative" placeholder="Fill in the narrative here."></textarea>
@@ -3698,7 +3710,7 @@ body[data-view="home"] main{padding-bottom:0}
               <span>Deployment Type</span>
               <div class="g">
                 <label class="row"
-                  ><span>Bite</span><input type="checkbox" id="dk9-type-bite"
+                  ><span>Bite</span><input type="checkbox" id="dk9-type-bite" onchange="updateK9Medical('dk9')"
                 /></label>
                 <label class="row"
                   ><span>Search Warrant</span><input type="checkbox" id="dk9-type-warrant"
@@ -3712,6 +3724,18 @@ body[data-view="home"] main{padding-bottom:0}
                 /></label>
               </div>
             </div>
+            <fieldset class="item" id="dk9-medical-wrap" hidden>
+              <legend>Bite — Medical Care Provided</legend>
+              <div class="yn" style="flex-wrap: wrap">
+                <input type="radio" name="dk9-medical" id="dk9-medical-cleared" value="cleared" onchange="updateK9Medical('dk9')" /><label for="dk9-medical-cleared">Yes, cleared on Scene</label>
+                <input type="radio" name="dk9-medical" id="dk9-medical-er" value="er" onchange="updateK9Medical('dk9')" /><label for="dk9-medical-er">Yes, taken to ER</label>
+                <input class="no" type="radio" name="dk9-medical" id="dk9-medical-none" value="none" onchange="updateK9Medical('dk9')" /><label for="dk9-medical-none">No</label>
+              </div>
+              <div class="f" id="dk9-medical-unit-wrap" hidden>
+                <span id="dk9-medical-unit-label">Providing Unit</span
+                ><input type="text" id="dk9-medical-unit" placeholder="e.g. Rescue 99" />
+              </div>
+            </fieldset>
             <div class="f">
               <span>Deployment Narrative</span
               ><textarea id="dk9-narrative" placeholder="Fill in the narrative here."></textarea>
@@ -4692,6 +4716,12 @@ body[data-view="home"] main{padding-bottom:0}
               </li>
               <li>
                 The Davis K9 BBCode uses its own header image and title, always ends the location with San Andreas, and the Open K9 Forum button goes to the Davis K9 forum.
+              </li>
+              <li>
+                Both K9 Deployment Logs (Senora and Davis) now have a Medical Care Provided section that appears when the Bite deployment type is ticked: Yes, cleared on Scene / Yes, taken to ER / No, plus a Providing Unit field (e.g. Rescue 99, Rescue 801). When "No" is selected the field becomes Reason for lack of provided care.
+              </li>
+              <li>
+                The Medical Care selection is not printed in the BBCode; it only decides the sentence added under the written narrative: cleared on Scene states the injuries were non-critical and the suspect was released into LSCSD custody; taken to ER states the injuries were critical and the suspect was transported to the PHMC Emergency Room. Both name the providing unit. Reset clears the new fields.
               </li>
               <li>
                 Added a new Activity Tracker form under the SIB division: name (autofilled from Character Details), date, activity type (Media Interview, Social Media Post, Information Page, Story, Event Organization, Event Attendance or Other) and a brief summary. The Open Activity Forum button leads to the SIB activity thread.
@@ -6780,6 +6810,28 @@ body[data-view="home"] main{padding-bottom:0}
         initializeNcCitRows();
         applyDeputyDetails();
       }
+      function updateK9Medical(p) {
+        const bite = $(p + "-type-bite").checked,
+          choice = document.querySelector(`input[name="${p}-medical"]:checked`),
+          wrap = $(p + "-medical-wrap");
+        wrap.hidden = !bite;
+        $(p + "-medical-unit-wrap").hidden = !(bite && choice);
+        $(p + "-medical-unit-label").textContent =
+          choice && choice.value === "none" ? "Reason for lack of provided care" : "Providing Unit";
+      }
+      function buildK9Medical(p) {
+        if (!$(p + "-type-bite").checked) return "";
+        const choice = document.querySelector(`input[name="${p}-medical"]:checked`),
+          pick = choice ? choice.value : "",
+          unit = $(p + "-medical-unit").value.trim();
+        if (pick === "er")
+          return `The suspect was medically examined on Scene. The sustained injuries were deemed critical, and they were transported to the PHMC Emergency Room for further checks.\nThe medical examination and transport were conducted by ${unit || "PROVIDING UNIT"}.`;
+        if (pick === "cleared")
+          return `The suspect was medically examined on Scene. The sustained injuries were deemed non-critical, and they were released into the custody of the Los Santos County Sheriff's Department.\nThe medical examination was conducted by ${unit || "PROVIDING UNIT"}.`;
+        if (pick === "none")
+          return `No medical care was provided. Reason: ${unit || "REASON FOR LACK OF PROVIDED CARE"}.`;
+        return "";
+      }
       function applySenoraK9DeputyDetails() {
         prefillDeputyField("k9-signature-name", $("deputy-full-name").value.trim());
         prefillDeputyField("k9-signature-rank", $("deputy-rank").value);
@@ -6822,6 +6874,7 @@ body[data-view="home"] main{padding-bottom:0}
           "[center][b][u]DEPLOYMENT NARRATIVE:[/u][/b][/center]",
           "",
           val("k9-narrative") || "FILL IN THE NARRATIVE HERE.",
+          ...(buildK9Medical("k9") ? ["", buildK9Medical("k9")] : []),
           "",
           "[hr][/hr]",
           "",
@@ -6853,6 +6906,9 @@ body[data-view="home"] main{padding-bottom:0}
         ["k9-type-bite", "k9-type-warrant", "k9-type-tracking", "k9-type-other"].forEach(
           (id) => ($(id).checked = false),
         );
+                document.querySelectorAll('input[name="k9-medical"]').forEach((r) => (r.checked = false));
+        $("k9-medical-unit").value = "";
+        updateK9Medical("k9");
         applySenoraK9DeputyDetails();
       }
       function initializeSenoraK9Deployment() {
@@ -6906,6 +6962,7 @@ body[data-view="home"] main{padding-bottom:0}
           "[center][b][u]DEPLOYMENT NARRATIVE:[/u][/b][/center]",
           "",
           val("dk9-narrative") || "FILL IN THE NARRATIVE HERE.",
+          ...(buildK9Medical("dk9") ? ["", buildK9Medical("dk9")] : []),
           "",
           "[hr][/hr]",
           "",
@@ -6938,6 +6995,9 @@ body[data-view="home"] main{padding-bottom:0}
         ["dk9-type-bite", "dk9-type-warrant", "dk9-type-tracking", "dk9-type-other"].forEach(
           (id) => ($(id).checked = false),
         );
+                document.querySelectorAll('input[name="dk9-medical"]').forEach((r) => (r.checked = false));
+        $("dk9-medical-unit").value = "";
+        updateK9Medical("dk9");
         applyDavisK9DeputyDetails();
       }
       function initializeDavisK9Deployment() {
