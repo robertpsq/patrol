@@ -2099,18 +2099,26 @@ body[data-view="home"] main{padding-bottom:0}
         </section>
         <section class="nav-group" data-group="generators">
           <div class="grp">
-            <span class="grp-label">Generators</span><span class="grp-count">2</span>
+            <span class="grp-label">Generators</span><span class="grp-count">3</span>
           </div>
           <button class="nav" id="nv-card" data-k="business card generator" onclick="show('card')">
             <span>Business Card Generator</span>
           </button>
           <button
             class="nav"
-            id="nv-email"
-            data-k="email template deputy email"
-            onclick="show('email')"
+            id="nv-depmail"
+            data-k="email template depmail department email"
+            onclick="show('depmail')"
           >
             <span>Email Template</span>
+          </button>
+          <button
+            class="nav"
+            id="nv-email"
+            data-k="correspondence depcor deputy email letter"
+            onclick="show('email')"
+          >
+            <span>Correspondence</span>
           </button>
         </section>
         <section class="nav-group" data-group="miscellaneous settings">
@@ -4689,6 +4697,13 @@ body[data-view="home"] main{padding-bottom:0}
                 Added a new Activity Tracker form under the SIB division: name (autofilled from Character Details), date, activity type (Media Interview, Social Media Post, Information Page, Story, Event Organization, Event Attendance or Other) and a brief summary. The Open Activity Forum button leads to the SIB activity thread.
               </li>
             </ul>
+            <h3>Generators</h3>
+            <ul>
+              <li>
+                Added a new Email Template generator (depmail): sender name (autofilled from Character Details), date picker, priority (Normal, High, Urgent), recipient, optional CC, title and body, with a signature block showing rank, bureau and a station address dropdown (Hall of Justice, Davis Station or Senora Station).
+              </li>
+              <li>The previous email form has been renamed to Correspondence and works as before.</li>
+            </ul>
           </div>
         </div>
         <div class="card">
@@ -5173,9 +5188,70 @@ body[data-view="home"] main{padding-bottom:0}
           </div>
         </div>
       </div>
-      <div id="f-email" hidden>
+      <div id="f-depmail" hidden>
         <div class="card">
           <h2><small>Generator</small>Email Template</h2>
+          <div class="body">
+            <h3>Header</h3>
+            <div class="g">
+              <div class="f">
+                <span>Sender Name</span
+                ><input type="text" id="depmail-name" placeholder="Forename Surname" />
+              </div>
+              <div class="f">
+                <span>Date</span><input type="text" id="depmail-date" placeholder="Month D, YYYY" />
+              </div>
+              <div class="f">
+                <span>Priority</span
+                ><select id="depmail-priority">
+                  <option>Normal</option>
+                  <option>High</option>
+                  <option>Urgent</option>
+                </select>
+              </div>
+            </div>
+            <div class="g">
+              <div class="f">
+                <span>Recipient</span
+                ><input type="text" id="depmail-recipient" placeholder="e.g. Sergeant John Doe" />
+              </div>
+              <div class="f">
+                <span>CC (optional, "-" if empty)</span
+                ><input type="text" id="depmail-cc" placeholder="e.g. Lieutenant Jane Doe" />
+              </div>
+            </div>
+            <div class="f"><span>Email Title</span><input type="text" id="depmail-title" placeholder="e.g. Shift Change Request" /></div>
+            <div class="f">
+              <span>Email Body</span
+              ><textarea id="depmail-body" placeholder="Write the email body here (greeting included). BBCode is allowed."></textarea>
+            </div>
+            <h3>Signature</h3>
+            <div class="g">
+              <div class="f">
+                <span>Rank</span><input type="text" id="depmail-rank" placeholder="e.g. Detective" />
+              </div>
+              <div class="f">
+                <span>Bureau</span><input type="text" id="depmail-bureau" placeholder="e.g. Training Bureau" />
+              </div>
+              <div class="f">
+                <span>Address</span
+                ><select id="depmail-address">
+                  <option>Hall of Justice</option>
+                  <option>Davis Station</option>
+                  <option>Senora Station</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('depmail')">Copy BBCode</button
+          ><button class="b" onclick="resetDepmail()">Reset</button>
+        </div>
+      </div>
+      <div id="f-email" hidden>
+        <div class="card">
+          <h2><small>Generator</small>Correspondence</h2>
           <div class="body">
             <h3>Sender</h3>
             <div class="g">
@@ -5365,6 +5441,7 @@ body[data-view="home"] main{padding-bottom:0}
         "dforensics",
         "nccit",
         "email",
+        "depmail",
         "card",
         "arrest-warrant",
         "search-warrant",
@@ -5490,6 +5567,9 @@ body[data-view="home"] main{padding-bottom:0}
           ["email-bureau", deputyDetails.bureau],
           ["email-unit", deputyDetails.bureau],
           ["email-sig-title", rank],
+          ["depmail-name", fullName],
+          ["depmail-rank", rank],
+          ["depmail-bureau", deputyDetails.bureau],
           ["arrest-rank", rank],
           ["arrest-deputy-name", fullName],
           ["arrest-badge", deputyDetails.badgeNumber],
@@ -6166,6 +6246,47 @@ body[data-view="home"] main{padding-bottom:0}
         ].forEach((id) => ($(id).value = ""));
         $("email-closing").value = "Kind regards,";
         applyDeputyDetails();
+      }
+      const depmailAddresses = {
+        "Hall of Justice": "100 Innocence Boulevard, City of Davis, SA 90012",
+        "Davis Station": "300 Innocence Boulevard, City of Davis, SA 90220",
+        "Senora Station": "501 Joshua Road, Sandy Shores, SA 90021",
+      };
+      function buildDepmail() {
+        const val = (id) => $(id).value.trim(),
+          name = val("depmail-name"),
+          date = formatPickerDate(val("depmail-date")),
+          rankLine = [val("depmail-rank"), val("depmail-bureau")].filter(Boolean).join(", ");
+        return [
+          `[depmail=${name}|${date}|${val("depmail-recipient")}|${val("depmail-cc") || "-"}|${val("depmail-title")}|${val("depmail-priority")}]`,
+          "",
+          val("depmail-body"),
+          "",
+          "[font=times]" + `[b]${name}[/b]`,
+          `${rankLine}[aligntable=right,0,0,40,0,0,0][/aligntable]`,
+          depmailAddresses[$("depmail-address").value],
+          "[/font]",
+          "[/depmail]",
+        ].join("\n");
+      }
+      function resetDepmail() {
+        [
+          "depmail-name",
+          "depmail-recipient",
+          "depmail-cc",
+          "depmail-title",
+          "depmail-body",
+          "depmail-rank",
+          "depmail-bureau",
+        ].forEach((id) => ($(id).value = ""));
+        $("depmail-priority").value = "Normal";
+        $("depmail-address").selectedIndex = 0;
+        $("depmail-date").value = emailTodayDate();
+        updateTaskListDateLabel("depmail-date");
+        applyDeputyDetails();
+      }
+      function initializeDepmail() {
+        if (!$("depmail-date").value) $("depmail-date").value = emailTodayDate();
       }
       function addArrestEvidence() {
         const row = document.createElement("div");
@@ -8473,6 +8594,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "updates",
           "card",
           "email",
+          "depmail",
           "deputy",
         ].forEach((x) => {
           $("f-" + x).hidden = x !== k;
@@ -8511,7 +8633,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "financial-service-warrant": "Financial Service Warrant Request",
           updates: "Updates",
           card: "Business Card Generator",
-          email: "Email Template",
+          email: "Correspondence",
+          depmail: "Email Template",
           deputy: "Character Details",
         }[k];
         $("si").classList.remove("open");
@@ -8738,6 +8861,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "king-report-date",
         "apb-date",
         "tc-date",
+        "depmail-date",
         "arrest-date",
         "search-date",
         "electronic-date",
@@ -9275,6 +9399,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       $("f-apb").addEventListener("change", updateApbPreview);
       updateApbPreview();
       initializeEmailDate();
+      initializeDepmail();
       initializeArrestWarrant();
       initializeSearchWarrant();
       initializeElectronicWarrant();
@@ -9388,7 +9513,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
                                                 ? buildNcCitSupp()
                                                 : k === "email"
                                                   ? buildEmailTemplate()
-                                                  : build(k);
+                                                  : k === "depmail"
+                                                    ? buildDepmail()
+                                                    : build(k);
         try {
           await navigator.clipboard.writeText(txt);
           toast("Copied!");
@@ -9452,7 +9579,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["sib-activity", "SIB Activity Tracker", "Log an SIB activity for the tracker.", ["SIB", "Activity Tracker"]]]],
     ["Generators", [
       ["card", "Business Card Generator", "Design your business card and download it as a PNG."],
-      ["email", "Email Template", "Departmental correspondence in the official BBCode format."]]],
+      ["depmail", "Email Template", "Departmental email in the official depmail BBCode format."],
+      ["email", "Correspondence", "Departmental correspondence in the official BBCode format."]]],
     ["Miscellaneous", [
       ["deputy", "Character Details", "Save your name, badge and rank to prefill forms."],
       ["updates", "Updates", "See what's new on this site."]]],
