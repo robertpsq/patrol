@@ -4710,6 +4710,21 @@ body[data-view="home"] main{padding-bottom:0}
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v1.0.8</h2>
+          <div class="body">
+            <h3>v1.0.8</h3>
+            <h3>Generators</h3>
+            <ul>
+              <li>
+                Added the Eugene Biskarrat Regional Training Center (1060 Greenwich Parkway, Los Santos, SA 90220) to the station address dropdown of the Email Template generator.
+              </li>
+              <li>
+                Added the Eugene Biskarrat Regional Training Center to the station selection of the Business Card Generator. Its name and address are shown at the bottom left of the card.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v1.0.7</h2>
           <div class="body">
             <h3>v1.0.7</h3>
@@ -5273,6 +5288,7 @@ body[data-view="home"] main{padding-bottom:0}
                   <option>Hall of Justice</option>
                   <option>Davis Station</option>
                   <option>Senora Station</option>
+                  <option>Eugene Biskarrat Regional Training Center</option>
                 </select>
               </div>
             </div>
@@ -5379,6 +5395,7 @@ body[data-view="home"] main{padding-bottom:0}
                     <option>Hall of Justice</option>
                     <option>Davis Sheriff's Station</option>
                     <option>Senora Sheriff's Station</option>
+                    <option>Eugene Biskarrat Regional Training Center</option>
                   </select>
                 </div>
                 <div class="f">
@@ -6285,6 +6302,7 @@ body[data-view="home"] main{padding-bottom:0}
         "Hall of Justice": "100 Innocence Boulevard, City of Davis, SA 90012",
         "Davis Station": "300 Innocence Boulevard, City of Davis, SA 90220",
         "Senora Station": "501 Joshua Road, Sandy Shores, SA 90021",
+        "Eugene Biskarrat Regional Training Center": "1060 Greenwich Parkway, Los Santos, SA 90220",
       };
       function buildDepmail() {
         const val = (id) => $(id).value.trim(),
@@ -9379,7 +9397,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
               ? ["Hall of Justice", "100 Innocence Boulevard", "City of Davis, SA 90012"]
               : st === "Davis Sheriff's Station"
                 ? ["Davis Sheriff's Station", "300 Innocence Boulevard", "City of Davis, SA 90220"]
-                : ["Senora Sheriff's Station", "501 Joshua Road", "Sandy Shores, SA 90021"];
+                : st === "Eugene Biskarrat Regional Training Center"
+                  ? ["Eugene Biskarrat Regional Training Center", "1060 Greenwich Parkway", "Los Santos, SA 90220"]
+                  : ["Senora Sheriff's Station", "501 Joshua Road", "Sandy Shores, SA 90021"];
         info.push("LSSD.gta.world");
         info.forEach((ln, i) => T(ln, "26px " + SANS, 397 + i * 34, "left", 73));
         T("Office: 901", "26px " + SANS, 397, "right", 927);
