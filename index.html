@@ -3600,8 +3600,10 @@ body[data-view="home"] main{padding-bottom:0}
                 <span>Time</span><input type="text" id="k9-time" placeholder="HH:MM" />
               </div>
               <div class="f">
-                <span>Location</span
-                ><input type="text" id="k9-location" placeholder="Street, area, city" />
+                <span>Street</span><input type="text" id="k9-street" placeholder="Street" />
+              </div>
+              <div class="f">
+                <span>District</span><input type="text" id="k9-district" placeholder="District" />
               </div>
               <div class="f">
                 <span>Callsign</span><input type="text" id="k9-callsign" placeholder="Callsign" />
@@ -3704,7 +3706,7 @@ body[data-view="home"] main{padding-bottom:0}
                 <span>Street</span><input type="text" id="dk9-street" placeholder="Street" />
               </div>
               <div class="f">
-                <span>Area</span><input type="text" id="dk9-area" placeholder="Area" />
+                <span>District</span><input type="text" id="dk9-district" placeholder="District" />
               </div>
               <div class="f">
                 <span>Callsign</span><input type="text" id="dk9-callsign" placeholder="Callsign" />
@@ -6884,7 +6886,7 @@ body[data-view="home"] main{padding-bottom:0}
           "[/tr]",
           "[tr]",
           `[td]${val("k9-date") || "DD/MMM/YYYY"} - ${val("k9-time") || "HH:MM"}[/td]`,
-          `[td]${val("k9-location") || "STREET, AREA, CITY"}[/td]`,
+          `[td]${val("k9-street") || "STREET"}, ${val("k9-district") || "DISTRICT"}, San Andreas[/td]`,
           `[td]${val("k9-callsign") || "CALLSIGN HERE"}[/td]`,
           "[/tr]",
           "[/table][/center]",
@@ -6906,8 +6908,6 @@ body[data-view="home"] main{padding-bottom:0}
           "",
           val("k9-evidence") || "LIST THE EVIDENCE HERE",
           "",
-          "((ATTACH SCREENSHOT HERE))",
-          "",
           "[hr][/hr]",
           "",
           "Signed by:",
@@ -6920,7 +6920,8 @@ body[data-view="home"] main{padding-bottom:0}
       function resetSenoraK9Deployment() {
         [
           "k9-time",
-          "k9-location",
+          "k9-street",
+          "k9-district",
           "k9-callsign",
           "k9-narrative",
           "k9-evidence",
@@ -6977,7 +6978,7 @@ body[data-view="home"] main{padding-bottom:0}
           "[/tr]",
           "[tr]",
           `[td]${val("dk9-date") || "DD/MMM/YYYY"} - ${val("dk9-time") || "HH:MM"}[/td]`,
-          `[td]${val("dk9-street") || "STREET"}, ${val("dk9-area") || "AREA"}, San Andreas[/td]`,
+          `[td]${val("dk9-street") || "STREET"}, ${val("dk9-district") || "DISTRICT"}, San Andreas[/td]`,
           `[td]${val("dk9-callsign") || "CALLSIGN HERE"}[/td]`,
           "[/tr]",
           "[/table][/center]",
@@ -7010,7 +7011,7 @@ body[data-view="home"] main{padding-bottom:0}
         [
           "dk9-time",
           "dk9-street",
-          "dk9-area",
+          "dk9-district",
           "dk9-callsign",
           "dk9-narrative",
           "dk9-evidence",
