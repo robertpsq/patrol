@@ -4715,6 +4715,12 @@ body[data-view="home"] main{padding-bottom:0}
           <h2><small>Release</small>v1.0.8</h2>
           <div class="body">
             <h3>v1.0.8</h3>
+            <h3>Character Details</h3>
+            <ul>
+              <li>
+                Added an optional Callsign field to Character Details. It is not mandatory: leave it blank and every callsign field stays empty, or fill it in and it prefills the Callsign / Unit Number field in each form that has one (Incident Report, Use of Force Report, King Patrol Report, NC-CIT Personnel File and Supplemental, Senora and Davis K9 Deployment Logs, Citation, and the OSS Incident and Supplemental reports). Prefilled values stay editable per form.
+              </li>
+            </ul>
             <h3>Generators</h3>
             <ul>
               <li>
@@ -5173,7 +5179,7 @@ body[data-view="home"] main{padding-bottom:0}
             <h3>Tips</h3>
             <ul>
               <li>
-                Enter your name, badge number, rank, and bureau in Character Details. Matching
+                Enter your name, badge number, rank, and bureau in Character Details. Callsign is optional: if you add one, it prefills every callsign / unit number field; if you leave it blank, those fields stay empty. Matching
                 fields in supported forms and generators will prefill automatically.
               </li>
               <li>
@@ -5205,6 +5211,10 @@ body[data-view="home"] main{padding-bottom:0}
               ><input type="text" id="deputy-badge-number" inputmode="numeric" />
             </div>
             <div class="f">
+              <span>Callsign (optional)</span
+              ><input type="text" id="deputy-callsign" placeholder="e.g. 115K" />
+            </div>
+            <div class="f">
               <span>Bureau</span
               ><input type="text" id="deputy-bureau" placeholder="e.g. Patrol Division" />
             </div>
@@ -5229,7 +5239,7 @@ body[data-view="home"] main{padding-bottom:0}
             <p class="f">
               <span
                 >These details are saved in this browser and used to prefill matching form fields
-                across sessions.</span
+                across sessions. Callsign is optional; leave it blank and callsign fields stay empty.</span
               >
             </p>
             <div class="actions">
@@ -5481,7 +5491,7 @@ body[data-view="home"] main{padding-bottom:0}
         "Assistant Sheriff",
         "Sheriff",
       ];
-      let deputyDetails = { fullName: "", badgeNumber: "", rank: "", bureau: "" };
+      let deputyDetails = { fullName: "", badgeNumber: "", rank: "", bureau: "", callsign: "" };
       const characterPrefillForms = new Set([
         "sheriff",
         "incident",
@@ -5493,6 +5503,7 @@ body[data-view="home"] main{padding-bottom:0}
         "lab",
         "dforensics",
         "nccit",
+        "nccit-supp",
         "email",
         "depmail",
         "card",
@@ -5533,7 +5544,8 @@ body[data-view="home"] main{padding-bottom:0}
             typeof parsed.badgeNumber === "string" &&
             typeof parsed.rank === "string" &&
             (parsed.bureau === undefined || typeof parsed.bureau === "string") &&
-            (parsed.assignment === undefined || typeof parsed.assignment === "string")
+            (parsed.assignment === undefined || typeof parsed.assignment === "string") &&
+            (parsed.callsign === undefined || typeof parsed.callsign === "string")
           ) {
             deputyDetails = {
               fullName: parsed.fullName,
@@ -5545,6 +5557,7 @@ body[data-view="home"] main{padding-bottom:0}
                   : typeof parsed.assignment === "string"
                     ? parsed.assignment
                     : "",
+              callsign: typeof parsed.callsign === "string" ? parsed.callsign : "",
             };
             if (migrate) localStorage.setItem(deputyStorageKey, JSON.stringify(deputyDetails));
           }
@@ -5649,6 +5662,14 @@ body[data-view="home"] main{padding-bottom:0}
           ["b2", parts.last],
           ["b6", deputyDetails.bureau],
           ["b7", rank],
+          ["i5", deputyDetails.callsign],
+          ["uof-unit", deputyDetails.callsign],
+          ["king-callsign", deputyDetails.callsign],
+          ["nccit-callsign", deputyDetails.callsign],
+          ["nccit-supp-callsign", deputyDetails.callsign],
+          ["citation-callsign", deputyDetails.callsign],
+          ["oss-ir-callsign", deputyDetails.callsign],
+          ["oss-supp-callsign", deputyDetails.callsign],
         ].forEach(([id, value]) => prefillDeputyField(id, value));
         updateNcCitTitle();
         drawSheriffReport();
@@ -5661,6 +5682,7 @@ body[data-view="home"] main{padding-bottom:0}
           badgeNumber: $("deputy-badge-number").value.trim(),
           rank: $("deputy-rank").value,
           bureau: $("deputy-bureau").value.trim(),
+          callsign: $("deputy-callsign").value.trim(),
         };
         try {
           localStorage.setItem(deputyStorageKey, JSON.stringify(deputyDetails));
@@ -5673,7 +5695,7 @@ body[data-view="home"] main{padding-bottom:0}
         toast("Character Details saved");
       }
       function clearDeputyDetails() {
-        deputyDetails = { fullName: "", badgeNumber: "", rank: "", bureau: "" };
+        deputyDetails = { fullName: "", badgeNumber: "", rank: "", bureau: "", callsign: "" };
         try {
           localStorage.removeItem(deputyStorageKey);
         } catch (error) {
@@ -5685,6 +5707,7 @@ body[data-view="home"] main{padding-bottom:0}
         $("deputy-badge-number").value = "";
         $("deputy-rank").selectedIndex = 0;
         $("deputy-bureau").value = "";
+        $("deputy-callsign").value = "";
         applyDeputyDetails();
         toast("Character Details cleared");
       }
@@ -5694,6 +5717,7 @@ body[data-view="home"] main{padding-bottom:0}
         $("deputy-badge-number").value = deputyDetails.badgeNumber;
         $("deputy-rank").value = deputyDetails.rank;
         $("deputy-bureau").value = deputyDetails.bureau;
+        $("deputy-callsign").value = deputyDetails.callsign;
         applyDeputyDetails();
       }
       $("sheriff-report-logo").src = document.querySelector(".brand .logo").src;
@@ -6861,6 +6885,7 @@ body[data-view="home"] main{padding-bottom:0}
         prefillDeputyField("k9-signature-rank", $("deputy-rank").value);
         const badge = $("deputy-badge-number").value.trim().replace(/^#/, "");
         prefillDeputyField("k9-signature-badge", badge ? "#" + badge : "");
+        prefillDeputyField("k9-callsign", $("deputy-callsign").value.trim());
       }
       function buildSenoraK9Deployment() {
         const val = (id) =>
@@ -6948,6 +6973,7 @@ body[data-view="home"] main{padding-bottom:0}
         prefillDeputyField("dk9-signature-name", $("deputy-full-name").value.trim());
         prefillDeputyField("dk9-signature-rank", $("deputy-rank").value);
         prefillDeputyField("dk9-signature-badge", badge ? "#" + badge : "");
+        prefillDeputyField("dk9-callsign", $("deputy-callsign").value.trim());
       }
       function buildDavisK9Deployment() {
         const val = (id) =>
@@ -7502,6 +7528,7 @@ body[data-view="home"] main{padding-bottom:0}
           .querySelectorAll("input[type=text],input[type=hidden],textarea")
           .forEach((field) => (field.value = ""));
         updateTaskListDateLabel("nccit-supp-date");
+        applyDeputyDetails();
       }
       function buildUof() {
         const val = (id) =>
@@ -9479,6 +9506,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       $("deputy-rank").addEventListener("change", applyDavisK9DeputyDetails);
       $("deputy-badge-number").addEventListener("input", applyDavisK9DeputyDetails);
       $("deputy-badge-number").addEventListener("input", applySenoraK9DeputyDetails);
+      $("deputy-callsign").addEventListener("input", applySenoraK9DeputyDetails);
+      $("deputy-callsign").addEventListener("input", applyDavisK9DeputyDetails);
       $("f-deputy").addEventListener("click", (event) => {
         if (event.target.closest("button")) {
           applySenoraK9DeputyDetails();
@@ -9674,7 +9703,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["depmail", "Email Template", "Departmental email in the official depmail BBCode format."],
       ["email", "Correspondence", "Departmental correspondence in the official BBCode format."]]],
     ["Miscellaneous", [
-      ["deputy", "Character Details", "Save your name, badge and rank to prefill forms."],
+      ["deputy", "Character Details", "Save your name, badge, rank and optional callsign to prefill forms."],
       ["updates", "Updates", "See what's new on this site."]]],
   ];
   const info = {};
