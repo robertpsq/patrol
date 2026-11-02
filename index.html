@@ -1539,6 +1539,25 @@ aside{width:264px;padding:18px 12px 14px;gap:2px}
 .side-credit b{color:var(--beige);font-weight:600}
 @media(min-width:761px){.side-in{display:flex;flex-direction:column;flex:1}.side-credit{margin-top:auto}}
 
+/* ===== v1.0.9: Bureaus tree (sidebar) ===== */
+.bureaus .bu-body{display:none;margin:1px 0 6px 12px;padding-left:6px;border-left:1px solid var(--line)}
+.bureaus .bu-item.expanded>.bu-body,.bureaus.searching .bu-body{display:block}
+.bureaus .nav.bu-div{padding:9px 10px;font-weight:600;font-size:14px}
+.bureaus .nav.bu-sub{padding:7px 10px;font-size:13px;font-weight:500;color:var(--text)}
+.bureaus .nav.bu-sub small{color:var(--mute);font-size:11px;font-weight:500}
+.bureaus .nav.bu-sub b{font-weight:700;letter-spacing:.02em}
+.bureaus .nav.bu-sub.empty{color:var(--mute);opacity:.8}
+.bureaus .nav.bu-sub.empty b{font-weight:600}
+.bureaus .nav.bu-sub span,.bureaus .nav.bu-div span{flex:1;min-width:0}
+.bureaus .bu-n{flex:0 0 auto;margin-left:8px;padding:0 6px;border-radius:99px;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--mute);font:600 11px/17px Inter,sans-serif;font-style:normal}
+.bureaus .bu-chev{flex:0 0 auto;width:6px;height:6px;margin:0 3px 2px 9px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(-45deg);transition:transform .15s}
+.bureaus .bu-item.expanded>.nav>.bu-chev{transform:rotate(45deg) translate(-1px,-1px)}
+.bureaus .bu-item.has-on>.nav{color:var(--beige)}
+.bureaus .bu-item.has-on>.nav small{color:var(--mute)}
+.bureaus .nav.division{width:100%;margin:6px 0 1px;padding:3px 8px;border-left:2px solid var(--green);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.bureaus .bu-body .nav.sub{width:100%;margin:1px 0;padding:6px 8px}
+@media(prefers-reduced-motion:reduce){.bureaus .bu-chev{transition:none}}
+
 main{flex:1;min-width:0;max-width:1320px;margin-inline:auto;padding:0 var(--px) 72px}
 .top{display:block;margin:0;padding:28px 0 6px}
 .eyebrow{font:500 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--beige)}
@@ -1623,13 +1642,11 @@ body[data-view="home"] main{padding-bottom:0}
 .chip[hidden],.tile[hidden],#home-groups section[hidden],.home-empty[hidden],#recent[hidden],.home-sub[hidden],.setup[hidden]{display:none!important}
 
 /* category panels */
-#home-groups{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"patrol patrol warrant tech" "davis senora senora senora" "gen gen misc misc";align-items:start}
+#home-groups{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"patrol patrol warrant gen" "bureaus bureaus bureaus misc";align-items:start}
 #home-groups>section{min-width:0;padding:12px 14px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
 #home-groups>[data-a="patrol"]{grid-area:patrol}
 #home-groups>[data-a="warrant"]{grid-area:warrant}
-#home-groups>[data-a="tech"]{grid-area:tech}
-#home-groups>[data-a="davis"]{grid-area:davis}
-#home-groups>[data-a="senora"]{grid-area:senora}
+#home-groups>[data-a="bureaus"]{grid-area:bureaus}
 #home-groups>[data-a="gen"]{grid-area:gen}
 #home-groups>[data-a="misc"]{grid-area:misc}
 #home-groups.searching{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));grid-template-areas:none}
@@ -1643,6 +1660,36 @@ body[data-view="home"] main{padding-bottom:0}
 .tile:hover{border-left-color:var(--beige);background:color-mix(in srgb,var(--green) 14%,var(--bg))}
 .tile:hover::after{opacity:1;transform:translateX(2px)}
 .home-empty{margin:18px 0;color:var(--mute)}
+
+/* ===== v1.0.9: Bureaus panel (home) ===== */
+.bu-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.bu-tab{display:inline-flex;align-items:center;gap:8px;padding:6px 8px 6px 13px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--text);font:600 13px Inter,sans-serif;cursor:pointer;transition:border-color .15s,background .15s}
+.bu-tab:hover{border-color:var(--beige)}
+.bu-tab:focus-visible{outline:2px solid var(--beige);outline-offset:2px}
+.bu-tab em{min-width:18px;padding:0 6px;border-radius:99px;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--mute);font:600 11px/18px Inter,sans-serif;font-style:normal;text-align:center}
+.bu-tab:not(:has(em)){padding-right:13px}
+.bu-tab.idle{color:var(--mute)}
+.bu-tab[aria-selected="true"]{border-color:var(--beige);background:var(--green2);color:#fff}
+.bu-tab[aria-selected="true"] em{background:rgba(255,255,255,.18);color:#fff}
+.bu-pane{display:none}
+.bu-pane.on{display:block}
+.bu-pane-h{display:none;margin:0 0 8px;font:600 17px/1.1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em;color:var(--beige)}
+.bu-units{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));align-items:start}
+.bu-unit{min-width:0;padding:10px 12px 12px;border:1px solid var(--line);border-radius:10px;background:color-mix(in srgb,var(--bg) 55%,var(--panel))}
+.bu-unit-h{display:flex;flex-direction:column;gap:2px;margin:0 0 8px}
+.bu-unit-h b{color:var(--beige);font:700 12px/1.2 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.bu-unit-h small{color:var(--mute);font:500 12px/1.2 Inter,sans-serif}
+.bu-lab{margin:10px 0 5px;color:var(--text);font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.bu-lab:first-of-type{margin-top:0}
+.bu-unit .tiles{grid-template-columns:1fr}
+.bu-idle{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;color:var(--mute);font:500 12px Inter,sans-serif}
+.bu-pane>.bu-idle:first-child{margin-top:0}
+.bu-idle b{margin-right:4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.bu-idle span{padding:3px 9px;border:1px dashed var(--line);border-radius:999px;cursor:default}
+.bu-unit[hidden],.bu-pane[hidden]{display:none!important}
+#home-groups.searching .bu-tabs,#home-groups.searching .bu-idle{display:none}
+#home-groups.searching .bu-pane{display:block;margin-bottom:12px}
+#home-groups.searching .bu-pane-h{display:block}
 
 /* SIB story form */
 .sib-img{margin-top:12px;min-height:120px;display:grid;place-items:center;overflow:hidden;border:1px dashed var(--line);border-radius:10px;background:var(--bg)}
@@ -1683,7 +1730,7 @@ body[data-view="home"] main{padding-bottom:0}
 .home-div-h.plain{color:var(--mute)}
 
 @media(max-width:1180px){
- #home-groups{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"patrol patrol" "warrant tech" "davis davis" "senora senora" "gen misc"}
+ #home-groups{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"patrol patrol" "warrant gen" "bureaus bureaus" "misc misc"}
 }
 @media(max-width:1180px){
  .hero{grid-template-columns:auto minmax(0,1fr)}
@@ -1691,7 +1738,7 @@ body[data-view="home"] main{padding-bottom:0}
  .hero-badge{grid-row:auto;width:42px;height:42px}
 }
 @media(max-width:700px){
- #home-groups{grid-template-columns:1fr;grid-template-areas:"patrol" "warrant" "tech" "davis" "senora" "gen" "misc"}
+ #home-groups{grid-template-columns:1fr;grid-template-areas:"patrol" "warrant" "gen" "bureaus" "misc"}
  .home-divs{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
@@ -1757,6 +1804,25 @@ body[data-view="home"] main{padding-bottom:0}
 .p-adv .padv .pchk{align-self:flex-start;width:fit-content}
 .p-full{grid-column:1/-1}
 .p-rel textarea{min-height:76px}
+/* ===== Field Training Program ===== */
+.ftp-note{margin:0 0 14px;padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--beige);border-radius:10px;background:var(--bg);font-size:13px;line-height:1.55;color:color-mix(in srgb,var(--text) 80%,var(--mute))}
+.ftp-note b{color:var(--text)}
+.ftp-note p{margin:0}
+.ftp-note p+p{margin-top:6px}
+.ftp-note.sm{margin:2px 0 8px;font-size:12.5px}
+.ftp-grow{min-height:120px;overflow:hidden;resize:none}
+.ftp-grow.tall{min-height:220px}
+.ftp-h{margin:18px 0 4px;font:600 13px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--beige)}
+.rt-cat{margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rt-cat h4{margin:0;padding:9px 14px;font:600 12px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;background:color-mix(in srgb,var(--green2) 16%,var(--panel));color:var(--text)}
+.rt-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 18px;padding:9px 14px;border-top:1px solid var(--line)}
+.rt-row>span{flex:1 1 260px;font-size:13.5px}
+.rt-row .seg label{min-width:0;padding:6px 13px;font-size:12.5px}
+.cp-grp{position:sticky;top:0;padding:7px 12px;background:color-mix(in srgb,var(--green2) 18%,var(--panel));color:var(--mute);font:600 11px/1.2 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;z-index:1}
+.cp-opt .ck{flex:0 0 16px;width:16px;height:16px;margin-top:2px;border:1.5px solid var(--mute);border-radius:4px;display:grid;place-items:center}
+.cp-opt.on .ck{background:var(--green);border-color:var(--green)}
+.cp-opt.on .ck::after{content:"";width:8px;height:4px;margin-top:-2px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+.ftp-pick .cp-list{max-height:320px}
     </style>
   </head>
   <body>
@@ -1895,207 +1961,112 @@ body[data-view="home"] main{padding-bottom:0}
             <span>Financial Service Warrant Request</span>
           </button>
         </section>
-        <section class="nav-group" data-group="technology support division">
-          <div class="grp">
-            <span class="grp-label">Technology &amp; Support</span><span class="grp-count">3</span>
+        <section class="nav-group bureaus" data-group="bureaus divisions">
+          <div class="grp"><span class="grp-label">Bureaus</span><span class="grp-count">13</span></div>
+          <div class="bu-item" data-bu="central">
+            <button class="nav bu-div" id="nv-bu-central" data-k="central patrol division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Central Patrol Division</span><em class="bu-n">8</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <div class="bu-item" data-bu="davis">
+                <button class="nav bu-sub" id="nv-bu-davis" data-k="davis station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>Davis Station</b></span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav division" id="nv-bu-davis-oss" data-k="davis oss oss incident report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span>OSS</span></button>
+                  <button class="nav sub" id="nv-oss-incident" data-k="oss incident report" data-parent="nv-bu-davis-oss" onclick="show('oss-incident')"><span>Incident Report</span></button>
+                  <button class="nav sub" id="nv-oss-supplemental" data-k="oss supplemental report" data-parent="nv-bu-davis-oss" onclick="show('oss-supplemental')"><span>Supplemental</span></button>
+                  <button class="nav division" id="nv-bu-davis-k9" data-k="davis k9 davis k9 deployment log canine report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span>K9</span></button>
+                  <button class="nav sub" id="nv-davis-k9-deployment" data-k="davis k9 deployment log canine report" data-parent="nv-bu-davis-k9" onclick="show('davis-k9-deployment')"><span>Deployment Log</span></button>
+                </div>
+              </div>
+              <div class="bu-item" data-bu="senora">
+                <button class="nav bu-sub" id="nv-bu-senora" data-k="senora station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>Senora Station</b></span><em class="bu-n">5</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-senora-logbook" data-k="senora station logbook call report" data-parent="nv-bu-senora" onclick="show('senora-logbook')"><span>Logbook</span></button>
+                  <button class="nav division" id="nv-bu-senora-nccit" data-k="senora nccit north county cit personnel file deputy activity investigation log" data-parent="nv-bu-senora" disabled aria-disabled="true"><span>NCCIT</span></button>
+                  <button class="nav sub" id="nv-nccit" data-k="north county cit personnel file deputy activity investigation log" data-parent="nv-bu-senora-nccit" onclick="show('nccit')"><span>Personnel File</span></button>
+                  <button class="nav sub" id="nv-nccit-supp" data-k="north county cit supplemental file activity investigation" data-parent="nv-bu-senora-nccit" onclick="show('nccit-supp')"><span>Supplemental</span></button>
+                  <button class="nav division" id="nv-bu-senora-k9" data-k="senora k9 senora k9 deployment log canine report" data-parent="nv-bu-senora" disabled aria-disabled="true"><span>K9</span></button>
+                  <button class="nav sub" id="nv-senora-k9-deployment" data-k="senora k9 deployment log canine report" data-parent="nv-bu-senora-k9" onclick="show('senora-k9-deployment')"><span>Deployment Log</span></button>
+                  <button class="nav division" id="nv-bu-senora-tsd" data-k="senora tsd tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora" disabled aria-disabled="true"><span>TSD</span></button>
+                  <button class="nav sub" id="nv-citation" data-k="tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora-tsd" onclick="show('citation')"><span>Citation</span></button>
+                </div>
+              </div>
+            </div>
           </div>
-          <button
-            class="nav"
-            id="nv-lab"
-            data-k="laboratory services requests evidence dna"
-            onclick="show('lab')"
-          >
-            <span>Laboratory Services Requests</span>
-          </button>
-          <button
-            class="nav"
-            id="nv-fleet"
-            data-k="fleet maintenance requests vehicle service"
-            onclick="show('fleet')"
-          >
-            <span>Fleet Maintenance Requests</span>
-          </button>
-          <button
-            class="nav"
-            id="nv-dforensics"
-            data-k="digital forensics requests evidence"
-            onclick="show('dforensics')"
-          >
-            <span>Digital Forensics Requests</span>
-          </button>
-        </section>
-        <section class="nav-group" data-group="divisional generators">
-          <div class="grp">
-            <span class="grp-label">Divisional Generators</span><span class="grp-count">10</span>
+          <div class="bu-item" data-bu="special-ops">
+            <button class="nav bu-div" id="nv-bu-special-ops" data-k="special operations division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Special Operations Division</span><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <button class="nav bu-sub empty" id="nv-bu-csd" data-k="csd canine services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CSD</b> <small>Canine Services Detail</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-esd" data-k="esd emergency services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>ESD</b> <small>Emergency Services Detail</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-sed" data-k="sed special enforcement detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>SED</b> <small>Special Enforcement Detail</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-aero" data-k="aero bureau " data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>Aero Bureau</b></span></button>
+            </div>
           </div>
-          <button
-            class="nav station"
-            id="nv-davis-station-parent"
-            data-k="davis station"
-            disabled
-            aria-disabled="true"
-          >
-            <span>Davis Station</span>
-          </button>
-          <button
-            class="nav division"
-            id="nv-oss-parent"
-            data-k="oss operation safe streets bureau"
-            data-parent="nv-davis-station-parent"
-            disabled
-            aria-disabled="true"
-          >
-            <span>OSS</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-oss-incident"
-            data-k="oss incident report"
-            data-parent="nv-oss-parent"
-            onclick="show('oss-incident')"
-          >
-            <span>Incident Report</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-oss-supplemental"
-            data-k="oss supplemental report"
-            data-parent="nv-oss-parent"
-            onclick="show('oss-supplemental')"
-          >
-            <span>Supplemental</span>
-          </button>
-          <button
-            class="nav division"
-            id="nv-davis-k9-parent"
-            data-k="davis k9 canine team k9"
-            data-parent="nv-davis-station-parent"
-            disabled
-            aria-disabled="true"
-          >
-            <span>K9</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-davis-k9-deployment"
-            data-k="davis k9 deployment log canine report"
-            data-parent="nv-davis-k9-parent"
-            onclick="show('davis-k9-deployment')"
-          >
-            <span>Deployment Log</span>
-          </button>
-          <button
-            class="nav station"
-            id="nv-senora-station-parent"
-            data-k="senora station"
-            disabled
-            aria-disabled="true"
-          >
-            <span>Senora Station</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-senora-logbook"
-            data-k="senora station logbook call report"
-            data-parent="nv-senora-station-parent"
-            onclick="show('senora-logbook')"
-          >
-            <span>Logbook</span>
-          </button>
-          <button
-            class="nav division"
-            id="nv-nccit-parent"
-            data-k="north county cit nccit"
-            data-parent="nv-senora-station-parent"
-            disabled
-            aria-disabled="true"
-          >
-            <span>NCCIT</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-nccit"
-            data-k="north county cit personnel file deputy activity investigation log"
-            data-parent="nv-nccit-parent"
-            onclick="show('nccit')"
-          >
-            <span>Personnel File</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-nccit-supp"
-            data-k="north county cit supplemental file activity investigation"
-            data-parent="nv-nccit-parent"
-            onclick="show('nccit-supp')"
-          >
-            <span>Supplemental</span>
-          </button>
-          <button
-            class="nav division"
-            id="nv-senora-k9-parent"
-            data-k="senora k9 canine team k9"
-            data-parent="nv-senora-station-parent"
-            disabled
-            aria-disabled="true"
-          >
-            <span>K9</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-senora-k9-deployment"
-            data-k="senora k9 deployment log canine report"
-            data-parent="nv-senora-k9-parent"
-            onclick="show('senora-k9-deployment')"
-          >
-            <span>Deployment Log</span>
-          </button>
-          <button
-            class="nav division"
-            id="nv-td-parent"
-            data-k="tsd td traffic services detail traffic"
-            data-parent="nv-senora-station-parent"
-            disabled
-            aria-disabled="true"
-          >
-            <span>TSD</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-citation"
-            data-k="tsd td citation infraction report traffic ticket"
-            data-parent="nv-td-parent"
-            onclick="show('citation')"
-          >
-            <span>Citation</span>
-          </button>
-          <button
-            class="nav division"
-            id="nv-sib-parent"
-            data-k="sib story news release"
-            data-parent="nv-senora-station-parent"
-            disabled
-            aria-disabled="true"
-          >
-            <span>SIB</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-sib-story"
-            data-k="sib story news release article"
-            data-parent="nv-sib-parent"
-            onclick="show('sib-story')"
-          >
-            <span>Story</span>
-          </button>
-          <button
-            class="nav sub"
-            id="nv-sib-activity"
-            data-k="sib activity tracker media interview social post event"
-            data-parent="nv-sib-parent"
-            onclick="show('sib-activity')"
-          >
-            <span>Activity Tracker</span>
-          </button>
+          <div class="bu-item" data-bu="detective">
+            <button class="nav bu-div" id="nv-bu-detective" data-k="detective division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Detective Division</span><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <button class="nav bu-sub empty" id="nv-bu-mcb" data-k="mcb major crimes bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>MCB</b> <small>Major Crimes Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-nb" data-k="nb narcotics bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>NB</b> <small>Narcotics Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-hb" data-k="hb homicide bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>HB</b> <small>Homicide Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-ossb" data-k="ossb operation safe streets bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>OSSB</b> <small>Operation Safe Streets Bureau</small></span></button>
+            </div>
+          </div>
+          <div class="bu-item" data-bu="personnel">
+            <button class="nav bu-div" id="nv-bu-personnel" data-k="personnel command" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Personnel Command</span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <button class="nav bu-sub empty" id="nv-bu-peu" data-k="peu pre-employment unit" data-parent="nv-bu-personnel" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>PEU</b> <small>Pre-Employment Unit</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-tb" data-k="tb training bureau" data-parent="nv-bu-personnel" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>TB</b> <small>Training Bureau</small></span></button>
+          <div class="bu-item" data-bu="ftp">
+            <button class="nav bu-sub" id="nv-bu-ftp" data-k="ftp field training program" data-parent="nv-bu-personnel" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>FTP</b> <small>Field Training Program</small></span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <button class="nav sub" id="nv-ftp-phase1" data-k="ftp phase 1 patrol summary field training fto trainee" data-parent="nv-bu-ftp" onclick="show('ftp-phase1')"><span>Phase 1 Patrol Summary</span></button>
+              <button class="nav sub" id="nv-ftp-phase2" data-k="ftp phase 2 report field training observational fto trainee" data-parent="nv-bu-ftp" onclick="show('ftp-phase2')"><span>Phase 2 Report</span></button>
+              <button class="nav sub" id="nv-ftp-phase3" data-k="ftp phase 3 evaluation field training observational fto trainee" data-parent="nv-bu-ftp" onclick="show('ftp-phase3')"><span>Phase 3 Evaluation</span></button>
+            </div>
+          </div>
+            </div>
+          </div>
+          <div class="bu-item" data-bu="standards">
+            <button class="nav bu-div" id="nv-bu-standards" data-k="professional standards bureaus" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Professional Standards Bureaus</span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <div class="bu-item" data-bu="sib">
+                <button class="nav bu-sub" id="nv-bu-sib" data-k="sib sheriff&#x27;s information bureau" data-parent="nv-bu-standards" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>SIB</b> <small>Sheriff&#x27;s Information Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-sib-story" data-k="sib story news release article" data-parent="nv-bu-sib" onclick="show('sib-story')"><span>Story</span></button>
+                  <button class="nav sub" id="nv-sib-activity" data-k="sib activity tracker media interview social post event" data-parent="nv-bu-sib" onclick="show('sib-activity')"><span>Activity Tracker</span></button>
+                </div>
+              </div>
+              <button class="nav bu-sub empty" id="nv-bu-iab" data-k="iab internal affairs bureau" data-parent="nv-bu-standards" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>IAB</b> <small>Internal Affairs Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-csb" data-k="csb court services bureau" data-parent="nv-bu-standards" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CSB</b> <small>Court Services Bureau</small></span></button>
+            </div>
+          </div>
+          <div class="bu-item" data-bu="tech">
+            <button class="nav bu-div" id="nv-bu-tech" data-k="technology support division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Technology &amp; Support Division</span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <button class="nav bu-sub empty" id="nv-bu-ssb" data-k="ssb scientific services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>SSB</b> <small>Scientific Services Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-cfmb" data-k="cfmb communications &amp; fleet management bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CFMB</b> <small>Communications &amp; Fleet Management Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-nmcc" data-k="nmcc nelson moler communications center" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>NMCC</b> <small>Nelson Moler Communications Center</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-csiu" data-k="csiu crime scene investigation unit" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CSIU</b> <small>Crime Scene Investigation Unit</small></span></button>
+              <div class="bu-item" data-bu="lsu">
+                <button class="nav bu-sub" id="nv-bu-lsu" data-k="lsu laboratory services unit" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>LSU</b> <small>Laboratory Services Unit</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-lab" data-k="laboratory services requests evidence dna" data-parent="nv-bu-lsu" onclick="show('lab')"><span>Laboratory Services Requests</span></button>
+                </div>
+              </div>
+              <div class="bu-item" data-bu="dfu">
+                <button class="nav bu-sub" id="nv-bu-dfu" data-k="dfu digital forensics unit" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>DFU</b> <small>Digital Forensics Unit</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-dforensics" data-k="digital forensics requests evidence" data-parent="nv-bu-dfu" onclick="show('dforensics')"><span>Digital Forensics Requests</span></button>
+                </div>
+              </div>
+              <button class="nav bu-sub empty" id="nv-bu-psb" data-k="psb psychological services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>PSB</b> <small>Psychological Services Bureau</small></span></button>
+              <div class="bu-item" data-bu="fmu">
+                <button class="nav bu-sub" id="nv-bu-fmu" data-k="fmu fleet management unit" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>FMU</b> <small>Fleet Management Unit</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-fleet" data-k="fleet maintenance requests vehicle service" data-parent="nv-bu-fmu" onclick="show('fleet')"><span>Fleet Maintenance Requests</span></button>
+                </div>
+              </div>
+              <button class="nav bu-sub empty" id="nv-bu-vst" data-k="vst veterinary services team" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>VST</b> <small>Veterinary Services Team</small></span></button>
+            </div>
+          </div>
         </section>
         <section class="nav-group" data-group="generators">
           <div class="grp">
@@ -4710,7 +4681,178 @@ body[data-view="home"] main{padding-bottom:0}
           >
         </div>
       </div>
+      <div id="f-ftp-phase1" hidden>
+        <div class="card">
+          <h2><small>FTP</small>Phase 1 Patrol Summary</h2>
+          <div class="body">
+            <div class="ftp-note">
+              <p><b>INSTRUCTION:</b> This section shall briefly document the FTO’s observations of the trainee during Phase 1. It should focus on the trainee’s conduct, engagement, professionalism, communication, ability to follow instruction, response to feedback, basic understanding of Phase 1 topics, and overall readiness to advance to Phase 2.</p>
+            </div>
+            <div class="g">
+              <div class="f"><span>Report Date</span><input type="text" id="ftp1-date" placeholder="Month Day, Year" /></div>
+              <div class="f"><span>Report Time</span><input type="text" id="ftp1-time" placeholder="HH:MM" autocomplete="off" /></div>
+              <div class="f"><span>Phase #</span><input type="text" id="ftp1-phase" value="Phase 1" readonly /></div>
+            </div>
+            <div class="g">
+              <div class="f"><span>Trainee Name</span><input type="text" id="ftp1-trainee-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+              <div class="f"><span>Trainee Employee Number</span><input type="text" id="ftp1-trainee-number" placeholder="#00000" autocomplete="off" /></div>
+              <div class="f"><span>FTO Name</span><input type="text" id="ftp1-fto-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+              <div class="f"><span>FTO Employee Number</span><input type="text" id="ftp1-fto-number" placeholder="#00000" autocomplete="off" /></div>
+            </div>
+            <div class="f">
+              <span>Observations</span>
+              <div class="ftp-note sm"><p>This section should not be written as a patrol narrative or timeline. FTOs should document relevant strengths, concerns, or areas requiring continued attention in an objective and concise manner.</p></div>
+              <textarea id="ftp1-obs" class="ftp-grow" placeholder="Observations go here."></textarea>
+            </div>
+            <div class="f">
+              <span>Delivered Theoretical Knowledge</span>
+              <div class="cp ftp-pick" id="ftp1-checklist"></div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('ftp-phase1')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=189" target="_blank" rel="noopener noreferrer"
+            >Open FTP Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetFtp1()">Reset</button>
+        </div>
+      </div>
+      <div id="f-ftp-phase2" hidden>
+        <div class="card">
+          <h2><small>FTP</small>Phase 2 Report</h2>
+          <div class="body">
+            <div class="ftp-note">
+              <p><b>GRADING SYSTEM — INSTRUCTIONS:</b></p>
+              <p><b>S</b> — A rating of S (Superior) denotes outstanding performance and shall only be attributed if the trainee exceeds expectations.</p>
+              <p><b>C</b> — A rating of C (Competent) is the minimum required to be considered at standard for a solo patrol deputy.</p>
+              <p><b>N/I</b> — A rating of N/I (Needs Improvement) shall be ticked to denote needing further training focused on a specific task.</p>
+              <p><b>N/O</b> — A rating of N/O (Not Observed) shall be ticked for all situations that were not encountered in the patrol.</p>
+              <p><b>NRT</b> — A rating of NRT (Not Responding to Training) shall be given if the trainee does not respond to training.</p>
+            </div>
+            <div class="g">
+              <div class="f"><span>Report Date</span><input type="text" id="ftp2-date" placeholder="Month Day, Year" /></div>
+              <div class="f"><span>Report Time</span><input type="text" id="ftp2-time" placeholder="HH:MM" autocomplete="off" /></div>
+              <div class="f"><span>Phase #</span><select id="ftp2-phase"><option>Phase 2</option></select></div>
+            </div>
+            <div class="g">
+              <div class="f"><span>Trainee Name</span><input type="text" id="ftp2-trainee-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+              <div class="f"><span>Trainee Employee Number</span><input type="text" id="ftp2-trainee-number" placeholder="#00000" autocomplete="off" /></div>
+              <div class="f"><span>FTO Name</span><input type="text" id="ftp2-fto-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+              <div class="f"><span>FTO Employee Number</span><input type="text" id="ftp2-fto-number" placeholder="#00000" autocomplete="off" /></div>
+            </div>
+            <div class="ftp-h">Ratings</div>
+            <div id="ftp2-ratings"></div>
+            <div class="f">
+              <span>Least Satisfactory Performance</span>
+              <textarea id="ftp2-least" class="ftp-grow" placeholder="Detail where the trainee struggled."></textarea>
+            </div>
+            <div class="f">
+              <span>Most Satisfactory Performance</span>
+              <textarea id="ftp2-most" class="ftp-grow" placeholder="Detail where the trainee excelled."></textarea>
+            </div>
+            <div class="f">
+              <span>Report Narrative</span>
+              <textarea id="ftp2-narrative" class="ftp-grow tall" placeholder="Patrol narrative goes here."></textarea>
+            </div>
+            <div class="f">
+              <span>Delivered Practical &amp; Theoretical Knowledge</span>
+              <div class="cp ftp-pick" id="ftp2-checklist"></div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('ftp-phase2')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=189" target="_blank" rel="noopener noreferrer"
+            >Open FTP Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetFtp2()">Reset</button>
+        </div>
+      </div>
+      <div id="f-ftp-phase3" hidden>
+        <div class="card">
+          <h2><small>FTP</small>Phase 3 Evaluation</h2>
+          <div class="body">
+            <div class="ftp-note">
+              <p><b>GRADING SYSTEM — INSTRUCTIONS:</b></p>
+              <p><b>S</b> — A rating of S (Superior) denotes outstanding performance and shall only be attributed if the trainee exceeds expectations.</p>
+              <p><b>C</b> — A rating of C (Competent) is the minimum required to be considered at standard for a solo patrol deputy.</p>
+              <p><b>N/I</b> — A rating of N/I (Needs Improvement) shall be ticked to denote needing further training focused on a specific task.</p>
+              <p><b>N/O</b> — A rating of N/O (Not Observed) shall be ticked for all situations that were not encountered in the patrol.</p>
+              <p><b>NRT</b> — A rating of NRT (Not Responding to Training) shall be given if the trainee does not respond to training.</p>
+            </div>
+            <div class="g">
+              <div class="f"><span>Report Date</span><input type="text" id="ftp3-date" placeholder="Month Day, Year" /></div>
+              <div class="f"><span>Report Time</span><input type="text" id="ftp3-time" placeholder="HH:MM" autocomplete="off" /></div>
+              <div class="f"><span>Phase #</span><input type="text" id="ftp3-phase" value="Phase 3" readonly /></div>
+            </div>
+            <div class="g">
+              <div class="f"><span>Trainee Name</span><input type="text" id="ftp3-trainee-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+              <div class="f"><span>Trainee Employee Number</span><input type="text" id="ftp3-trainee-number" placeholder="#00000" autocomplete="off" /></div>
+              <div class="f"><span>FTO Name</span><input type="text" id="ftp3-fto-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+              <div class="f"><span>FTO Employee Number</span><input type="text" id="ftp3-fto-number" placeholder="#00000" autocomplete="off" /></div>
+            </div>
+            <div class="ftp-h">Ratings</div>
+            <div id="ftp3-ratings"></div>
+            <div class="f">
+              <span>Least Satisfactory Performance</span>
+              <textarea id="ftp3-least" class="ftp-grow" placeholder="Detail where the trainee struggled."></textarea>
+            </div>
+            <div class="f">
+              <span>Most Satisfactory Performance</span>
+              <textarea id="ftp3-most" class="ftp-grow" placeholder="Detail where the trainee excelled."></textarea>
+            </div>
+            <div class="f">
+              <span>Report Narrative</span>
+              <textarea id="ftp3-narrative" class="ftp-grow tall" placeholder="Patrol narrative goes here."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('ftp-phase3')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=189" target="_blank" rel="noopener noreferrer"
+            >Open FTP Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetFtp3()">Reset</button>
+        </div>
+      </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v1.0.9</h2>
+          <div class="body">
+            <h3>v1.0.9</h3>
+            <h3>Bureaus</h3>
+            <ul>
+              <li>
+                Divisional Generators is now called Bureaus and is organized by division: Central Patrol Division (Davis Station, Senora Station), Special Operations Division (CSD, ESD, SED, Aero Bureau), Detective Division (MCB, NB, HB, OSSB), Personnel Command (PEU, TB, FTP), Professional Standards Bureaus (SIB, IAB, CSB) and Technology &amp; Support Division (SSB, CFMB, NMCC, CSIU, LSU, DFU, PSB, FMU, VST).
+              </li>
+              <li>
+                Sidebar: only divisions and their units are listed. Click a division to open its units, then click a unit to see its forms. Opening one closes the others, the division of the form you are using stays open, and units with no forms yet are shown greyed out. Searching opens every matching branch automatically.
+              </li>
+              <li>
+                Home page: Bureaus is a single panel with one tab per division, and only the selected division is shown, so it stays compact as more forms are added. Searching shows matching forms from every division at once.
+              </li>
+              <li>
+                The SIB forms (Story and Activity Tracker) moved from Senora Station to SIB under Professional Standards Bureaus. The Laboratory Services, Digital Forensics and Fleet Maintenance requests moved from the old Technology &amp; Support category to LSU, DFU and FMU under Technology &amp; Support Division.
+              </li>
+              <li>
+                Davis Station and Senora Station keep all their current forms (OSS, K9, NCCIT, TSD, Logbook), now under Central Patrol Division.
+              </li>
+            </ul>
+            <h3>Field Training Program</h3>
+            <ul>
+              <li>
+                Added the Field Training Program (FTP) forms under Personnel Command: Phase 1 Patrol Summary and Phase 2 Report. Each form shows its instructions above the fields, and its Open FTP Forum button goes to the FTP forum.
+              </li>
+              <li>
+                Phase 1 Patrol Summary: report date, report time, phase, trainee and FTO details, an Observations field and a Delivered Theoretical Knowledge dropdown. The dropdown works like the charge picker in the warrants: search it or pick from the grouped list (Classroom &amp; Station Orientation, Department Orientation &amp; Professional Standards, Patrol Role &amp; Equipment Familiarization, Legal Authority &amp; Policy Foundations), choose as many items as needed, and each selected item is listed on its own line in the BBCode.
+              </li>
+              <li>
+                Phase 2 Report (Field Training Observational Report): all 28 ratings are listed by category (Attitude, Appearance, Relationships, Performance, The Handle, Knowledge, Roleplay) with five options next to each, S, C, N/I, N/O and NRT, and the one chosen is the one written in the BBCode. Ratings start on N/O. Least Satisfactory Performance, Most Satisfactory Performance and Report Narrative are open fields that grow taller as more text is typed. The Delivered Practical &amp; Theoretical Knowledge dropdown covers all eight Phase 2 categories, again with one item per line in the BBCode. The Phase # can be set to Phase 2 or Phase 3.
+              </li>
+              <li>
+                Character Details autofill: FTO Name is filled with your name and FTO Employee Number with your badge number. The report date is filled with today's date through the date picker. The report time is left empty on purpose. All of them stay editable.
+              </li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v1.0.8</h2>
           <div class="body">
@@ -5517,6 +5659,9 @@ body[data-view="home"] main{padding-bottom:0}
         "oss-incident",
         "oss-supplemental",
         "davis-k9-deployment",
+        "ftp-phase1",
+        "ftp-phase2",
+        "ftp-phase3",
       ]);
       function updateCharacterDetailsPrompt() {
         const prompt = $("character-details-prompt");
@@ -5670,6 +5815,12 @@ body[data-view="home"] main{padding-bottom:0}
           ["citation-callsign", deputyDetails.callsign],
           ["oss-ir-callsign", deputyDetails.callsign],
           ["oss-supp-callsign", deputyDetails.callsign],
+          ["ftp1-fto-name", fullName],
+          ["ftp1-fto-number", deputyDetails.badgeNumber.trim()],
+          ["ftp2-fto-name", fullName],
+          ["ftp2-fto-number", deputyDetails.badgeNumber.trim()],
+          ["ftp3-fto-name", fullName],
+          ["ftp3-fto-number", deputyDetails.badgeNumber.trim()],
         ].forEach(([id, value]) => prefillDeputyField(id, value));
         updateNcCitTitle();
         drawSheriffReport();
@@ -5727,29 +5878,64 @@ body[data-view="home"] main{padding-bottom:0}
       ).join("");
       $("f-sheriff").addEventListener("input", drawSheriffReport);
       $("f-sheriff").addEventListener("change", drawSheriffReport);
+      function setBu(item, open) {
+        item.classList.toggle("expanded", open);
+        const head = item.querySelector(":scope > .nav");
+        if (head) head.setAttribute("aria-expanded", open);
+      }
+      function toggleBu(button) {
+        const item = button.closest(".bu-item"),
+          open = !item.classList.contains("expanded");
+        [...item.parentElement.children].forEach((sibling) => {
+          if (sibling !== item && sibling.classList.contains("bu-item")) setBu(sibling, false);
+        });
+        setBu(item, open);
+      }
+      function revealBu(button) {
+        let item = button && button.closest(".bu-item");
+        const path = [];
+        while (item) {
+          path.push(item);
+          item = item.parentElement.closest(".bu-item");
+        }
+        document.querySelectorAll(".bureaus .bu-item.expanded").forEach((open) => {
+          if (!path.includes(open)) setBu(open, false);
+        });
+        path.forEach((entry) => setBu(entry, true));
+      }
       function filt(v) {
         v = v.trim().toLocaleLowerCase();
         const buttons = [...document.querySelectorAll(".nav-group .nav")],
           byId = new Map(buttons.map((button) => [button.id, button])),
-          directMatches = new Set(buttons.filter((button) => !v || button.dataset.k.includes(v)));
+          directMatches = new Set(buttons.filter((button) => !v || button.dataset.k.includes(v))),
+          ancestors = (button) => {
+            const list = [];
+            let parent = button.dataset.parent;
+            while (parent && byId.get(parent)) {
+              list.push(byId.get(parent));
+              parent = byId.get(parent).dataset.parent;
+            }
+            return list;
+          };
         document.querySelectorAll(".nav-group").forEach((group) => {
           const categoryMatches = !!v && group.dataset.group.includes(v),
             visibleButtons = new Set(directMatches);
-          for (const button of directMatches) {
-            let parent = button.dataset.parent;
-            while (parent) {
-              const parentButton = byId.get(parent);
-              if (!parentButton) break;
-              visibleButtons.add(parentButton);
-              parent = parentButton.dataset.parent;
-            }
-          }
+          for (const button of directMatches) ancestors(button).forEach((p) => visibleButtons.add(p));
+          if (v)
+            group.querySelectorAll(".nav").forEach((button) => {
+              if (ancestors(button).some((p) => p.dataset.cat && directMatches.has(p))) visibleButtons.add(button);
+            });
           let visible = 0;
           group.querySelectorAll(".nav").forEach((button) => {
             const matches = !v || categoryMatches || visibleButtons.has(button);
             button.style.display = matches ? "" : "none";
             if (matches) visible++;
           });
+          group.querySelectorAll(".bu-item").forEach((item) => {
+            const head = item.querySelector(":scope > .nav");
+            item.style.display = head && head.style.display === "none" ? "none" : "";
+          });
+          group.classList.toggle("searching", !!v && group.classList.contains("bureaus"));
           group.style.display = visible ? "" : "none";
         });
       }
@@ -8703,6 +8889,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "oss-incident",
           "oss-supplemental",
           "davis-k9-deployment",
+          "ftp-phase1",
+          "ftp-phase2",
+          "ftp-phase3",
           "arrest-warrant",
           "search-warrant",
           "electronic-surveillance-warrant",
@@ -8719,6 +8908,10 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         document
           .querySelectorAll(".nav-group")
           .forEach((group) => group.classList.toggle("active", !!group.querySelector(".nav.on")));
+        if (k !== "home") revealBu($("nv-" + k));
+        document
+          .querySelectorAll(".bureaus .bu-item")
+          .forEach((item) => item.classList.toggle("has-on", !!item.querySelector(".nav.on")));
         $("ttl").textContent = {
           home: "Home",
           sheriff: "Sheriff's Report System",
@@ -8742,6 +8935,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "sib-activity": "SIB — Activity Tracker",
           "oss-incident": "OSS — Incident Report",
           "oss-supplemental": "OSS — Supplemental",
+          "ftp-phase1": "FTP — Phase 1 Patrol Summary",
+          "ftp-phase2": "FTP — Phase 2 Report",
+          "ftp-phase3": "FTP — Phase 3 Evaluation",
           "davis-k9-deployment": "K9 — Deployment Log (Davis)",
           "arrest-warrant": "Arrest Warrant",
           "search-warrant": "Search Warrant",
@@ -8990,6 +9186,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "k9-date",
         "dk9-date",
         "citation-date",
+        "ftp1-date",
+        "ftp2-date",
+        "ftp3-date",
       ];
       function datePickerIds(name) {
         if (name === "task-list")
@@ -9682,32 +9881,61 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["search-warrant", "Search Warrant", "Draft a search warrant."],
       ["electronic-surveillance-warrant", "Electronic Surveillance Warrant", "Draft a surveillance warrant."],
       ["financial-service-warrant", "Financial Service Warrant Request", "Draft a financial service warrant request."]]],
-    ["Technology & Support", [
-      ["lab", "Laboratory Services Request", "Request lab services for evidence."],
-      ["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate."],
-      ["dforensics", "Digital Forensics Request", "Request digital forensics on evidence."]]],
-    ["Davis Station", [
-      ["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets.", ["OSS", "Incident Report"]],
-      ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets.", ["OSS", "Supplemental"]],
-      ["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", ["K9", "Deployment Log"]]]],
-    ["Senora Station", [
-      ["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", ["", "Logbook"]],
-      ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", ["NCCIT", "Personnel File"]],
-      ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", ["NCCIT", "Supplemental"]],
-      ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", ["K9", "Deployment Log"]],
-      ["citation", "TSD Citation", "Traffic Services Detail citation.", ["TSD", "Citation"]],
-      ["sib-story", "SIB Story", "Write a news release story for SIB.", ["SIB", "Story"]],
-      ["sib-activity", "SIB Activity Tracker", "Log an SIB activity for the tracker.", ["SIB", "Activity Tracker"]]]],
     ["Generators", [
       ["card", "Business Card Generator", "Design your business card and download it as a PNG."],
       ["depmail", "Email Template", "Departmental email in the official depmail BBCode format."],
       ["email", "Correspondence", "Departmental correspondence in the official BBCode format."]]],
+    ["Bureaus", []],
     ["Miscellaneous", [
       ["deputy", "Character Details", "Save your name, badge, rank and optional callsign to prefill forms."],
       ["updates", "Updates", "See what's new on this site."]]],
   ];
+  // Bureaus: division > unit > forms.  form = [key, title, description, group label, short title]
+  const BU = [
+    { n: "Central Patrol Division", id: "central", u: [
+      { id: "davis", n: "Davis Station", a: "", f: [["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets.", "OSS", "Incident Report"], ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets.", "OSS", "Supplemental"], ["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", "K9", "Deployment Log"]] },
+      { id: "senora", n: "Senora Station", a: "", f: [["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", "", "Logbook"], ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", "NCCIT", "Personnel File"], ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", "NCCIT", "Supplemental"], ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", "K9", "Deployment Log"], ["citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
+    ] },
+    { n: "Special Operations Division", id: "special-ops", u: [
+      { id: "csd", n: "Canine Services Detail", a: "CSD", f: [] },
+      { id: "esd", n: "Emergency Services Detail", a: "ESD", f: [] },
+      { id: "sed", n: "Special Enforcement Detail", a: "SED", f: [] },
+      { id: "aero", n: "Aero Bureau", a: "Aero Bureau", f: [] },
+    ] },
+    { n: "Detective Division", id: "detective", u: [
+      { id: "mcb", n: "Major Crimes Bureau", a: "MCB", f: [] },
+      { id: "nb", n: "Narcotics Bureau", a: "NB", f: [] },
+      { id: "hb", n: "Homicide Bureau", a: "HB", f: [] },
+      { id: "ossb", n: "Operation Safe Streets Bureau", a: "OSSB", f: [] },
+    ] },
+    { n: "Personnel Command", id: "personnel", u: [
+      { id: "peu", n: "Pre-Employment Unit", a: "PEU", f: [] },
+      { id: "tb", n: "Training Bureau", a: "TB", f: [] },
+      { id: "ftp", n: "Field Training Program", a: "FTP", f: [["ftp-phase1", "Phase 1 Patrol Summary", "Document a trainee's Phase 1 observations and delivered knowledge.", "", "Phase 1 Patrol Summary"], ["ftp-phase2", "Phase 2 Report", "Field Training Observational Report with ratings for Phase 2.", "", "Phase 2 Report"], ["ftp-phase3", "Phase 3 Evaluation", "Field Training Observational Report evaluation for Phase 3.", "", "Phase 3 Evaluation"]] },
+    ] },
+    { n: "Professional Standards Bureaus", id: "standards", u: [
+      { id: "sib", n: "Sheriff's Information Bureau", a: "SIB", f: [["sib-story", "SIB Story", "Write a news release story for SIB.", "", "Story"], ["sib-activity", "SIB Activity Tracker", "Log an SIB activity for the tracker.", "", "Activity Tracker"]] },
+      { id: "iab", n: "Internal Affairs Bureau", a: "IAB", f: [] },
+      { id: "csb", n: "Court Services Bureau", a: "CSB", f: [] },
+    ] },
+    { n: "Technology & Support Division", id: "tech", u: [
+      { id: "ssb", n: "Scientific Services Bureau", a: "SSB", f: [] },
+      { id: "cfmb", n: "Communications & Fleet Management Bureau", a: "CFMB", f: [] },
+      { id: "nmcc", n: "Nelson Moler Communications Center", a: "NMCC", f: [] },
+      { id: "csiu", n: "Crime Scene Investigation Unit", a: "CSIU", f: [] },
+      { id: "lsu", n: "Laboratory Services Unit", a: "LSU", f: [["lab", "Laboratory Services Request", "Request lab services for evidence.", "", "Laboratory Services Requests"]] },
+      { id: "dfu", n: "Digital Forensics Unit", a: "DFU", f: [["dforensics", "Digital Forensics Request", "Request digital forensics on evidence.", "", "Digital Forensics Requests"]] },
+      { id: "psb", n: "Psychological Services Bureau", a: "PSB", f: [] },
+      { id: "fmu", n: "Fleet Management Unit", a: "FMU", f: [["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate.", "", "Fleet Maintenance Requests"]] },
+      { id: "vst", n: "Veterinary Services Team", a: "VST", f: [] },
+    ] },
+  ];
+  const buForms = BU.flatMap((d) => d.u.flatMap((u) => u.f.map((f) => ({ f, d, u }))));
+  G.find((x) => x[0] === "Bureaus")[1] = buForms.map(({ f }) => [f[0], f[1], f[2]]);
   const info = {};
   G.forEach(([g, items]) => items.forEach(([k, t, d]) => (info[k] = { g, t, d })));
+  buForms.forEach(({ f, d, u }) => (info[f[0]].g = d.n + " \u00b7 " + u.n));
+  let buSel = "central";
   const RK = "lssd-recent", base = window.show;
   const recents = () => { try { return JSON.parse(localStorage.getItem(RK)) || []; } catch (e) { return []; } };
   const remember = (k) => {
@@ -9737,7 +9965,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("recent").hidden = !rc.length;
     const box = $("home-groups");
     if (!box.children.length) {
-      const AREA = { "Patrol Reports": "patrol", "Warrant Services": "warrant", "Technology & Support": "tech", "Davis Station": "davis", "Senora Station": "senora", "Generators": "gen", "Miscellaneous": "misc" };
+      const AREA = { "Patrol Reports": "patrol", "Warrant Services": "warrant", "Bureaus": "bureaus", "Generators": "gen", "Miscellaneous": "misc" };
       const tile = ([k, t, desc, path], g) => {
         const b = el("button", "tile", t); b.type = "button"; b.onclick = open(k);
         b.title = desc;
@@ -9746,6 +9974,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       };
       const tiles = (list, g) => { const grid = el("div", "tiles"); list.forEach((it) => grid.append(tile(it, g))); return grid; };
       G.forEach(([g, items]) => {
+        if (g === "Bureaus") { box.append(bureauSection(items.length)); return; }
         const sec = el("section"); sec.dataset.g = g; if (AREA[g]) sec.dataset.a = AREA[g];
         const h = el("h3", "home-h", g); h.append(el("span", "", String(items.length)));
         sec.append(h);
@@ -9776,6 +10005,59 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("hq").value = ""; filterHome("");
     fitHome();
   }
+  // Bureaus panel: one tab per division, only the selected division is shown (all of them while searching)
+  function selectBu(sec, id) {
+    buSel = id;
+    sec.querySelectorAll(".bu-tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.d === id)));
+    sec.querySelectorAll(".bu-pane").forEach((p) => p.classList.toggle("on", p.dataset.d === id));
+  }
+  function bureauSection(count) {
+    const sec = el("section", "bu-home"); sec.dataset.g = "Bureaus"; sec.dataset.a = "bureaus";
+    const h = el("h3", "home-h", "Bureaus"); h.append(el("span", "", String(count))); sec.append(h);
+    const tabs = el("div", "bu-tabs"); tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-label", "Divisions");
+    const panes = el("div", "bu-panes");
+    BU.forEach((d) => {
+      const n = d.u.reduce((s, u) => s + u.f.length, 0);
+      const tab = el("button", "bu-tab" + (n ? "" : " idle")); tab.type = "button"; tab.dataset.d = d.id;
+      tab.setAttribute("role", "tab"); tab.append(el("span", "", d.n));
+      if (n) tab.append(el("em", "", String(n)));
+      tab.onclick = () => selectBu(sec, d.id);
+      tabs.append(tab);
+      const pane = el("div", "bu-pane"); pane.dataset.d = d.id; pane.setAttribute("role", "tabpanel");
+      pane.append(el("h4", "bu-pane-h", d.n));
+      const grid = el("div", "bu-units"), idle = [];
+      d.u.forEach((u) => {
+        if (!u.f.length) { idle.push(u); return; }
+        const card = el("div", "bu-unit"), uh = el("h5", "bu-unit-h");
+        uh.append(el("b", "", u.a || u.n)); if (u.a) uh.append(el("small", "", u.n));
+        card.append(uh);
+        let last = null, grid2 = null;
+        u.f.forEach(([k, t, desc, lab, short]) => {
+          if (lab !== last || !grid2) {
+            last = lab;
+            if (lab) card.append(el("div", "bu-lab", lab));
+            grid2 = el("div", "tiles"); card.append(grid2);
+          }
+          const b = el("button", "tile", lab ? short : t); b.type = "button"; b.onclick = open(k);
+          b.title = t + " \u2014 " + desc;
+          b.dataset.title = ["Bureaus", d.n, u.n, u.a, lab, t, short].join(" ").toLowerCase();
+          grid2.append(b);
+        });
+        grid.append(card);
+      });
+      if (grid.children.length) pane.append(grid);
+      if (idle.length) {
+        const row = el("div", "bu-idle", "");
+        row.append(el("b", "", grid.children.length ? "No forms yet" : "No forms in this division yet"));
+        idle.forEach((u) => { const c = el("span", "", u.a || u.n); if (u.a) c.title = u.n; row.append(c); });
+        pane.append(row);
+      }
+      panes.append(pane);
+    });
+    sec.append(tabs, panes);
+    selectBu(sec, buSel);
+    return sec;
+  }
   // vertically center the home content: equal space above and below
   function fitHome() {
     const f = $("f-home");
@@ -9800,6 +10082,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         if (ok) c++;
       });
       s.querySelectorAll(".home-div").forEach((d) => (d.hidden = !d.querySelector(".tile:not([hidden])")));
+      s.querySelectorAll(".bu-unit").forEach((u) => (u.hidden = !u.querySelector(".tile:not([hidden])")));
+      s.querySelectorAll(".bu-pane").forEach((p) => (p.hidden = !!words.length && !p.querySelector(".tile:not([hidden])")));
       s.querySelectorAll(".home-divs").forEach((w) => {
         const vis = [...w.querySelectorAll(".home-div:not([hidden])")];
         w.style.setProperty("--n", vis.length || 1);
@@ -10073,6 +10357,267 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   picker("arrest-crimes", "resetArrestWarrant");
   picker("search-crimes", "resetSearchWarrant");
   picker("electronic-crimes", "resetElectronicWarrant");
+})();
+    </script>
+    <script>
+(() => {
+  const P1 = [
+    ["Classroom & Station Orientation", ["Classroom Orientation", "Station Orientation"]],
+    ["Department Orientation & Professional Standards", ["Chain of Command", "Department Structure", "Conduct Standards & Professionalism", "Ethics & Accountability", "Community Engagement"]],
+    ["Patrol Role & Equipment Familiarization", ["Patrol Responsibilities & Shift Duties", "Equipment & Patrol Vehicle Familiarization", "First Aid Essentials", "(( Department Garage & Vehicles ))"]],
+    ["Legal Authority & Policy Foundations", ["Reasonable Suspicion vs. Probable Cause", "Elements of Offenses", "Detention vs. Arrest", "Use of Force Policy", "Critical Incident Response", "Pursuit Policy"]],
+  ];
+  const P2 = [
+    ["Patrol Communications & Call Management", ["Radio Communication", "MDT/CAD", "Call Response Basics", 'Handling Unit ("The Handle")']],
+    ["Paperwork, Reports & Documentation", ["Common Paperwork", "Report Writing Standards", "Documentation Expectations"]],
+    ["Arrest, Charging & Case Processing", ["Crime Types & Classifications", "Sentencing Enhancements", "(( Pleas ))", "Miranda Rights", "Arrest Processing"]],
+    ["Criminal Procedure & Field Application", ["Decision-Making", "Officer Discretion", "Case Law", "Frisk vs. Search", "Vehicle Searches", "Exigent Circumstances", "Warrants"]],
+    ["Officer Safety & Critical Incidents", ["Situational Awareness", "Contact & Cover", "Scene Safety", "Barricaded Suspects", "Incident Perimeter Setup"]],
+    ["Crime Scene Management & Evidence", ["Evidence Recognition, Preservation & Chain of Custody", "Evidence Collection & Logging", "Crime Scene Containment", "Preliminary Investigations"]],
+    ["Traffic Enforcement", ["Traffic Stops", "License Requirements & Suspensions", "Citations", "Traffic Reports", "Vehicle Impounds"]],
+    ["Vehicle Equipment & Operations", ["Pre-Trip Vehicle Inspection", "Emergency Driving", "Vehicle Pursuits", "Felony / High-Risk Vehicle Stops", "Pursuit Intervention Techniques"]],
+  ];
+  const RT = [
+    ["ATTITUDE", ["Acceptance of Feedback/Criticism", "Attitude toward Police Work", "Integrity/Ethics", "Leadership"]],
+    ["APPEARANCE", ["Uniform & Equipment"]],
+    ["RELATIONSHIPS", ["With Citizens/Community", "With other Agencies' Members"]],
+    ["PERFORMANCE", ["Driving Skill: All Conditions", "Report Writing: Grammar/Spelling/Neatness", "Field Performance: Self-Initiated Field Activity", "Field Performance: General Conditions", "Officer Safety: General Conditions", "Control of Conflict: General Conditions", "Problem-solving Techniques/Decision-making", "Radio Communications", "Mobile Computer Terminal", "Use of Map/GPS: Orientation/Response Time"]],
+    ["THE HANDLE", ["Being the Handling Unit", "Liaising with Deputies as the Handle", "Liaising with the Incident Commander", "Liaising with the Tactical Commander", "Liaising with the Investigative Primary"]],
+    ["KNOWLEDGE", ["Department Policies and Procedures", "Criminal Law", "Criminal Procedure"]],
+    ["(( ROLEPLAY ))", ["Roleplay Quality", "Character Depth/Portrayal", "Out-of-Character Demeanor"]],
+  ];
+  const RV = ["S", "C", "N/I", "N/O", "NRT"];
+  const mk = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; };
+  const val = (id) => document.getElementById(id).value.trim();
+
+  // ---- grouped checklist dropdown (multi-select, same look as the charge picker) ----
+  function checklist(host, groups) {
+    const flat = groups.flatMap((g) => g[1]), sel = new Set();
+    const chips = mk("div", "cp-chips"), q = mk("input", "cp-q"), list = mk("div", "cp-list");
+    q.type = "text"; q.autocomplete = "off"; q.placeholder = "Search or pick the delivered items";
+    q.setAttribute("role", "combobox"); q.setAttribute("aria-label", "Search delivered items"); q.setAttribute("aria-expanded", "false");
+    list.setAttribute("role", "listbox"); list.setAttribute("aria-multiselectable", "true"); list.hidden = true;
+    host.append(chips, q, list);
+    let hits = [], cur = 0;
+    const ordered = () => flat.filter((i) => sel.has(i));
+    const drawChips = () => chips.replaceChildren(...ordered().map((it) => {
+      const s = mk("span", "cp-chip"), b = mk("button", "", "×");
+      s.append(it); b.type = "button"; b.setAttribute("aria-label", "Remove " + it);
+      b.onclick = () => { sel.delete(it); refresh(); };
+      s.append(b); return s;
+    }));
+    const drawList = () => {
+      const top = list.scrollTop, w = q.value.toLowerCase().split(/\s+/).filter(Boolean), nodes = [];
+      hits = [];
+      groups.forEach(([g, items]) => {
+        const m = items.filter((i) => w.every((x) => i.toLowerCase().includes(x) || g.toLowerCase().includes(x)));
+        if (!m.length) return;
+        nodes.push(mk("div", "cp-grp", g));
+        m.forEach((i) => {
+          const idx = hits.length, d = mk("div", "cp-opt" + (sel.has(i) ? " on" : ""));
+          hits.push(i); d.append(mk("i", "ck"), mk("span", "", i));
+          d.setAttribute("role", "option"); d.setAttribute("aria-selected", idx === cur);
+          d.onmousedown = (e) => { e.preventDefault(); cur = idx; toggle(i); };
+          nodes.push(d);
+        });
+      });
+      if (!nodes.length) nodes.push(mk("div", "cp-none", "No item matches. Try a shorter word."));
+      list.replaceChildren(...nodes); list.scrollTop = top;
+    };
+    const refresh = () => { drawChips(); if (!list.hidden) drawList(); };
+    const toggle = (i) => { sel.has(i) ? sel.delete(i) : sel.add(i); refresh(); };
+    const open = (v) => { list.hidden = !v; q.setAttribute("aria-expanded", v); if (v) drawList(); };
+    q.addEventListener("focus", () => open(true));
+    q.addEventListener("click", () => open(true));
+    q.addEventListener("blur", () => open(false));
+    q.addEventListener("input", () => { cur = 0; open(true); });
+    q.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault(); if (list.hidden) { open(true); return; }
+        if (!hits.length) return;
+        cur = (cur + (e.key === "ArrowDown" ? 1 : -1) + hits.length) % hits.length; drawList();
+        const on = list.querySelectorAll(".cp-opt")[cur]; if (on) on.scrollIntoView({ block: "nearest" });
+      } else if (e.key === "Enter") { e.preventDefault(); if (!list.hidden && hits[cur]) toggle(hits[cur]); }
+      else if (e.key === "Escape") open(false);
+    });
+    return { get: ordered, clear: () => { sel.clear(); q.value = ""; refresh(); } };
+  }
+  const pick1 = checklist(document.getElementById("ftp1-checklist"), P1);
+  const pick2 = checklist(document.getElementById("ftp2-checklist"), P2);
+
+  // ---- rating rows (S / C / N/I / N/O / NRT) ----
+  function buildRatings(hostId, prefix) {
+    const host = document.getElementById(hostId);
+    let n = 0;
+    RT.forEach(([cat, items]) => {
+      const box = mk("div", "rt-cat"); box.append(mk("h4", "", cat));
+      items.forEach((label) => {
+        n++;
+        const row = mk("div", "rt-row"), seg = mk("div", "seg");
+        row.append(mk("span", "", n + ". " + label));
+        seg.setAttribute("role", "radiogroup"); seg.setAttribute("aria-label", n + ". " + label + " rating");
+        RV.forEach((v, i) => {
+          const inp = mk("input"); inp.type = "radio"; inp.name = prefix + "-r" + n; inp.id = prefix + "-r" + n + "-" + i; inp.value = v;
+          if (v === "N/O") inp.checked = true;
+          const lb = mk("label", "", v); lb.htmlFor = inp.id; seg.append(inp, lb);
+        });
+        row.append(seg); box.append(row);
+      });
+      host.append(box);
+    });
+    return n;
+  }
+  const rn = buildRatings("ftp2-ratings", "ftp2");
+  buildRatings("ftp3-ratings", "ftp3");
+  const ratingOf = (prefix, n) => { const c = document.querySelector('input[name="' + prefix + '-r' + n + '"]:checked'); return c ? c.value : "N/O"; };
+
+  // ---- textareas that grow with their content ----
+  const grow = (t) => { t.style.height = "auto"; t.style.height = t.scrollHeight + 2 + "px"; };
+  const growAll = () => document.querySelectorAll("#f-ftp-phase1 .ftp-grow, #f-ftp-phase2 .ftp-grow, #f-ftp-phase3 .ftp-grow").forEach((t) => { if (t.offsetParent) grow(t); });
+  document.querySelectorAll(".ftp-grow").forEach((t) => t.addEventListener("input", () => grow(t)));
+
+  // ---- BBCode ----
+  const sz = (t) => "[size=85]" + t + "[/size]";
+  const head = (title) => [
+    "[block=20,20,white,white][center][img]https://i.imgur.com/LEWTXbL.png[/img]", "",
+    "[size=85][b]" + title + "[/b]", "LOS SANTOS COUNTY SHERIFF'S DEPARTMENT — FIELD TRAINING PROGRAM[/size]", "[hr][/hr][/center]", "",
+  ];
+  const infoTables = (p, phase) => [
+    "[transtable=Arial]", "[tr]",
+    "[td][size=90][b]REPORT DATE[/b][/size][/td]", "[td][size=90][b]REPORT TIME[/b][/size][/td]", "[td][size=90][b]PHASE #[/b][/size][/td]", "[/tr]", "[tr]",
+    "[td]" + sz(formatPickerDate(val(p + "-date")) || "Month Day, Year") + "[/td]",
+    "[td]" + sz(val(p + "-time") || "HH:MM") + "[/td]",
+    "[td]" + sz(phase) + "[/td]", "[/tr]", "[/transtable]", "",
+    "[transtable=Arial]", "[tr]",
+    "[td][size=90][b]TRAINEE NAME[/b][/size][/td]", "[td][size=90][b]EMPLOYEE NUMBER[/b][/size][/td]", "[td][size=90][b]FTO NAME[/b][/size][/td]", "[td][size=90][b]EMPLOYEE NUMBER[/b][/size][/td]", "[/tr]", "[tr]",
+    "[td]" + sz(val(p + "-trainee-name") || " ") + "[/td]",
+    "[td]" + sz(val(p + "-trainee-number") || " ") + "[/td]",
+    "[td]" + sz(val(p + "-fto-name") || " ") + "[/td]",
+    "[td]" + sz(val(p + "-fto-number") || " ") + "[/td]", "[/tr]", "[/transtable]", "",
+  ];
+  const textBox = (title, body) => [
+    "[transtable=Arial]", "[tr]", "[td][b][center][size=90]" + title + "[/size][/center][/b][/td]", "[/tr]", "[tr]", "[td]", body, "[/td]", "[/tr]", "[/transtable]",
+  ];
+  const listBody = (items, fallback) => items.length ? items.map(sz).join("\n") : sz(fallback);
+
+  function buildP1() {
+    return [
+      ...head("PHASE 1 PATROL SUMMARY"),
+      ...infoTables("ftp1", "Phase 1"),
+      "[size=80][b]INSTRUCTION[/b]:[i]This section shall briefly document the FTO’s observations of the trainee during Phase 1. It should focus on the trainee’s conduct, engagement, professionalism, communication, ability to follow instruction, response to feedback, basic understanding of Phase 1 topics, and overall readiness to advance to Phase 2.[/i][/size]", "",
+      ...textBox("OBSERVATIONS", sz(val("ftp1-obs") || "Observations go here.")), "",
+      "[size=80][i]This section should not be written as a patrol narrative or timeline. FTOs should document relevant strengths, concerns, or areas requiring continued attention in an objective and concise manner.[/i][/size]", "",
+      ...textBox("DELIVERED THEORETICAL KNOWLEDGE", listBody(pick1.get(), "Covered checklist items go here.")),
+      "[/block]",
+    ].join("\n");
+  }
+  function buildP2() {
+    const out = [
+      ...head("FIELD TRAINING OBSERVATIONAL REPORT"),
+      ...infoTables("ftp2", val("ftp2-phase") || "Phase 2"),
+      "[transtable=Arial]", "[tr]", "[td][size=90][b][center]GRADING SYSTEM[/center][/b][/size][/td]", "[/tr]", "[tr]",
+      "[td][justify][size=85][b]INSTRUCTIONS:[/b][/size]",
+      "[indent=25][size=85]S — A rating of S (Superior) denotes outstanding performance and shall only be attributed if the trainee exceeds expectations.[/size]",
+      "[size=85]C — A rating of C (Competent) is the minimum required to be considered at standard for a solo patrol deputy.[/size]",
+      "[size=85]N/I — A rating of N/I (Needs Improvement) shall be ticked to denote needing further training focused on a specific task.[/size]",
+      "[size=85]N/O — A rating of N/O (Not Observed) shall be ticked for all situations that were not encountered in the patrol.[/size]",
+      "[size=85]NRT — A rating of NRT (Not Responding to Training) shall be given if the trainee does not respond to training.[/size][/indent][/justify][/td]",
+      "[/tr]", "[/transtable]", "",
+    ];
+    let n = 0;
+    RT.forEach(([cat, items]) => {
+      const labels = [], rates = [];
+      items.forEach((label) => { n++; labels.push(sz(n + ". " + label)); rates.push(sz(ratingOf("ftp2", n))); });
+      out.push(
+        "[table=Arial]", "[tr]",
+        "[tdwidth=1,black,white,middle,center,45,2][size=90][b]" + cat + "[/b][/size][/tdwidth]",
+        "[tdwidth=1,black,white,middle,center,10,2][size=90][center][b]RATING[/b][/center][/size][/tdwidth]", "[/tr]", "[tr]",
+        "[td]" + labels.join("[hr][/hr]\n") + "[/td]",
+        "[td][center]" + rates.join("[hr][/hr]\n") + "[/center][/td]", "[/tr]", "[tr][/tr]", "[/table]", "",
+      );
+    });
+    out.push(
+      ...textBox("LEAST SATISFACTORY PERFORMANCE", sz(val("ftp2-least") || "Detail where the trainee struggled.")),
+      ...textBox("MOST SATISFACTORY PERFORMANCE", sz(val("ftp2-most") || "Detail where the trainee excelled.")),
+      ...textBox("REPORT NARRATIVE", sz(val("ftp2-narrative") || "Patrol narrative goes here.")), "",
+      ...textBox("DELIVERED PRACTICAL & THEORETICAL KNOWLEDGE", listBody(pick2.get(), "Covered checklist items go here.")),
+      "[/block]",
+    );
+    return out.join("\n");
+  }
+  function buildP3() {
+    const out = [
+      ...head("FIELD TRAINING OBSERVATIONAL REPORT"),
+      ...infoTables("ftp3", "Phase 3"),
+      "[transtable=Arial]", "[tr]", "[td][size=90][b][center]GRADING SYSTEM[/center][/b][/size][/td]", "[/tr]", "[tr]",
+      "[td][justify][size=85][b]INSTRUCTIONS:[/b][/size]",
+      "[indent=25][size=85]S — A rating of S (Superior) denotes outstanding performance and shall only be attributed if the trainee exceeds expectations.[/size]",
+      "[size=85]C — A rating of C (Competent) is the minimum required to be considered at standard for a solo patrol deputy.[/size]",
+      "[size=85]N/I — A rating of N/I (Needs Improvement) shall be ticked to denote needing further training focused on a specific task.[/size]",
+      "[size=85]N/O — A rating of N/O (Not Observed) shall be ticked for all situations that were not encountered in the patrol.[/size]",
+      "[size=85]NRT — A rating of NRT (Not Responding to Training) shall be given if the trainee does not respond to training.[/size][/indent][/justify][/td]",
+      "[/tr]", "[/transtable]", "",
+    ];
+    let n = 0;
+    RT.forEach(([cat, items]) => {
+      const labels = [], rates = [];
+      items.forEach((label) => { n++; labels.push(sz(n + ". " + label)); rates.push(sz(ratingOf("ftp3", n))); });
+      out.push(
+        "[table=Arial]", "[tr]",
+        "[tdwidth=1,black,white,middle,center,45,2][size=90][b]" + cat + "[/b][/size][/tdwidth]",
+        "[tdwidth=1,black,white,middle,center,10,2][size=90][center][b]RATING[/b][/center][/size][/tdwidth]", "[/tr]", "[tr]",
+        "[td]" + labels.join("[hr][/hr]\n") + "[/td]",
+        "[td][center]" + rates.join("[hr][/hr]\n") + "[/center][/td]", "[/tr]", "[tr][/tr]", "[/table]", "",
+      );
+    });
+    out.push(
+      ...textBox("LEAST SATISFACTORY PERFORMANCE", sz(val("ftp3-least") || "Detail where the trainee struggled.")),
+      ...textBox("MOST SATISFACTORY PERFORMANCE", sz(val("ftp3-most") || "Detail where the trainee excelled.")),
+      ...textBox("REPORT NARRATIVE", sz(val("ftp3-narrative") || "Patrol narrative goes here.")), "",
+      ...textBox("DELIVERED PRACTICAL & THEORETICAL KNOWLEDGE", sz("Phase 3 Evaluation. Does not apply.")),
+      "[/block]",
+    );
+    return out.join("\n");
+  }
+
+  // ---- reset / today's date ----
+  const setToday = (id) => { document.getElementById(id).value = taskListTodayDate(); updateTaskListDateLabel(id); };
+  window.resetFtp1 = function () {
+    ["ftp1-time", "ftp1-trainee-name", "ftp1-trainee-number", "ftp1-fto-name", "ftp1-fto-number", "ftp1-obs"].forEach((id) => (document.getElementById(id).value = ""));
+    pick1.clear(); setToday("ftp1-date"); applyDeputyDetails(); growAll();
+  };
+  window.resetFtp2 = function () {
+    ["ftp2-time", "ftp2-trainee-name", "ftp2-trainee-number", "ftp2-fto-name", "ftp2-fto-number", "ftp2-least", "ftp2-most", "ftp2-narrative"].forEach((id) => (document.getElementById(id).value = ""));
+    document.getElementById("ftp2-phase").selectedIndex = 0;
+    for (let i = 1; i <= rn; i++) document.getElementById("ftp2-r" + i + "-3").checked = true;
+    pick2.clear(); setToday("ftp2-date"); applyDeputyDetails(); growAll();
+  };
+  window.resetFtp3 = function () {
+    ["ftp3-time", "ftp3-trainee-name", "ftp3-trainee-number", "ftp3-fto-name", "ftp3-fto-number", "ftp3-least", "ftp3-most", "ftp3-narrative"].forEach((id) => (document.getElementById(id).value = ""));
+    document.getElementById("ftp3-phase").value = "Phase 3";
+    for (let i = 1; i <= rn; i++) document.getElementById("ftp3-r" + i + "-3").checked = true;
+    setToday("ftp3-date"); applyDeputyDetails(); growAll();
+  };
+  setToday("ftp1-date"); setToday("ftp2-date"); setToday("ftp3-date");
+
+  // ---- hook into copy + navigation ----
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "ftp-phase1" && k !== "ftp-phase2" && k !== "ftp-phase3") return baseCopy.apply(this, arguments);
+    const txt = k === "ftp-phase1" ? buildP1() : k === "ftp-phase2" ? buildP2() : buildP3();
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  };
+  const baseShow = window.show;
+  window.show = function (k) {
+    baseShow.apply(this, arguments);
+    if (k === "ftp-phase1" || k === "ftp-phase2" || k === "ftp-phase3") requestAnimationFrame(growAll);
+  };
+  window.__ftp = { buildP1, buildP2, buildP3 };
 })();
     </script>
   </body>
