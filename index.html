@@ -1549,6 +1549,7 @@ aside{width:264px;padding:18px 12px 14px;gap:2px}
 .bureaus .nav.bu-sub.empty{color:var(--mute);opacity:.8}
 .bureaus .nav.bu-sub.empty b{font-weight:600}
 .bureaus .nav.bu-sub span,.bureaus .nav.bu-div span{flex:1;min-width:0}
+.bureaus .bu-ico{flex:0 0 auto;height:1.25em;width:auto;max-width:1.6em;object-fit:contain;margin-right:7px;vertical-align:middle}
 .bureaus .bu-n{flex:0 0 auto;margin-left:8px;padding:0 6px;border-radius:99px;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--mute);font:600 11px/17px Inter,sans-serif;font-style:normal}
 .bureaus .bu-chev{flex:0 0 auto;width:6px;height:6px;margin:0 3px 2px 9px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(-45deg);transition:transform .15s}
 .bureaus .bu-item.expanded>.nav>.bu-chev{transform:rotate(45deg) translate(-1px,-1px)}
@@ -1967,25 +1968,25 @@ body[data-view="home"] main{padding-bottom:0}
             <button class="nav bu-div" id="nv-bu-central" data-k="central patrol division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Central Patrol Division</span><em class="bu-n">8</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
               <div class="bu-item" data-bu="davis">
-                <button class="nav bu-sub" id="nv-bu-davis" data-k="davis station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>Davis Station</b></span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-davis" data-k="davis station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.booskit.dev/gtaw/dvs.png" alt="" /><b>Davis Station</b></span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
-                  <button class="nav division" id="nv-bu-davis-oss" data-k="davis oss oss incident report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span>OSS</span></button>
+                  <button class="nav division" id="nv-bu-davis-oss" data-k="davis oss oss incident report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/wicoxIri19.png/raw" alt="" />OSS</span></button>
                   <button class="nav sub" id="nv-oss-incident" data-k="oss incident report" data-parent="nv-bu-davis-oss" onclick="show('oss-incident')"><span>Incident Report</span></button>
                   <button class="nav sub" id="nv-oss-supplemental" data-k="oss supplemental report" data-parent="nv-bu-davis-oss" onclick="show('oss-supplemental')"><span>Supplemental</span></button>
-                  <button class="nav division" id="nv-bu-davis-k9" data-k="davis k9 davis k9 deployment log canine report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span>K9</span></button>
+                  <button class="nav division" id="nv-bu-davis-k9" data-k="davis k9 davis k9 deployment log canine report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/KUnabIMA49.png/raw" alt="" />K9</span></button>
                   <button class="nav sub" id="nv-davis-k9-deployment" data-k="davis k9 deployment log canine report" data-parent="nv-bu-davis-k9" onclick="show('davis-k9-deployment')"><span>Deployment Log</span></button>
                 </div>
               </div>
               <div class="bu-item" data-bu="senora">
-                <button class="nav bu-sub" id="nv-bu-senora" data-k="senora station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>Senora Station</b></span><em class="bu-n">5</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-senora" data-k="senora station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.imgur.com/RL3Ueh7.png" alt="" /><b>Senora Station</b></span><em class="bu-n">5</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
                   <button class="nav sub" id="nv-senora-logbook" data-k="senora station logbook call report" data-parent="nv-bu-senora" onclick="show('senora-logbook')"><span>Logbook</span></button>
-                  <button class="nav division" id="nv-bu-senora-nccit" data-k="senora nccit north county cit personnel file deputy activity investigation log" data-parent="nv-bu-senora" disabled aria-disabled="true"><span>NCCIT</span></button>
+                  <button class="nav division" id="nv-bu-senora-nccit" data-k="senora nccit north county cit personnel file deputy activity investigation log" data-parent="nv-bu-senora" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/koBiZiJI23.png/raw" alt="" />NCCIT</span></button>
                   <button class="nav sub" id="nv-nccit" data-k="north county cit personnel file deputy activity investigation log" data-parent="nv-bu-senora-nccit" onclick="show('nccit')"><span>Personnel File</span></button>
                   <button class="nav sub" id="nv-nccit-supp" data-k="north county cit supplemental file activity investigation" data-parent="nv-bu-senora-nccit" onclick="show('nccit-supp')"><span>Supplemental</span></button>
-                  <button class="nav division" id="nv-bu-senora-k9" data-k="senora k9 senora k9 deployment log canine report" data-parent="nv-bu-senora" disabled aria-disabled="true"><span>K9</span></button>
+                  <button class="nav division" id="nv-bu-senora-k9" data-k="senora k9 senora k9 deployment log canine report" data-parent="nv-bu-senora" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/WuQOkuFO62.png/raw" alt="" />K9</span></button>
                   <button class="nav sub" id="nv-senora-k9-deployment" data-k="senora k9 deployment log canine report" data-parent="nv-bu-senora-k9" onclick="show('senora-k9-deployment')"><span>Deployment Log</span></button>
-                  <button class="nav division" id="nv-bu-senora-tsd" data-k="senora tsd tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora" disabled aria-disabled="true"><span>TSD</span></button>
+                  <button class="nav division" id="nv-bu-senora-tsd" data-k="senora tsd tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/POhExOnA34/raw" alt="" />TSD</span></button>
                   <button class="nav sub" id="nv-citation" data-k="tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora-tsd" onclick="show('citation')"><span>Citation</span></button>
                 </div>
               </div>
@@ -1995,31 +1996,30 @@ body[data-view="home"] main{padding-bottom:0}
             <button class="nav bu-div" id="nv-bu-special-ops" data-k="special operations division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Special Operations Division</span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
               <div class="bu-item" data-bu="csd">
-                <button class="nav bu-sub" id="nv-bu-csd" data-k="csd canine services detail" data-parent="nv-bu-special-ops" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>CSD</b> <small>Canine Services Detail</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-csd" data-k="csd canine services detail" data-parent="nv-bu-special-ops" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/codohEyi12.png/raw" alt="" /><b>CSD</b> <small>Canine Services Detail</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
                   <button class="nav division" id="nv-bu-csd-k9" data-k="csd k9 csd k9 deployment log canine report" data-parent="nv-bu-csd" disabled aria-disabled="true"><span>K9</span></button>
                   <button class="nav sub" id="nv-csd-k9-deployment" data-k="csd k9 deployment log canine report" data-parent="nv-bu-csd-k9" onclick="show('csd-k9-deployment')"><span>Deployment Log</span></button>
                 </div>
               </div>
-              <button class="nav bu-sub empty" id="nv-bu-esd" data-k="esd emergency services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>ESD</b> <small>Emergency Services Detail</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-sed" data-k="sed special enforcement detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>SED</b> <small>Special Enforcement Detail</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-aero" data-k="aero bureau " data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>Aero Bureau</b></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-esd" data-k="esd emergency services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/pozejEFO29.png/raw" alt="" /><b>ESD</b> <small>Emergency Services Detail</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-sed" data-k="sed special enforcement detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/gAluTOwo92.png/raw" alt="" /><b>SED</b> <small>Special Enforcement Detail</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-aero" data-k="aero bureau " data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/VozAReka49.png/raw" alt="" /><b>Aero Bureau</b></span></button>
             </div>
           </div>
           <div class="bu-item" data-bu="detective">
             <button class="nav bu-div" id="nv-bu-detective" data-k="detective division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Detective Division</span><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
-              <button class="nav bu-sub empty" id="nv-bu-mcb" data-k="mcb major crimes bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>MCB</b> <small>Major Crimes Bureau</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-nb" data-k="nb narcotics bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>NB</b> <small>Narcotics Bureau</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-hb" data-k="hb homicide bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>HB</b> <small>Homicide Bureau</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-ossb" data-k="ossb operation safe streets bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>OSSB</b> <small>Operation Safe Streets Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-mcb" data-k="mcb major crimes bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/VugOWIya00.png/raw" alt="" /><b>MCB</b> <small>Major Crimes Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-nb" data-k="nb narcotics bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/kIgOjoKi30.webp/raw" alt="" /><b>NB</b> <small>Narcotics Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-hb" data-k="hb homicide bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/gOVAyOFU30.png/raw" alt="" /><b>HB</b> <small>Homicide Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-ossb" data-k="ossb operation safe streets bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/wicoxIri19.png/raw" alt="" /><b>OSSB</b> <small>Operation Safe Streets Bureau</small></span></button>
             </div>
           </div>
           <div class="bu-item" data-bu="personnel">
             <button class="nav bu-div" id="nv-bu-personnel" data-k="personnel command" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Personnel Command</span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
-              <button class="nav bu-sub empty" id="nv-bu-peu" data-k="peu pre-employment unit" data-parent="nv-bu-personnel" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>PEU</b> <small>Pre-Employment Unit</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-tb" data-k="tb training bureau" data-parent="nv-bu-personnel" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>TB</b> <small>Training Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-peu" data-k="peu pre-employment unit" data-parent="nv-bu-personnel" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/COLUxAZI01.png/raw" alt="" /><b>PEU</b> <small>Pre-Employment Unit</small></span></button>
           <div class="bu-item" data-bu="ftp">
             <button class="nav bu-sub" id="nv-bu-ftp" data-k="ftp field training program" data-parent="nv-bu-personnel" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>FTP</b> <small>Field Training Program</small></span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
@@ -2034,21 +2034,21 @@ body[data-view="home"] main{padding-bottom:0}
             <button class="nav bu-div" id="nv-bu-standards" data-k="professional standards bureaus" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Professional Standards Bureaus</span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
               <div class="bu-item" data-bu="sib">
-                <button class="nav bu-sub" id="nv-bu-sib" data-k="sib sheriff&#x27;s information bureau" data-parent="nv-bu-standards" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>SIB</b> <small>Sheriff&#x27;s Information Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-sib" data-k="sib sheriff&#x27;s information bureau" data-parent="nv-bu-standards" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/CiSILABa04.png/raw" alt="" /><b>SIB</b> <small>Sheriff&#x27;s Information Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
                   <button class="nav sub" id="nv-sib-story" data-k="sib story news release article" data-parent="nv-bu-sib" onclick="show('sib-story')"><span>Story</span></button>
                   <button class="nav sub" id="nv-sib-activity" data-k="sib activity tracker media interview social post event" data-parent="nv-bu-sib" onclick="show('sib-activity')"><span>Activity Tracker</span></button>
                 </div>
               </div>
-              <button class="nav bu-sub empty" id="nv-bu-iab" data-k="iab internal affairs bureau" data-parent="nv-bu-standards" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>IAB</b> <small>Internal Affairs Bureau</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-csb" data-k="csb court services bureau" data-parent="nv-bu-standards" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CSB</b> <small>Court Services Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-iab" data-k="iab internal affairs bureau" data-parent="nv-bu-standards" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/fohaYuPo27.png/raw" alt="" /><b>IAB</b> <small>Internal Affairs Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-csb" data-k="csb court services bureau" data-parent="nv-bu-standards" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/zUTExamO24.png/raw" alt="" /><b>CSB</b> <small>Court Services Bureau</small></span></button>
             </div>
           </div>
           <div class="bu-item" data-bu="tech">
             <button class="nav bu-div" id="nv-bu-tech" data-k="technology support division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Technology &amp; Support Division</span><em class="bu-n">4</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
-              <button class="nav bu-sub empty" id="nv-bu-ssb" data-k="ssb scientific services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>SSB</b> <small>Scientific Services Bureau</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-cfmb" data-k="cfmb communications &amp; fleet management bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CFMB</b> <small>Communications &amp; Fleet Management Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-ssb" data-k="ssb scientific services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.humour.ovh/WOho1/BIZAZAZu70.png/raw" alt="" /><b>SSB</b> <small>Scientific Services Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-cfmb" data-k="cfmb communications &amp; fleet management bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/PiyIcuSu04.png/raw" alt="" /><b>CFMB</b> <small>Communications &amp; Fleet Management Bureau</small></span></button>
               <button class="nav bu-sub empty" id="nv-bu-nmcc" data-k="nmcc nelson moler communications center" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>NMCC</b> <small>Nelson Moler Communications Center</small></span></button>
               <button class="nav bu-sub empty" id="nv-bu-csiu" data-k="csiu crime scene investigation unit" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CSIU</b> <small>Crime Scene Investigation Unit</small></span></button>
               <div class="bu-item" data-bu="lsu">
@@ -2063,7 +2063,7 @@ body[data-view="home"] main{padding-bottom:0}
                   <button class="nav sub" id="nv-dforensics" data-k="digital forensics requests evidence" data-parent="nv-bu-dfu" onclick="show('dforensics')"><span>Digital Forensics Requests</span></button>
                 </div>
               </div>
-              <button class="nav bu-sub empty" id="nv-bu-psb" data-k="psb psychological services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>PSB</b> <small>Psychological Services Bureau</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-psb" data-k="psb psychological services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/halACEdo29.png/raw" alt="" /><b>PSB</b> <small>Psychological Services Bureau</small></span></button>
               <div class="bu-item" data-bu="fmu">
                 <button class="nav bu-sub" id="nv-bu-fmu" data-k="fmu fleet management unit" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>FMU</b> <small>Fleet Management Unit</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
@@ -2071,7 +2071,7 @@ body[data-view="home"] main{padding-bottom:0}
                 </div>
               </div>
               <div class="bu-item" data-bu="vst">
-                <button class="nav bu-sub" id="nv-bu-vst" data-k="vst veterinary services team" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>VST</b> <small>Veterinary Services Team</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-vst" data-k="vst veterinary services team" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/nayePoyA42.png/raw" alt="" /><b>VST</b> <small>Veterinary Services Team</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
                   <button class="nav sub" id="nv-vst-request" data-k="vst veterinary services request k9 vet appointment" data-parent="nv-bu-vst" onclick="show('vst-request')"><span>Veterinary Services Request</span></button>
                 </div>
@@ -10335,7 +10335,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     ] },
     { n: "Personnel Command", id: "personnel", u: [
       { id: "peu", n: "Pre-Employment Unit", a: "PEU", f: [] },
-      { id: "tb", n: "Training Bureau", a: "TB", f: [] },
       { id: "ftp", n: "Field Training Program", a: "FTP", f: [["ftp-phase1", "Phase 1 Patrol Summary", "Document a trainee's Phase 1 observations and delivered knowledge.", "", "Phase 1 Patrol Summary"], ["ftp-phase2", "Phase 2 Report", "Field Training Observational Report with ratings for Phase 2.", "", "Phase 2 Report"], ["ftp-phase3", "Phase 3 Evaluation", "Field Training Evaluation Report for Phase 3.", "", "Phase 3 Evaluation"]] },
     ] },
     { n: "Professional Standards Bureaus", id: "standards", u: [
