@@ -6745,7 +6745,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             </ul>
             <h3>Faster to use</h3>
             <ul>
-              <li>Charge search shows a penalty preview and the charge definition. Press Enter on an exact charge number to add it and move to the next row, duplicate a charge, or tap a recent-charge chip.</li>
+              <li>Charge search shows a penalty preview and the charge definition. Press Enter on an exact charge number to pick it, duplicate a charge, or tap a recent-charge chip.</li>
               <li>The form autosaves and offers to restore an unfinished report. Reset has an Undo. A checklist beside the report shows what is still missing and jumps to it.</li>
               <li>Recent reports keeps your last 5 copied reports on this device, so you can reopen one. Ctrl+Enter calculates, then copies.</li>
               <li>The clock icon on time fields is now visible in dark mode.</li>
@@ -13672,18 +13672,11 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             setOpen(false);
             input.value = current();
           };
-          const choose = (id, viaKeyboard) => {
+          const choose = (id) => {
             if (!PENAL[id]) return;
             if (row.chargeId !== id) fillCharge(row, id);
             noteCharge(id);
             renderCharges();
-            if (viaKeyboard) {
-              // keep the flow going: a fresh row, focused, ready for the next charge
-              newCharge();
-              renderCharges();
-              const last = document.querySelector("#ar-charges .ar-charge:last-child .ar-cin");
-              if (last) last.focus();
-            }
           };
           input.addEventListener("focus", () => {
             input.select();
@@ -13716,7 +13709,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
               e.preventDefault();
               const typed = input.value.trim().toLowerCase(),
                 pick = opts[active] || opts.find((o) => o.dataset.id.toLowerCase() === typed) || (opts.length === 1 ? opts[0] : null);
-              if (pick) choose(pick.dataset.id, true);
+              if (pick) choose(pick.dataset.id);
             } else if (e.key === "Escape") {
               close();
               input.blur();
@@ -13726,7 +13719,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             const btn = e.target.closest(".ar-opt");
             if (!btn) return;
             e.preventDefault();
-            choose(btn.dataset.id, false);
+            choose(btn.dataset.id);
           });
           const bind = (sel, key) => {
             const n = node.querySelector(sel);
