@@ -1553,8 +1553,6 @@ aside{width:264px;padding:18px 12px 14px;gap:2px}
 .bureaus .bu-n{flex:0 0 auto;margin-left:8px;padding:0 6px;border-radius:99px;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--mute);font:600 11px/17px Inter,sans-serif;font-style:normal}
 .bureaus .bu-chev{flex:0 0 auto;width:6px;height:6px;margin:0 3px 2px 9px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(-45deg);transition:transform .15s}
 .bureaus .bu-item.expanded>.nav>.bu-chev{transform:rotate(45deg) translate(-1px,-1px)}
-.bureaus .bu-item.has-on>.nav{color:var(--beige)}
-.bureaus .bu-item.has-on>.nav small{color:var(--mute)}
 .bureaus .nav.division{width:100%;margin:6px 0 1px;padding:3px 8px;border-left:2px solid var(--green);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
 .bureaus .bu-body .nav.sub{width:100%;margin:1px 0;padding:6px 8px}
 @media(prefers-reduced-motion:reduce){.bureaus .bu-chev{transition:none}}
@@ -9384,9 +9382,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           .querySelectorAll(".nav-group")
           .forEach((group) => group.classList.toggle("active", !!group.querySelector(".nav.on")));
         if (k !== "home") revealBu($("nv-" + k));
-        document
-          .querySelectorAll(".bureaus .bu-item")
-          .forEach((item) => item.classList.toggle("has-on", !!item.querySelector(".nav.on")));
         $("ttl").textContent = {
           home: "Home",
           sheriff: "Sheriff's Report System",
