@@ -1617,10 +1617,13 @@ main>#f-updates{max-width:900px}
 /* start screen */
 #f-home{padding-top:var(--home-pad,22px);padding-bottom:var(--home-pad,40px)}
 body[data-view="home"] main{padding-bottom:0}
-/* larger screens: scale the whole home tab up ~10% and widen its container to match */
-@media(min-width:1440px) and (min-height:820px){
- body[data-view="home"] main{max-width:1452px}
- #f-home>*{zoom:1.1}
+/* home: always fits the screen (scaled by script), no page scrolling */
+#home-fit{container:homefit/inline-size}
+.bu-home{container:buhome/inline-size}
+body.homefit[data-view="home"]{overflow:hidden}
+body.homefit[data-view="home"] main{max-width:none;height:100vh;height:100dvh;padding:0;overflow:hidden;box-sizing:border-box}
+body.homefit #f-home{position:relative;height:100%;padding:0;overflow:hidden}
+body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 }
 .hero{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) minmax(280px,520px);align-items:center;gap:6px 18px;padding:16px 20px;border:1px solid var(--line);border-left:4px solid var(--beige);border-radius:14px;background:var(--panel)}
 .hero-badge{grid-row:1/span 2;width:52px;height:52px;object-fit:contain}
@@ -1662,35 +1665,72 @@ body[data-view="home"] main{padding-bottom:0}
 .tile:hover::after{opacity:1;transform:translateX(2px)}
 .home-empty{margin:18px 0;color:var(--mute)}
 
-/* ===== v1.0.9: Bureaus panel (home) ===== */
-.bu-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
-.bu-tab{display:inline-flex;align-items:center;gap:8px;padding:6px 8px 6px 13px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--text);font:600 13px Inter,sans-serif;cursor:pointer;transition:border-color .15s,background .15s}
-.bu-tab:hover{border-color:var(--beige)}
+/* ===== home panels: header badge + icon tiles (matches the Bureaus panel) ===== */
+.home-h{align-items:center;gap:11px;margin:0 0 12px;padding-bottom:11px;border-bottom:1px solid var(--line);font:600 22px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.05em}
+.home-h span{margin-left:auto;padding:0 8px;line-height:20px}
+.hh-ic{display:grid;place-items:center;flex:0 0 auto;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:color-mix(in srgb,var(--green) 14%,var(--bg));color:var(--beige)}
+.hh-ic svg{width:19px;height:19px}
+#home-groups>section{transition:border-color .15s}
+#home-groups>section:hover{border-color:color-mix(in srgb,var(--beige) 40%,var(--line))}
+.tile{justify-content:flex-start;gap:10px;padding-left:8px}
+.tile .tl-t{flex:1;min-width:0}
+.tl-ic{display:grid;place-items:center;flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:color-mix(in srgb,var(--green) 16%,var(--bg));color:var(--beige);transition:background .15s,color .15s}
+.tl-ic svg{width:14px;height:14px}
+.tile:hover .tl-ic{background:var(--green2);color:#fff}
+/* ===== Bureaus panel (home): division rail + unit cards with icons ===== */
+.bu-layout{display:grid;grid-template-columns:232px minmax(0,1fr);gap:16px;align-items:start}
+.bu-tabs{display:flex;flex-direction:column;gap:6px;margin:0}
+.bu-tab{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 8px;width:100%;padding:10px 12px 10px 13px;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:600 15px/1.15 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em;text-align:left;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}
+.bu-tab:hover{border-left-color:var(--beige);background:color-mix(in srgb,var(--green) 12%,var(--bg))}
 .bu-tab:focus-visible{outline:2px solid var(--beige);outline-offset:2px}
-.bu-tab em{min-width:18px;padding:0 6px;border-radius:99px;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--mute);font:600 11px/18px Inter,sans-serif;font-style:normal;text-align:center}
-.bu-tab:not(:has(em)){padding-right:13px}
+.bu-tab>span:first-child{min-width:0}
+.bu-tab em{min-width:20px;padding:0 7px;border-radius:99px;background:color-mix(in srgb,var(--green) 22%,transparent);color:var(--mute);font:600 11px/19px Inter,sans-serif;font-style:normal;text-align:center}
 .bu-tab.idle{color:var(--mute)}
+.bu-stack{grid-column:1/-1;display:flex;align-items:center;min-height:22px}
+.bu-stack .bu-ic{width:22px;height:22px;margin-right:-6px;border-radius:50%;background:var(--panel);box-shadow:0 0 0 2px var(--bg);padding:2px}
+.bu-tab.idle .bu-stack{opacity:.55}
 .bu-tab[aria-selected="true"]{border-color:var(--beige);background:var(--green2);color:#fff}
-.bu-tab[aria-selected="true"] em{background:rgba(255,255,255,.18);color:#fff}
+.bu-tab[aria-selected="true"] em{background:rgba(255,255,255,.2);color:#fff}
+.bu-tab[aria-selected="true"] .bu-stack .bu-ic{background:var(--green2);box-shadow:0 0 0 2px var(--green2)}
 .bu-pane{display:none}
 .bu-pane.on{display:block}
-.bu-pane-h{display:none;margin:0 0 8px;font:600 17px/1.1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em;color:var(--beige)}
-.bu-units{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));align-items:start}
-.bu-unit{min-width:0;padding:10px 12px 12px;border:1px solid var(--line);border-radius:10px;background:color-mix(in srgb,var(--bg) 55%,var(--panel))}
-.bu-unit-h{display:flex;flex-direction:column;gap:2px;margin:0 0 8px}
-.bu-unit-h b{color:var(--beige);font:700 12px/1.2 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
-.bu-unit-h small{color:var(--mute);font:500 12px/1.2 Inter,sans-serif}
-.bu-lab{margin:10px 0 5px;color:var(--text);font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.bu-pane-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--line);font:600 24px/1.1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em;color:var(--beige)}
+.bu-pane-h small{color:var(--mute);font:500 12px/1.2 Inter,sans-serif;letter-spacing:0}
+.bu-units{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));align-items:start}
+.bu-unit{min-width:0;padding:12px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--bg) 55%,var(--panel));transition:border-color .15s}
+.bu-unit:hover{border-color:color-mix(in srgb,var(--beige) 45%,var(--line))}
+.bu-unit-h{display:flex;align-items:center;gap:11px;margin:0 0 12px;padding-bottom:11px;border-bottom:1px solid var(--line)}
+.bu-unit-t{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.bu-unit-t b{color:var(--beige);font:700 19px/1.05 "Barlow Condensed",Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.bu-unit-t small{color:var(--mute);font:500 12px/1.25 Inter,sans-serif}
+.bu-unit-h em{flex:0 0 auto;padding:0 7px;border-radius:99px;background:color-mix(in srgb,var(--green) 22%,transparent);color:var(--mute);font:600 11px/19px Inter,sans-serif;font-style:normal}
+/* icons: image from the sidebar, or a monogram when a unit has none */
+.bu-ic{display:inline-grid;place-items:center;flex:0 0 auto;overflow:hidden;box-sizing:border-box}
+.bu-ic img{display:block;width:100%;height:100%;object-fit:contain}
+.bu-ic.lg{width:46px;height:46px;border-radius:11px;padding:4px;background:color-mix(in srgb,var(--green) 10%,var(--bg));border:1px solid var(--line)}
+.bu-ic.sm{width:22px;height:22px}
+.bu-ic.mono{background:color-mix(in srgb,var(--green) 20%,var(--bg));color:var(--beige);font:700 12px/1 Inter,sans-serif;letter-spacing:.02em}
+.bu-ic.mono b{font-weight:700}
+.bu-ic.lg.mono{font-size:13px}
+.bu-lab{display:flex;align-items:center;gap:7px;margin:12px 0 6px;color:var(--text);font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .bu-lab:first-of-type{margin-top:0}
+.bu-lab::after{content:"";flex:1;height:1px;background:var(--line)}
 .bu-unit .tiles{grid-template-columns:1fr}
-.bu-idle{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;color:var(--mute);font:500 12px Inter,sans-serif}
-.bu-pane>.bu-idle:first-child{margin-top:0}
-.bu-idle b{margin-right:4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.bu-idle span{padding:3px 9px;border:1px dashed var(--line);border-radius:999px;cursor:default}
+.bu-idle{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.bu-pane>.bu-idle:first-of-type{margin-top:0}
+.bu-idle>b{display:block;margin:0 0 8px;color:var(--mute);font:600 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.bu-idle-list{display:flex;flex-wrap:wrap;gap:6px}
+.bu-idle-list span{display:inline-flex;align-items:center;gap:7px;padding:4px 11px 4px 5px;border:1px dashed var(--line);border-radius:999px;color:var(--mute);font:600 12px Inter,sans-serif;cursor:default}
+.bu-idle-list .bu-ic{width:22px;height:22px;border-radius:50%;opacity:.8}
 .bu-unit[hidden],.bu-pane[hidden]{display:none!important}
+#home-groups.searching .bu-layout{display:block}
 #home-groups.searching .bu-tabs,#home-groups.searching .bu-idle{display:none}
-#home-groups.searching .bu-pane{display:block;margin-bottom:12px}
-#home-groups.searching .bu-pane-h{display:block}
+#home-groups.searching .bu-pane{display:block;margin-bottom:14px}
+@container buhome (max-width:620px){
+ .bu-layout{grid-template-columns:1fr;gap:12px}
+ .bu-tabs{flex-direction:row;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+ .bu-tab{flex:0 0 auto;width:auto;min-width:170px}
+}
 
 /* SIB story form */
 .sib-img{margin-top:12px;min-height:120px;display:grid;place-items:center;overflow:hidden;border:1px dashed var(--line);border-radius:10px;background:var(--bg)}
@@ -1730,15 +1770,15 @@ body[data-view="home"] main{padding-bottom:0}
 .home-div-h{margin:0;align-self:end;color:var(--text);font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .home-div-h.plain{color:var(--mute)}
 
-@media(max-width:1180px){
+@container homefit (max-width:900px){
  #home-groups{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"patrol patrol" "warrant gen" "bureaus bureaus" "misc misc"}
 }
-@media(max-width:1180px){
+@container homefit (max-width:900px){
  .hero{grid-template-columns:auto minmax(0,1fr)}
  .hero-search,.hero-foot{grid-column:1/-1}
  .hero-badge{grid-row:auto;width:42px;height:42px}
 }
-@media(max-width:700px){
+@container homefit (max-width:640px){
  #home-groups{grid-template-columns:1fr;grid-template-areas:"patrol" "warrant" "gen" "bureaus" "misc"}
  .home-divs{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -2019,7 +2059,7 @@ body[data-view="home"] main{padding-bottom:0}
           <div class="bu-item" data-bu="personnel">
             <button class="nav bu-div" id="nv-bu-personnel" data-k="personnel command" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Personnel Command</span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
-              <button class="nav bu-sub empty" id="nv-bu-peu" data-k="peu pre-employment unit" data-parent="nv-bu-personnel" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/COLUxAZI01.png/raw" alt="" /><b>PEU</b> <small>Pre-Employment Unit</small></span></button>
+              <button class="nav bu-sub empty" id="nv-bu-peu" data-k="peu pre-employment unit" data-parent="nv-bu-personnel" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.imgur.com/dRyWptQ.png" alt="" /><b>PEU</b> <small>Pre-Employment Unit</small></span></button>
           <div class="bu-item" data-bu="ftp">
             <button class="nav bu-sub" id="nv-bu-ftp" data-k="ftp field training program" data-parent="nv-bu-personnel" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>FTP</b> <small>Field Training Program</small></span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
@@ -2034,7 +2074,7 @@ body[data-view="home"] main{padding-bottom:0}
             <button class="nav bu-div" id="nv-bu-standards" data-k="professional standards bureaus" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Professional Standards Bureaus</span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
               <div class="bu-item" data-bu="sib">
-                <button class="nav bu-sub" id="nv-bu-sib" data-k="sib sheriff&#x27;s information bureau" data-parent="nv-bu-standards" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/CiSILABa04.png/raw" alt="" /><b>SIB</b> <small>Sheriff&#x27;s Information Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-sib" data-k="sib sheriff&#x27;s information bureau" data-parent="nv-bu-standards" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.imgur.com/MLE5QH8.png" alt="" /><b>SIB</b> <small>Sheriff&#x27;s Information Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
                   <button class="nav sub" id="nv-sib-story" data-k="sib story news release article" data-parent="nv-bu-sib" onclick="show('sib-story')"><span>Story</span></button>
                   <button class="nav sub" id="nv-sib-activity" data-k="sib activity tracker media interview social post event" data-parent="nv-bu-sib" onclick="show('sib-activity')"><span>Activity Tracker</span></button>
@@ -2237,6 +2277,7 @@ body[data-view="home"] main{padding-bottom:0}
       </div>
 
       <div id="f-home">
+        <div id="home-fit">
         <section class="hero">
           <img class="hero-badge" id="home-badge" alt="" />
           <div class="hero-text">
@@ -2254,6 +2295,7 @@ body[data-view="home"] main{padding-bottom:0}
         </section>
         <p class="home-empty" id="home-empty" hidden></p>
         <div id="home-groups"></div>
+        </div>
       </div>
       <div id="f-sheriff" hidden>
         <div class="sheriff-paper" id="sheriff-paper">
@@ -5000,6 +5042,33 @@ body[data-view="home"] main{padding-bottom:0}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.0.1</h2>
+          <div class="body">
+            <h3>v2.0.1</h3>
+            <h3>Bureaus</h3>
+            <ul>
+              <li>
+                Redesigned the Bureaus panel on the home page. Divisions are now a list on the left, each with its form count and a row of its units' icons. The selected division shows its units as cards on the right.
+              </li>
+              <li>
+                Every unit now shows the same picture as in the sidebar menu, including Davis Station, Senora Station, CSD, SIB, VST and the units that have no forms yet. The OSS, K9, NCCIT and TSD groups inside a card show their sidebar icons too. A unit with no picture gets a small letter badge instead.
+              </li>
+              <li>
+                Each unit card shows its name, full title and number of forms. Units without forms yet are listed as icon chips under No forms yet.
+              </li>
+            </ul>
+            <h3>Home page</h3>
+            <ul>
+              <li>
+                The home page now always fits the screen, with no need to scroll. It scales up or down to the size of the window and stays centered, and the Bureaus panel keeps the same size when you switch between divisions.
+              </li>
+              <li>
+                While you search, the page stops scaling and the results scroll normally. On phones the home page keeps its normal scrolling layout.
+              </li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.0.0</h2>
           <div class="body">
@@ -10391,7 +10460,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     if (!box.children.length) {
       const AREA = { "Patrol Reports": "patrol", "Warrant Services": "warrant", "Bureaus": "bureaus", "Generators": "gen", "Miscellaneous": "misc" };
       const tile = ([k, t, desc, path], g) => {
-        const b = el("button", "tile", t); b.type = "button"; b.onclick = open(k);
+        const b = withIcon(el("button", "tile"), t, k); b.type = "button"; b.onclick = open(k);
         b.title = desc;
         b.dataset.title = [g, t, ...(path || [])].join(" ").toLowerCase();
         return b;
@@ -10400,7 +10469,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       G.forEach(([g, items]) => {
         if (g === "Bureaus") { box.append(bureauSection(items.length)); return; }
         const sec = el("section"); sec.dataset.g = g; if (AREA[g]) sec.dataset.a = AREA[g];
-        const h = el("h3", "home-h", g); h.append(el("span", "", String(items.length)));
+        const h = el("h3", "home-h", g); h.prepend(svgIc("hh-ic", PANEL_IC[g])); h.append(el("span", "", String(items.length)));
         sec.append(h);
         if (!items.some((it) => it[3])) { sec.append(tiles(items, g)); box.append(sec); return; }
         // Station panel > division columns > forms
@@ -10435,34 +10504,94 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     sec.querySelectorAll(".bu-tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.d === id)));
     sec.querySelectorAll(".bu-pane").forEach((p) => p.classList.toggle("on", p.dataset.d === id));
   }
+  // line icons for panels and forms (inline SVG, no external images)
+  const IC = {
+    file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+    filePlus: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 12v6M9 15h6"/>',
+    shield: '<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+    list: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+    car: '<path d="M5 16l1.5-5a2 2 0 0 1 2-1.5h7a2 2 0 0 1 2 1.5L19 16"/><rect x="3" y="16" width="18" height="4" rx="1.5"/><path d="M7 20v1M17 20v1"/>',
+    alert: '<path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4M12 17h.01"/>',
+    crown: '<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>',
+    mega: '<path d="M3 11v2a1 1 0 0 0 1 1h3l8 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M18 9a4 4 0 0 1 0 6"/>',
+    scales: '<path d="M12 3v18M6 21h12M5 7h14"/><path d="M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/>',
+    search: '<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.5-4.5"/>',
+    eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    coin: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2a2.6 2 0 0 0-2.5-1.4c-1.4 0-2.5.8-2.5 1.9s1 1.6 2.5 1.9 2.5.8 2.5 1.9-1.1 1.9-2.5 1.9a2.6 2 0 0 1-2.5-1.4M12 6v1.8M12 16.2V18"/>',
+    card: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h6M7 14h4M16 10h1"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+    send: '<path d="M21 3L3 11l7 3 3 7z"/><path d="M10 14l5-5"/>',
+    id: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c0-1.5 1.5-2 3-2s3 .5 3 2M15 10h3M15 14h3"/>',
+    spark: '<path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/>',
+    layers: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+    grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+    bank: '<path d="M3 9l9-5 9 5M5 10v8M9 10v8M15 10v8M19 10v8M3 21h18"/>',
+  };
+  const FORM_IC = { sheriff: "shield", incident: "file", supp: "filePlus", "task-list": "list", subject: "user", tc: "car", uof: "alert",
+    "king-patrol": "crown", apb: "mega", "arrest-warrant": "scales", "search-warrant": "search", "electronic-surveillance-warrant": "eye",
+    "financial-service-warrant": "coin", card: "card", depmail: "mail", email: "send", deputy: "id", updates: "spark" };
+  const PANEL_IC = { "Patrol Reports": "shield", "Warrant Services": "scales", Generators: "layers", Miscellaneous: "grid", Bureaus: "bank" };
+  const svgIc = (cls, name) => {
+    const i = el("i", cls); i.setAttribute("aria-hidden", "true");
+    i.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (IC[name] || IC.file) + "</svg>";
+    return i;
+  };
+  const withIcon = (b, text, k) => { b.textContent = ""; b.append(svgIc("tl-ic", FORM_IC[k]), el("span", "tl-t", text)); return b; };
+  // icon for a unit / sub-group: reuses the image already used in the sidebar menu (#nv-bu-<id> .bu-ico)
+  function buIco(id, text, size, mono) {
+    const wrap = el("span", "bu-ic " + size), s = document.querySelector("#nv-bu-" + id + " img.bu-ico");
+    const fb = () => {
+      if (!mono) { wrap.remove(); return; }
+      wrap.replaceChildren(el("b", "", text)); wrap.classList.add("mono");
+    };
+    if (s) {
+      const i = new Image(); i.alt = ""; i.referrerPolicy = "no-referrer"; i.decoding = "async";
+      i.onerror = fb; i.src = s.getAttribute("src"); wrap.append(i);
+    } else if (mono) fb(); else return null;
+    return wrap;
+  }
+  const buMono = (u) => (u.a && u.a.length <= 5 ? u.a : u.n.split(/[\s&]+/).filter(Boolean).map((w) => w[0]).join("")).slice(0, 4).toUpperCase();
   function bureauSection(count) {
     const sec = el("section", "bu-home"); sec.dataset.g = "Bureaus"; sec.dataset.a = "bureaus";
-    const h = el("h3", "home-h", "Bureaus"); h.append(el("span", "", String(count))); sec.append(h);
+    const h = el("h3", "home-h", "Bureaus"); h.prepend(svgIc("hh-ic", "bank")); h.append(el("span", "", String(count))); sec.append(h);
+    const layout = el("div", "bu-layout");
     const tabs = el("div", "bu-tabs"); tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-label", "Divisions");
     const panes = el("div", "bu-panes");
     BU.forEach((d) => {
       const n = d.u.reduce((s, u) => s + u.f.length, 0);
       const tab = el("button", "bu-tab" + (n ? "" : " idle")); tab.type = "button"; tab.dataset.d = d.id;
       tab.setAttribute("role", "tab"); tab.append(el("span", "", d.n));
-      if (n) tab.append(el("em", "", String(n)));
+      tab.append(n ? el("em", "", String(n)) : el("span"));
+      const stack = el("span", "bu-stack");
+      d.u.forEach((u) => { const ic = buIco(u.id, "", "sm", false); if (ic && stack.children.length < 6) stack.append(ic); });
+      if (stack.children.length) tab.append(stack);
       tab.onclick = () => selectBu(sec, d.id);
       tabs.append(tab);
       const pane = el("div", "bu-pane"); pane.dataset.d = d.id; pane.setAttribute("role", "tabpanel");
-      pane.append(el("h4", "bu-pane-h", d.n));
+      const ph = el("h4", "bu-pane-h", d.n);
+      ph.append(el("small", "", (n ? n + (n === 1 ? " form" : " forms") + " \u00b7 " : "No forms yet \u00b7 ") + d.u.length + (d.u.length === 1 ? " unit" : " units")));
+      pane.append(ph);
       const grid = el("div", "bu-units"), idle = [];
       d.u.forEach((u) => {
         if (!u.f.length) { idle.push(u); return; }
-        const card = el("div", "bu-unit"), uh = el("h5", "bu-unit-h");
-        uh.append(el("b", "", u.a || u.n)); if (u.a) uh.append(el("small", "", u.n));
+        const card = el("div", "bu-unit"), uh = el("div", "bu-unit-h"), ut = el("div", "bu-unit-t");
+        uh.append(buIco(u.id, buMono(u), "lg", true));
+        ut.append(el("b", "", u.a || u.n)); if (u.a) ut.append(el("small", "", u.n));
+        uh.append(ut, el("em", "", String(u.f.length)));
         card.append(uh);
         let last = null, grid2 = null;
         u.f.forEach(([k, t, desc, lab, short]) => {
           if (lab !== last || !grid2) {
             last = lab;
-            if (lab) card.append(el("div", "bu-lab", lab));
+            if (lab) {
+              const lb = el("div", "bu-lab"), li = buIco(u.id + "-" + lab.toLowerCase(), "", "sm", false);
+              if (li) lb.append(li);
+              lb.append(el("span", "", lab)); card.append(lb);
+            }
             grid2 = el("div", "tiles"); card.append(grid2);
           }
-          const b = el("button", "tile", lab ? short : t); b.type = "button"; b.onclick = open(k);
+          const b = withIcon(el("button", "tile"), lab ? short : t, k); b.type = "button"; b.onclick = open(k);
           b.title = t + " \u2014 " + desc;
           b.dataset.title = ["Bureaus", d.n, u.n, u.a, lab, t, short].join(" ").toLowerCase();
           grid2.append(b);
@@ -10471,27 +10600,53 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       });
       if (grid.children.length) pane.append(grid);
       if (idle.length) {
-        const row = el("div", "bu-idle", "");
+        const row = el("div", "bu-idle"), list = el("div", "bu-idle-list");
         row.append(el("b", "", grid.children.length ? "No forms yet" : "No forms in this division yet"));
-        idle.forEach((u) => { const c = el("span", "", u.a || u.n); if (u.a) c.title = u.n; row.append(c); });
-        pane.append(row);
+        idle.forEach((u) => { const c = el("span"); c.append(buIco(u.id, buMono(u), "sm", true), u.a || u.n); c.title = u.n; list.append(c); });
+        row.append(list); pane.append(row);
       }
       panes.append(pane);
     });
-    sec.append(tabs, panes);
+    layout.append(tabs, panes); sec.append(layout);
     selectBu(sec, buSel);
     return sec;
   }
   // vertically center the home content: equal space above and below
   function fitHome() {
-    const f = $("f-home");
-    if (!f || f.hidden || $("hq").value.trim()) return;
-    if (innerWidth <= 760) { f.style.removeProperty("--home-pad"); return; }
-    const cs = getComputedStyle(f);
-    const content = f.scrollHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-    f.style.setProperty("--home-pad", Math.max(22, Math.floor((innerHeight - content) / 2)) + "px");
+    const f = $("f-home"), w = $("home-fit");
+    if (!f || !w || f.hidden || !f.offsetParent && !document.body.classList.contains("homefit")) return;
+    const on = innerWidth > 760;                       // phones keep the normal scrolling page
+    document.body.classList.toggle("homefit", on);
+    if (!on) { w.style.removeProperty("width"); w.style.removeProperty("transform"); return; }
+    const searching = !!$("hq").value.trim();
+    const padX = Math.round(Math.max(16, Math.min(44, innerWidth * 0.035))), padY = 14;
+    const W = f.clientWidth - 2 * padX, H = f.clientHeight - 2 * padY;
+    const panes = [...w.querySelectorAll(".bu-pane")], keep = buSel, sec = w.querySelector(".bu-home");
+    // height of the content at scale s; with the Bureaus tabs, the tallest division decides so the scale never jumps
+    const hAt = (s) => {
+      w.style.width = W / s + "px";
+      if (searching || !panes.length) return w.offsetHeight * s;
+      let m = 0;
+      panes.forEach((p) => { panes.forEach((q) => q.classList.toggle("on", q === p)); m = Math.max(m, w.offsetHeight); });
+      return m * s;
+    };
+    const MIN = 0.55, MAX = 1.5;
+    let s = 1;
+    if (!searching) {
+      if (hAt(MAX) <= H) s = MAX;
+      else if (hAt(MIN) > H) s = MIN;
+      else { let lo = MIN, hi = MAX; for (let i = 0; i < 11; i++) { const m = (lo + hi) / 2; if (hAt(m) <= H) lo = m; else hi = m; } s = lo; }
+    }
+    const h = hAt(s);
+    if (sec) selectBu(sec, keep);
+    const fits = !searching && h <= H + 1;
+    f.style.overflowY = fits ? "hidden" : "auto";
+    const y = fits ? Math.max(padY, Math.floor((f.clientHeight - h) / 2)) : padY;
+    w.style.transform = "translate(" + padX + "px," + y + "px) scale(" + s + ")";
   }
-  addEventListener("resize", fitHome);
+  let fitRaf = 0;
+  const fitSoon = () => { cancelAnimationFrame(fitRaf); fitRaf = requestAnimationFrame(fitHome); };
+  addEventListener("resize", fitSoon);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHome);
   function filterHome(v) {
     v = v.trim().toLowerCase();
@@ -10521,6 +10676,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("home-empty").hidden = !!n || !v;
     $("home-empty").textContent = 'No form matches "' + v + '". Try the exact form name, e.g. "incident report" or "arrest warrant".';
     $("recent").hidden = !!v || !recents().filter((k) => info[k]).length;
+    fitSoon();
   }
   $("hq").addEventListener("input", (e) => filterHome(e.target.value));
   $("hq").addEventListener("keydown", (e) => {
