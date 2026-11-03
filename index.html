@@ -1962,7 +1962,7 @@ body[data-view="home"] main{padding-bottom:0}
           </button>
         </section>
         <section class="nav-group bureaus" data-group="bureaus divisions">
-          <div class="grp"><span class="grp-label">Bureaus</span><span class="grp-count">13</span></div>
+          <div class="grp"><span class="grp-label">Bureaus</span><span class="grp-count">15</span></div>
           <div class="bu-item" data-bu="central">
             <button class="nav bu-div" id="nv-bu-central" data-k="central patrol division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Central Patrol Division</span><em class="bu-n">8</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
@@ -1992,9 +1992,15 @@ body[data-view="home"] main{padding-bottom:0}
             </div>
           </div>
           <div class="bu-item" data-bu="special-ops">
-            <button class="nav bu-div" id="nv-bu-special-ops" data-k="special operations division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Special Operations Division</span><i class="bu-chev" aria-hidden="true"></i></button>
+            <button class="nav bu-div" id="nv-bu-special-ops" data-k="special operations division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Special Operations Division</span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
-              <button class="nav bu-sub empty" id="nv-bu-csd" data-k="csd canine services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CSD</b> <small>Canine Services Detail</small></span></button>
+              <div class="bu-item" data-bu="csd">
+                <button class="nav bu-sub" id="nv-bu-csd" data-k="csd canine services detail" data-parent="nv-bu-special-ops" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>CSD</b> <small>Canine Services Detail</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav division" id="nv-bu-csd-k9" data-k="csd k9 csd k9 deployment log canine report" data-parent="nv-bu-csd" disabled aria-disabled="true"><span>K9</span></button>
+                  <button class="nav sub" id="nv-csd-k9-deployment" data-k="csd k9 deployment log canine report" data-parent="nv-bu-csd-k9" onclick="show('csd-k9-deployment')"><span>Deployment Log</span></button>
+                </div>
+              </div>
               <button class="nav bu-sub empty" id="nv-bu-esd" data-k="esd emergency services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>ESD</b> <small>Emergency Services Detail</small></span></button>
               <button class="nav bu-sub empty" id="nv-bu-sed" data-k="sed special enforcement detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>SED</b> <small>Special Enforcement Detail</small></span></button>
               <button class="nav bu-sub empty" id="nv-bu-aero" data-k="aero bureau " data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>Aero Bureau</b></span></button>
@@ -2039,7 +2045,7 @@ body[data-view="home"] main{padding-bottom:0}
             </div>
           </div>
           <div class="bu-item" data-bu="tech">
-            <button class="nav bu-div" id="nv-bu-tech" data-k="technology support division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Technology &amp; Support Division</span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <button class="nav bu-div" id="nv-bu-tech" data-k="technology support division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Technology &amp; Support Division</span><em class="bu-n">4</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
               <button class="nav bu-sub empty" id="nv-bu-ssb" data-k="ssb scientific services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>SSB</b> <small>Scientific Services Bureau</small></span></button>
               <button class="nav bu-sub empty" id="nv-bu-cfmb" data-k="cfmb communications &amp; fleet management bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CFMB</b> <small>Communications &amp; Fleet Management Bureau</small></span></button>
@@ -2064,7 +2070,12 @@ body[data-view="home"] main{padding-bottom:0}
                   <button class="nav sub" id="nv-fleet" data-k="fleet maintenance requests vehicle service" data-parent="nv-bu-fmu" onclick="show('fleet')"><span>Fleet Maintenance Requests</span></button>
                 </div>
               </div>
-              <button class="nav bu-sub empty" id="nv-bu-vst" data-k="vst veterinary services team" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>VST</b> <small>Veterinary Services Team</small></span></button>
+              <div class="bu-item" data-bu="vst">
+                <button class="nav bu-sub" id="nv-bu-vst" data-k="vst veterinary services team" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>VST</b> <small>Veterinary Services Team</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-vst-request" data-k="vst veterinary services request k9 vet appointment" data-parent="nv-bu-vst" onclick="show('vst-request')"><span>Veterinary Services Request</span></button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -3662,6 +3673,213 @@ body[data-view="home"] main{padding-bottom:0}
           ><button class="b" onclick="resetSenoraK9Deployment()">Reset</button>
         </div>
       </div>
+      <div id="f-csd-k9-deployment" hidden>
+        <div class="card">
+          <h2><small>K9</small>Deployment Log</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f">
+                <span>Date</span><input type="text" id="ck9-date" placeholder="DD/MMM/YYYY" />
+              </div>
+              <div class="f">
+                <span>Time</span><input type="text" id="ck9-time" placeholder="HH:MM" />
+              </div>
+              <div class="f">
+                <span>Street</span><input type="text" id="ck9-street" placeholder="Street" />
+              </div>
+              <div class="f">
+                <span>District</span><input type="text" id="ck9-district" placeholder="District" />
+              </div>
+              <div class="f">
+                <span>Callsign</span><input type="text" id="ck9-callsign" placeholder="Callsign" />
+              </div>
+            </div>
+            <div class="f">
+              <span>Deployment Type</span>
+              <div class="g">
+                <label class="row"
+                  ><span>Bite</span><input type="checkbox" id="ck9-type-bite" onchange="updateK9Medical('ck9')"
+                /></label>
+                <label class="row"
+                  ><span>Search Warrant</span><input type="checkbox" id="ck9-type-warrant"
+                /></label>
+                <label class="row"
+                  ><span>Tracking</span><input type="checkbox" id="ck9-type-tracking"
+                /></label>
+                <label class="row"
+                  ><span>Other (detail in narrative)</span
+                  ><input type="checkbox" id="ck9-type-other"
+                /></label>
+              </div>
+            </div>
+            <fieldset class="item" id="ck9-medical-wrap" hidden>
+              <legend>Bite — Medical Care Provided</legend>
+              <div class="yn" style="flex-wrap: wrap">
+                <input type="radio" name="ck9-medical" id="ck9-medical-cleared" value="cleared" onchange="updateK9Medical('ck9')" /><label for="ck9-medical-cleared">Yes, cleared on Scene</label>
+                <input type="radio" name="ck9-medical" id="ck9-medical-er" value="er" onchange="updateK9Medical('ck9')" /><label for="ck9-medical-er">Yes, taken to ER</label>
+                <input class="no" type="radio" name="ck9-medical" id="ck9-medical-none" value="none" onchange="updateK9Medical('ck9')" /><label for="ck9-medical-none">No</label>
+              </div>
+              <div class="f" id="ck9-medical-unit-wrap" hidden>
+                <span id="ck9-medical-unit-label">Providing Unit</span
+                ><input type="text" id="ck9-medical-unit" placeholder="e.g. Rescue 99" />
+              </div>
+            </fieldset>
+            <div class="f">
+              <span>Deployment Narrative</span
+              ><textarea id="ck9-narrative" placeholder="Fill in the narrative here."></textarea>
+            </div>
+            <div class="f">
+              <span>Evidence Found</span
+              ><textarea id="ck9-evidence" placeholder="List the evidence here."></textarea>
+            </div>
+            <div class="f">
+              <span>Signed By — Name</span
+              ><input type="text" id="ck9-signature-name" placeholder="First name Last name" />
+            </div>
+            <div class="f">
+              <span>Rank</span><input type="text" id="ck9-signature-rank" placeholder="Rank" />
+            </div>
+            <div class="f">
+              <span>Badge Number</span
+              ><input type="text" id="ck9-signature-badge" placeholder="#00000" />
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('csd-k9-deployment')">Copy BBCode</button
+          ><a
+            class="b forum-link"
+            href="https://lssd.gta.world/viewforum.php?f=1361"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Open K9 Forum<svg
+              aria-hidden="true"
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 2.75h4.25V7M13 3 7.5 8.5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg></a
+          ><button class="b" onclick="resetCsdK9Deployment()">Reset</button>
+        </div>
+      </div>
+      <div id="f-vst-request" hidden>
+        <div class="card">
+          <h2><small>VST</small>Veterinary Services Request</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f">
+                <span>Handler's Name</span><input type="text" id="vsr-handler-name" placeholder="Rank First name Last name" />
+              </div>
+              <div class="f">
+                <span>Handler's Unit</span><input type="text" id="vsr-handler-unit" placeholder="Unit" />
+              </div>
+              <div class="f">
+                <span>Phone Number</span><input type="text" id="vsr-phone" inputmode="tel" placeholder="000-000-0000" />
+              </div>
+            </div>
+            <div class="g">
+              <div class="f">
+                <span>K9 Name</span><input type="text" id="vsr-k9-name" placeholder="K9 name" />
+              </div>
+              <div class="f">
+                <span>Breed</span
+                ><select id="vsr-breed" onchange="updateVsrBreed()">
+                  <option value="">Select breed</option>
+                  <option>German Shepherd</option>
+                  <option>Dutch Shepherd</option>
+                  <option>Belgian Malinois</option>
+                  <option>Bloodhound</option>
+                  <option value="other">Other (specify)</option>
+                </select>
+              </div>
+              <div class="f" id="vsr-breed-other-wrap" hidden>
+                <span>Specify Breed</span><input type="text" id="vsr-breed-other" placeholder="Breed" />
+              </div>
+              <div class="f">
+                <span>Age (years)</span
+                ><input type="text" id="vsr-age" inputmode="numeric" maxlength="2" placeholder="e.g. 3" oninput="this.value = this.value.replace(/\D/g, '')" />
+              </div>
+              <div class="f">
+                <span>Gender</span
+                ><select id="vsr-gender">
+                  <option value="">Select gender</option>
+                  <option value="M">M</option>
+                  <option value="F">F</option>
+                </select>
+              </div>
+            </div>
+            <div class="f">
+              <span>Service Request Details</span>
+              <div class="g">
+                <label class="row"><span>Routine Check-up</span><input type="checkbox" id="vsr-svc-checkup" /></label>
+                <label class="row"><span>Vaccinations</span><input type="checkbox" id="vsr-svc-vaccinations" /></label>
+                <label class="row"><span>Injury</span><input type="checkbox" id="vsr-svc-injury" /></label>
+                <label class="row"><span>Illness</span><input type="checkbox" id="vsr-svc-illness" /></label>
+                <label class="row"><span>Dental Care</span><input type="checkbox" id="vsr-svc-dental" /></label>
+                <label class="row"><span>Other (please specify)</span><input type="checkbox" id="vsr-svc-other" onchange="updateVsrOther()" /></label>
+              </div>
+            </div>
+            <div class="f" id="vsr-other-wrap" hidden>
+              <span>Other — Please Specify</span><input type="text" id="vsr-other-text" placeholder="Describe the service needed" />
+            </div>
+            <div class="g">
+              <div class="f">
+                <span>Preferred Date of Appointment</span><input type="text" id="vsr-date" placeholder="DD/MMM/YYYY" />
+              </div>
+              <div class="f">
+                <span>Available From</span><input type="text" id="vsr-time-from" placeholder="00:00" />
+              </div>
+              <div class="f">
+                <span>Available Until</span><input type="text" id="vsr-time-to" placeholder="00:00" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('vst-request')">Copy BBCode</button
+          ><a
+            class="b forum-link"
+            href="https://lssd.gta.world/viewtopic.php?t=71443"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Open VST Forum<svg
+              aria-hidden="true"
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 2.75h4.25V7M13 3 7.5 8.5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg></a
+          ><button class="b" onclick="resetVsrRequest()">Reset</button>
+        </div>
+      </div>
       <div id="f-davis-k9-deployment" hidden>
         <div class="card">
           <h2><small>K9</small>Deployment Log</h2>
@@ -4815,6 +5033,48 @@ body[data-view="home"] main{padding-bottom:0}
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v2.0.0</h2>
+          <div class="body">
+            <h3>v2.0.0</h3>
+            <h3>CSD — Canine Services Detail</h3>
+            <ul>
+              <li>
+                Added the CSD K9 Deployment Log under CSD in Special Operations Division. It is identical to the Senora K9 Deployment Log (date, time, street, district, callsign, deployment types, Bite medical care, narrative, evidence found and signature, with Character Details autofill), except that its BBCode uses the CSD header image and the Canine Services Detail title.
+              </li>
+              <li>
+                The Open K9 Forum button on this form goes to the CSD forum.
+              </li>
+            </ul>
+            <h3>VST — Veterinary Services Team</h3>
+            <ul>
+              <li>
+                Added the Veterinary Services Request under VST in Technology &amp; Support Division: handler information, K9 information, service request details and appointment preferences, in the official BBCode format.
+              </li>
+              <li>
+                Handler's Name (rank and full name) and Handler's Unit are prefilled from Character Details when they are saved, and left blank when they are not. Both stay editable.
+              </li>
+              <li>
+                K9 Breed is a dropdown (German Shepherd, Dutch Shepherd, Belgian Malinois, Bloodhound, Other). Picking Other opens a field to type the breed. Age only takes a number, and YEARS is added to the BBCode automatically. Gender is a choice between M and F.
+              </li>
+              <li>
+                Service Request Details are checkboxes (Routine Check-up, Vaccinations, Injury, Illness, Dental Care, Other). A ticked box is written as [cbc][/cbc] in the BBCode and an empty one as [cb][/cb]. Ticking Other opens a field to specify the service, which is added after OTHER (PLEASE SPECIFY): in the BBCode.
+              </li>
+              <li>
+                Preferred Date of Appointment starts as today's date through the date picker and can be changed. The preferred time is entered as an Available From and Available Until pair.
+              </li>
+              <li>
+                The Open VST Forum button goes to the Veterinary Services Request topic.
+              </li>
+            </ul>
+            <h3>Bureaus</h3>
+            <ul>
+              <li>
+                CSD and VST are no longer greyed out in the sidebar and now show their form counts. Both forms also appear in search and on the Bureaus panel on the home page.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v1.0.9</h2>
           <div class="body">
             <h3>v1.0.9</h3>
@@ -5659,6 +5919,8 @@ body[data-view="home"] main{padding-bottom:0}
         "oss-incident",
         "oss-supplemental",
         "davis-k9-deployment",
+        "csd-k9-deployment",
+        "vst-request",
         "ftp-phase1",
         "ftp-phase2",
         "ftp-phase3",
@@ -7244,6 +7506,181 @@ body[data-view="home"] main{padding-bottom:0}
       function initializeDavisK9Deployment() {
         if (!$("dk9-date").value) $("dk9-date").value = taskListTodayDate();
         applyDavisK9DeputyDetails();
+      }
+      function applyCsdK9DeputyDetails() {
+        prefillDeputyField("ck9-signature-name", $("deputy-full-name").value.trim());
+        prefillDeputyField("ck9-signature-rank", $("deputy-rank").value);
+        const badge = $("deputy-badge-number").value.trim().replace(/^#/, "");
+        prefillDeputyField("ck9-signature-badge", badge ? "#" + badge : "");
+        prefillDeputyField("ck9-callsign", $("deputy-callsign").value.trim());
+      }
+      function buildCsdK9Deployment() {
+        const val = (id) =>
+            id === "ck9-date" ? formatPickerDate($(id).value, "short") : $(id).value.trim(),
+          types = [
+            ["ck9-type-bite", "Bite"],
+            ["ck9-type-warrant", "Search Warrant"],
+            ["ck9-type-tracking", "Tracking"],
+            ["ck9-type-other", "Other: (Please detail in the narrative)"],
+          ]
+            .map(([id, label]) => `${$(id).checked ? "[cbc][/cbc]" : "[cb][/cb]"} ${label}`)
+            .join("\n");
+        return [
+          "[divbox=white]",
+          "[center][img]https://i.imgur.com/qfeom1Y.png[/img][/center]",
+          "[b][u][center]Canine Services Detail Deployment Report[/center][/u][/b]",
+          "",
+          "[center][table=Arial]",
+          "[tr]",
+          "[td][b]TIME AND DATE:[/b][/td]",
+          "[td][b]LOCATION:[/b][/td]",
+          "[td][b]CALLSIGN:[/b][/td]",
+          "[/tr]",
+          "[tr]",
+          `[td]${val("ck9-date") || "DD/MMM/YYYY"} - ${val("ck9-time") || "HH:MM"}[/td]`,
+          `[td]${val("ck9-street") || "STREET"}, ${val("ck9-district") || "DISTRICT"}, San Andreas[/td]`,
+          `[td]${val("ck9-callsign") || "CALLSIGN HERE"}[/td]`,
+          "[/tr]",
+          "[/table][/center]",
+          "[divbox=white]",
+          "DEPLOYMENT TYPE:",
+          "",
+          types,
+          "",
+          "[hr][/hr]",
+          "",
+          "[center][b][u]DEPLOYMENT NARRATIVE:[/u][/b][/center]",
+          "",
+          val("ck9-narrative") || "FILL IN THE NARRATIVE HERE.",
+          ...(buildK9Medical("ck9") ? ["", buildK9Medical("ck9")] : []),
+          "",
+          "[hr][/hr]",
+          "",
+          "[u][b][center]EVIDENCE FOUND:[/center][/b][/u]",
+          "",
+          val("ck9-evidence") || "LIST THE EVIDENCE HERE",
+          "",
+          "[hr][/hr]",
+          "",
+          "Signed by:",
+          `${val("ck9-signature-name") || "FIRSTNAME LASTNAME"},`,
+          `${val("ck9-signature-rank") || "RANK"},`,
+          val("ck9-signature-badge") || "#BADGE",
+          "[/divbox]",
+        ].join("\n");
+      }
+      function resetCsdK9Deployment() {
+        [
+          "ck9-time",
+          "ck9-street",
+          "ck9-district",
+          "ck9-callsign",
+          "ck9-narrative",
+          "ck9-evidence",
+          "ck9-signature-name",
+          "ck9-signature-rank",
+          "ck9-signature-badge",
+        ].forEach((id) => ($(id).value = ""));
+        $("ck9-date").value = taskListTodayDate();
+        updateTaskListDateLabel("ck9-date");
+        ["ck9-type-bite", "ck9-type-warrant", "ck9-type-tracking", "ck9-type-other"].forEach(
+          (id) => ($(id).checked = false),
+        );
+                document.querySelectorAll('input[name="ck9-medical"]').forEach((r) => (r.checked = false));
+        $("ck9-medical-unit").value = "";
+        updateK9Medical("ck9");
+        applyCsdK9DeputyDetails();
+      }
+      function initializeCsdK9Deployment() {
+        if (!$("ck9-date").value) $("ck9-date").value = taskListTodayDate();
+        applyCsdK9DeputyDetails();
+      }
+      function updateVsrBreed() {
+        $("vsr-breed-other-wrap").hidden = $("vsr-breed").value !== "other";
+      }
+      function updateVsrOther() {
+        $("vsr-other-wrap").hidden = !$("vsr-svc-other").checked;
+      }
+      function applyVsrDeputyDetails() {
+        const name = [$("deputy-rank").value, $("deputy-full-name").value.trim()]
+          .filter(Boolean)
+          .join(" ");
+        prefillDeputyField("vsr-handler-name", name);
+        prefillDeputyField("vsr-handler-unit", $("deputy-bureau").value.trim());
+      }
+      function buildVsrRequest() {
+        const val = (id) => $(id).value.trim(),
+          breedPick = $("vsr-breed").value,
+          breed =
+            breedPick === "other"
+              ? val("vsr-breed-other").toUpperCase() || "OTHER (SPECIFY)"
+              : breedPick
+                ? breedPick.toUpperCase()
+                : "GERMAN SHEPHERD / DUTCH SHEPHERD / BELGIAN MALINOIS / BLOODHOUND / OTHER (SPECIFY)",
+          services = [
+            ["vsr-svc-checkup", "ROUTINE CHECK-UP"],
+            ["vsr-svc-vaccinations", "VACCINATIONS"],
+            ["vsr-svc-injury", "INJURY"],
+            ["vsr-svc-illness", "ILLNESS"],
+            ["vsr-svc-dental", "DENTAL CARE"],
+          ].map(([id, label]) => `${$(id).checked ? "[cbc][/cbc]" : "[cb][/cb]"} ${label}`),
+          other = $("vsr-svc-other").checked
+            ? `[cbc][/cbc] OTHER (PLEASE SPECIFY):${val("vsr-other-text") ? " " + val("vsr-other-text") : ""}`
+            : "[cb][/cb] OTHER (PLEASE SPECIFY):",
+          from = val("vsr-time-from"),
+          to = val("vsr-time-to");
+        return [
+          "[b][u]HANDLER INFORMATION:[/u][/b]",
+          `[b]HANDLER'S NAME:[/b] ${val("vsr-handler-name") || "RANK FIRSTNAME LASTNAME"}`,
+          `[b]HANDLER'S UNIT:[/b] ${val("vsr-handler-unit") || "UNIT"}`,
+          `[b]PHONE NUMBER:[/b] ${val("vsr-phone") || "000-000-0000"}`,
+          "",
+          "[b][u]K9 INFORMATION:[/u][/b]",
+          `[b]K9 NAME:[/b] ${val("vsr-k9-name") || "K9 NAME"}`,
+          `[b]BREED:[/b] ${breed}`,
+          `[b]AGE:[/b] ${val("vsr-age") || "X"} YEARS`,
+          `[b]GENDER:[/b] ${$("vsr-gender").value || "M / F"}`,
+          "",
+          "[b][u]SERVICE REQUEST DETAILS:[/u][/b]",
+          ...services,
+          other,
+          "",
+          "[b][u]APPOINTMENT PREFERENCES:[/u][/b]",
+          `[b]PREFERRED DATE OF APPOINTMENT:[/b] ${formatPickerDate($("vsr-date").value, "short") || "DD/MMM/YYYY"}`,
+          `[b]PREFERRED TIME OF APPOINTMENT:[/b] ${from || "00:00"} - ${to || "00:00"} [i]((Timeframe when you are available.))[/i]`,
+        ].join("\n");
+      }
+      function resetVsrRequest() {
+        [
+          "vsr-handler-name",
+          "vsr-handler-unit",
+          "vsr-phone",
+          "vsr-k9-name",
+          "vsr-breed-other",
+          "vsr-age",
+          "vsr-other-text",
+          "vsr-time-from",
+          "vsr-time-to",
+        ].forEach((id) => ($(id).value = ""));
+        $("vsr-breed").selectedIndex = 0;
+        $("vsr-gender").selectedIndex = 0;
+        [
+          "vsr-svc-checkup",
+          "vsr-svc-vaccinations",
+          "vsr-svc-injury",
+          "vsr-svc-illness",
+          "vsr-svc-dental",
+          "vsr-svc-other",
+        ].forEach((id) => ($(id).checked = false));
+        $("vsr-date").value = taskListTodayDate();
+        updateTaskListDateLabel("vsr-date");
+        updateVsrBreed();
+        updateVsrOther();
+        applyVsrDeputyDetails();
+      }
+      function initializeVsrRequest() {
+        if (!$("vsr-date").value) $("vsr-date").value = taskListTodayDate();
+        applyVsrDeputyDetails();
       }
       function addSenoraLogbookReport(url = "", text = "") {
         const row = document.createElement("div");
@@ -8889,6 +9326,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "oss-incident",
           "oss-supplemental",
           "davis-k9-deployment",
+          "csd-k9-deployment",
+          "vst-request",
           "ftp-phase1",
           "ftp-phase2",
           "ftp-phase3",
@@ -8939,6 +9378,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "ftp-phase2": "FTP — Phase 2 Report",
           "ftp-phase3": "FTP — Phase 3 Evaluation",
           "davis-k9-deployment": "K9 — Deployment Log (Davis)",
+          "csd-k9-deployment": "K9 — Deployment Log (CSD)",
+          "vst-request": "VST — Veterinary Services Request",
           "arrest-warrant": "Arrest Warrant",
           "search-warrant": "Search Warrant",
           "electronic-surveillance-warrant": "Electronic Surveillance Warrant",
@@ -9185,6 +9626,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "nccit-supp-date",
         "k9-date",
         "dk9-date",
+        "ck9-date",
+        "vsr-date",
         "citation-date",
         "ftp1-date",
         "ftp2-date",
@@ -9693,6 +10136,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       initializeDeputyDetails();
       initializeSenoraK9Deployment();
       initializeDavisK9Deployment();
+      initializeCsdK9Deployment();
+      initializeVsrRequest();
       initializeSenoraLogbook();
       initializeSibStory();
       initializeSibActivity();
@@ -9707,10 +10152,18 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       $("deputy-badge-number").addEventListener("input", applySenoraK9DeputyDetails);
       $("deputy-callsign").addEventListener("input", applySenoraK9DeputyDetails);
       $("deputy-callsign").addEventListener("input", applyDavisK9DeputyDetails);
+      ["deputy-full-name", "deputy-rank", "deputy-badge-number", "deputy-callsign"].forEach((id) =>
+        ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyCsdK9DeputyDetails)),
+      );
+      ["deputy-full-name", "deputy-rank", "deputy-bureau"].forEach((id) =>
+        ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyVsrDeputyDetails)),
+      );
       $("f-deputy").addEventListener("click", (event) => {
         if (event.target.closest("button")) {
           applySenoraK9DeputyDetails();
           applyDavisK9DeputyDetails();
+          applyCsdK9DeputyDetails();
+          applyVsrDeputyDetails();
         }
       });
       initializeKingPatrol();
@@ -9795,6 +10248,10 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
                 ? buildApb()
                 : k === "davis-k9-deployment"
                   ? buildDavisK9Deployment()
+                  : k === "csd-k9-deployment"
+                  ? buildCsdK9Deployment()
+                  : k === "vst-request"
+                  ? buildVsrRequest()
                   : k === "senora-k9-deployment"
                   ? buildSenoraK9Deployment()
                   : k === "sib-activity"
@@ -9897,7 +10354,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       { id: "senora", n: "Senora Station", a: "", f: [["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", "", "Logbook"], ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", "NCCIT", "Personnel File"], ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", "NCCIT", "Supplemental"], ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", "K9", "Deployment Log"], ["citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
     ] },
     { n: "Special Operations Division", id: "special-ops", u: [
-      { id: "csd", n: "Canine Services Detail", a: "CSD", f: [] },
+      { id: "csd", n: "Canine Services Detail", a: "CSD", f: [["csd-k9-deployment", "CSD K9 Deployment Log", "Canine Services Detail K9 deployment report.", "K9", "Deployment Log"]] },
       { id: "esd", n: "Emergency Services Detail", a: "ESD", f: [] },
       { id: "sed", n: "Special Enforcement Detail", a: "SED", f: [] },
       { id: "aero", n: "Aero Bureau", a: "Aero Bureau", f: [] },
@@ -9927,7 +10384,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       { id: "dfu", n: "Digital Forensics Unit", a: "DFU", f: [["dforensics", "Digital Forensics Request", "Request digital forensics on evidence.", "", "Digital Forensics Requests"]] },
       { id: "psb", n: "Psychological Services Bureau", a: "PSB", f: [] },
       { id: "fmu", n: "Fleet Management Unit", a: "FMU", f: [["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate.", "", "Fleet Maintenance Requests"]] },
-      { id: "vst", n: "Veterinary Services Team", a: "VST", f: [] },
+      { id: "vst", n: "Veterinary Services Team", a: "VST", f: [["vst-request", "Veterinary Services Request", "Request veterinary services for a K9.", "", "Veterinary Services Requests"]] },
     ] },
   ];
   const buForms = BU.flatMap((d) => d.u.flatMap((u) => u.f.map((f) => ({ f, d, u }))));
