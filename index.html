@@ -2016,14 +2016,11 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
         <section class="nav-group bureaus" data-group="bureaus divisions">
           <div class="grp"><span class="grp-label">Bureaus</span><span class="grp-count">15</span></div>
           <div class="bu-item" data-bu="central">
-            <button class="nav bu-div" id="nv-bu-central" data-k="central patrol division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Central Patrol Division</span><em class="bu-n">8</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <button class="nav bu-div" id="nv-bu-central" data-k="central patrol division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Central Patrol Division</span><em class="bu-n">6</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
               <div class="bu-item" data-bu="davis">
-                <button class="nav bu-sub" id="nv-bu-davis" data-k="davis station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.booskit.dev/gtaw/dvs.png" alt="" /><b>Davis Station</b></span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-davis" data-k="davis station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.booskit.dev/gtaw/dvs.png" alt="" /><b>Davis Station</b></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
-                  <button class="nav division" id="nv-bu-davis-oss" data-k="davis oss oss incident report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.imgur.com/rqCREXC.png" alt="" />OSS</span></button>
-                  <button class="nav sub" id="nv-oss-incident" data-k="oss incident report" data-parent="nv-bu-davis-oss" onclick="show('oss-incident')"><span>Incident Report</span></button>
-                  <button class="nav sub" id="nv-oss-supplemental" data-k="oss supplemental report" data-parent="nv-bu-davis-oss" onclick="show('oss-supplemental')"><span>Supplemental</span></button>
                   <button class="nav division" id="nv-bu-davis-k9" data-k="davis k9 davis k9 deployment log canine report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/KUnabIMA49.png/raw" alt="" />K9</span></button>
                   <button class="nav sub" id="nv-davis-k9-deployment" data-k="davis k9 deployment log canine report" data-parent="nv-bu-davis-k9" onclick="show('davis-k9-deployment')"><span>Deployment Log</span></button>
                 </div>
@@ -2059,12 +2056,18 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
             </div>
           </div>
           <div class="bu-item" data-bu="detective">
-            <button class="nav bu-div" id="nv-bu-detective" data-k="detective division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Detective Division</span><i class="bu-chev" aria-hidden="true"></i></button>
+            <button class="nav bu-div" id="nv-bu-detective" data-k="detective division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Detective Division</span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
               <button class="nav bu-sub empty" id="nv-bu-mcb" data-k="mcb major crimes bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/VugOWIya00.png/raw" alt="" /><b>MCB</b> <small>Major Crimes Bureau</small></span></button>
               <button class="nav bu-sub empty" id="nv-bu-nb" data-k="nb narcotics bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/kIgOjoKi30.webp/raw" alt="" /><b>NB</b> <small>Narcotics Bureau</small></span></button>
               <button class="nav bu-sub empty" id="nv-bu-hb" data-k="hb homicide bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/gOVAyOFU30.png/raw" alt="" /><b>HB</b> <small>Homicide Bureau</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-ossb" data-k="ossb operation safe streets bureau" data-parent="nv-bu-detective" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/wicoxIri19.png/raw" alt="" /><b>OSSB</b> <small>Operation Safe Streets Bureau</small></span></button>
+              <div class="bu-item" data-bu="ossb">
+                <button class="nav bu-sub" id="nv-bu-ossb" data-k="ossb operation safe streets bureau oss" data-parent="nv-bu-detective" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/wicoxIri19.png/raw" alt="" /><b>OSSB</b> <small>Operation Safe Streets Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-oss-incident" data-k="ossb oss incident report" data-parent="nv-bu-ossb" onclick="show('oss-incident')"><span>Incident Report</span></button>
+                  <button class="nav sub" id="nv-oss-supplemental" data-k="ossb oss supplemental report" data-parent="nv-bu-ossb" onclick="show('oss-supplemental')"><span>Supplemental</span></button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="bu-item" data-bu="personnel">
@@ -5057,6 +5060,21 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.0.3</h2>
+          <div class="body">
+            <h3>v2.0.3</h3>
+            <h3>Bureaus</h3>
+            <ul>
+              <li>
+                The OSS forms (OSS Incident Report and OSS Supplemental) moved from Davis Station to OSSB (Operation Safe Streets Bureau) under the Detective Division, in both the sidebar and the home Bureaus menu.
+              </li>
+              <li>
+                The OSS category was removed from Davis Station, which now only holds the K9 Deployment Log. OSSB now shows its own picture on those forms.
+              </li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.0.2</h2>
           <div class="body">
@@ -10420,7 +10438,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   // Bureaus: division > unit > forms.  form = [key, title, description, group label, short title]
   const BU = [
     { n: "Central Patrol Division", id: "central", u: [
-      { id: "davis", n: "Davis Station", a: "", f: [["oss-incident", "OSS Incident Report", "Davis Station, Operation Safe Streets.", "OSS", "Incident Report"], ["oss-supplemental", "OSS Supplemental", "Davis Station, Operation Safe Streets.", "OSS", "Supplemental"], ["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", "K9", "Deployment Log"]] },
+      { id: "davis", n: "Davis Station", a: "", f: [["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", "K9", "Deployment Log"]] },
       { id: "senora", n: "Senora Station", a: "", f: [["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", "", "Logbook"], ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", "NCCIT", "Personnel File"], ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", "NCCIT", "Supplemental"], ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", "K9", "Deployment Log"], ["citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
     ] },
     { n: "Special Operations Division", id: "special-ops", u: [
@@ -10433,7 +10451,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       { id: "mcb", n: "Major Crimes Bureau", a: "MCB", f: [] },
       { id: "nb", n: "Narcotics Bureau", a: "NB", f: [] },
       { id: "hb", n: "Homicide Bureau", a: "HB", f: [] },
-      { id: "ossb", n: "Operation Safe Streets Bureau", a: "OSSB", f: [] },
+      { id: "ossb", n: "Operation Safe Streets Bureau", a: "OSSB", f: [["oss-incident", "OSS Incident Report", "Operation Safe Streets Bureau incident report.", "", "Incident Report"], ["oss-supplemental", "OSS Supplemental", "Operation Safe Streets Bureau supplemental report.", "", "Supplemental"]] },
     ] },
     { n: "Personnel Command", id: "personnel", u: [
       { id: "peu", n: "Pre-Employment Unit", a: "PEU", f: [] },
@@ -10491,8 +10509,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     email: { mono: "CORR" },
     deputy: { mono: "ID" },
     updates: { mono: "NEW" },
-    "oss-incident": { unit: "davis-oss", mono: "OSS" },
-    "oss-supplemental": { unit: "davis-oss", mono: "OSS" },
+    "oss-incident": { unit: "ossb", mono: "OSSB" },
+    "oss-supplemental": { unit: "ossb", mono: "OSSB" },
     "davis-k9-deployment": { unit: "davis-k9", mono: "K9" },
     "senora-logbook": { unit: "senora", mono: "SEN" },
     nccit: { unit: "senora-nccit", mono: "NCCIT" },
