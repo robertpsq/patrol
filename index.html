@@ -815,6 +815,62 @@
         color: var(--mute);
         font-size: 11px;
       }
+      /* Rows that mix a "Time & Date" field (label + hint + control) with plain
+         fields (label + input). Each field shares the row's three tracks via
+         subgrid, so every label sits on one line and every input on another,
+         however tall or wrapped the hint is. */
+      .g.dt-row > .f {
+        display: grid;
+        grid-row: span 3;
+        grid-template-rows: subgrid;
+        row-gap: 0;
+        align-content: start;
+      }
+      .g.dt-row > .f > :first-child {
+        grid-row: 1;
+      }
+      .g.dt-row > .f > :last-child {
+        grid-row: 3;
+        align-self: end;
+      }
+      /* "Now" button that fills a time field with the current UK (24-hour) time */
+      .time-now-wrap {
+        display: flex;
+        gap: 8px;
+        min-width: 0;
+      }
+      .time-now-wrap > input {
+        flex: 1;
+        min-width: 0;
+      }
+      button.b.time-now {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 43px;
+        padding: 0 12px;
+        white-space: nowrap;
+      }
+      button.b.time-now svg {
+        width: 15px;
+        height: 15px;
+      }
+      /* Inside a date + time pair space is tight: icon-only square button */
+      .date-time-control button.b.time-now {
+        width: 43px;
+        padding: 0;
+        justify-content: center;
+      }
+      .date-time-control button.b.time-now span {
+        display: none;
+      }
+      .date-time-control .date-picker-trigger {
+        white-space: nowrap;
+      }
+      .date-time-control .date-picker {
+        flex: 1.3;
+      }
       .date-picker-trigger {
         width: 100%;
         min-height: 43px;
@@ -1097,12 +1153,16 @@
       }
       .credits {
         position: fixed;
-        right: calc(16px + env(safe-area-inset-right, 0px));
-        bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+        right: calc(8px + env(safe-area-inset-right, 0px));
+        bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+        z-index: 40;
+        padding: 2px 8px;
+        border-radius: 99px;
+        background: color-mix(in srgb, var(--bg) 80%, transparent);
         font-size: 11px;
+        line-height: 1.4;
         letter-spacing: 0.06em;
         color: var(--mute);
-        opacity: 0.8;
         pointer-events: none;
       }
       .credits b {
@@ -1622,8 +1682,8 @@ main>#f-updates{max-width:900px}
  .rail .actions,.rail .report-actions{flex-direction:row;flex-wrap:wrap;padding:0;border:0;background:none;gap:8px}
  .rail .b{width:auto;flex:1 1 130px;padding:11px 14px}
  .rail button.b.p{flex:2 1 200px}
- #toast,#character-details-prompt{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
- .credits{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+ .rail{padding-bottom:calc(34px + env(safe-area-inset-bottom,0px))}
+ #toast,#character-details-prompt{bottom:calc(112px + env(safe-area-inset-bottom,0px))}
 }
 
 /* start screen */
@@ -1831,6 +1891,87 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .pchk:has(input:focus-visible){outline:2px solid var(--beige);outline-offset:2px}
 .pchk.dead:has(input:checked){background:color-mix(in srgb,#b5483f 20%,var(--bg));border-color:#b5483f}
 .pchk.dead:has(input:checked) .mk{background:#b5483f;border-color:#b5483f}
+/* K9 deployment type: icon tiles */
+.dep-chips{display:flex;flex-wrap:wrap;gap:8px}
+.dep-chip{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:7px 14px 7px 11px;border:1px solid var(--line);border-radius:99px;background:var(--bg);color:var(--mute);cursor:pointer;user-select:none;transition:background .15s,border-color .15s,color .15s,transform .1s}
+.dep-chip input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.dep-ico{width:18px;height:18px;flex:none}
+.dep-txt{display:flex;align-items:baseline;gap:6px}
+.dep-txt b{font-size:13.5px;font-weight:600;color:var(--text)}
+.dep-txt small{font-size:11.5px;color:var(--mute)}
+.dep-tick{display:none}
+.dep-chip:hover{border-color:var(--beige);color:var(--text)}
+.dep-chip:active{transform:scale(.98)}
+.dep-chip:has(input:checked){background:var(--green);border-color:var(--green);color:#fff}
+.dep-chip:has(input:checked) .dep-txt b,.dep-chip:has(input:checked) .dep-txt small{color:#fff}
+.dep-chip:has(input:focus-visible){outline:2px solid var(--beige);outline-offset:2px}
+/* NCCIT forms: text boxes start compact and grow with what is typed, up to a cap, then scroll */
+#f-nccit textarea,#f-nccit-supp textarea{min-height:46px;height:46px;max-height:380px;resize:none;overflow-y:hidden;line-height:1.5;overflow-wrap:anywhere}
+#f-nccit-supp textarea{min-height:92px;height:92px}
+#f-nccit-supp #nccit-supp-future-notes{min-height:92px}
+#f-nccit .nccit-focus-row .g{align-items:start}
+/* Citation form: pill toggles, option panels */
+.opt-chips{display:flex;flex-wrap:wrap;gap:8px}
+.f>.pchk{margin-top:8px;align-self:flex-start;width:fit-content}
+.opt-panel{margin-top:10px;padding:12px 14px 14px;border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px;background:color-mix(in srgb,var(--bg) 55%,var(--panel))}
+.opt-panel .f{padding-top:8px}
+.opt-title{font:600 11.5px/1.2 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--beige)}
+#citation-dash-opts{margin-top:12px}
+#citation-dash-opts .seg{margin-bottom:4px}
+#citation-picture-wrap{margin-top:4px}
+/* Character Details page (#f-deputy): hero preview, grouped sections */
+#f-deputy .dp-body{padding:18px 20px 22px}
+#f-deputy .dp-hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 18px;align-items:center;padding:18px;border:1px solid var(--line);border-left:4px solid var(--beige);border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--green) 14%,var(--panel)),var(--panel) 70%)}
+#f-deputy .dp-avatar{display:grid;place-items:center;width:64px;height:64px;border-radius:16px;border:1px solid var(--line);background:color-mix(in srgb,var(--green) 22%,var(--bg));color:var(--beige);font:700 26px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+#f-deputy .dp-avatar{position:relative;overflow:hidden}
+#f-deputy .dp-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#f-deputy .dp-avatar.has-photo{background:var(--bg)}
+#f-deputy .dp-id{min-width:0}
+#f-deputy .dp-name{font:700 26px/1.1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em;overflow-wrap:anywhere}
+#f-deputy .dp-name.empty,#f-deputy .dp-sub.empty{color:var(--mute);font-weight:500}
+#f-deputy .dp-sub{margin-top:3px;font-size:13.5px;color:var(--beige)}
+#f-deputy .dp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+#f-deputy .dp-chip{padding:3px 10px;border:1px solid var(--line);border-radius:99px;background:color-mix(in srgb,var(--bg) 55%,var(--panel));font:600 12px/1.4 Inter,sans-serif;letter-spacing:.03em;color:var(--text)}
+#f-deputy .dp-chip[hidden]{display:none}
+#f-deputy .dp-chip-state{color:var(--mute);text-transform:uppercase;font-size:11px;letter-spacing:.06em}
+#f-deputy .dp-chip-state.saved{color:var(--green);border-color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
+#f-deputy .dp-lede{grid-column:1/-1;margin:6px 0 0;padding-top:12px;border-top:1px solid var(--line);color:var(--mute);font-size:13.5px;line-height:1.5}
+#f-deputy .dp-sec{margin-top:22px}
+#f-deputy .dp-sec-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+#f-deputy .dp-sec-head b{font:600 11.5px/1.2 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--beige)}
+#f-deputy .dp-sec-head small{font-size:12.5px;color:var(--mute)}
+#f-deputy .dp-grid{gap:4px 16px}
+#f-deputy .dp-wide{grid-column:1/-1}
+#f-deputy .dp-hint{display:block;margin-top:5px;font-size:12px;font-style:normal;color:var(--mute)}
+#f-deputy .dp-note{margin-top:20px;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;background:color-mix(in srgb,var(--bg) 45%,var(--panel))}
+#f-deputy .dp-note>span{margin:0;font-size:12.5px;line-height:1.5;font-weight:400;color:var(--mute)}
+#f-deputy .dp-actions{max-width:none;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+#f-deputy .dp-actions .b{flex:0 1 auto;min-width:140px;justify-content:center;padding:12px 22px}
+@media(max-width:560px){
+ #f-deputy .dp-body{padding:14px 16px 18px}
+ #f-deputy .dp-hero{grid-template-columns:1fr;padding:14px}
+ #f-deputy .dp-avatar{width:52px;height:52px;font-size:22px}
+ #f-deputy .dp-grid{grid-template-columns:1fr}
+ #f-deputy .dp-actions .b{flex:1 1 100%}
+}
+/* Yes/No toggle tiles (Use of Force: IAB / Supervisor Response) */
+.resp-toggles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.resp-tile{position:relative;display:flex;align-items:center;gap:12px;min-height:58px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);cursor:pointer;user-select:none;transition:background .15s,border-color .15s}
+.resp-tile input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.resp-tile .mk{flex:none;display:grid;place-items:center;width:20px;height:20px;border:1.5px solid var(--mute);border-radius:6px;transition:background .15s,border-color .15s}
+.resp-tile .mk::after{content:"";width:9px;height:5px;margin-top:-2px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg);opacity:0;transition:opacity .12s}
+.resp-txt{display:grid;gap:2px;min-width:0;flex:1}
+.resp-txt b{font-size:14px;font-weight:600;color:var(--text)}
+.resp-txt small{font-size:12px;color:var(--mute)}
+.resp-state{flex:none;padding:3px 10px;border-radius:99px;border:1px solid var(--line);font:600 11.5px/1.3 Inter,sans-serif;font-style:normal;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.resp-state::after{content:"No"}
+.resp-tile:hover{border-color:var(--beige)}
+.resp-tile:has(input:checked){background:color-mix(in srgb,var(--green) 14%,var(--bg));border-color:var(--green)}
+.resp-tile:has(input:checked) .mk{background:var(--green);border-color:var(--green)}
+.resp-tile:has(input:checked) .mk::after{opacity:1}
+.resp-tile:has(input:checked) .resp-state{background:var(--green);border-color:var(--green);color:#fff}
+.resp-tile:has(input:checked) .resp-state::after{content:"Yes"}
+.resp-tile:has(input:focus-visible){outline:2px solid var(--beige);outline-offset:2px}
 .pd-panel{grid-column:1/-1;display:grid;gap:12px;padding:12px 14px 14px;border:1px solid color-mix(in srgb,#b5483f 50%,var(--line));border-left-width:3px;border-radius:10px;background:color-mix(in srgb,#b5483f 7%,var(--panel))}
 .pd-panel[hidden],.pd-grp[hidden]{display:none!important}
 .pd-line{display:flex;flex-wrap:wrap;gap:12px 28px}
@@ -1878,11 +2019,51 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 /* ===== MCB forms ===== */
 .photo-row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:start;padding-top:12px}
 .photo-row img{width:96px;height:120px;object-fit:cover;border:1px solid var(--line);border-radius:10px;background:#fff}
+/* The default avatar (.p-default) is square (150x150, flat #666 ground): show it whole, letterboxed in its own grey, instead of cropping it into the portrait frame meant for MDC photos */
+.photo-row img.p-default{object-fit:contain;background:#666}
 .photo-fields .f{padding-top:0;margin-bottom:10px}
 .photo-fields .f:last-of-type{margin-bottom:0}
 .photo-pick .photo-row{padding-top:0}
 button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
 @media(max-width:560px){.photo-row{grid-template-columns:72px minmax(0,1fr)}.photo-row img{width:72px;height:90px}}
+/* ===== Involved Persons record card (personCard) ===== */
+.pc-top{display:grid;grid-template-columns:112px minmax(0,1fr);gap:18px;align-items:start;padding-top:14px}
+.pc-photo{display:grid;gap:8px}
+.pc-photo img{display:block;width:112px;height:140px;object-fit:cover;border:1px solid var(--line);border-radius:10px;background:#fff}
+.pc-photo img.p-default{object-fit:contain;background:#666}
+.pc-photo button.photo-reset{width:100%;padding:6px 8px;font-size:12px}
+.pc-id>.f:first-child{padding-top:0}
+.pc .pd-panel{margin-top:14px}
+.pc-h{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font:600 11.5px/1.2 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--beige)}
+.pc-h small{font:400 12px/1.2 Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--mute)}
+.pc-h+.g>.f:nth-child(-n+2){padding-top:10px}
+.pc-rel textarea{min-height:76px}
+/* Street / District search pickers */
+.place{position:relative}
+.place.open{z-index:30}
+.place input[role=combobox]{padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a8a80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.place-list{position:absolute;left:0;right:0;top:calc(100% + 4px);max-height:260px;overflow-y:auto;margin:0;padding:4px;list-style:none;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 28px rgba(0,0,0,.22);overscroll-behavior:contain}
+.place-list[hidden]{display:none}
+.place-list li{padding:8px 10px;border-radius:7px;font-size:14px;line-height:1.3;color:var(--text);cursor:pointer}
+.place-list li b{font-weight:700;color:var(--green)}
+.place-list li.on{background:color-mix(in srgb,var(--green) 16%,var(--panel))}
+.place-list li:hover{background:color-mix(in srgb,var(--green) 10%,var(--panel))}
+.place-list li.place-empty{cursor:default;color:var(--mute);font-size:13px}
+.place-list li.place-empty:hover{background:none}
+.place-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+@media(max-width:560px){.place-pair{grid-template-columns:1fr}}
+.card{overflow:visible}
+.card>h2{border-radius:11px 11px 0 0}
+.photo-note{margin:0 0 10px;font-size:12.5px;line-height:1.45;color:var(--mute)}
+/* Photo "searching" overlay, shown while waiting for typing to pause and while the picture loads */
+.p-frame{position:relative;display:block;width:fit-content;line-height:0}
+.p-loading{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-radius:10px;background:color-mix(in srgb,var(--panel) 78%,transparent);line-height:1.2;text-align:center}
+.p-frame.is-loading .p-loading{display:flex}
+.p-loading i{width:22px;height:22px;border:2.5px solid color-mix(in srgb,var(--beige) 30%,transparent);border-top-color:var(--beige);border-radius:50%;animation:p-spin .8s linear infinite}
+.p-loading small{padding:0 4px;font-size:11px;font-weight:600;color:var(--text)}
+@keyframes p-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.p-loading i{animation-duration:2.4s}}
+@media(max-width:560px){.pc-top{grid-template-columns:84px minmax(0,1fr);gap:12px}.pc-photo img{width:84px;height:105px}}
 
     </style>
   </head>
@@ -2093,7 +2274,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 <button class="nav bu-sub" id="nv-bu-ossb" data-k="ossb operation safe streets bureau oss" data-parent="nv-bu-detective" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/wicoxIri19.png/raw" alt="" /><b>OSSB</b> <small>Operation Safe Streets Bureau</small></span><em class="bu-n">3</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
                   <button class="nav sub" id="nv-ossb-poi" data-k="ossb operation safe streets person of interest poi file suspect" data-parent="nv-bu-ossb" onclick="show('ossb-poi')"><span>Person of Interest</span></button>
-                  <button class="nav sub" id="nv-oss-incident" data-k="ossb oss incident report" data-parent="nv-bu-ossb" onclick="show('oss-incident')"><span>Incident Report</span></button>
+                  <button class="nav sub" id="nv-oss-incident" data-k="ossb oss case package incident report" data-parent="nv-bu-ossb" onclick="show('oss-incident')"><span>Case Package</span></button>
                   <button class="nav sub" id="nv-oss-supplemental" data-k="ossb oss supplemental report" data-parent="nv-bu-ossb" onclick="show('oss-supplemental')"><span>Supplemental</span></button>
                 </div>
               </div>
@@ -2415,7 +2596,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         <div class="card">
           <h2><small>Section 1</small>Filing Information</h2>
           <div class="body">
-            <div class="g">
+            <div class="g dt-row">
               <div class="f">
                 <span>Time &amp; Date</span
                 ><small class="date-time-hint"
@@ -2473,7 +2654,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <h2><small>Section 4</small>Evidence</h2>
           <div class="body">
             <div id="evs"></div>
-            <button class="b add" onclick="addE()">+ Add evidence</button>
+            <button class="b add" type="button" onclick="addE()">+ Add exhibit</button>
           </div>
         </div>
         <div class="card">
@@ -2525,7 +2706,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         <div class="card">
           <h2><small>Section 1</small>Filing Information</h2>
           <div class="body">
-            <div class="g">
+            <div class="g dt-row">
               <div class="f">
                 <span>Time &amp; Date</span
                 ><small class="date-time-hint"
@@ -2551,13 +2732,20 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 placeholder="Rank Forename Surname (if partnered, list Partner Deputy as well)"
               />
             </div>
-            <div class="g">
-              <label class="row"
-                ><span>IAB Response</span><input type="checkbox" id="uof-iab"
-              /></label>
-              <label class="row"
-                ><span>Supervisor Response</span><input type="checkbox" id="uof-supervisor"
-              /></label>
+            <div class="f">
+              <span>Responses</span>
+              <div class="resp-toggles">
+                <label class="resp-tile"
+                  ><input type="checkbox" id="uof-iab" /><i class="mk" aria-hidden="true"></i
+                  ><span class="resp-txt"><b>IAB Response</b><small>Internal Affairs Bureau</small></span
+                  ><em class="resp-state" aria-hidden="true"></em
+                ></label>
+                <label class="resp-tile"
+                  ><input type="checkbox" id="uof-supervisor" /><i class="mk" aria-hidden="true"></i
+                  ><span class="resp-txt"><b>Supervisor Response</b><small>Supervisor on scene</small></span
+                  ><em class="resp-state" aria-hidden="true"></em
+                ></label>
+              </div>
             </div>
             <div class="f">
               <span>Unit Number</span><input type="text" id="uof-unit" placeholder="Callsign" />
@@ -2602,7 +2790,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <h2><small>Section 6</small>Evidence</h2>
           <div class="body">
             <div id="uof-evidence"></div>
-            <button class="b add" onclick="addUofEvidence()">+ Add evidence</button>
+            <button class="b add" type="button" onclick="addUofEvidence()">+ Add exhibit</button>
           </div>
         </div>
         <div class="card">
@@ -2724,10 +2912,28 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 ><select id="apb-type">
                   <option>WANTED</option>
                   <option>WANTED FOR INVESTIGATION</option>
+                  <option>WANTED FOR QUESTIONING</option>
+                  <option>PERSON OF INTEREST</option>
                   <option>ATTEMPT TO IDENTIFY</option>
+                  <option>ATTEMPT TO LOCATE</option>
                   <option>INFORMATION WANTED</option>
                   <option>MISSING PERSON</option>
+                  <option>MISSING JUVENILE</option>
+                  <option>MISSING ENDANGERED PERSON</option>
+                  <option>SILVER ALERT</option>
+                  <option>AMBER ALERT</option>
+                  <option>RUNAWAY</option>
+                  <option>ESCAPEE</option>
+                  <option>PAROLE / PROBATION VIOLATOR</option>
+                  <option>BE ON THE LOOKOUT (BOLO)</option>
+                  <option>STOLEN VEHICLE</option>
+                  <option>VEHICLE OF INTEREST</option>
+                  <option>HIT AND RUN</option>
+                  <option>ARMED AND DANGEROUS</option>
+                  <option>OFFICER SAFETY</option>
                   <option>SEEKING SIMILAR VICTIMS</option>
+                  <option>SEEKING WITNESSES</option>
+                  <option>CRIME ALERT</option>
                   <option>COMMUNITY ALERT</option>
                 </select>
               </div>
@@ -2735,8 +2941,26 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 <span>Investigation Status</span
                 ><select id="apb-status">
                   <option>ONGOING INVESTIGATION</option>
+                  <option>ACTIVE INVESTIGATION</option>
+                  <option>UNDER REVIEW</option>
+                  <option>COLD CASE</option>
                   <option>AT RISK</option>
+                  <option>CRITICAL MISSING</option>
+                  <option>ARMED AND DANGEROUS</option>
+                  <option>EXTREMELY DANGEROUS</option>
+                  <option>CAUTION ADVISED</option>
+                  <option>DO NOT APPROACH</option>
+                  <option>SUSPECT AT LARGE</option>
+                  <option>SUSPECT IN CUSTODY</option>
+                  <option>WARRANT ISSUED</option>
+                  <option>FELONY WARRANT</option>
+                  <option>WARRANT PENDING</option>
+                  <option>ATTEMPTED MURDER</option>
                   <option>CAPITAL MURDER</option>
+                  <option>HOMICIDE</option>
+                  <option>KIDNAPPING</option>
+                  <option>ARMED ROBBERY</option>
+                  <option>CASE CLOSED</option>
                 </select>
               </div>
               <div class="f">
@@ -2794,7 +3018,6 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         <div class="actions">
           <button class="b p" onclick="copy('apb')">Copy BBCode</button
           ><button class="b" onclick="downloadApbPng()">Download PNG</button
-          ><button class="b" onclick="generateNewApbNumber()">New Random APB Number</button
           ><button class="b" onclick="resetApb()">Reset</button>
         </div>
       </div>
@@ -2809,7 +3032,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <h2><small>Section 2</small>Evidence</h2>
           <div class="body">
             <div id="sevs"></div>
-            <button class="b add" onclick="addE('sevs')">+ Add evidence</button>
+            <button class="b add" type="button" onclick="addSevExhibit()">+ Add attachment</button>
           </div>
         </div>
         <div class="card">
@@ -3651,20 +3874,11 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             </div>
             <div class="f">
               <span>Deployment Type</span>
-              <div class="g">
-                <label class="row"
-                  ><span>Bite</span><input type="checkbox" id="k9-type-bite" onchange="updateK9Medical('k9')"
-                /></label>
-                <label class="row"
-                  ><span>Search Warrant</span><input type="checkbox" id="k9-type-warrant"
-                /></label>
-                <label class="row"
-                  ><span>Tracking</span><input type="checkbox" id="k9-type-tracking"
-                /></label>
-                <label class="row"
-                  ><span>Other (detail in narrative)</span
-                  ><input type="checkbox" id="k9-type-other"
-                /></label>
+              <div class="dep-chips">
+                <label class="dep-chip"><input type="checkbox" id="k9-type-bite" onchange="updateK9Medical('k9')" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='5' cy='9' r='1.8'/><circle cx='9.5' cy='5.5' r='1.8'/><circle cx='14.5' cy='5.5' r='1.8'/><circle cx='19' cy='9' r='1.8'/><path d='M12 11c-3.2 0-6 2.6-6 5.2 0 1.6 1.2 2.8 2.8 2.8 1.2 0 2-.6 3.2-.6s2 .6 3.2.6c1.6 0 2.8-1.2 2.8-2.8C18 13.6 15.2 11 12 11z'/></svg><span class="dep-txt"><b>Bite</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="k9-type-warrant" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d='M7 3h7l5 5v13H7z'/><path d='M14 3v5h5'/><path d='M10 13h6M10 17h6'/></svg><span class="dep-txt"><b>Search Warrant</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="k9-type-tracking" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='12' cy='12' r='8'/><circle cx='12' cy='12' r='2.5'/><path d='M12 2v4M12 18v4M2 12h4M18 12h4'/></svg><span class="dep-txt"><b>Tracking</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="k9-type-other" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='6' cy='12' r='1.6'/><circle cx='12' cy='12' r='1.6'/><circle cx='18' cy='12' r='1.6'/></svg><span class="dep-txt"><b>Other</b><small>Detail in narrative</small></span><i class="dep-tick" aria-hidden="true"></i></label>
               </div>
             </div>
             <fieldset class="item" id="k9-medical-wrap" hidden>
@@ -3676,7 +3890,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               </div>
               <div class="f" id="k9-medical-unit-wrap" hidden>
                 <span id="k9-medical-unit-label">Providing Unit</span
-                ><input type="text" id="k9-medical-unit" placeholder="e.g. Rescue 99" />
+                ><input type="text" id="k9-medical-unit" placeholder="e.g. Rescue 99" oninput="updateK9Medical('k9')" />
               </div>
             </fieldset>
             <div class="f">
@@ -3684,8 +3898,9 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               ><textarea id="k9-narrative" placeholder="Fill in the narrative here."></textarea>
             </div>
             <div class="f">
-              <span>Evidence Found</span
-              ><textarea id="k9-evidence" placeholder="List the evidence here."></textarea>
+              <span>Evidence Found</span>
+              <div id="k9-evs"></div>
+              <button class="b add" type="button" onclick="addK9Exhibit('k9')">+ Add exhibit</button>
             </div>
             <div class="f">
               <span>Signed By — Name</span
@@ -3754,20 +3969,11 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             </div>
             <div class="f">
               <span>Deployment Type</span>
-              <div class="g">
-                <label class="row"
-                  ><span>Bite</span><input type="checkbox" id="ck9-type-bite" onchange="updateK9Medical('ck9')"
-                /></label>
-                <label class="row"
-                  ><span>Search Warrant</span><input type="checkbox" id="ck9-type-warrant"
-                /></label>
-                <label class="row"
-                  ><span>Tracking</span><input type="checkbox" id="ck9-type-tracking"
-                /></label>
-                <label class="row"
-                  ><span>Other (detail in narrative)</span
-                  ><input type="checkbox" id="ck9-type-other"
-                /></label>
+              <div class="dep-chips">
+                <label class="dep-chip"><input type="checkbox" id="ck9-type-bite" onchange="updateK9Medical('ck9')" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='5' cy='9' r='1.8'/><circle cx='9.5' cy='5.5' r='1.8'/><circle cx='14.5' cy='5.5' r='1.8'/><circle cx='19' cy='9' r='1.8'/><path d='M12 11c-3.2 0-6 2.6-6 5.2 0 1.6 1.2 2.8 2.8 2.8 1.2 0 2-.6 3.2-.6s2 .6 3.2.6c1.6 0 2.8-1.2 2.8-2.8C18 13.6 15.2 11 12 11z'/></svg><span class="dep-txt"><b>Bite</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="ck9-type-warrant" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d='M7 3h7l5 5v13H7z'/><path d='M14 3v5h5'/><path d='M10 13h6M10 17h6'/></svg><span class="dep-txt"><b>Search Warrant</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="ck9-type-tracking" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='12' cy='12' r='8'/><circle cx='12' cy='12' r='2.5'/><path d='M12 2v4M12 18v4M2 12h4M18 12h4'/></svg><span class="dep-txt"><b>Tracking</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="ck9-type-other" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='6' cy='12' r='1.6'/><circle cx='12' cy='12' r='1.6'/><circle cx='18' cy='12' r='1.6'/></svg><span class="dep-txt"><b>Other</b><small>Detail in narrative</small></span><i class="dep-tick" aria-hidden="true"></i></label>
               </div>
             </div>
             <fieldset class="item" id="ck9-medical-wrap" hidden>
@@ -3779,7 +3985,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               </div>
               <div class="f" id="ck9-medical-unit-wrap" hidden>
                 <span id="ck9-medical-unit-label">Providing Unit</span
-                ><input type="text" id="ck9-medical-unit" placeholder="e.g. Rescue 99" />
+                ><input type="text" id="ck9-medical-unit" placeholder="e.g. Rescue 99" oninput="updateK9Medical('ck9')" />
               </div>
             </fieldset>
             <div class="f">
@@ -3787,8 +3993,9 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               ><textarea id="ck9-narrative" placeholder="Fill in the narrative here."></textarea>
             </div>
             <div class="f">
-              <span>Evidence Found</span
-              ><textarea id="ck9-evidence" placeholder="List the evidence here."></textarea>
+              <span>Evidence Found</span>
+              <div id="ck9-evs"></div>
+              <button class="b add" type="button" onclick="addK9Exhibit('ck9')">+ Add exhibit</button>
             </div>
             <div class="f">
               <span>Signed By — Name</span
@@ -3961,20 +4168,11 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             </div>
             <div class="f">
               <span>Deployment Type</span>
-              <div class="g">
-                <label class="row"
-                  ><span>Bite</span><input type="checkbox" id="dk9-type-bite" onchange="updateK9Medical('dk9')"
-                /></label>
-                <label class="row"
-                  ><span>Search Warrant</span><input type="checkbox" id="dk9-type-warrant"
-                /></label>
-                <label class="row"
-                  ><span>Tracking</span><input type="checkbox" id="dk9-type-tracking"
-                /></label>
-                <label class="row"
-                  ><span>Other (detail in narrative)</span
-                  ><input type="checkbox" id="dk9-type-other"
-                /></label>
+              <div class="dep-chips">
+                <label class="dep-chip"><input type="checkbox" id="dk9-type-bite" onchange="updateK9Medical('dk9')" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='5' cy='9' r='1.8'/><circle cx='9.5' cy='5.5' r='1.8'/><circle cx='14.5' cy='5.5' r='1.8'/><circle cx='19' cy='9' r='1.8'/><path d='M12 11c-3.2 0-6 2.6-6 5.2 0 1.6 1.2 2.8 2.8 2.8 1.2 0 2-.6 3.2-.6s2 .6 3.2.6c1.6 0 2.8-1.2 2.8-2.8C18 13.6 15.2 11 12 11z'/></svg><span class="dep-txt"><b>Bite</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="dk9-type-warrant" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d='M7 3h7l5 5v13H7z'/><path d='M14 3v5h5'/><path d='M10 13h6M10 17h6'/></svg><span class="dep-txt"><b>Search Warrant</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="dk9-type-tracking" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='12' cy='12' r='8'/><circle cx='12' cy='12' r='2.5'/><path d='M12 2v4M12 18v4M2 12h4M18 12h4'/></svg><span class="dep-txt"><b>Tracking</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="dk9-type-other" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='6' cy='12' r='1.6'/><circle cx='12' cy='12' r='1.6'/><circle cx='18' cy='12' r='1.6'/></svg><span class="dep-txt"><b>Other</b><small>Detail in narrative</small></span><i class="dep-tick" aria-hidden="true"></i></label>
               </div>
             </div>
             <fieldset class="item" id="dk9-medical-wrap" hidden>
@@ -3986,7 +4184,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               </div>
               <div class="f" id="dk9-medical-unit-wrap" hidden>
                 <span id="dk9-medical-unit-label">Providing Unit</span
-                ><input type="text" id="dk9-medical-unit" placeholder="e.g. Rescue 99" />
+                ><input type="text" id="dk9-medical-unit" placeholder="e.g. Rescue 99" oninput="updateK9Medical('dk9')" />
               </div>
             </fieldset>
             <div class="f">
@@ -3994,8 +4192,9 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               ><textarea id="dk9-narrative" placeholder="Fill in the narrative here."></textarea>
             </div>
             <div class="f">
-              <span>Evidence Found</span
-              ><textarea id="dk9-evidence" placeholder="List the evidence here."></textarea>
+              <span>Evidence Found</span>
+              <div id="dk9-evs"></div>
+              <button class="b add" type="button" onclick="addK9Exhibit('dk9')">+ Add exhibit</button>
             </div>
             <div class="f">
               <span>Signed By — Name</span
@@ -4093,10 +4292,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 <span>Identification Plate</span><input type="text" id="citation-plate" />
               </div>
               <div class="f">
-                <span>Registered Owner</span><input type="text" id="citation-owner" /><label
-                  class="row"
-                  ><span>Same as Defendant</span><input type="checkbox" id="citation-same-owner"
-                /></label>
+                <span>Registered Owner</span><input type="text" id="citation-owner" /><label class="pchk"><input type="checkbox" id="citation-same-owner" /><i class="mk" aria-hidden="true"></i><span>Same as Defendant</span></label>
               </div>
               <div class="f">
                 <span>Tint Level</span
@@ -4124,13 +4320,9 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             </div>
             <div class="f">
               <span>Enforcement Outcome</span>
-              <div class="g">
-                <label class="row"
-                  ><span>License Suspended</span><input type="checkbox" id="citation-out-license"
-                /></label>
-                <label class="row"
-                  ><span>Vehicle Impounded</span><input type="checkbox" id="citation-out-impound"
-                /></label>
+              <div class="resp-toggles">
+                <label class="resp-tile"><input type="checkbox" id="citation-out-license" /><i class="mk" aria-hidden="true"></i><span class="resp-txt"><b>License Suspended</b><small>Driver's license suspended</small></span><em class="resp-state" aria-hidden="true"></em></label>
+                <label class="resp-tile"><input type="checkbox" id="citation-out-impound" /><i class="mk" aria-hidden="true"></i><span class="resp-txt"><b>Vehicle Impounded</b><small>Vehicle taken to impound</small></span><em class="resp-state" aria-hidden="true"></em></label>
               </div>
             </div>
           </div>
@@ -4138,29 +4330,25 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         <div class="card">
           <h2><small>TSD</small>Narrative</h2>
           <div class="body">
-            <div class="g">
-              <label class="row"
-                ><span>Officer identification and date/time</span
-                ><input type="checkbox" id="citation-n-officer" checked
-              /></label>
-              <label class="row"
-                ><span>Area enforcement / radar / ALPR</span
-                ><input type="checkbox" id="citation-n-area" checked
-              /></label>
-              <label class="row"
-                ><span>Vehicle stop</span><input type="checkbox" id="citation-n-stop" checked
-              /></label>
-              <label class="row"
-                ><span>Citation issued / payment and appeal information</span
-                ><input type="checkbox" id="citation-n-citation" checked
-              /></label>
+            <div class="f">
+              <span>Include in narrative</span>
+              <div class="opt-chips">
+                <label class="pchk"><input type="checkbox" id="citation-n-officer" checked /><i class="mk" aria-hidden="true"></i><span>Officer identification and date/time</span></label>
+                <label class="pchk"><input type="checkbox" id="citation-n-area" checked /><i class="mk" aria-hidden="true"></i><span>Area enforcement / radar / ALPR</span></label>
+                <label class="pchk"><input type="checkbox" id="citation-n-stop" checked /><i class="mk" aria-hidden="true"></i><span>Vehicle stop</span></label>
+                <label class="pchk"><input type="checkbox" id="citation-n-citation" checked /><i class="mk" aria-hidden="true"></i><span>Citation issued / payment and appeal information</span></label>
+              </div>
             </div>
             <div class="f">
               <span>Offence Narratives</span>
-              <label class="row"
-                ><span>Speeding</span><input type="checkbox" id="citation-n-speeding"
-              /></label>
-              <div id="citation-sp-wrap" hidden>
+              <div class="opt-chips">
+                <label class="pchk"><input type="checkbox" id="citation-n-speeding" /><i class="mk" aria-hidden="true"></i><span>Speeding</span></label>
+                <label class="pchk"><input type="checkbox" id="citation-n-xspeeding" /><i class="mk" aria-hidden="true"></i><span>Excessive Speeding</span></label>
+                <label class="pchk"><input type="checkbox" id="citation-n-noins" /><i class="mk" aria-hidden="true"></i><span>No Insurance</span></label>
+                <label class="pchk"><input type="checkbox" id="citation-n-yield" /><i class="mk" aria-hidden="true"></i><span>Failure to yield at an intersection</span></label>
+              </div>
+              <div id="citation-sp-wrap" class="opt-panel" hidden>
+                <div class="opt-title">Speeding details</div>
                 <div class="g">
                   <div class="f">
                     <span>Street Name</span><input type="text" id="citation-sp-street" />
@@ -4173,10 +4361,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                   </div>
                 </div>
               </div>
-              <label class="row"
-                ><span>Excessive Speeding</span><input type="checkbox" id="citation-n-xspeeding"
-              /></label>
-              <div id="citation-xs-wrap" hidden>
+              <div id="citation-xs-wrap" class="opt-panel" hidden>
+                <div class="opt-title">Excessive speeding details</div>
                 <div class="g">
                   <div class="f">
                     <span>Street Name</span><input type="text" id="citation-xs-street" />
@@ -4189,10 +4375,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                   </div>
                 </div>
               </div>
-              <label class="row"
-                ><span>No Insurance</span><input type="checkbox" id="citation-n-noins"
-              /></label>
-              <div id="citation-ni-wrap" hidden>
+              <div id="citation-ni-wrap" class="opt-panel" hidden>
+                <div class="opt-title">No insurance details</div>
                 <div class="g">
                   <div class="f">
                     <span>Previous Insurance Expiry Date</span
@@ -4207,11 +4391,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                   </div>
                 </div>
               </div>
-              <label class="row"
-                ><span>Failure to yield at an intersection</span
-                ><input type="checkbox" id="citation-n-yield"
-              /></label>
-              <div id="citation-y-wrap" hidden>
+              <div id="citation-y-wrap" class="opt-panel" hidden>
+                <div class="opt-title">Failure to yield details</div>
                 <div class="g">
                   <div class="f">
                     <span>Street Name</span><input type="text" id="citation-y-street" />
@@ -4237,28 +4418,17 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         <div class="card">
           <h2><small>TSD</small>Evidence</h2>
           <div class="body">
-            <label class="row"
-              ><span>Radar photo evidence</span><input type="checkbox" id="citation-radar"
-            /></label>
+            <div class="opt-chips">
+              <label class="pchk"><input type="checkbox" id="citation-radar" /><i class="mk" aria-hidden="true"></i><span>Radar photo evidence</span></label>
+              <label class="pchk"><input type="checkbox" id="citation-dash" /><i class="mk" aria-hidden="true"></i><span>Dashcam footage</span></label>
+            </div>
             <div id="citation-picture-wrap" hidden>
               <div class="f">
                 <span>Picture Link</span><input type="text" id="citation-picture" />
               </div>
             </div>
-            <label class="row"
-              ><span>Dashcam footage</span><input type="checkbox" id="citation-dash"
-            /></label>
             <div id="citation-dash-opts" hidden>
-              <div class="g">
-                <label class="row"
-                  ><span>Written</span
-                  ><input type="radio" name="citation-dash-type" value="written"
-                /></label>
-                <label class="row"
-                  ><span>Video Link</span
-                  ><input type="radio" name="citation-dash-type" value="video"
-                /></label>
-              </div>
+              <div class="seg" role="radiogroup" aria-label="Dashcam footage type"><input type="radio" name="citation-dash-type" id="citation-dash-type-written" value="written" /><label for="citation-dash-type-written">Written</label><input type="radio" name="citation-dash-type" id="citation-dash-type-video" value="video" /><label for="citation-dash-type-video">Video Link</label></div>
               <div id="citation-dash-written" hidden>
                 <div class="f">
                   <span>Written Dashcam Footage</span
@@ -4675,14 +4845,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <div class="photo-row">
               <img id="ossb-poi-img-prev" alt="" />
               <div class="photo-fields">
-                <div class="f">
-                  <span>MDC Profile URL (generated from the name, editable)</span
-                  ><input type="text" id="ossb-poi-profile" placeholder="https://mdc.gta.world/record/Full_Name" autocomplete="off" />
-                </div>
-                <div class="f">
-                  <span>Image URL (generated from the name, editable)</span
-                  ><input type="text" id="ossb-poi-img" placeholder="https://mdc.gta.world/img/persons/Full_Name.png" autocomplete="off" />
-                </div>
+                <p class="photo-note">The photo and MDC profile link are found automatically from the name.</p>
+                <input type="hidden" id="ossb-poi-profile" /><input type="hidden" id="ossb-poi-img" />
                 <button class="b photo-reset" type="button" id="ossb-poi-img-reset">Use default image</button>
               </div>
             </div>
@@ -4718,7 +4882,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
       </div>
       <div id="f-oss-incident" hidden>
         <div class="card">
-          <h2><small>OSS</small>Incident Report</h2>
+          <h2><small>OSS</small>Case Package</h2>
           <div class="body">
             <div class="g">
               <div class="f">
@@ -5282,14 +5446,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <div class="photo-row">
               <img id="poi-img-prev" alt="" />
               <div class="photo-fields">
-                <div class="f">
-                  <span>MDC Profile URL (generated from the name, editable)</span
-                  ><input type="text" id="poi-profile" placeholder="https://mdc.gta.world/record/Full_Name" autocomplete="off" />
-                </div>
-                <div class="f">
-                  <span>Image URL (generated from the name, editable)</span
-                  ><input type="text" id="poi-img" placeholder="https://mdc.gta.world/img/persons/Full_Name.png" autocomplete="off" />
-                </div>
+                <p class="photo-note">The photo and MDC profile link are found automatically from the name.</p>
+                <input type="hidden" id="poi-profile" /><input type="hidden" id="poi-img" />
                 <button class="b photo-reset" type="button" id="poi-img-reset">Use default image</button>
               </div>
             </div>
@@ -5331,7 +5489,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               <span>Classification / Penal Code(s)</span
               ><input type="text" id="mcb-case-charges" placeholder="Penal codes" />
             </div>
-            <div class="g">
+            <div class="g dt-row">
               <div class="f">
                 <span>Time &amp; Date</span
                 ><small class="date-time-hint">Choose a date and enter the time in 24-hour format.</small>
@@ -5502,14 +5660,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <div class="photo-row">
               <img id="hb-poi-img-prev" alt="" />
               <div class="photo-fields">
-                <div class="f">
-                  <span>MDC Profile URL (generated from the name, editable)</span
-                  ><input type="text" id="hb-poi-profile" placeholder="https://mdc.gta.world/record/Full_Name" autocomplete="off" />
-                </div>
-                <div class="f">
-                  <span>Image URL (generated from the name, editable)</span
-                  ><input type="text" id="hb-poi-img" placeholder="https://mdc.gta.world/img/persons/Full_Name.png" autocomplete="off" />
-                </div>
+                <p class="photo-note">The photo and MDC profile link are found automatically from the name.</p>
+                <input type="hidden" id="hb-poi-profile" /><input type="hidden" id="hb-poi-img" />
                 <button class="b photo-reset" type="button" id="hb-poi-img-reset">Use default image</button>
               </div>
             </div>
@@ -5551,7 +5703,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               <span>Classification / Penal Code(s)</span
               ><input type="text" id="hb-case-charges" placeholder="Penal codes" />
             </div>
-            <div class="g">
+            <div class="g dt-row">
               <div class="f">
                 <span>Time &amp; Date</span
                 ><small class="date-time-hint">Choose a date and enter the time in 24-hour format.</small>
@@ -5728,14 +5880,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <div class="photo-row">
               <img id="nb-poi-img-prev" alt="" />
               <div class="photo-fields">
-                <div class="f">
-                  <span>MDC Profile URL (generated from the name, editable)</span
-                  ><input type="text" id="nb-poi-profile" placeholder="https://mdc.gta.world/record/Full_Name" autocomplete="off" />
-                </div>
-                <div class="f">
-                  <span>Image URL (generated from the name, editable)</span
-                  ><input type="text" id="nb-poi-img" placeholder="https://mdc.gta.world/img/persons/Full_Name.png" autocomplete="off" />
-                </div>
+                <p class="photo-note">The photo and MDC profile link are found automatically from the name.</p>
+                <input type="hidden" id="nb-poi-profile" /><input type="hidden" id="nb-poi-img" />
                 <button class="b photo-reset" type="button" id="nb-poi-img-reset">Use default image</button>
               </div>
             </div>
@@ -5770,6 +5916,67 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.0.5</h2>
+          <div class="body">
+            <h3>v2.0.5</h3>
+            <h3>Street and district search dropdowns</h3>
+            <ul>
+              <li>Every street and district field is now a search box with the full GTA World list (83 districts, 225 streets). Start typing and only the matching names are shown, with your letters in bold; pick one with the mouse or Arrow keys + Enter. Only a name from the list can be kept — anything else is cleared when you leave the field, and a single obvious match (for example "grov") completes by itself.</li>
+              <li>Single "Location" fields (Incident Report, Use of Force, Traffic Collision, Citation, Station Logbook, OSS Case Package) are now a Street picker and a District picker side by side. The report still prints them as "Street, District".</li>
+              <li>The K9 logs, Citation street fields, Subject Information road and the MCB / HB Case Package street and district fields use the same pickers.</li>
+            </ul>
+            <h3>Evidence now uses lettered exhibits everywhere</h3>
+            <ul>
+              <li>Incident Report, Use of Force Report, the three K9 Deployment Logs and the OSS Case Package now use the same evidence format as the MCB Case Package: Exhibit A, B, C… each with a description and its own spoiler, add / remove with automatic re-lettering, and BBCode like <code>[*][b]Exhibit A; Description[/b]</code> followed by the spoiler.</li>
+              <li>Supplemental Report evidence uses the MCB Supplemental pattern: Attachment A, B, C… with spoilers.</li>
+              <li>An exhibit left empty still prints as "Exhibit A; Evidence description" (as on the MCB forms). The Use of Force EL Number field is gone; put the EL number inside the exhibit text.</li>
+            </ul>
+            <h3>Involved Persons redesign</h3>
+            <ul>
+              <li>New record-style card on the Incident Report, OSS Case Package and the MCB / HB Case Packages: the photo on the left, name with the Deceased toggle, classification and date of birth beside it, the Deceased details opening right underneath, then a Details section and a larger Relation to Incident box. The BBCode output is unchanged.</li>
+              <li>The photo URL and MDC profile link fields are gone from view (also on every Person of Interest form). They are still generated from the name behind the scenes and still appear in the BBCode.</li>
+              <li>The picture is only looked up once you stop typing for 2 seconds, with a "Searching MDC…" spinner, instead of on every letter.</li>
+              <li>The default picture preview is now built into the page, so it shows even where Imgur is blocked (it used to appear as a broken image). It also shows whole instead of being cropped.</li>
+            </ul>
+            <h3>Time fields</h3>
+            <ul>
+              <li>A "Now" button next to every time field on the site (20 fields) fills in the current UK time (Europe/London, GMT/BST) regardless of your computer's clock, in the format that field already uses (HH:MM, HHMM or HH:MM:SS).</li>
+              <li>Fixed the Time &amp; Date / Location misalignment on the Incident and Use of Force Reports (and the MCB and HB Case Packages): the labels and inputs now line up exactly, however the hint wraps.</li>
+            </ul>
+            <h3>APB</h3>
+            <ul>
+              <li>Bulletin Type grows from 7 to 25 options (for example Wanted for Questioning, Person of Interest, Attempt to Locate, Missing Juvenile, Silver Alert, Amber Alert, Escapee, Parole / Probation Violator, BOLO, Stolen Vehicle, Hit and Run, Armed and Dangerous, Officer Safety, Seeking Witnesses). Investigation Status grows from 3 to 21 (for example Active Investigation, Cold Case, Critical Missing, Extremely Dangerous, Do Not Approach, Suspect at Large, Suspect in Custody, Warrant Issued, Homicide, Kidnapping, Armed Robbery, Case Closed).</li>
+              <li>The random APB number and its button are removed. The preview, BBCode and PNG now all show "APB ####".</li>
+            </ul>
+            <h3>K9 Deployment Logs</h3>
+            <ul>
+              <li>Deployment Type is now a row of compact icon pills (Bite, Search Warrant, Tracking, Other) on all three K9 logs.</li>
+              <li>The Bite medical-care sentences now appear in the Deployment Narrative itself, where they can be read and edited, and update as you change the option or type the providing unit (they are no longer added to the BBCode separately). The wording was updated for "Yes, cleared on scene", "Yes, taken to ER" and "No".</li>
+            </ul>
+            <h3>NCCIT Personnel File and Supplemental</h3>
+            <ul>
+              <li>Text boxes now start compact and grow as you type, up to a limit, then scroll inside the box, so a very long entry never stretches the page.</li>
+            </ul>
+            <h3>TSD Citation</h3>
+            <ul>
+              <li>"Same as Defendant" is a pill; Enforcement Outcome is two Yes/No tiles; the Narrative sections and Offence Narratives are pills, with a labelled details panel opening under each ticked offence; Radar photo, Dashcam footage and the Written / Video choice are restyled to match. The citation text itself is unchanged.</li>
+            </ul>
+            <h3>Character Details redesign</h3>
+            <ul>
+              <li>New header card with a large avatar, your name, a "Rank · Bureau" line, and chips for badge number, callsign and whether your details are saved ("Not saved yet", "Unsaved changes" or "Saved") that update as you type.</li>
+              <li>The avatar shows your MDC picture when one exists and your initials when it doesn't (no name yet, still loading, or the picture can't be loaded). The picture is looked up once you stop typing for 2 seconds, and a broken image is never shown.</li>
+              <li>Fields are grouped into Identity (full name, rank, badge number) and Assignment (bureau, callsign) with a short hint under each. Save and Clear work exactly as before and your details still prefill the other forms when you save.</li>
+            </ul>
+            <h3>Other changes</h3>
+            <ul>
+              <li>Use of Force Report: IAB Response and Supervisor Response are now Yes/No tiles.</li>
+              <li>The OSS Incident Report is renamed Case Package (sidebar, page title and home menu); searching "incident report" still finds it. The text it posts is unchanged.</li>
+              <li>Business Card: three crumpled-paper looks — Crumpled · Light (the original), Crumpled · Heavy (scrunched and flattened paper with soft creases) and Folded &amp; Worn (quarter folds with worn crease lines) — plus Plain.</li>
+              <li>The "Credits: cirano" label is now pinned to the bottom-right corner at every screen size.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.0.4</h2>
           <div class="body">
@@ -6440,21 +6647,31 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
       <div id="f-deputy" hidden>
         <div class="card">
           <h2><small>Settings</small>Character Details</h2>
-          <div class="body">
-            <div class="f">
+          <div class="body dp-body">
+            <div class="dp-hero">
+              <div class="dp-avatar" id="dp-avatar" aria-hidden="true"><span id="dp-ini">?</span><img id="dp-photo" alt="" hidden /></div>
+              <div class="dp-id">
+                <div class="dp-name" id="dp-name">Your name</div>
+                <div class="dp-sub" id="dp-sub">Rank and bureau appear here</div>
+                <div class="dp-chips">
+                  <span class="dp-chip" id="dp-chip-badge" hidden></span>
+                  <span class="dp-chip" id="dp-chip-call" hidden></span>
+                  <span class="dp-chip dp-chip-state" id="dp-chip-state">Not saved yet</span>
+                </div>
+              </div>
+              <p class="dp-lede">
+                Fill these in once. Every form that asks for your name, rank, badge or callsign
+                will be prefilled for you.
+              </p>
+            </div>
+            <section class="dp-sec">
+              <div class="dp-sec-head">
+                <b>Identity</b><small>Who you are on duty</small>
+              </div>
+              <div class="g dp-grid">
+            <div class="f dp-wide">
               <span>Full name</span><input type="text" id="deputy-full-name" autocomplete="name" />
-            </div>
-            <div class="f">
-              <span>Badge number</span
-              ><input type="text" id="deputy-badge-number" inputmode="numeric" />
-            </div>
-            <div class="f">
-              <span>Callsign (optional)</span
-              ><input type="text" id="deputy-callsign" placeholder="e.g. 115K" />
-            </div>
-            <div class="f">
-              <span>Bureau</span
-              ><input type="text" id="deputy-bureau" placeholder="e.g. Patrol Division" />
+              <em class="dp-hint">Forename and surname, as it should appear on reports.</em>
             </div>
             <div class="f">
               <span>Rank</span
@@ -6474,19 +6691,114 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 <option>Sheriff</option>
               </select>
             </div>
-            <p class="f">
+            <div class="f">
+              <span>Badge number</span
+              ><input type="text" id="deputy-badge-number" inputmode="numeric" />
+              <em class="dp-hint">Numbers only, no # needed.</em>
+            </div>
+              </div>
+            </section>
+            <section class="dp-sec">
+              <div class="dp-sec-head">
+                <b>Assignment</b><small>Where you work</small>
+              </div>
+              <div class="g dp-grid">
+            <div class="f">
+              <span>Bureau</span
+              ><input type="text" id="deputy-bureau" placeholder="e.g. Patrol Division" />
+              <em class="dp-hint">Your division or bureau.</em>
+            </div>
+            <div class="f">
+              <span>Callsign (optional)</span
+              ><input type="text" id="deputy-callsign" placeholder="e.g. 115K" />
+              <em class="dp-hint">Leave blank and callsign fields stay empty.</em>
+            </div>
+              </div>
+            </section>
+            <p class="f dp-note">
               <span
                 >These details are saved in this browser and used to prefill matching form fields
                 across sessions. Callsign is optional; leave it blank and callsign fields stay empty.</span
               >
             </p>
-            <div class="actions">
+            <div class="actions dp-actions">
               <button class="b p" onclick="saveDeputyDetails()">Save Details</button
               ><button class="b" onclick="clearDeputyDetails()">Clear Details</button>
             </div>
           </div>
         </div>
       </div>
+      <script>
+        (function () {
+          var root = document.getElementById("f-deputy");
+          function g(id) { return document.getElementById(id); }
+          function savedMatches(cur) {
+            try {
+              var s = JSON.parse(localStorage.getItem("lssd-deputy-details") || "null");
+              if (!s) return false;
+              return (s.fullName || "") === cur.fullName && (s.badgeNumber || "") === cur.badge &&
+                (s.rank || "") === cur.rank && (s.bureau || "") === cur.bureau && (s.callsign || "") === cur.call;
+            } catch (e) { return false; }
+          }
+          // MDC photo: debounced (same delay as person photo lookups), shown only after a real load.
+          var photoName = "", photoTimer = 0, photoReq = 0;
+          function showPhoto(url) {
+            var img = g("dp-photo"), av = g("dp-avatar");
+            if (!url) { img.hidden = true; img.removeAttribute("src"); av.classList.remove("has-photo"); return; }
+            var probe = new Image(), req = ++photoReq;
+            probe.onload = function () {
+              if (req !== photoReq) return;
+              img.src = url; img.hidden = false; av.classList.add("has-photo");
+            };
+            probe.onerror = function () { if (req === photoReq) showPhoto(""); };
+            probe.src = url;
+          }
+          function syncPhoto(name) {
+            if (name === photoName) return;
+            photoName = name;
+            clearTimeout(photoTimer);
+            photoReq++;
+            showPhoto("");
+            if (!name || typeof personImageUrl !== "function") return;
+            photoTimer = setTimeout(function () {
+              if (name === photoName) showPhoto(personImageUrl(name));
+            }, typeof PERSON_PHOTO_LOOKUP_DELAY === "number" ? PERSON_PHOTO_LOOKUP_DELAY : 2000);
+          }
+          function update() {
+            var cur = {
+              fullName: g("deputy-full-name").value.trim(),
+              badge: g("deputy-badge-number").value.trim().replace(/^#/, ""),
+              rank: g("deputy-rank").value,
+              bureau: g("deputy-bureau").value.trim(),
+              call: g("deputy-callsign").value.trim(),
+            };
+            var parts = cur.fullName.split(/\s+/).filter(Boolean);
+            var ini = parts.length ? (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : "")) : "?";
+            g("dp-ini").textContent = ini;
+            syncPhoto(cur.fullName);
+            var n = g("dp-name");
+            n.textContent = cur.fullName || "Your name";
+            n.classList.toggle("empty", !cur.fullName);
+            var sub = [cur.rank, cur.bureau].filter(Boolean).join(" · ");
+            var s = g("dp-sub");
+            s.textContent = sub || "Rank and bureau appear here";
+            s.classList.toggle("empty", !sub);
+            var b = g("dp-chip-badge"), c = g("dp-chip-call"), st = g("dp-chip-state");
+            b.hidden = !cur.badge; b.textContent = "Badge #" + cur.badge;
+            c.hidden = !cur.call; c.textContent = "Callsign " + cur.call;
+            var any = cur.fullName || cur.badge || cur.rank || cur.bureau || cur.call;
+            var saved = any && savedMatches(cur);
+            st.classList.toggle("saved", !!saved);
+            st.textContent = saved ? "Saved" : any ? "Unsaved changes" : "Not saved yet";
+          }
+          root.addEventListener("input", update);
+          root.addEventListener("change", update);
+          root.addEventListener("click", function (e) { if (e.target.closest("button")) setTimeout(update, 0); });
+          new MutationObserver(update).observe(root, { attributes: true, attributeFilter: ["hidden"] });
+          window.addEventListener("load", update);
+          update();
+        })();
+      </script>
       <div id="f-depmail" hidden>
         <div class="card">
           <h2><small>Generator</small>Email Template</h2>
@@ -6659,7 +6971,12 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <h2><small>Preview</small>Card Preview</h2>
           <div class="body">
             <div class="actions" style="justify-content: space-between; padding-top: 14px">
-              <button class="b p" id="bt-fx" onclick="toggleFx()">Crumpled paper: On</button>
+              <div class="seg" role="radiogroup" aria-label="Paper style">
+                <input type="radio" name="paper-fx" id="paper-fx-off" value="" onchange="setFx(this.value)" /><label for="paper-fx-off">Plain</label>
+                <input type="radio" name="paper-fx" id="paper-fx-light" value="light" onchange="setFx(this.value)" checked /><label for="paper-fx-light">Crumpled · Light</label>
+                <input type="radio" name="paper-fx" id="paper-fx-heavy" value="heavy" onchange="setFx(this.value)" /><label for="paper-fx-heavy">Crumpled · Heavy</label>
+                <input type="radio" name="paper-fx" id="paper-fx-folded" value="folded" onchange="setFx(this.value)" /><label for="paper-fx-folded">Folded &amp; Worn</label>
+              </div>
               <button class="b" onclick="dlCard()">Download PNG</button>
             </div>
             <canvas
@@ -7154,11 +7471,21 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         row.innerHTML = `<input type='text' class='uof-person-name' placeholder='${placeholder}' aria-label='${container === "employees" ? "Employee" : "Witness"} name'><button class='b' onclick="this.closest('.command-row').remove()">Remove</button>`;
         $(container === "employees" ? "uof-employees" : "uof-witnesses").appendChild(row);
       }
+      // Use of Force evidence: same lettered exhibits and BBCode as the Incident Report.
+      function numberUofExhibits() {
+        $("uof-evidence")
+          .querySelectorAll(".uof-e-label")
+          .forEach((label, i) => (label.textContent = "Exhibit " + sevLetter(i)));
+      }
       function addUofEvidence() {
         const row = document.createElement("div");
-        row.className = "item";
-        row.innerHTML = `<div class='ih'><b>Evidence item</b><button class='b' onclick="this.closest('.item').remove()">Remove</button></div><div class='g'><div class='f'><span>EL Number</span><input type='text' class='uof-evidence-number' placeholder='EL Number'></div><div class='f'><span>Description of evidence</span><input type='text' class='uof-evidence-description' placeholder='Description of evidence'></div></div>`;
+        row.className = "item uof-exhibit";
+        row.innerHTML = `
+      <div class='ih'><b class='uof-e-label'></b><button class='b' type='button' onclick="this.closest('.uof-exhibit').remove();numberUofExhibits()">Remove</button></div>
+      <div class='f'><span>Evidence Description</span><input type='text' class='uof-e-desc' placeholder='Evidence description' autocomplete='off'></div>
+      <div class='f'><span>Evidence (inside the spoiler)</span><textarea class='uof-e-body' placeholder='Images, links, details…'></textarea></div>`;
         $("uof-evidence").appendChild(row);
+        numberUofExhibits();
       }
       function updateUofTitle() {
         const location = $("uof-location").value.trim() || "Location",
@@ -7438,6 +7765,32 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         form.querySelectorAll("input[type=radio]").forEach((field) => (field.checked = false));
         applyDeputyDetails();
       }
+      // Auto-growing text boxes (NCCIT Personnel File + Supplemental). Each box starts at its
+      // compact default height, grows as text is added, stops at its max-height and then
+      // scrolls inside itself, so a very long entry never stretches the page.
+      function growTextarea(el) {
+        if (!el.offsetParent) return;
+        const sy = window.scrollY;
+        el.style.height = "0px";
+        const cs = getComputedStyle(el),
+          border = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth),
+          max = parseFloat(cs.maxHeight) || 380,
+          need = el.scrollHeight + border;
+        el.style.height = Math.min(need, max) + "px";
+        el.style.overflowY = need > max ? "auto" : "hidden";
+        if (window.scrollY !== sy) window.scrollTo(window.scrollX, sy);
+      }
+      function growAllTextareas(formId) {
+        document.querySelectorAll(`#${formId} textarea`).forEach(growTextarea);
+      }
+      ["f-nccit", "f-nccit-supp"].forEach((id) => {
+        $(id).addEventListener("input", (e) => {
+          if (e.target.matches("textarea")) growTextarea(e.target);
+        });
+      });
+      addEventListener("resize", () => {
+        ["f-nccit", "f-nccit-supp"].forEach((id) => !$(id).hidden && growAllTextareas(id));
+      });
       function updateNcCitTitle() {
         $("nccit-title").value = "[NC-CIT] " + $("nccit-name").value.trim().toLocaleUpperCase();
       }
@@ -8160,6 +8513,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         form.querySelectorAll("select").forEach((field) => (field.selectedIndex = 0));
         initializeNcCitRows();
         applyDeputyDetails();
+        growAllTextareas("f-nccit");
       }
       function updateK9Medical(p) {
         const bite = $(p + "-type-bite").checked,
@@ -8169,6 +8523,33 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         $(p + "-medical-unit-wrap").hidden = !(bite && choice);
         $(p + "-medical-unit-label").textContent =
           choice && choice.value === "none" ? "Reason for lack of provided care" : "Providing Unit";
+        // The matching sentence(s) go into the narrative, where they can be read and edited.
+        const pick = choice ? choice.value : "";
+        syncK9Block(p, "medical", buildK9Medical(p), wrap.dataset.pick !== pick);
+        wrap.dataset.pick = pick;
+      }
+      // Keeps one auto-written block of text inside a K9 narrative. The block is replaced when
+      // its inputs change, as long as the user has not edited it; if they have, it is left alone
+      // (a changed choice then adds the new text underneath instead of overwriting their edit).
+      function syncK9Block(p, key, text, mayAppend) {
+        const narr = $(p + "-narrative"),
+          attr = "auto" + key,
+          prev = narr.dataset[attr] || "";
+        let next = narr.value;
+        if (prev && next.includes(prev)) {
+          next = next.replace(prev, () => text);
+          if (!text) next = next.replace(/\n{3,}/g, "\n\n").replace(/^\s+|\s+$/g, "");
+        } else if (text && mayAppend) {
+          next = (next.trim() ? next.replace(/\s+$/, "") + "\n\n" : "") + text;
+        } else {
+          if (!text) narr.dataset[attr] = "";
+          return;
+        }
+        narr.dataset[attr] = text;
+        if (next !== narr.value) {
+          narr.value = next;
+          narr.dispatchEvent(new Event("input", { bubbles: true }));
+        }
       }
       function buildK9Medical(p) {
         if (!$(p + "-type-bite").checked) return "";
@@ -8176,11 +8557,11 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           pick = choice ? choice.value : "",
           unit = $(p + "-medical-unit").value.trim();
         if (pick === "er")
-          return `The suspect was medically examined on Scene. The sustained injuries were deemed critical, and they were transported to the PHMC Emergency Room for further checks.\nThe medical examination and transport were conducted by ${unit || "PROVIDING UNIT"}.`;
+          return `The suspect was medically examined on scene. The sustained injuries were deemed critical, and they were transported to PHMC ER for further checks. The medical examination and transport were conducted by ${unit || "PROVIDING UNIT"}.`;
         if (pick === "cleared")
-          return `The suspect was medically examined on Scene. The sustained injuries were deemed non-critical, and they were released into the custody of the Los Santos County Sheriff's Department.\nThe medical examination was conducted by ${unit || "PROVIDING UNIT"}.`;
+          return `The suspect was medically examined on scene. The sustained injuries were deemed non-critical and they were released into the custody of the Los Santos County Sheriff's Department. Medical examination conducted by ${unit || "PROVIDING UNIT"}.`;
         if (pick === "none")
-          return `No medical care was provided. Reason: ${unit || "REASON FOR LACK OF PROVIDED CARE"}.`;
+          return `No medical care has been provided. Reason: ${unit || "REASON FOR LACK OF PROVIDED CARE"}.`;
         return "";
       }
       function applySenoraK9DeputyDetails() {
@@ -8228,13 +8609,12 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           "[center][b][u]DEPLOYMENT NARRATIVE:[/u][/b][/center]",
           "",
           val("k9-narrative") || "FILL IN THE NARRATIVE HERE.",
-          ...(buildK9Medical("k9") ? ["", buildK9Medical("k9")] : []),
           "",
           "[hr][/hr]",
           "",
           "[u][b][center]EVIDENCE FOUND:[/center][/b][/u]",
           "",
-          val("k9-evidence") || "LIST THE EVIDENCE HERE",
+          k9EvidenceBbcode("k9"),
           "",
           "[hr][/hr]",
           "",
@@ -8246,13 +8626,13 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         ].join("\n");
       }
       function resetSenoraK9Deployment() {
+        resetK9Exhibits("k9");
         [
           "k9-time",
           "k9-street",
           "k9-district",
           "k9-callsign",
           "k9-narrative",
-          "k9-evidence",
           "k9-signature-name",
           "k9-signature-rank",
           "k9-signature-badge",
@@ -8320,13 +8700,12 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           "[center][b][u]DEPLOYMENT NARRATIVE:[/u][/b][/center]",
           "",
           val("dk9-narrative") || "FILL IN THE NARRATIVE HERE.",
-          ...(buildK9Medical("dk9") ? ["", buildK9Medical("dk9")] : []),
           "",
           "[hr][/hr]",
           "",
           "[u][b][center]EVIDENCE FOUND:[/center][/b][/u]",
           "",
-          val("dk9-evidence") || "LIST THE EVIDENCE HERE",
+          k9EvidenceBbcode("dk9"),
           "",
           "[hr][/hr]",
           "",
@@ -8337,13 +8716,13 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         ].join("\n");
       }
       function resetDavisK9Deployment() {
+        resetK9Exhibits("dk9");
         [
           "dk9-time",
           "dk9-street",
           "dk9-district",
           "dk9-callsign",
           "dk9-narrative",
-          "dk9-evidence",
           "dk9-signature-name",
           "dk9-signature-rank",
           "dk9-signature-badge",
@@ -8407,13 +8786,12 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           "[center][b][u]DEPLOYMENT NARRATIVE:[/u][/b][/center]",
           "",
           val("ck9-narrative") || "FILL IN THE NARRATIVE HERE.",
-          ...(buildK9Medical("ck9") ? ["", buildK9Medical("ck9")] : []),
           "",
           "[hr][/hr]",
           "",
           "[u][b][center]EVIDENCE FOUND:[/center][/b][/u]",
           "",
-          val("ck9-evidence") || "LIST THE EVIDENCE HERE",
+          k9EvidenceBbcode("ck9"),
           "",
           "[hr][/hr]",
           "",
@@ -8425,13 +8803,13 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         ].join("\n");
       }
       function resetCsdK9Deployment() {
+        resetK9Exhibits("ck9");
         [
           "ck9-time",
           "ck9-street",
           "ck9-district",
           "ck9-callsign",
           "ck9-narrative",
-          "ck9-evidence",
           "ck9-signature-name",
           "ck9-signature-rank",
           "ck9-signature-badge",
@@ -8740,49 +9118,53 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <b class='oss-person-label'></b>
             <button class='b' type='button' onclick="this.closest('.oss-person').remove();numberOssPeople()">Remove</button>
           </div>
-          <div class='g'>
-            ${personNameHead("oss-person-name", "Forename Surname")}
-            ${personDeathPanel()}
-            <div class='f'>
-              <span>Classification</span>
-              <select class='oss-person-class'>
-                <option value=''>Select classification</option>
-                <option>Victim</option>
-                <option>Suspect</option>
-                <option>Witness</option>
-                <option>Informant</option>
-              </select>
-            </div>
-            <div class='f'>
-              <span>Gang Member</span>
-              <select class='oss-person-gang'>
-                <option value=''>Not specified</option>
-                <option value='yes'>Yes</option>
-                <option value='no'>No</option>
-              </select>
-            </div>
-            <div class='f'>
-              <span>Date of Birth</span>
-              <input type='text' class='oss-person-dob'>
-            </div>
-            <div class='f'>
-              <span>Phone Number</span>
-              <input type='text' class='oss-person-phone'>
-            </div>
-            <div class='f'>
-              <span>Residence / Owned Properties</span>
-              <input type='text' class='oss-person-residence'>
-            </div>
-            <div class='f'>
-              <span>Moniker</span>
-              <input type='text' class='oss-person-moniker'>
-            </div>
-            <div class='f p-full p-rel'>
-              <span>Relation to Incident</span>
-              <textarea class='oss-person-relation' placeholder='Describe relation to incident'></textarea>
-            </div>
-            ${personPhotoField("oss-person-image", "oss-person-profile")}
-          </div>
+          ${personCard({
+            nameClass: "oss-person-name",
+            placeholder: "Forename Surname",
+            imgClass: "oss-person-image",
+            profileClass: "oss-person-profile",
+            identity: `
+              <div class='f'>
+                <span>Classification</span>
+                <select class='oss-person-class'>
+                  <option value=''>Select classification</option>
+                  <option>Victim</option>
+                  <option>Suspect</option>
+                  <option>Witness</option>
+                  <option>Informant</option>
+                </select>
+              </div>
+              <div class='f'>
+                <span>Date of Birth</span>
+                <input type='text' class='oss-person-dob' autocomplete='off'>
+              </div>`,
+            details: `
+              <div class='f'>
+                <span>Phone Number</span>
+                <input type='text' class='oss-person-phone' autocomplete='off'>
+              </div>
+              <div class='f'>
+                <span>Residence / Owned Properties</span>
+                <input type='text' class='oss-person-residence' autocomplete='off'>
+              </div>
+              <div class='f'>
+                <span>Moniker</span>
+                <input type='text' class='oss-person-moniker' autocomplete='off'>
+              </div>
+              <div class='f'>
+                <span>Gang Member</span>
+                <select class='oss-person-gang'>
+                  <option value=''>Not specified</option>
+                  <option value='yes'>Yes</option>
+                  <option value='no'>No</option>
+                </select>
+              </div>`,
+            relation: `
+              <div class='f pc-rel'>
+                <span>Relation to Incident</span>
+                <textarea class='oss-person-relation' placeholder='How this person is involved in the incident'></textarea>
+              </div>`,
+          })}
         `;
         $("oss-ir-persons").appendChild(row);
         const name = row.querySelector(".oss-person-name");
@@ -8795,11 +9177,21 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           .querySelectorAll(".oss-person-label")
           .forEach((label, index) => (label.textContent = `Person #${index + 1}`));
       }
+      // OSS Case Package evidence: lettered exhibits, same logic and BBCode as the MCB Case Package.
+      function numberOssExhibits() {
+        $("oss-ir-evidence")
+          .querySelectorAll(".oss-e-label")
+          .forEach((label, i) => (label.textContent = "Exhibit " + sevLetter(i)));
+      }
       function addOssEvidence() {
         const row = document.createElement("div");
-        row.className = "item";
-        row.innerHTML = `<div class='eg'><input type='text' class='oss-evidence-item' placeholder='Description of evidence'><button class='b' type='button' aria-label='Remove exhibit' onclick="this.closest('.item').remove()">Remove</button></div>`;
+        row.className = "item oss-exhibit";
+        row.innerHTML = `
+      <div class='ih'><b class='oss-e-label'></b><button class='b' type='button' onclick="this.closest('.oss-exhibit').remove();numberOssExhibits()">Remove</button></div>
+      <div class='f'><span>Evidence Description</span><input type='text' class='oss-e-desc' placeholder='Evidence description' autocomplete='off'></div>
+      <div class='f'><span>Evidence (inside the spoiler)</span><textarea class='oss-e-body' placeholder='Images, links, details…'></textarea></div>`;
         $("oss-ir-evidence").appendChild(row);
+        numberOssExhibits();
       }
       function addOssSupplementalEvidence() {
         const row = document.createElement("div");
@@ -8837,12 +9229,10 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               ].join("\n");
             },
           );
-        const evidence = [...document.querySelectorAll(".oss-evidence-item")]
-            .map((field) => field.value.trim())
-            .filter(Boolean),
-          evidenceItems = evidence.length
-            ? evidence.map((item, index) => `[*]Exhibit ${index + 1} – ${item}`)
-            : ["[*]Exhibit 1 – Description of evidence", "[*]Exhibit 2 – Description of evidence"],
+        const evidenceItems = [...$("oss-ir-evidence").querySelectorAll(".oss-exhibit")].map(
+            (row, i) =>
+              `[*][b]Exhibit ${sevLetter(i)}; ${row.querySelector(".oss-e-desc").value.trim() || "Evidence description"}[/b]\n[spoiler]${row.querySelector(".oss-e-body").value.trim()}[/spoiler]`,
+          ),
           filedBy = [val("oss-ir-filed-by"), val("oss-ir-partner")].filter(Boolean).join("; ");
         return [
           "[block=0,30,transparent,white][font=Arial][color=black]",
@@ -8873,9 +9263,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           `[indent]${val("oss-ir-narrative") || "Write narrative here."}[/indent]`,
           "",
           "[size=105][b]Evidence[/b][/size]",
-          "[list=1]",
-          ...evidenceItems,
-          "[/list][/block]",
+          "[list]" + evidenceItems.join("\n") + "[/list][/block]",
         ].join("\n");
       }
       function buildOssSupplemental() {
@@ -8962,6 +9350,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           .forEach((field) => (field.value = ""));
         updateTaskListDateLabel("nccit-supp-date");
         applyDeputyDetails();
+        growAllTextareas("f-nccit-supp");
       }
       function buildUof() {
         const val = (id) =>
@@ -8981,20 +9370,16 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           witnesses = [...document.querySelectorAll("#uof-witnesses .uof-person-name")]
             .map((input) => input.value.trim())
             .filter(Boolean);
-        const evidence = [...document.querySelectorAll("#uof-evidence .item")]
-          .map((row) => {
-            const number = row.querySelector(".uof-evidence-number").value.trim(),
-              description = row.querySelector(".uof-evidence-description").value.trim();
-            return number || description ? `${number ? number + ": " : ""}${description}` : "";
-          })
-          .filter(Boolean);
+        const evidenceList = [...$("uof-evidence").querySelectorAll(".uof-exhibit")].map(
+          (row, i) =>
+            `[*][b]Exhibit ${sevLetter(i)}; ${row.querySelector(".uof-e-desc").value.trim() || "Evidence description"}[/b]\n[spoiler]${row.querySelector(".uof-e-body").value.trim()}[/spoiler]`,
+        );
         const employeeList = employees.length
             ? employees
             : ["Rank Forename Surname", "Rank Forename Surname"],
           witnessList = witnesses.length
             ? witnesses
-            : ["Rank Forename Surname", "Forename Surname"],
-          evidenceList = evidence.length ? evidence : ["EL Number: Description of evidence"];
+            : ["Rank Forename Surname", "Forename Surname"];
         return [
           "[font=Arial][color=black]",
           "",
@@ -9033,9 +9418,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           `[indent]${val("uof-narrative") || "Write narrative here."}[/indent]`,
           "",
           "[size=105][b]Evidence[/b][/size]",
-          "[list=1]",
-          ...evidenceList.map((item) => "[*]" + item),
-          "[/list]",
+          "[list]" + evidenceList.join("\n") + "[/list]",
         ].join("\n");
       }
       function resetUof() {
@@ -9049,7 +9432,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         $("uof-suspects").innerHTML = "";
         $("uof-employees").innerHTML = "";
         $("uof-witnesses").innerHTML = "";
-        $("uof-evidence").innerHTML = "";
+        $("uof-evidence").replaceChildren();
         addUofSuspect();
         addUofPerson("employees", "Rank Forename Surname");
         addUofPerson("employees", "Rank Forename Surname");
@@ -9296,18 +9679,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
       function apbTodayDate() {
         return taskListTodayDate();
       }
-      let apbNumber = "";
-      function generateApbNumber() {
-        let number = Math.floor(Math.random() * 10000);
-        if (String(number).padStart(4, "0") === apbNumber)
-          number = (number + 1 + Math.floor(Math.random() * 9999)) % 10000;
-        apbNumber = String(number).padStart(4, "0");
-      }
-      function generateNewApbNumber() {
-        generateApbNumber();
-        updateApbPreview();
-        toast(`APB ${apbNumber} generated`);
-      }
+      // The APB number is a fixed "####" placeholder (filled in on the forum), not generated.
+      const APB_NUMBER = "####";
       function buildApb() {
         const val = (id) => $(id).value.trim(),
           date = formatPickerDate(val("apb-date"), "weekday"),
@@ -9319,7 +9692,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           address = "300 Innocence Boulevard, City of Davis, SA 90220",
           phone = "(888) 901",
           image = val("apb-image") || "https://i.ibb.co/WjtXWwg/No-Avatar.png";
-        return `[bulletin=${image}|${val("apb-type")}|${val("apb-status")}|${unit}|${address}, ${phone}|${contact}|${date}|SIB|APB ${apbNumber}]\nOn ${date}, at approximately ${val("apb-time")} hours, ${val("apb-narrative")}\n\nSheriff's Department is seeking assistance in locating the suspect(s) and is asking anyone with information to please contact the Los Santos County Sheriff's Department${bureau ? ` ${bureau}` : ""} at ${phone}.\n\nIf you have any information, please contact the Los Santos County Sheriff's Department${bureau ? ` ${bureau}` : ""} ${contact} at ${phone} immediately.\n[/bulletin]`;
+        return `[bulletin=${image}|${val("apb-type")}|${val("apb-status")}|${unit}|${address}, ${phone}|${contact}|${date}|SIB|APB ${APB_NUMBER}]\nOn ${date}, at approximately ${val("apb-time")} hours, ${val("apb-narrative")}\n\nSheriff's Department is seeking assistance in locating the suspect(s) and is asking anyone with information to please contact the Los Santos County Sheriff's Department${bureau ? ` ${bureau}` : ""} at ${phone}.\n\nIf you have any information, please contact the Los Santos County Sheriff's Department${bureau ? ` ${bureau}` : ""} ${contact} at ${phone} immediately.\n[/bulletin]`;
       }
       let apbPreviewImage = null,
         apbPreviewImageUrl = "",
@@ -9534,7 +9907,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         draw.fillText(date || "DATE", 18 * scale, footerEnd - 12 * scale);
         draw.textAlign = "center";
         draw.font = `700 26px Arial,sans-serif`;
-        draw.fillText(`APB ${apbNumber}`, W / 2, footerEnd - 12 * scale);
+        draw.fillText(`APB ${APB_NUMBER}`, W / 2, footerEnd - 12 * scale);
         draw.textAlign = "right";
         draw.font = `600 22px Arial,sans-serif`;
         draw.fillText("Created by SIB", W - 18 * scale, footerEnd - 12 * scale);
@@ -9569,7 +9942,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             url = URL.createObjectURL(blob),
             link = document.createElement("a");
           link.href = url;
-          link.download = `apb-${apbNumber}${bureau ? "-" + bureau : ""}.png`;
+          link.download = `apb${bureau ? "-" + bureau : ""}.png`;
           document.body.appendChild(link);
           link.click();
           link.remove();
@@ -9592,13 +9965,11 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         $("apb-rank").dataset.deputyPrefill = "";
         $("apb-name").dataset.deputyPrefill = "";
         $("apb-bureau").dataset.deputyPrefill = "";
-        generateApbNumber();
         applyDeputyDetails();
         updateApbPreview();
       }
       function initializeApb() {
         if (!$("apb-date").value) $("apb-date").value = apbTodayDate();
-        generateApbNumber();
         applyDeputyDetails();
       }
       function addKingAssociatedReport(url = "", text = "") {
@@ -10167,6 +10538,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           .querySelectorAll(".nav-group")
           .forEach((group) => group.classList.toggle("active", !!group.querySelector(".nav.on")));
         if (k !== "home") revealBu($("nv-" + k));
+        if (k === "nccit" || k === "nccit-supp") growAllTextareas("f-" + k);
         $("ttl").textContent = {
           home: "Home",
           sheriff: "Sheriff's Report System",
@@ -10188,7 +10560,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           citation: "TSD — Citation",
           "sib-story": "SIB — Story",
           "sib-activity": "SIB — Activity Tracker",
-          "oss-incident": "OSS — Incident Report",
+          "oss-incident": "OSS — Case Package",
           "oss-supplemental": "OSS — Supplemental",
           "ftp-phase1": "FTP — Phase 1 Patrol Summary",
           "ftp-phase2": "FTP — Phase 2 Report",
@@ -10282,6 +10654,15 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       }
       // ---- shared photo preview (MDC image, auto-generated from a person's name) ----
       const PERSON_DEFAULT_IMG = "https://i.imgur.com/4FqUxmw.png";
+      // The same default avatar embedded in the page, used for the on-page preview only, so the
+      // preview never depends on Imgur being reachable (Imgur is blocked for UK visitors).
+      // Fields and BBCode still use PERSON_DEFAULT_IMG.
+      const PERSON_DEFAULT_PREVIEW = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAAP20lEQVR4nOyd62/T1v/449iJEydtLi1JL9AkJKVdw0aBtist5ToGE2hFmwZosAtoY9VAPNnfMU3TNqHBpglpaEJi2kWbYKwa2thEt9I19DKgF2VACwptSdPEiZ3YPj8p/vz6RQwa53aOXfx6nPi821fO/fh9iMOHD2tUlIwWdQAq+aIqVDyqQsWjKlQ8qkLFoypUPKpCxaMqVDyqQsVDoA6gYAAA+P+PIAhYmv9+BgCAPwCiYAuJ4hXyPJ9MJnme1+v1paWldrvd6XTabDaLxVJSUkIQBABA/CTLsnNzc5FIZDrN/fv3Y7EYz/O6NFqtUhskpSoUBIFhGACAzWZraGior6/3eDyVlZVWq1XK13men5qampiYGE0zMTERi8V0Op1er/9v3ZU5mOKWuTmOYxjGbDbX19c3Nzc3NDTY7fZ8HggAuHXrViAQ6Ovru3nzpiAIBoNBQZVSSQpFeWVlZevWrWtvb6+pqSn484eHh3/99ddAIJBMJimKUkSNVIZCAABN01ardfPmzVu2bMmz2mVkZGTk/Pnzf//9NwDAYDAUtaz8UUBfyLIsAGDTpk0vvvii0+mEUOKKNFevXv3mm29GRkYoipLz2BVfu3Yt6hgei1j5qqur33777Z07d5rNZpilV1RUtLe3GwyGkZERhmF0Oh3M0qUjX4U8zycSiU2bNh05cqTg3Z5EcByvq6vz+/3BYPDevXt6vR5JGAsjR4UYhiWTSY1Gc+DAgVdeeQX5P85ut7e2tobD4bGxMYIg5DbGkZ1CDMMSiQRFUUePHm1ra0Mdzv/Q6XTNzc0ajWZwcBDHcVlNOeSlEMOweDxut9vfe++9uro61OE8TENDg8lkCgQC2jSow/kfMlIo1j/Rn8vlQh3Oo/H5fBaL5cqVK/KxKCOFyWTSZDLJ2Z+Ix+MxGo39/f0y6RflopDjOI1Gc+zYsRUrVqCOJTO1tbUsyw4NDZEkiToWeewXAgBYlj1w4MDKlStRxyKVffv2NTU1xWIx1IHIQ2EsFtu0adOWLVtQB5IFGIa99dZblZWVLMuijQS9QoZhXC7Xq6++ijqQrCktLX3jjTfEnS+EYSBWCADAMOzAgQMURaGNJDeefvrp5557jqZphDEgVkjTdEdHh9/vRxtGPuzevbuqqkpcTkICSoUcx1mt1t27dyOMIX/MZnNnZ2cqlUIVAEqFDMNs27atrKwMYQwFoa2tzefzMQyDpHRkCjmOW7JkydatW1EFUEBwHN++fTvP80hKR6aQYZi2traSkhJUARSWlpYWj8eDZIKBRqEgCGazecOGDUhKLwY4jnd0dCDpEdEoZBjG7/dXVFQgKb1INDc32+12caUQJmgUAgBaWlqQFF08bDZbfX09/LYUgUKO48rKyhoaGuAXXWxWr14Nf+8CgcJkMun1ektLS+EXXWyeeuopi8UCeWiKQKEgCDLckS8INptt2bJlkAc1sBUCAEiSXL58OeRyoeH1eiGPaGAr5HneYrFUVlZCLhcaLpcLx/H516kgAFshx3Hl5eWQD/XCpLKy0mAwLGaFPM87HA7IhcLEarWWlJTAHNEg6AsXwbr2AlAUVVJSAnMTGMGI1GKxwC8UGlqtdpErxHFcoRv00qEoatH2heIxC/m/sZcner1+0SoUgfnnIQHybxT9CbbFB+QDbarCwsMwDMzFbqgKMQwTBCGRSMAsFD6QT7MhmNrL4RB7UYnFYjBfeoKtEMOw2dlZyIXChOO4aDS6mBVqtdrp6WnIhcIkFostcoU4jk9NTaF9CaGoiKndYCY5ga2QIIjp6elIJAK5XGhMTEywLLtoR6RiQxqNRicmJiCXC41///0XcokIhjMcx42OjkIuFw6CIASDQYKAmlMLwdSeIIgbN27ALxcCd+/enZychJwnCoFCvV5/8+bNUCgEv+hiMzQ0RNM05EwYCBSK3WEgEIBfdLER02BALhTNGilBEL29vYtsy+L27dtjY2Pw042hUUiS5NjY2MjICJLSi8Qff/yRSCTg5xNCo1Acl168eBFJ6cUgGo329PQgSUODbLPJaDT29fVNTk6iCqCwXLx4cWpqCknOUmQKtVptIpH44YcfUAVQQGKx2C+//IIqExTKLV+j0djT07MIpvnnzp1DVQURK9RqtRzHnT17VtFD04mJiZ9//tloNKIKAPHBC4qiBgcHu7u70YaRD1999VU8HkeYfx392Rmj0fj1118rdFxz/vz5QCBgMpkQxoBeoU6no2n6888/R5h9JzfGx8fPnj2LsAkVQa8QAEBR1PXr17/88kvUsWRBJBL59NNPU6kU8iss0CsUMZvN3d3dP/74I+pAJJFKpY4fP37nzh3kVVBGCjEMMxqNZ86cuXTpEupYMiAIwokTJwYGBkwmkxzG0nJJ7CzOMTAM6+vrKy8vR3W3SEZ4nv/iiy9+++03+eStkpFC0aJGo+nr6ystLfV4PKjDeZhkMnnixAlZ+ZOdwgctijlAUIfzf0QikY8//ri3t1dW/uSoULSI4/jAwEAoFGpoaEB+4Y9GoxkdHf3www/HxsZkmCVAjgrF0Y1OpxsfHx8YGKiuri4vL0cYzLlz5z777LNIJIJ2Cv84ZKpQtKjX68PhcE9PD8Mwy5cvh7+OfOvWrZMnT164cAHHcTk0Bo9EvgpFxCuxh4aGrl69SlHUsmXL4JQ7Nzf3/fffnzp16vbt22azWSZ3+zwSuSsUu0aSJGdnZ//666/r16+bTCan01m849LRaPTChQunTp3q7e0lCEIO98EsjAIughUR/5XX03i93o6OjjVr1ki8Al0it27dunz58p9//hkKhUiSlNvI83Eo4zrmBxFvB+J5vry83O/3NzY21tbW5uNycnLy2rVr/f39o6OjNE2TJCnbO18fifIUzsNxHMuyWq3WZrO5XC5PGofDYbPZFli65Hk+Ho9PT0/fvXs3GAyOj4/fuXNHfKmTJEk593mPA71CAADP8ziO59y9cRyXSqV4nicIwmg0lpSUWK1WUxqdTicuY4qXI8bj8Wg0Ojs7S9O0+L44QRA6nS5nc/MPz+3rBQFlXyi+d6/X6+12+/T0dM7/SiLN/K9hZmbm3r17giA8tAaNpRHXDbRabZ6TvPkLh4U0BoMBlUg0CgVBiMfjJpNp3bp1GzZscLvd3d3d3377LYZh+YwA5yVB6Myi0ajD4Xjttdc0Gk13d/e1a9c4jjMYDPCbYtgNKQAgHo9TFNXS0rJt27YHLwzt7+8/ffr0nTt3zGazHG7nfBypVIphmKamptdff31+2ejGjRs//fRTf38/z/OQNxGhKmRZVhCEpqamzs7OR972GolEzpw58/vvv8szzxcAgKZpi8XS2dm5ffv2/37gn3/++e6774aHh/V6PbRhLaSpvfjHV1RUHDp06KWXXnrcHMBgMKxdu7ampmZycjIUCon9FoTwpMAwDMdxra2tXV1djY2Nj/zMkiVLOjo6bDZbMBiMRCJw1uSKrhDDsFQqxbLs5s2b3333XSm7gFVVVevXr6coanJyMhwOI79Hnknj8/nefPPNzs7OjFN+j8fT3Nw8MzMTDAYhBF90hYlEwmg0Hjp0qLOzU/pQhSCIurq61tZWnU4XCoXC4TCGYZBrJACAYZhUKuV2u/fu3bt///6qqiqJ36UoqrW11WQyDQ8Pp1Kpojaqxe0LY7FYTU1NV1dXPvech8PhS5cuXb58WUyyQJJkUV0CAMRFA5Ik6+rqNm7c2NzcnHOJw8PDJ0+enJmZKV4W1iIqjEajjY2NXV1dBblVJJlMBgKBnp6eGzduRCIRcSsqnwWBhwAApFKpZDKJ47jT6WxsbGxtbfV6vfk/ORQKffLJJ+Pj40XaLi6Wwmg02t7efvjw4YK3IVNTU0NDQ4ODg8FgMBwOiyc5CYIQdUo3CgAQBIFLAwAwGAwVFRW1tbWrVq2qq6srbKWJxWIfffTR4OBgMZbOi6IwGo12dHR0dXUVdXo3Nzd38+bN8fHxYDAYCoVmZ2fFQaOYe/iROkEaQRBwHNfpdBRFlZWVVVdXu93u2trapUuXFq/TYhjm+PHjV65cKXhdLLxC0d8777wDcxjJsuz9+/en04TD4bm5OZqm4/H4/BobAEB0ZjabrWkcDoc9DbQ4k8nkBx98MDAwUFiLBVYYi8WampqOHTsmn/mcrKBp+v333x8ZGTGbzYU6RlywHyCGYTRNr1ixoqurS/X3OEwm09GjR6uqquLxeKF6mYIpZBimvLz8yJEjcnjNQM7Y7fYjR45QFFWo5MGFUcjzvFar7erqQntaUCm4XK6DBw9yHFeQpJ6FUZhIJPbu3VtfX1+Qpz0JPPvsszt37qRpOv9H5asQw7BYLNba2vrIlXuVBXj55Zf9fn88Hs/zOfkqZFl2fudTJSsIgjh48KDJZMrzysq8FIrLifv37y/sYcAnh6qqqj179jAMk89D8lJI03RbW1tTU1M+D3nC2bJlS2NjYz7Nae4KOY6z2Wx79uzJ+QkqIvv27TMYDDnfWpm7wkQisWvXrsV9nyQcli1b9vzzz+dcEXNUyDCM1+vdunVrbl9XeYidO3dWV1fnNtnPRaG42L97925lHVyXMxRF7dq1C55ChmH8fr/8X4lSFu3t7T6fL4fRadYKxfX1F154IdsvqiwMQRA7duzIYVCTtUKGYRoaGp555plsv6iSkZaWFq/Xm21FzE6huOu9Y8cOOZ+2Vi44jm/fvj3bipidQpZlfT6fWgWLR3Nzc01NTVbjmuwUchy3ceNGJb6EpxR0Ol1HRwfLstK/koUMjuOcTmdLS0tOsalIpa2traysTPradxYKxdd5inekVUXEYrE0NjZKr4hSFQqCQJLkunXr8ohNRSrr168Xs7VI+bBUhclk0uv1ut3u/GJTkURtba3b7ZY4qJGqkOO4pqYmdS4BB61Wu2bNGomZriUp5Hm+pKRk1apVecemIpXVq1dTFCXlfJQkhclk0u12V1RUFCI2FUksXbrU5XJJaUul1kK/31+IwFSkgmHYypUrpUwtMisU3/pRFcJHzMWacVyaWWEqlXI4HNBSEKrM43K5HA5HxoooSSGSXKAqJEm63e6M41JJfaHP5ytQVCrZ4fP58m1IAQAkSebzprxKPng8HpIkF7aYQSHP81ar1el0Fjo2FUlUVFRYLJaFdxAzKOQ4bsmSJfJMK/4kYDabM45oMitUZ/RocTqdedVCDMMcDkeho1LJgoy9WGaF6nlttJSXly+8u7CQQgAAQRAWi6UIgalIxWKxLLx3mEGhXq9XxzJoMZlMJEkusGWRoSHVarUyvKXoicJsNi+cQWShxM5iE9zb22u1WuVw1+ITCIZh4XBYEIQFusMMCgVBOH36tOoPIWKC5AUOfmZOry7DBMsqD6Ie6lU8qkLFoypUPKpCxaMqVDyqQsWjKlQ8qkLF8/8CAAD//zqZeuNqei9LAAAAAElFTkSuQmCC";
+      function setPersonPreview(preview, url) {
+        const isDefault = !url || url === PERSON_DEFAULT_IMG;
+        preview.classList.toggle("p-default", isDefault);
+        preview.src = isDefault ? PERSON_DEFAULT_PREVIEW : url;
+      }
       function personImageUrl(personName) {
         return (
           "https://mdc.gta.world/img/persons/" +
@@ -10294,20 +10675,32 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       }
       // imgClass is the class/id of the actual image-URL field (kept stable so BBCode builders can keep reading it).
       // profileClass, if given, is an MDC profile-link field that also auto-fills from the name.
-      function personPhotoField(imgClass, profileClass) {
-        const profileField = profileClass
-          ? `<div class='f'><span>MDC Profile URL (auto-generated from the name, editable)</span><input type='text' class='${profileClass}' placeholder='https://mdc.gta.world/record/Full_Name'></div>`
-          : "";
-        return `<div class='f p-full photo-pick'>
-          <span>Photo (auto-generated from the name)</span>
-          <div class='photo-row'>
-            <img class='${imgClass}-prev' alt=''>
-            <div class='photo-fields'>
-              ${profileField}
-              <div class='f'><span>Image URL (auto-generated from the name, editable)</span><input type='text' class='${imgClass}' value='${PERSON_DEFAULT_IMG}' placeholder='https://mdc.gta.world/img/persons/Full_Name.png'></div>
-              <button type='button' class='b photo-reset'>Use default image</button>
+      // Shared Involved Persons card layout (Incident, OSS Incident, MCB / HB Case Package).
+      // Only the layout lives here: every field keeps its own class, so the photo wiring,
+      // death panel and BBCode builders find them exactly as before.
+      //   identity → fields beside the photo (classification, date of birth…)
+      //   details  → the "Details" grid below (phone, residence…)
+      //   relation → optional full-width field after the details
+      function personCard({ nameClass, placeholder, imgClass, profileClass, identity, details, relation }) {
+        // The MDC profile link and photo URL are generated from the name behind the scenes:
+        // kept as hidden fields so the photo wiring and BBCode builders still read them.
+        const profileField = profileClass ? `<input type='hidden' class='${profileClass}'>` : "";
+        return `<div class='pc'>
+          <div class='pc-top'>
+            <div class='pc-photo'>
+              <img class='${imgClass}-prev' alt='Person photo'>
+              <button type='button' class='b photo-reset' title='Use the default image'>Use default</button>
+            </div>
+            <div class='pc-id'>
+              ${personNameHead(nameClass, placeholder)}
+              <div class='g'>${identity}</div>
             </div>
           </div>
+          ${personDeathPanel()}
+          <div class='pc-h'>Details</div>
+          <div class='g'>${details}</div>
+          ${relation || ""}
+          ${profileField}<input type='hidden' class='${imgClass}' value='${PERSON_DEFAULT_IMG}'>
         </div>`;
       }
       // Wires a name field + an image field (+ optional preview/profile/reset) so the image
@@ -10316,16 +10709,51 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       // generated (or manually typed) URL is confirmed to work, and if it 404s / fails to
       // load, falls back to the default for real — in the field too — so the BBCode output
       // never ships a broken image link for a name with no MDC picture.
+      // While typing, the URL field updates at once (so the BBCode is always current), but the
+      // preview only looks the picture up once the user has stopped typing for this long.
+      const PERSON_PHOTO_LOOKUP_DELAY = 2000;
       function wirePersonPhotoEls({ name, image, preview, resetBtn, profile }) {
+        // Wrap the preview in a frame that can show a "searching" overlay.
+        let frame = null;
+        if (preview) {
+          frame = document.createElement("span");
+          frame.className = "p-frame";
+          frame.innerHTML = `<span class='p-loading' aria-hidden='true'><i></i><small>Searching MDC…</small></span>`;
+          preview.parentElement.insertBefore(frame, preview);
+          frame.prepend(preview);
+          const done = () => {
+            if (preview.dataset.target === preview.dataset.loading) frame.classList.remove("is-loading");
+          };
+          preview.addEventListener("load", done);
+          preview.addEventListener("error", done);
+        }
+        let lookupTimer = 0;
         const fill = () => {
           image.value = name.value.trim() ? personImageUrl(name.value) : PERSON_DEFAULT_IMG;
         };
         const sync = () => {
+          clearTimeout(lookupTimer);
           if (!preview) return;
           const target = image.value.trim() || PERSON_DEFAULT_IMG;
-          if (preview.dataset.target === target) return;
+          if (preview.dataset.target === target) {
+            frame.classList.remove("is-loading");
+            return;
+          }
           preview.dataset.target = target;
-          preview.src = target;
+          preview.dataset.loading = target;
+          // The embedded default appears instantly; only a real lookup shows the loader.
+          frame.classList.toggle("is-loading", target !== PERSON_DEFAULT_IMG);
+          setPersonPreview(preview, target);
+        };
+        // Wait until typing pauses before looking the picture up. An empty / default value
+        // has nothing to look up, so it shows the default straight away.
+        const syncLater = () => {
+          clearTimeout(lookupTimer);
+          if (!preview) return;
+          const target = image.value.trim() || PERSON_DEFAULT_IMG;
+          if (target === PERSON_DEFAULT_IMG || preview.dataset.target === target) return sync();
+          frame.classList.add("is-loading");
+          lookupTimer = setTimeout(sync, PERSON_PHOTO_LOOKUP_DELAY);
         };
         name.addEventListener("input", () => {
           if (profile && (!profile.value.trim() || profile.dataset.auto === "1")) {
@@ -10333,12 +10761,12 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             profile.dataset.auto = "1";
           }
           if (image.dataset.manual !== "1") fill();
-          sync();
+          syncLater();
         });
         if (profile) profile.addEventListener("input", () => (profile.dataset.auto = "0"));
         image.addEventListener("input", () => {
           image.dataset.manual = "1";
-          sync();
+          syncLater();
         });
         if (resetBtn)
           resetBtn.addEventListener("click", () => {
@@ -10359,7 +10787,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
               }
               preview.dataset.target = PERSON_DEFAULT_IMG;
             }
-            if (preview.getAttribute("src") !== PERSON_DEFAULT_IMG) preview.src = PERSON_DEFAULT_IMG;
+            if (preview.getAttribute("src") !== PERSON_DEFAULT_PREVIEW) setPersonPreview(preview, PERSON_DEFAULT_IMG);
           });
         sync();
       }
@@ -10376,19 +10804,36 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       function addP() {
         const d = document.createElement("div");
         d.className = "item";
-        d.innerHTML = `<div class='ih'><b class='pn'></b><button class='b' onclick="this.closest('.item').remove();num()">Remove</button></div><div class='g'>${personNameHead("p-name")}${personDeathPanel()}<div class='f'><span>Classification</span><select class='p-cls'><option>Victim</option><option>Suspect</option><option>Witness</option><option>Informant</option></select></div><div class='f'><span>Date of Birth</span><input type='text' class='p-dob'></div><div class='f'><span>Phone Number</span><input type='text' class='p-ph'></div><div class='f'><span>Residence</span><input type='text' class='p-res'></div><div class='f p-full'><span>Relation to Incident</span><input type='text' class='p-rel'></div>${personPhotoField("p-img")}</div>`;
+        d.innerHTML = `<div class='ih'><b class='pn'></b><button class='b' onclick="this.closest('.item').remove();num()">Remove</button></div>${personCard({
+          nameClass: "p-name",
+          placeholder: "Forename Surname",
+          imgClass: "p-img",
+          identity: `<div class='f'><span>Classification</span><select class='p-cls'><option>Victim</option><option>Suspect</option><option>Witness</option><option>Informant</option></select></div><div class='f'><span>Date of Birth</span><input type='text' class='p-dob' autocomplete='off'></div>`,
+          details: `<div class='f'><span>Phone Number</span><input type='text' class='p-ph' autocomplete='off'></div><div class='f'><span>Residence</span><input type='text' class='p-res' autocomplete='off'></div>`,
+          relation: `<div class='f pc-rel'><span>Relation to Incident</span><textarea class='p-rel' placeholder='How this person is involved in the incident'></textarea></div>`,
+        })}`;
         $("persons").appendChild(d);
         num();
         const nm = d.querySelector(".p-name");
         wirePersonPhoto(d, "p-img", nm);
         initPersonDeath(d, () => nm.value.trim());
       }
-      function addE(t = "evs") {
-        const d = document.createElement("div");
-        d.className = "item";
-        d.style.padding = "0 14px 14px";
-        d.innerHTML = `<div class='eg'><input type='text' class='e-ds' placeholder='Description of evidence'><button class='b' onclick="this.closest('.item').remove()">✕</button></div>`;
-        $(t).appendChild(d);
+      // Incident Report evidence: lettered exhibits, same logic and BBCode as the
+      // Major Crimes Case Package ("Exhibit A; …" + spoiler).
+      function numberIncExhibits() {
+        $("evs")
+          .querySelectorAll(".inc-e-label")
+          .forEach((label, i) => (label.textContent = "Exhibit " + sevLetter(i)));
+      }
+      function addE() {
+        const row = document.createElement("div");
+        row.className = "item inc-exhibit";
+        row.innerHTML = `
+      <div class='ih'><b class='inc-e-label'></b><button class='b' type='button' onclick="this.closest('.inc-exhibit').remove();numberIncExhibits()">Remove</button></div>
+      <div class='f'><span>Evidence Description</span><input type='text' class='inc-e-desc' placeholder='Evidence description' autocomplete='off'></div>
+      <div class='f'><span>Evidence (inside the spoiler)</span><textarea class='inc-e-body' placeholder='Images, links, details…'></textarea></div>`;
+        $("evs").appendChild(row);
+        numberIncExhibits();
       }
       function resetI() {
         ["i1", "i2", "i3", "i4", "i5", "i6"].forEach((i) => ($(i).value = ""));
@@ -10426,10 +10871,11 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             );
           })
           .join("\n\n\n");
-        const E = [...document.querySelectorAll("#evs .item")]
-          .map((e) => e.querySelector(".e-ds").value.trim())
-          .filter(Boolean)
-          .map((t) => "[*]" + t)
+        const E = [...$("evs").querySelectorAll(".inc-exhibit")]
+          .map(
+            (row, i) =>
+              `[*][b]Exhibit ${sevLetter(i)}; ${row.querySelector(".inc-e-desc").value.trim() || "Evidence description"}[/b]\n[spoiler]${row.querySelector(".inc-e-body").value.trim()}[/spoiler]`,
+          )
           .join("\n");
         return [
           "[font=Arial][color=black]",
@@ -10458,15 +10904,686 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "[indent]" + g("i6") + "[/indent]",
           "",
           "[size=105][b]Evidence[/b][/size]",
-          "[list=1]" + E + "[/list]",
+          "[list]" + E + "[/list]",
         ].join("\n");
       }
+      // Supplemental Report evidence: lettered attachments, same logic and
+      // BBCode as the Major Crimes Supplemental ("Attachment A; …" + spoiler).
+      function sevLetter(i) {
+        let s = "";
+        i++;
+        while (i > 0) {
+          const r = (i - 1) % 26;
+          s = String.fromCharCode(65 + r) + s;
+          i = Math.floor((i - 1) / 26);
+        }
+        return s;
+      }
+      function numberSevExhibits() {
+        $("sevs")
+          .querySelectorAll(".sev-e-label")
+          .forEach((label, i) => (label.textContent = "Attachment " + sevLetter(i)));
+      }
+      function addSevExhibit() {
+        const row = document.createElement("div");
+        row.className = "item sev-exhibit";
+        row.innerHTML = `
+      <div class='ih'><b class='sev-e-label'></b><button class='b' type='button' onclick="this.closest('.sev-exhibit').remove();numberSevExhibits()">Remove</button></div>
+      <div class='f'><span>Evidence Description</span><input type='text' class='sev-e-desc' placeholder='Evidence description' autocomplete='off'></div>
+      <div class='f'><span>Evidence (inside the spoiler)</span><textarea class='sev-e-body' placeholder='Images, links, details…'></textarea></div>`;
+        $("sevs").appendChild(row);
+        numberSevExhibits();
+      }
+      // ===== Street / District pickers =====
+      // Lists copied from the GTA World report builder (rebb.booskit.dev, gtaw_locations.json).
+      // Every street / district field becomes a search box: typing shows only the matches,
+      // and only a name from the list can be kept (anything else reverts on leaving the field).
+      const GTAW_DISTRICTS = [
+        "Alamo Sea",
+        "Alta",
+        "Banham Canyon",
+        "Banning",
+        "Bolingbroke Penitentiary",
+        "Braddock Pass",
+        "Burton",
+        "Calafia Bridge",
+        "Cassidy Creek",
+        "Chamberlain Hills",
+        "Chiliad Mountain State Wilderness",
+        "Chumash",
+        "Cypress Flats",
+        "Davis",
+        "Davis Quarry",
+        "Del Perro",
+        "Del Perro Beach",
+        "Downtown",
+        "Downtown Vinewood",
+        "East Vinewood",
+        "El Burro Heights",
+        "El Gondo Lighthouse",
+        "Elysian Island",
+        "Fort Zancudo",
+        "GWC and Golfing Society",
+        "Galilee",
+        "Grand Senora Desert",
+        "Grapeseed",
+        "Great Chaparral",
+        "Harmony",
+        "Hawick",
+        "Humane Labs and Research",
+        "La Mesa",
+        "La Puerta",
+        "Lago Zancudo",
+        "Land Act Dam",
+        "Land Act Reservoir",
+        "Legion Square",
+        "Little Seoul",
+        "Los Santos International Airport (LSIA)",
+        "Maze Bank Arena",
+        "Mirror Park",
+        "Mission Row",
+        "Morningwood",
+        "Mount Chiliad",
+        "Mount Gordo",
+        "Mount Josiah",
+        "Murrieta Heights",
+        "N.O.O.S.E",
+        "North Chumash",
+        "Pacific Bluffs",
+        "Palomino Highlands",
+        "Paleto Bay",
+        "Paleto Cove",
+        "Paleto Forest",
+        "Palmer-Taylor Power Station",
+        "Pillbox Hill",
+        "Port of South Los Santos",
+        "Procopio Beach",
+        "Rancho",
+        "Raton Canyon",
+        "Redwood Lights Track",
+        "Richards Majestic",
+        "Richman",
+        "Richman Glen",
+        "Rockford Hills",
+        "Ron Alternatives Wind Farm",
+        "San Chanski Mountain Range",
+        "Sandy Shores",
+        "Stab City",
+        "Strawberry",
+        "Tataviam Mountains",
+        "Terminal",
+        "Textile City",
+        "Tongva Hills",
+        "Vespucci",
+        "Vespucci Beach",
+        "Vespucci Canals",
+        "Vinewood",
+        "Vinewood Hills",
+        "Vinewood Racetrack",
+        "West Vinewood",
+        "Zancudo River",
+      ];
+      const GTAW_STREETS = [
+        "Abattoir Avenue",
+        "Abe Milton Parkway",
+        "Ace Jones Drive",
+        "Adam's Apple Boulevard",
+        "Aguja Street",
+        "Algonquin Boulevard",
+        "Alhambra Drive",
+        "Alta Place",
+        "Alta Street",
+        "Amarillo Vista",
+        "Amarillo Way",
+        "Americano Way",
+        "Armadillo Avenue",
+        "Atlee Street",
+        "Autopia Parkway",
+        "Banham Canyon Drive",
+        "Barbareno Road",
+        "Bay City Avenue",
+        "Bay City Incline",
+        "Baytree Canyon Road",
+        "Boulevard Del Perro",
+        "Bridge Street",
+        "Brouge Avenue",
+        "Buccaneer Way",
+        "Buen Vino Road",
+        "Caesars Place",
+        "Calafia Road",
+        "Calais Avenue",
+        "Capital Boulevard",
+        "Carcer Way",
+        "Carson Avenue",
+        "Cascabel Avenue",
+        "Cassidy Trail",
+        "Cat-Claw Avenue",
+        "Catfish View",
+        "Chianski Passage",
+        "Cholla Road",
+        "Cholla Springs Avenue",
+        "Chum Street",
+        "Chupacabra Street",
+        "Clinton Avenue",
+        "Cockingend Drive",
+        "Conquistador Street",
+        "Cortes Street",
+        "Cougar Avenue",
+        "Covenant Avenue",
+        "Cox Way",
+        "Crusade Road",
+        "Davis Avenue",
+        "Decker Street",
+        "Del Perro Freeway",
+        "Didion Drive",
+        "Dorset Drive",
+        "Dorset Place",
+        "Dry Dock Street",
+        "Duluoz Avenue",
+        "Dunstable Drive",
+        "Dunstable Lane",
+        "Dutch London Street",
+        "East Galileo Avenue",
+        "East Joshua Road",
+        "East Mirror Drive",
+        "Eastbourne Way",
+        "Eclipse Boulevard",
+        "Edwood Way",
+        "El Burro Boulevard",
+        "El Rancho Boulevard",
+        "Elgin Avenue",
+        "Elysian Fields Freeway",
+        "Equality Way",
+        "Exceptionalists Way",
+        "Fantastic Place",
+        "Fenwell Place",
+        "Fort Zancudo Approach Road",
+        "Forum Drive",
+        "Fudge Lane",
+        "Galileo Road",
+        "Gentry Lane",
+        "Ginger Street",
+        "Glory Way",
+        "Goma Street",
+        "Grapeseed Avenue",
+        "Grapeseed Main Street",
+        "Great Ocean Highway",
+        "Greenwich Parkway",
+        "Greenwich Place",
+        "Greenwich Way",
+        "Grove Street",
+        "Hanger Way",
+        "Hangman Avenue",
+        "Hardy Way",
+        "Hawick Avenue",
+        "Heritage Way",
+        "Hillcrest Avenue",
+        "Hillcrest Ridge Access Road",
+        "Imagination Court",
+        "Industry Passage",
+        "Ineseno Road",
+        "Innocence Boulevard",
+        "Integrity Way",
+        "Invention Court",
+        "Jamestown Street",
+        "Joad Lane",
+        "Joshua Road",
+        "Kimble Hill Drive",
+        "Kortz Drive",
+        "La Puerta Freeway",
+        "Labor Place",
+        "Laguna Place",
+        "Lake Vinewood Drive",
+        "Lake Vinewood Estate",
+        "Las Lagunas Boulevard",
+        "Lesbos Lane",
+        "Liberty Street",
+        "Lindsay Circus",
+        "Little Bighorn Avenue",
+        "Lolita Avenue",
+        "Los Santos Freeway",
+        "Low Power Street",
+        "Macdonald Street",
+        "Mad Wayne Thunder Drive",
+        "Magellan Avenue",
+        "Marathon Avenue",
+        "Marina Drive",
+        "Marlowe Drive",
+        "Melanoma Street",
+        "Meringue Lane",
+        "Meteor Street",
+        "Milton Road",
+        "Mirror Park Boulevard",
+        "Mirror Place",
+        "Morningwood Boulevard",
+        "Mount Haan Drive",
+        "Mount Haan Road",
+        "Mount Vinewood Drive",
+        "Mountain View Drive",
+        "Movie Star Way",
+        "Mutiny Road",
+        "New Empire Way",
+        "Nikola Avenue",
+        "Nikola Place",
+        "Niland Avenue",
+        "Normandy Drive",
+        "North Archer Avenue",
+        "North Calafia Way",
+        "North Conker Avenue",
+        "North Rockford Drive",
+        "North Sheldon Avenue",
+        "Nowhere Road",
+        "O'Neil Way",
+        "Occupation Avenue",
+        "Olympic Freeway",
+        "Orchardville Avenue",
+        "Paleto Boulevard",
+        "Palomino Avenue",
+        "Palomino Freeway",
+        "Panorama Drive",
+        "Peaceful Street",
+        "Perth Street",
+        "Picture Perfect Drive",
+        "Plaice Place",
+        "Playa Vista",
+        "Popular Street",
+        "Portola Drive",
+        "Power Street",
+        "Procopio Drive",
+        "Procopio Promenade",
+        "Prosperity Street",
+        "Prosperity Street Promenade",
+        "Pyrite Avenue",
+        "Raton Pass",
+        "Red Desert Avenue",
+        "Richman Street",
+        "Rockford Drive",
+        "Route 68",
+        "Route 68 Approach",
+        "Roy Lowenstein Boulevard",
+        "Rub Street",
+        "Sam Austin Drive",
+        "San Andreas Avenue",
+        "San Vitus Boulevard",
+        "Sandcastle Way",
+        "Seaview Road",
+        "Senora Freeway",
+        "Senora Road",
+        "Senora Way",
+        "Shank Street",
+        "Signal Street",
+        "Sinner Street",
+        "Sinners Passage",
+        "Smoke Tree Road",
+        "South Arsenal Street",
+        "South Boulevard Del Perro",
+        "South Mo Milton Drive",
+        "South Rockford Drive",
+        "South Shambles Street",
+        "Spanish Avenue",
+        "Steele Way",
+        "Strangeways Drive",
+        "Strawberry Avenue",
+        "Supply Street",
+        "Sustancia Road",
+        "Swiss Street",
+        "Tackle Street",
+        "Tangerine Street",
+        "Tongva Drive",
+        "Tower Way",
+        "Tug Street",
+        "Union Road",
+        "Utopia Gardens",
+        "Vespucci Boulevard",
+        "Vinewood Boulevard",
+        "Vinewood Park Drive",
+        "Vitus Street",
+        "Voodoo Place",
+        "West Eclipse Boulevard",
+        "West Galileo Avenue",
+        "West Mirror Drive",
+        "Whispymound Drive",
+        "Wild Oats Drive",
+        "York Street",
+        "Zancudo Avenue",
+        "Zancudo Barranca",
+        "Zancudo Road",
+        "Zancudo Trail",
+      ];
+      const PLACE_LISTS = { street: GTAW_STREETS, district: GTAW_DISTRICTS };
+      // Fields that ask for one street or one district.
+      const PLACE_FIELDS = {
+        street: ["subject-road", "k9-street", "ck9-street", "dk9-street", "citation-sp-street", "citation-xs-street", "citation-y-street", "citation-y-cross", "mcb-case-street", "hb-case-street"],
+        district: ["k9-district", "ck9-district", "dk9-district", "mcb-case-district", "hb-case-district"],
+      };
+      // "Location" fields: split into a Street picker + a District picker, written back to the
+      // original field as "Street, District" (so every BBCode builder keeps reading that field).
+      const LOCATION_FIELDS = ["i3", "uof-location", "tc-location", "citation-location", "senora-logbook-location", "oss-ir-location"];
+      const LOCATION_JOIN = ", ";
+      let placeUid = 0;
+      function placeMatches(list, query) {
+        const q = query.trim().toLowerCase(),
+          words = q.split(/\s+/).filter(Boolean);
+        if (!words.length) return list.slice();
+        const rank = (x) => {
+          const l = x.toLowerCase();
+          if (l.startsWith(q)) return 0;
+          return l.split(/\s+/).some((w) => w.startsWith(words[0])) ? 1 : 2;
+        };
+        return list
+          .filter((x) => words.every((w) => x.toLowerCase().includes(w)))
+          .sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+      }
+      function placeLabel(text, query) {
+        // Bold the typed words inside the option (built as text nodes, never innerHTML).
+        const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+        if (!words.length) return document.createTextNode(text);
+        const frag = document.createDocumentFragment(),
+          lower = text.toLowerCase(),
+          marks = new Array(text.length).fill(false);
+        words.forEach((w) => {
+          let i = lower.indexOf(w);
+          while (i !== -1) {
+            for (let k = i; k < i + w.length; k++) marks[k] = true;
+            i = lower.indexOf(w, i + w.length);
+          }
+        });
+        let i = 0;
+        while (i < text.length) {
+          let j = i;
+          while (j < text.length && marks[j] === marks[i]) j++;
+          const part = text.slice(i, j);
+          frag.append(marks[i] ? Object.assign(document.createElement("b"), { textContent: part }) : part);
+          i = j;
+        }
+        return frag;
+      }
+      function makePlacePicker(input, kind, onCommit) {
+        const list = PLACE_LISTS[kind],
+          id = "place-list-" + ++placeUid;
+        const wrap = document.createElement("div");
+        wrap.className = "place";
+        input.parentElement.insertBefore(wrap, input);
+        wrap.append(input);
+        const box = document.createElement("ul");
+        box.className = "place-list";
+        box.id = id;
+        box.hidden = true;
+        box.setAttribute("role", "listbox");
+        wrap.append(box);
+        input.setAttribute("role", "combobox");
+        input.setAttribute("aria-autocomplete", "list");
+        input.setAttribute("aria-expanded", "false");
+        input.setAttribute("aria-controls", id);
+        input.autocomplete = "off";
+        input.spellcheck = false;
+        input.placeholder = kind === "street" ? "Search streets…" : "Search districts…";
+        const inList = (v) => list.includes(v);
+        input.dataset.placeValid = inList(input.value.trim()) ? input.value.trim() : "";
+        let items = [],
+          active = -1,
+          silent = false;
+        const setOpen = (on) => {
+          box.hidden = !on;
+          wrap.classList.toggle("open", on);
+          input.setAttribute("aria-expanded", String(on));
+          if (!on) input.removeAttribute("aria-activedescendant");
+        };
+        const mark = () => {
+          [...box.children].forEach((li, i) => {
+            li.classList.toggle("on", i === active);
+            li.setAttribute("aria-selected", String(i === active));
+          });
+          const li = box.children[active];
+          if (li && li.id) {
+            input.setAttribute("aria-activedescendant", li.id);
+            li.scrollIntoView({ block: "nearest" });
+          }
+        };
+        const commit = (value) => {
+          const changed = input.value !== value || input.dataset.placeValid !== value;
+          silent = true;
+          input.value = value;
+          input.dataset.placeValid = value;
+          setOpen(false);
+          if (changed) {
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+            if (onCommit) onCommit(value);
+          }
+          silent = false;
+        };
+        const render = () => {
+          // With a chosen name still in the box, show the whole list so it can be changed.
+          const q = input.value.trim() === input.dataset.placeValid ? "" : input.value;
+          items = placeMatches(list, q);
+          if (items.length) {
+            box.replaceChildren(
+              ...items.map((t, i) => {
+                const li = document.createElement("li");
+                li.id = id + "-" + i;
+                li.setAttribute("role", "option");
+                li.append(placeLabel(t, q));
+                li.addEventListener("mousedown", (e) => {
+                  e.preventDefault();
+                  commit(t);
+                });
+                return li;
+              }),
+            );
+          } else {
+            const li = document.createElement("li");
+            li.className = "place-empty";
+            li.textContent = `No ${kind} matches “${input.value.trim()}”`;
+            box.replaceChildren(li);
+          }
+          active = items.length ? Math.max(0, items.indexOf(input.dataset.placeValid)) : -1;
+          setOpen(true);
+          mark();
+        };
+        input.addEventListener("input", () => {
+          if (!silent) render();
+        });
+        input.addEventListener("focus", render);
+        input.addEventListener("click", () => {
+          if (box.hidden) render();
+        });
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+            e.preventDefault();
+            if (box.hidden) return render();
+            if (!items.length) return;
+            active = (active + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+            mark();
+          } else if (e.key === "Enter") {
+            if (!box.hidden && active >= 0) {
+              e.preventDefault();
+              commit(items[active]);
+            }
+          } else if (e.key === "Escape") {
+            if (!box.hidden) {
+              e.preventDefault();
+              setOpen(false);
+            }
+          } else if (e.key === "Tab" && !box.hidden && active >= 0 && input.value.trim() && !inList(input.value.trim())) {
+            commit(items[active]);
+          }
+        });
+        input.addEventListener("blur", () => {
+          setOpen(false);
+          const v = input.value.trim();
+          if (!v) return commit("");
+          const exact = list.find((x) => x.toLowerCase() === v.toLowerCase());
+          if (exact) return commit(exact);
+          // Only a name from the list may stay: a single match is taken, anything else reverts.
+          const m = placeMatches(list, v);
+          commit(m.length === 1 ? m[0] : input.dataset.placeValid);
+        });
+        return {
+          // Set from code (reset / prefill) without firing events.
+          set(value) {
+            const v = inList(value) ? value : "";
+            input.value = v;
+            input.dataset.placeValid = v;
+          },
+        };
+      }
+      function makeLocationPair(orig) {
+        const label = orig.closest(".f")?.querySelector("span")?.textContent.trim() || "Location";
+        const pair = document.createElement("div");
+        pair.className = "place-pair";
+        const street = document.createElement("input"),
+          district = document.createElement("input");
+        street.type = district.type = "text";
+        street.setAttribute("aria-label", `${label}: street`);
+        district.setAttribute("aria-label", `${label}: district`);
+        pair.append(street, district);
+        orig.parentElement.insertBefore(pair, orig.nextSibling);
+        orig.type = "hidden";
+        const native = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value");
+        const compose = () => {
+          native.set.call(orig, [street.value.trim(), district.value.trim()].filter(Boolean).join(LOCATION_JOIN));
+          orig.dispatchEvent(new Event("input", { bubbles: true }));
+          orig.dispatchEvent(new Event("change", { bubbles: true }));
+        };
+        const sp = makePlacePicker(street, "street", compose),
+          dp = makePlacePicker(district, "district", compose);
+        // Resets / prefills elsewhere still assign orig.value: mirror that into the two pickers.
+        Object.defineProperty(orig, "value", {
+          configurable: true,
+          get() {
+            return native.get.call(this);
+          },
+          set(v) {
+            native.set.call(this, v);
+            const parts = String(v ?? "").split(",").map((x) => x.trim());
+            sp.set(parts.find((x) => GTAW_STREETS.includes(x)) || "");
+            dp.set(parts.find((x) => GTAW_DISTRICTS.includes(x)) || "");
+          },
+        });
+        orig.value = native.get.call(orig);
+      }
+      function initPlacePickers() {
+        Object.entries(PLACE_FIELDS).forEach(([kind, ids]) =>
+          ids.forEach((id) => {
+            const f = $(id);
+            if (f && !f.closest(".place")) makePlacePicker(f, kind);
+          }),
+        );
+        LOCATION_FIELDS.forEach((id) => {
+          const f = $(id);
+          if (f && f.type !== "hidden") makeLocationPair(f);
+        });
+      }
+      // K9 deployment log evidence: lettered exhibits, same logic and BBCode as the Incident Report.
+      function numberK9Exhibits(pre) {
+        $(pre + "-evs")
+          .querySelectorAll(".k9-e-label")
+          .forEach((label, i) => (label.textContent = "Exhibit " + sevLetter(i)));
+      }
+      function addK9Exhibit(pre) {
+        const row = document.createElement("div");
+        row.className = "item k9-exhibit";
+        row.innerHTML = `
+      <div class='ih'><b class='k9-e-label'></b><button class='b' type='button' onclick="const w=this.closest('.k9-exhibit').parentElement;this.closest('.k9-exhibit').remove();numberK9Exhibits(w.id.replace('-evs',''))">Remove</button></div>
+      <div class='f'><span>Evidence Description</span><input type='text' class='k9-e-desc' placeholder='Evidence description' autocomplete='off'></div>
+      <div class='f'><span>Evidence (inside the spoiler)</span><textarea class='k9-e-body' placeholder='Images, links, details…'></textarea></div>`;
+        $(pre + "-evs").appendChild(row);
+        numberK9Exhibits(pre);
+      }
+      function resetK9Exhibits(pre) {
+        $(pre + "-evs").replaceChildren();
+        addK9Exhibit(pre);
+      }
+      function k9EvidenceBbcode(pre) {
+        return (
+          "[list]" +
+          [...$(pre + "-evs").querySelectorAll(".k9-exhibit")]
+            .map(
+              (row, i) =>
+                `[*][b]Exhibit ${sevLetter(i)}; ${row.querySelector(".k9-e-desc").value.trim() || "Evidence description"}[/b]\n[spoiler]${row.querySelector(".k9-e-body").value.trim()}[/spoiler]`,
+            )
+            .join("\n") +
+          "[/list]"
+        );
+      }
+      // "Now" buttons: fill each time field with the current time on the
+      // 24-hour (UK) clock, written in the format that field already uses.
+      const TIME_NOW_FIELDS = {
+        "incident-time": "HH:MM",
+        "uof-time": "HH:MM",
+        "mcb-case-time": "HH:MM",
+        "hb-case-time": "HH:MM",
+        "king-report-time": "HH:MM",
+        "apb-time": "HHMM",
+        "subject-time": "HH:MM",
+        "tc-time": "HH:MM",
+        "k9-time": "HH:MM",
+        "ck9-time": "HH:MM",
+        "dk9-time": "HH:MM",
+        "citation-time": "HH:MM:SS",
+        "citation-ni-stop": "HH:MM:SS",
+        "senora-logbook-time": "HH:MM",
+        "oss-ir-time": "HHMM",
+        "oss-supp-time": "HHMM",
+        "ftp1-time": "HH:MM",
+        "ftp2-time": "HH:MM",
+        "ftp3-time": "HH:MM",
+        "fto-time": "HH:MM",
+      };
+      // Current time in the UK (Europe/London: GMT in winter, BST in summer),
+      // regardless of the computer's own time zone.
+      function ukTimeNow(fmt) {
+        const parts = Object.fromEntries(
+            new Intl.DateTimeFormat("en-GB", {
+              timeZone: "Europe/London",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hourCycle: "h23",
+            })
+              .formatToParts(new Date())
+              .map((x) => [x.type, x.value]),
+          ),
+          hh = parts.hour,
+          mm = parts.minute;
+        if (fmt === "HHMM") return hh + mm;
+        if (fmt === "HH:MM:SS") return `${hh}:${mm}:${parts.second}`;
+        return `${hh}:${mm}`;
+      }
+      function initTimeNowButtons() {
+        Object.entries(TIME_NOW_FIELDS).forEach(([id, fmt]) => {
+          const field = $(id);
+          if (!field || field.dataset.timeNow) return;
+          field.dataset.timeNow = "1";
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "b time-now";
+          btn.title = "Fill with the current UK time (24-hour)";
+          const label = field.closest(".f")?.querySelector("span")?.textContent.trim() || "time";
+          btn.setAttribute("aria-label", `Set ${label} to the current UK time`);
+          btn.innerHTML = `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span>Now</span>`;
+          btn.addEventListener("click", () => {
+            field.value = ukTimeNow(fmt);
+            field.dispatchEvent(new Event("input", { bubbles: true }));
+            field.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+          const control = field.closest(".date-time-control");
+          if (control) {
+            control.append(btn);
+          } else {
+            const wrap = document.createElement("div");
+            wrap.className = "time-now-wrap";
+            field.parentElement.insertBefore(wrap, field);
+            wrap.append(field, btn);
+          }
+        });
+      }
       function bbs() {
-        const E = [...document.querySelectorAll("#sevs .e-ds")]
-          .map((e) => e.value.trim())
-          .filter(Boolean)
-          .map((t) => "[*]" + t)
-          .join("\n");
+        const E = [...$("sevs").querySelectorAll(".sev-exhibit")].map(
+          (row, i) =>
+            `[*][b]Attachment ${sevLetter(i)}; ${row.querySelector(".sev-e-desc").value.trim() || "Description"}[/b]\n[spoiler]${row.querySelector(".sev-e-body").value.trim()}[/spoiler]`,
+        );
         return [
           "[font=Arial][color=black]",
           "",
@@ -10482,7 +11599,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "[indent]" + $("s1").value.trim() + "[/indent]",
           "",
           "[size=105][b]Evidence[/b][/size]",
-          E ? "[list=1]" + E + "[/list]" : "",
+          "[list]" + E.join("\n") + "[/list]",
           "",
           "[size=105][b]Filed By:[/b][/size]",
           "[indent]" + ($("s2").value.trim() || "N/A") + "[/indent]",
@@ -10490,8 +11607,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       }
       function resetS() {
         $("s1").value = $("s2").value = "";
-        $("sevs").innerHTML = "";
-        addE("sevs");
+        $("sevs").replaceChildren();
+        addSevExhibit();
         applyDeputyDetails();
       }
       let taskListCalendarMonth = new Date(),
@@ -10800,12 +11917,19 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         $("bc-note-name").value = "/note ID AMOUNT name LSSD Business Card - " + name;
         $("bc-note-content").value = "/note ID AMOUNT content LINK";
       }
-      let FX = true,
+      // Paper styles for the business card. "" = plain white; otherwise one of PAPER_VARIANTS.
+      let FX = "light",
         fxCache = null;
-      function toggleFx() {
-        FX = !FX;
-        $("bt-fx").textContent = "Crumpled paper: " + (FX ? "On" : "Off");
-        $("bt-fx").classList.toggle("p", FX);
+      const PAPER_VARIANTS = {
+        // Gentle wrinkles (the original look)
+        light: { seed: 20261016, cells: [260, 130, 65], rc: 190, rc2: 0, rw: 0.35, rw2: 0, sh: 26, al: 70, ad: 60, fibers: 220, vg: 0.2, tint: "#f3f0e8", folds: [] },
+        // Paper that was scrunched up and flattened again: planar facets with thin sharp creases
+        heavy: { seed: 7741993, cells: [330, 160, 80], rc: 220, rc2: 0, rw: 0.15, rw2: 0, sh: 9, al: 26, ad: 24, fibers: 150, vg: 0.2, tint: "#f1eee5", folds: [], facets: { cell: 96, light: 0.1, dark: 0.11, crease: 0.14, width: 2, warp: 34 } },
+        // Folded into quarters and carried around: soft creases, panel shading, worn fold lines
+        folded: { seed: 3318807, cells: [340, 170, 80], rc: 260, rc2: 0, rw: 0.12, rw2: 0, sh: 9, al: 26, ad: 22, fibers: 120, vg: 0.17, tint: "#f2eee4", folds: [["v", 0.5], ["h", 0.575]] },
+      };
+      function setFx(v) {
+        FX = v in PAPER_VARIANTS ? v : "";
         drawC();
       }
       function paperRng(a) {
@@ -10817,12 +11941,13 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
         };
       }
-      function buildPaperFx(w, h) {
+      function buildPaperFx(w, h, variant) {
+        const cfg = PAPER_VARIANTS[variant] || PAPER_VARIANTS.light;
         const o = document.createElement("canvas");
         o.width = w;
         o.height = h;
         const g = o.getContext("2d"),
-          r = paperRng(20261016),
+          r = paperRng(cfg.seed),
           sm = (t) => t * t * (3 - 2 * t),
           layer = (cell) => {
             const gx = Math.ceil(w / cell) + 2,
@@ -10838,12 +11963,14 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
               return a0 + (b0 - a0) * tx + (c0 - a0) * ty + (a0 - b0 - c0 + d0) * tx * ty;
             };
           },
-          n1 = layer(260), n2 = layer(130), n3 = layer(65), rd = layer(190),
+          n1 = layer(cfg.cells[0]), n2 = layer(cfg.cells[1]), n3 = layer(cfg.cells[2]), rd = layer(cfg.rc), rd2 = layer(cfg.rc2 || 97),
           H = new Float32Array(w * h);
         for (let y = 0; y < h; y++)
           for (let x = 0; x < w; x++) {
             const ridge = 1 - Math.abs(rd(x, y) - 0.5) * 2;
-            H[y * w + x] = n1(x, y) * 1 + n2(x, y) * 0.45 + n3(x, y) * 0.18 + ridge * ridge * 0.35;
+            const ridge2 = cfg.rw2 ? 1 - Math.abs(rd2(x, y) - 0.5) * 2 : 0;
+            H[y * w + x] =
+              n1(x, y) * 1 + n2(x, y) * 0.45 + n3(x, y) * 0.18 + ridge * ridge * cfg.rw + ridge2 * ridge2 * cfg.rw2;
           }
         const lit = document.createElement("canvas");
         lit.width = w;
@@ -10853,21 +11980,21 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         for (let y = 0; y < h - 1; y++)
           for (let x = 0; x < w - 1; x++) {
             const i = y * w + x,
-              sh = ((H[i + 1] - H[i]) * 0.7 + (H[i + w] - H[i]) * 0.7) * 26,
+              sh = ((H[i + 1] - H[i]) * 0.7 + (H[i + w] - H[i]) * 0.7) * cfg.sh,
               o4 = i * 4;
             if (sh > 0) {
               img.data[o4] = img.data[o4 + 1] = img.data[o4 + 2] = 255;
-              img.data[o4 + 3] = Math.min(70, sh * 90);
+              img.data[o4 + 3] = Math.min(cfg.al, sh * 90);
             } else {
               img.data[o4] = 45;
               img.data[o4 + 1] = 32;
               img.data[o4 + 2] = 18;
-              img.data[o4 + 3] = Math.min(60, -sh * 80);
+              img.data[o4 + 3] = Math.min(cfg.ad, -sh * 80);
             }
           }
         lx.putImageData(img, 0, 0);
         g.drawImage(lit, 0, 0);
-        for (let n = 0; n < 220; n++) {
+        for (let n = 0; n < cfg.fibers; n++) {
           const x0 = r() * w, y0 = r() * h, a = r() * 6.28, l = 3 + r() * 9;
           g.strokeStyle = r() < 0.5 ? "rgba(70,55,35,0.07)" : "rgba(255,255,255,0.18)";
           g.lineWidth = 0.7;
@@ -10875,6 +12002,129 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           g.moveTo(x0, y0);
           g.lineTo(x0 + Math.cos(a) * l, y0 + Math.sin(a) * l);
           g.stroke();
+        }
+        if (cfg.facets) {
+          // Crumpled facets: a jittered grid of points, each cell a patch of paper tilted a slightly
+          // different way. The sampling is warped by noise so borders wander like real wrinkles,
+          // and each crease has its own (mostly faint) strength, so nothing reads as a tile edge.
+          const F = cfg.facets,
+            cs = F.cell,
+            gx = Math.ceil(w / cs) + 3,
+            gy = Math.ceil(h / cs) + 3,
+            PX = new Float32Array(gx * gy), PY = new Float32Array(gx * gy),
+            PS = new Float32Array(gx * gy), PA = new Float32Array(gx * gy), PB = new Float32Array(gx * gy),
+            cl = (v, m) => Math.max(0, Math.min(m - 1, v));
+          for (let j = 0; j < gy; j++)
+            for (let i = 0; i < gx; i++) {
+              const k = j * gx + i;
+              PX[k] = (i - 1 + 0.12 + 0.76 * r()) * cs;
+              PY[k] = (j - 1 + 0.12 + 0.76 * r()) * cs;
+              // Lighting follows a broad field (neighbouring facets face alike) plus a little chance
+              PS[k] = Math.max(-1, Math.min(1, (n1(cl(PX[k], w), cl(PY[k], h)) - 0.5) * 1.5 + (r() - 0.5) * 0.7));
+              PA[k] = ((r() - 0.5) * 0.7) / cs;
+              PB[k] = ((r() - 0.5) * 0.7) / cs;
+            }
+          const fc = document.createElement("canvas");
+          fc.width = w;
+          fc.height = h;
+          const fx = fc.getContext("2d"),
+            fd = fx.createImageData(w, h);
+          for (let y = 0; y < h; y++)
+            for (let x = 0; x < w; x++) {
+              const sx = x + (n2(x, y) - 0.5) * F.warp + (n3(x, y) - 0.5) * F.warp * 0.35,
+                sy = y + (n3(x, y) - 0.5) * F.warp + (n2(x, y) - 0.5) * F.warp * 0.35,
+                ci = Math.max(0, Math.min(gx - 3, Math.floor(sx / cs) + 1)),
+                cj = Math.max(0, Math.min(gy - 3, Math.floor(sy / cs) + 1));
+              let b1 = 1e9, b2 = 1e9, k1 = 0;
+              for (let dj = -1; dj <= 1; dj++)
+                for (let di = -1; di <= 1; di++) {
+                  const k = (cj + dj) * gx + ci + di,
+                    dx = sx - PX[k], dy = sy - PY[k], d = dx * dx + dy * dy;
+                  if (d < b1) { b2 = b1; b1 = d; k1 = k; } else if (d < b2) b2 = d;
+                }
+              const edge = Math.sqrt(b2) - Math.sqrt(b1);
+              let lit = PS[k1] + (sx - PX[k1]) * PA[k1] + (sy - PY[k1]) * PB[k1];
+              lit = Math.max(-1, Math.min(1, lit));
+              let la = lit > 0 ? lit * F.light : 0,
+                da = lit < 0 ? -lit * F.dark : 0;
+              if (edge < F.width * 3) {
+                // Per-crease strength: most are faint, a few are noticeable
+                const m = n2(x, y), strength = 0.12 + 0.88 * m * m * m,
+                  t = Math.max(0, 1 - edge / (F.width * 3));
+                da = Math.max(da, t * t * t * F.crease * strength);
+              }
+              const o4 = (y * w + x) * 4;
+              if (da > la) {
+                fd.data[o4] = 70; fd.data[o4 + 1] = 54; fd.data[o4 + 2] = 34; fd.data[o4 + 3] = da * 255;
+              } else {
+                fd.data[o4] = fd.data[o4 + 1] = fd.data[o4 + 2] = 255; fd.data[o4 + 3] = la * 255;
+              }
+            }
+          fx.putImageData(fd, 0, 0);
+          g.save();
+          g.filter = "blur(0.7px)";
+          g.drawImage(fc, 0, 0);
+          g.restore();
+        }
+        cfg.folds.forEach(([dir, at]) => {
+          // A fold: soft shading either side, a lit lip and a thin shadowed crease, slightly
+          // wandering like real paper, then pale wear along it where the fibres have broken.
+          const vert = dir === "v",
+            len = vert ? h : w,
+            pos = (vert ? w : h) * at,
+            seed = [r() * 6.28, r() * 6.28, r() * 6.28],
+            wob = (t) => Math.sin(t / 150 + seed[0]) * 1.8 + Math.sin(t / 53 + seed[1]) * 0.9 + Math.sin(t / 19 + seed[2]) * 0.4,
+            pt = (t, off) => (vert ? [pos + wob(t) + off, t] : [t, pos + wob(t) + off]),
+            line = (off, lw, col) => {
+              g.beginPath();
+              for (let t = -4; t <= len + 4; t += 6) {
+                const [px, py] = pt(t, off);
+                t === -4 ? g.moveTo(px, py) : g.lineTo(px, py);
+              }
+              g.lineWidth = lw;
+              g.strokeStyle = col;
+              g.lineJoin = g.lineCap = "round";
+              g.stroke();
+            };
+          const span = (vert ? w : h) * 0.3,
+            sh1 = vert ? g.createLinearGradient(pos - span, 0, pos, 0) : g.createLinearGradient(0, pos - span, 0, pos),
+            sh2 = vert ? g.createLinearGradient(pos, 0, pos + span, 0) : g.createLinearGradient(0, pos, 0, pos + span);
+          sh1.addColorStop(0, "rgba(255,255,255,0)");
+          sh1.addColorStop(1, "rgba(60,45,25,0.07)");
+          sh2.addColorStop(0, "rgba(255,255,255,0.10)");
+          sh2.addColorStop(1, "rgba(255,255,255,0)");
+          g.fillStyle = sh1;
+          vert ? g.fillRect(pos - span, 0, span, h) : g.fillRect(0, pos - span, w, span);
+          g.fillStyle = sh2;
+          vert ? g.fillRect(pos, 0, span, h) : g.fillRect(0, pos, w, span);
+          [26, 16, 9].forEach((lw) => line(3, lw, "rgba(60,45,25,0.03)"));
+          line(-2.6, 5, "rgba(255,255,255,0.20)");
+          line(-2.2, 1.6, "rgba(255,255,255,0.45)");
+          line(0.6, 2.6, "rgba(60,42,22,0.16)");
+          line(0.4, 1.1, "rgba(60,42,22,0.34)");
+          for (let n = 0; n < 240; n++) {
+            const t = r() * len, off = (r() + r() + r() - 1.5) * 3.2, l = 1 + r() * 4.5,
+              [px, py] = pt(t, off);
+            g.strokeStyle = r() < 0.78 ? `rgba(255,255,255,${0.35 + r() * 0.4})` : "rgba(70,52,30,0.22)";
+            g.lineWidth = 0.7;
+            g.beginPath();
+            g.moveTo(px, py);
+            g.lineTo(px + (vert ? (r() - 0.5) * 1.6 : l), py + (vert ? l : (r() - 0.5) * 1.6));
+            g.stroke();
+          }
+        });
+        if (cfg.folds.length > 1) {
+          // Where the folds cross the paper is the most worn: a little extra whitening
+          for (let n = 0; n < 90; n++) {
+            const a = r() * 6.28, d = Math.pow(r(), 1.6) * 34;
+            g.strokeStyle = `rgba(255,255,255,${0.3 + r() * 0.4})`;
+            g.lineWidth = 0.8;
+            g.beginPath();
+            const px = w * 0.5 + Math.cos(a) * d, py = h * 0.575 + Math.sin(a) * d;
+            g.moveTo(px, py);
+            g.lineTo(px + Math.cos(a + 1.2) * (1 + r() * 4), py + Math.sin(a + 1.2) * (1 + r() * 4));
+            g.stroke();
+          }
         }
         const nz = document.createElement("canvas");
         nz.width = w;
@@ -10890,7 +12140,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         g.drawImage(nz, 0, 0);
         const vg = g.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, w * 0.64);
         vg.addColorStop(0, "rgba(60,45,25,0)");
-        vg.addColorStop(1, "rgba(60,45,25,0.2)");
+        vg.addColorStop(1, `rgba(60,45,25,${cfg.vg})`);
         g.fillStyle = vg;
         g.fillRect(0, 0, w, h);
         return o;
@@ -10904,7 +12154,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         x.setTransform(1, 0, 0, 1, 0, 0);
         x.clearRect(0, 0, c.width, c.height);
         x.setTransform(c.width / W, 0, 0, c.height / H, 0, 0);
-        x.fillStyle = FX ? "#f3f0e8" : "#ffffff";
+        x.fillStyle = FX ? PAPER_VARIANTS[FX].tint : "#ffffff";
         x.fillRect(0, 0, W, H);
         x.strokeStyle = "#000000";
         x.lineWidth = 2;
@@ -10976,8 +12226,10 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         const cell = $("b4").value.trim();
         T("Cell: " + (cell || "—"), "26px " + SANS, 431, "right", 927);
         if (FX) {
-          if (!fxCache || fxCache.width !== c.width || fxCache.height !== c.height)
-            fxCache = buildPaperFx(c.width, c.height);
+          if (!fxCache || fxCache.fxKey !== FX || fxCache.width !== c.width || fxCache.height !== c.height) {
+            fxCache = buildPaperFx(c.width, c.height, FX);
+            fxCache.fxKey = FX;
+          }
           x.setTransform(1, 0, 0, 1, 0, 0);
           x.drawImage(fxCache, 0, 0);
         }
@@ -11025,9 +12277,12 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         document.fonts.ready.then(drawC);
       }
       initializeTaskList();
+      initTimeNowButtons();
+      initPlacePickers();
+      ["k9", "ck9", "dk9"].forEach(addK9Exhibit);
       addP();
       addE();
-      addE("sevs");
+      addSevExhibit();
       updateIncidentTitle();
       resetUof();
       updateSubjectTitle();
@@ -11263,7 +12518,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       { id: "mcb", n: "Major Crimes Bureau", a: "MCB", f: [["mcb-poi", "Person of Interest File", "Major Crimes Bureau person of interest file.", "", "Person of Interest"], ["mcb-case", "MCB Case Package", "Major Crimes Bureau case package.", "", "Case Package"], ["mcb-supplemental", "MCB Supplemental Report", "Major Crimes Bureau supplemental report.", "", "Supplemental"]] },
       { id: "nb", n: "Narcotics Bureau", a: "NB", f: [["nb-poi", "Person of Interest File", "Narcotics Bureau person of interest file.", "", "Person of Interest"]] },
       { id: "hb", n: "Homicide Bureau", a: "HB", f: [["hb-poi", "Person of Interest File", "Homicide Bureau person of interest file.", "", "Person of Interest"], ["hb-case", "HB Case Package", "Homicide Bureau case package.", "", "Case Package"], ["hb-supplemental", "HB Supplemental Report", "Homicide Bureau supplemental report.", "", "Supplemental"]] },
-      { id: "ossb", n: "Operation Safe Streets Bureau", a: "OSSB", f: [["ossb-poi", "Person of Interest File", "Operation Safe Streets Bureau person of interest file.", "", "Person of Interest"], ["oss-incident", "OSS Incident Report", "Operation Safe Streets Bureau incident report.", "", "Incident Report"], ["oss-supplemental", "OSS Supplemental", "Operation Safe Streets Bureau supplemental report.", "", "Supplemental"]] },
+      { id: "ossb", n: "Operation Safe Streets Bureau", a: "OSSB", f: [["ossb-poi", "Person of Interest File", "Operation Safe Streets Bureau person of interest file.", "", "Person of Interest"], ["oss-incident", "OSS Case Package", "Operation Safe Streets Bureau case package.", "", "Case Package"], ["oss-supplemental", "OSS Supplemental", "Operation Safe Streets Bureau supplemental report.", "", "Supplemental"]] },
     ] },
     { n: "Personnel Command", id: "personnel", u: [
       { id: "peu", n: "Pre-Employment Unit", a: "PEU", f: [] },
@@ -11715,7 +12970,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("poi-gang").checked = false;
     $("poi-img").dataset.manual = "";
     $("poi-img").value = PERSON_DEFAULT_IMG;
-    $("poi-img-prev").src = PERSON_DEFAULT_IMG;
+    $("poi-img-prev").dataset.target = PERSON_DEFAULT_IMG;
+    setPersonPreview($("poi-img-prev"), PERSON_DEFAULT_IMG);
     $("poi-status").selectedIndex = 0;
     $("poi-race").selectedIndex = 0;
     $("poi-race-other-wrap").hidden = true;
@@ -11735,18 +12991,18 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     row.className = "item mcb-person";
     row.innerHTML = `
       <div class='ih'><b class='mcb-p-label'></b><button class='b' type='button' onclick="this.closest('.mcb-person').remove();numberCasePersons()">Remove</button></div>
-      <div class='g'>
-        ${personNameHead("mcb-p-name", "John Doe")}
-        ${personDeathPanel()}
-        <div class='f'><span>Classification</span><select class='mcb-p-class'><option>Suspect</option><option>Victim</option><option>Witness</option><option value='other'>Other (specify)</option></select></div>
-        <div class='f mcb-p-other-wrap' hidden><span>Specify Classification</span><input type='text' class='mcb-p-other' autocomplete='off'></div>
-        <div class='f'><span>Date of Birth</span><input type='text' class='mcb-p-dob' autocomplete='off'></div>
-        <div class='f'><span>Phone Number</span><input type='text' class='mcb-p-phone' autocomplete='off'></div>
-        <div class='f'><span>Residence</span><input type='text' class='mcb-p-res' autocomplete='off'></div>
-        <div class='f'><span>Other Properties</span><input type='text' class='mcb-p-props' autocomplete='off'></div>
-        <div class='f'><span>Gang Affiliation</span><input type='text' class='mcb-p-gang' autocomplete='off'></div>
-        ${personPhotoField("mcb-p-img")}
-      </div>`;
+      ${personCard({
+        nameClass: "mcb-p-name",
+        placeholder: "John Doe",
+        imgClass: "mcb-p-img",
+        identity: `<div class='f'><span>Classification</span><select class='mcb-p-class'><option>Suspect</option><option>Victim</option><option>Witness</option><option value='other'>Other (specify)</option></select></div>
+          <div class='f'><span>Date of Birth</span><input type='text' class='mcb-p-dob' autocomplete='off'></div>
+          <div class='f p-full mcb-p-other-wrap' hidden><span>Specify Classification</span><input type='text' class='mcb-p-other' autocomplete='off'></div>`,
+        details: `<div class='f'><span>Phone Number</span><input type='text' class='mcb-p-phone' autocomplete='off'></div>
+          <div class='f'><span>Residence</span><input type='text' class='mcb-p-res' autocomplete='off'></div>
+          <div class='f'><span>Other Properties</span><input type='text' class='mcb-p-props' autocomplete='off'></div>
+          <div class='f'><span>Gang Affiliation</span><input type='text' class='mcb-p-gang' autocomplete='off'></div>`,
+      })}`;
     $("mcb-case-persons").appendChild(row);
     numberCasePersons();
     const cls = row.querySelector(".mcb-p-class");
@@ -11889,18 +13145,18 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     row.className = "item hb-person";
     row.innerHTML = `
       <div class='ih'><b class='hb-p-label'></b><button class='b' type='button' onclick="this.closest('.hb-person').remove();numberHbCasePersons()">Remove</button></div>
-      <div class='g'>
-        ${personNameHead("hb-p-name", "John Doe")}
-        ${personDeathPanel()}
-        <div class='f'><span>Classification</span><select class='hb-p-class'><option>Suspect</option><option>Victim</option><option>Witness</option><option value='other'>Other (specify)</option></select></div>
-        <div class='f hb-p-other-wrap' hidden><span>Specify Classification</span><input type='text' class='hb-p-other' autocomplete='off'></div>
-        <div class='f'><span>Date of Birth</span><input type='text' class='hb-p-dob' autocomplete='off'></div>
-        <div class='f'><span>Phone Number</span><input type='text' class='hb-p-phone' autocomplete='off'></div>
-        <div class='f'><span>Residence</span><input type='text' class='hb-p-res' autocomplete='off'></div>
-        <div class='f'><span>Other Properties</span><input type='text' class='hb-p-props' autocomplete='off'></div>
-        <div class='f'><span>Gang Affiliation</span><input type='text' class='hb-p-gang' autocomplete='off'></div>
-        ${personPhotoField("hb-p-img")}
-      </div>`;
+      ${personCard({
+        nameClass: "hb-p-name",
+        placeholder: "John Doe",
+        imgClass: "hb-p-img",
+        identity: `<div class='f'><span>Classification</span><select class='hb-p-class'><option>Suspect</option><option>Victim</option><option>Witness</option><option value='other'>Other (specify)</option></select></div>
+          <div class='f'><span>Date of Birth</span><input type='text' class='hb-p-dob' autocomplete='off'></div>
+          <div class='f p-full hb-p-other-wrap' hidden><span>Specify Classification</span><input type='text' class='hb-p-other' autocomplete='off'></div>`,
+        details: `<div class='f'><span>Phone Number</span><input type='text' class='hb-p-phone' autocomplete='off'></div>
+          <div class='f'><span>Residence</span><input type='text' class='hb-p-res' autocomplete='off'></div>
+          <div class='f'><span>Other Properties</span><input type='text' class='hb-p-props' autocomplete='off'></div>
+          <div class='f'><span>Gang Affiliation</span><input type='text' class='hb-p-gang' autocomplete='off'></div>`,
+      })}`;
     $("hb-case-persons").appendChild(row);
     numberHbCasePersons();
     const cls = row.querySelector(".hb-p-class");
@@ -12073,7 +13329,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       $(id("gang")).checked = false;
       $(id("img")).dataset.manual = "";
       $(id("img")).value = PERSON_DEFAULT_IMG;
-      $(id("img-prev")).src = PERSON_DEFAULT_IMG;
+      $(id("img-prev")).dataset.target = PERSON_DEFAULT_IMG;
+      setPersonPreview($(id("img-prev")), PERSON_DEFAULT_IMG);
       $(id("status")).selectedIndex = 0;
       $(id("race")).selectedIndex = 0;
       $(id("race-other-wrap")).hidden = true;
