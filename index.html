@@ -1560,12 +1560,24 @@ aside{width:264px;padding:18px 12px 14px;gap:2px}
 @media(prefers-reduced-motion:reduce){.bureaus .bu-chev{transition:none}}
 
 main{flex:1;min-width:0;max-width:1320px;margin-inline:auto;padding:0 var(--px) 72px}
-.top{display:block;margin:0;padding:28px 0 6px}
+.top{display:flex;align-items:center;gap:18px;margin:0;padding:28px 0 10px}
+.top-seal{flex:0 0 auto;display:grid;place-items:center;width:64px;height:64px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--green) 12%,var(--panel));box-shadow:inset 0 1px 0 color-mix(in srgb,var(--beige) 10%,transparent)}
+.top-seal-img{display:block;width:46px;height:46px;object-fit:contain}
+.top-seal-img[hidden]{display:none!important}
+.top-seal-mono{display:grid;place-items:center;width:100%;height:100%;color:var(--beige);font:700 15px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.top-seal.has-img .top-seal-mono{display:none}
+.top-text{min-width:0;flex:1}
 .eyebrow{font:500 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--beige)}
-h1{margin:4px 0 0;font:700 clamp(30px,4vw,42px)/1.02 "Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
-.lede{margin:8px 0 0;max-width:60ch;color:var(--mute)}
+h1{margin:4px 0 0;font:700 clamp(28px,3.6vw,40px)/1.05 "Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
+.lede{margin:6px 0 0;max-width:62ch;color:var(--mute);font-size:14px;line-height:1.45}
 .pill{display:none}
 body[data-view="home"] .top{display:none}
+@media(max-width:560px){
+ .top{gap:14px;padding:20px 0 8px}
+ .top-seal{width:52px;height:52px;border-radius:12px}
+ .top-seal-img{width:36px;height:36px}
+ .top-seal-mono{font-size:12px}
+}
 
 /* form layout: fields left, actions rail right */
 main>[id^="f-"]{padding-top:18px}
@@ -2268,7 +2280,11 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
     </aside>
     <main>
       <div class="top">
-        <div>
+        <div class="top-seal" id="top-seal" aria-hidden="true">
+          <img class="top-seal-img" id="top-seal-img" alt="" hidden />
+          <span class="top-seal-mono" id="top-seal-mono">LSSD</span>
+        </div>
+        <div class="top-text">
           <div class="eyebrow" id="crumb">Paperwork</div>
           <h1 id="ttl">Sheriff's Report System - NOT OFFICIAL</h1>
           <p class="lede" id="lede"></p>
@@ -5041,6 +5057,27 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.0.2</h2>
+          <div class="body">
+            <h3>v2.0.2</h3>
+            <h3>Form header</h3>
+            <ul>
+              <li>
+                Redesigned the form page title area. The title now sits beside a small seal on the left instead of spanning the full width alone.
+              </li>
+              <li>
+                Bureau forms (OSS, K9, NCCIT, TSD, Senora, Davis, CSD, SIB, VST, and others) reuse the same unit pictures as the sidebar and home menu.
+              </li>
+              <li>
+                Units without a picture — for example FTP, LSU, DFU, and FMU — show a short letter badge in the same style as the home menu monograms.
+              </li>
+              <li>
+                General patrol, warrant, and generator forms fall back to the department badge when no unit seal is available.
+              </li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.0.1</h2>
           <div class="body">
@@ -10434,12 +10471,79 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt) n.textContent = txt; return n; };
   const open = (k) => () => show(k);
 
+  // form key -> sidebar unit id for seal image, or monogram text (home-menu style)
+  const SEAL = {
+    sheriff: { mono: "LSSD" },
+    incident: { mono: "IR" },
+    supp: { mono: "SUP" },
+    "task-list": { mono: "TASK" },
+    subject: { mono: "SUBJ" },
+    tc: { mono: "TC" },
+    uof: { mono: "UOF" },
+    "king-patrol": { mono: "KING" },
+    apb: { mono: "APB" },
+    "arrest-warrant": { mono: "A/W" },
+    "search-warrant": { mono: "S/W" },
+    "electronic-surveillance-warrant": { mono: "ESW" },
+    "financial-service-warrant": { mono: "FSW" },
+    card: { mono: "CARD" },
+    depmail: { mono: "MAIL" },
+    email: { mono: "CORR" },
+    deputy: { mono: "ID" },
+    updates: { mono: "NEW" },
+    "oss-incident": { unit: "davis-oss", mono: "OSS" },
+    "oss-supplemental": { unit: "davis-oss", mono: "OSS" },
+    "davis-k9-deployment": { unit: "davis-k9", mono: "K9" },
+    "senora-logbook": { unit: "senora", mono: "SEN" },
+    nccit: { unit: "senora-nccit", mono: "NCCIT" },
+    "nccit-supp": { unit: "senora-nccit", mono: "NCCIT" },
+    "senora-k9-deployment": { unit: "senora-k9", mono: "K9" },
+    citation: { unit: "senora-tsd", mono: "TSD" },
+    "csd-k9-deployment": { unit: "csd", mono: "CSD" },
+    "ftp-phase1": { unit: "ftp", mono: "FTP" },
+    "ftp-phase2": { unit: "ftp", mono: "FTP" },
+    "ftp-phase3": { unit: "ftp", mono: "FTP" },
+    "sib-story": { unit: "sib", mono: "SIB" },
+    "sib-activity": { unit: "sib", mono: "SIB" },
+    lab: { unit: "lsu", mono: "LSU" },
+    dforensics: { unit: "dfu", mono: "DFU" },
+    fleet: { unit: "fmu", mono: "FMU" },
+    "vst-request": { unit: "vst", mono: "VST" },
+  };
+  function setFormSeal(k) {
+    const seal = $("top-seal"), img = $("top-seal-img"), mono = $("top-seal-mono");
+    if (!seal || !img || !mono) return;
+    const conf = SEAL[k] || { mono: "LSSD" };
+    let src = "";
+    if (conf.unit) {
+      const elImg = document.querySelector("#nv-bu-" + conf.unit + " img.bu-ico");
+      if (elImg && elImg.getAttribute("src")) src = elImg.getAttribute("src");
+    }
+    if (!src && conf.src) src = conf.src;
+    // department forms without a bureau seal reuse the LSSD badge
+    if (!src && !conf.unit) {
+      const logo = document.querySelector(".brand .logo");
+      if (logo && logo.getAttribute("src")) src = logo.getAttribute("src");
+    }
+    mono.textContent = conf.mono || "LSSD";
+    if (src) {
+      img.onload = () => { seal.classList.add("has-img"); img.hidden = false; };
+      img.onerror = () => { seal.classList.remove("has-img"); img.hidden = true; img.removeAttribute("src"); };
+      if (img.getAttribute("src") !== src) img.src = src;
+      else { seal.classList.add("has-img"); img.hidden = false; }
+    } else {
+      seal.classList.remove("has-img");
+      img.hidden = true;
+      img.removeAttribute("src");
+    }
+  }
   window.show = function (k) {
     base(k);
     document.body.dataset.view = k;
     const m = info[k];
     $("crumb").textContent = m ? m.g : "Paperwork";
     $("lede").textContent = m ? m.d : "";
+    setFormSeal(k);
     if (k === "home") renderHome(); else remember(k);
     window.scrollTo(0, 0);
   };
