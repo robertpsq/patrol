@@ -2866,9 +2866,6 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <div class="grp">
             <span class="grp-label">Patrol Reports</span><span class="grp-count">11</span>
           </div>
-          <button class="nav" id="nv-sheriff" data-k="sheriff report" onclick="show('sheriff')">
-            <span>Sheriff's Report</span>
-          </button>
           <button class="nav" id="nv-arrest-report" data-k="arrest report charges booking sentencing bail" onclick="show('arrest-report')">
             <span>Arrest Report</span>
           </button>
@@ -2931,6 +2928,9 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             onclick="show('apb')"
           >
             <span>APB</span>
+          </button>
+          <button class="nav" id="nv-sheriff" data-k="sheriff report" onclick="show('sheriff')">
+            <span>Sheriff's Report</span>
           </button>
         </section>
         <section class="nav-group" data-group="warrant services warrants">
@@ -7234,6 +7234,16 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.1.11<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
+          <div class="body">
+            <h3>v2.1.11</h3>
+            <h3>Patrol Reports</h3>
+            <ul>
+              <li>Sheriff's Report moved to the bottom of Patrol Reports, under APB, in the sidebar and on the home page.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.1.10<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
           <div class="body">
@@ -15388,7 +15398,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
 (() => {
   const G = [
     ["Patrol Reports", [
-      ["sheriff", "Sheriff's Report", "Unofficial report. Use with caution."],
       ["arrest-report", "Arrest Report", "Document an arrest: charges, sentencing, bail and narrative."],
       ["incident", "Incident Report", "Fill in an incident report."],
       ["supp", "Supplemental Report", "Add a supplemental to an incident report."],
@@ -15398,7 +15407,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["uof", "Use of Force Report", "Document a use of force."],
       ["uof-supp", "Supplemental Use of Force Report", "Add a supplemental to a use of force report."],
       ["king-patrol", "King Patrol Report", "Log a King Patrol report."],
-      ["apb", "APB", "Build an APB bulletin."]]],
+      ["apb", "APB", "Build an APB bulletin."],
+      ["sheriff", "Sheriff's Report", "Unofficial report. Use with caution."]]],
     ["Warrant Services", [
       ["arrest-warrant", "Arrest Warrant", "Draft an arrest warrant."],
       ["search-warrant", "Search Warrant", "Draft a search warrant."],
