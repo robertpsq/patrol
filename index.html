@@ -3125,6 +3125,39 @@ main>[id^="f-"],.card,.top.m-retitle,.hero,.hero-badge,#hq:focus,.hero kbd,#home
 .side-in>*:nth-child(12){animation-delay:0.545s}
 .side-in>*:nth-child(13){animation-delay:0.590s}
 .side-in>*:nth-child(14){animation-delay:0.635s}
+/* ===== Click-to-travel page transition: the pages in between stream past like a parallax scroll ===== */
+.pt-ghosts{position:fixed;z-index:12;top:var(--pt-top,0px);bottom:0;right:0;left:var(--pt-left,0px);overflow:hidden;pointer-events:none}
+.pt-ghost{position:absolute;left:50%;top:50%;width:min(560px,72%);padding:22px 26px 24px;border:1px solid color-mix(in srgb,var(--beige) 28%,var(--line));border-radius:18px;background:color-mix(in srgb,var(--panel) 90%,transparent);box-shadow:0 30px 60px -30px rgba(0,0,0,.65);opacity:0;filter:blur(var(--blur,0px));animation:pt-ghost var(--pt-dur,.85s) cubic-bezier(.4,0,.3,1) var(--pt-delay,0s) both;will-change:transform,opacity}
+.pt-ghost b{display:block;font:700 30px/1.05 "Barlow Condensed",Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--text)}
+.pt-ghost i{display:block;height:8px;margin-top:11px;border-radius:6px;background:color-mix(in srgb,var(--beige) 20%,transparent)}
+.pt-ghost i:nth-of-type(1){width:92%}.pt-ghost i:nth-of-type(2){width:74%}.pt-ghost i:nth-of-type(3){width:58%}
+@keyframes pt-ghost{
+0%{opacity:0;transform:translate(calc(-50% + var(--x,0px)),calc(-50% + var(--pt-dir,1)*95vh)) scale(var(--s,1))}
+20%{opacity:var(--o,.9)}
+72%{opacity:var(--o,.9)}
+100%{opacity:0;transform:translate(calc(-50% + var(--x,0px)),calc(-50% - var(--pt-dir,1)*95vh)) scale(var(--s,1))}}
+@media(prefers-reduced-motion:reduce){.pt-ghosts{display:none}}
+/* ===== Check tiles: custom checkboxes for Task List and Subject Information ===== */
+.task-list-row input[type=checkbox],#f-subject input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:none;position:relative;display:grid;place-items:center;width:22px;height:22px;min-width:22px;margin:0;padding:0;border:2px solid var(--mute);border-radius:7px;background:var(--bg);cursor:pointer;transition:background .2s,border-color .2s,transform .3s var(--spring)}
+.task-list-row input[type=checkbox]::after,#f-subject input[type=checkbox]::after{content:"";width:11px;height:6px;margin-top:-2px;border-left:2.5px solid #fff;border-bottom:2.5px solid #fff;border-radius:1px;transform:rotate(-45deg) scale(0);transition:transform .28s var(--spring)}
+.task-list-row input[type=checkbox]:checked,#f-subject input[type=checkbox]:checked{border-color:var(--green);background:var(--green);animation:ck-pop .45s var(--spring)}
+.task-list-row input[type=checkbox]:checked::after,#f-subject input[type=checkbox]:checked::after{transform:rotate(-45deg) scale(1)}
+.task-list-row input[type=checkbox]:focus-visible,#f-subject input[type=checkbox]:focus-visible{outline:2px solid var(--beige);outline-offset:3px}
+.task-list-row label.row,#f-subject label.row,#f-subject .f>.row>label{display:inline-flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;min-height:42px;margin:0;padding:8px 16px 8px 11px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--mute);font-weight:600;white-space:nowrap;cursor:pointer;user-select:none;transition:border-color .2s,background .2s,color .2s,transform .3s var(--spring),box-shadow .3s}
+.task-list-row label.row input,#f-subject label.row input,#f-subject .f>.row>label input{order:-1}
+.task-list-row label.row:hover,#f-subject label.row:hover,#f-subject .f>.row>label:hover{border-color:var(--beige);color:var(--text);transform:translateY(-1px)}
+.task-list-row label.row:active,#f-subject label.row:active,#f-subject .f>.row>label:active{transform:scale(.97);transition-duration:.08s}
+.task-list-row label.row:has(input:checked),#f-subject label.row:has(input:checked),#f-subject .f>.row>label:has(input:checked){border-color:var(--green);background:color-mix(in srgb,var(--green) 18%,var(--bg));color:var(--text);box-shadow:0 6px 16px -10px var(--green)}
+.task-list-row label.row:has(input:focus-visible),#f-subject label.row:has(input:focus-visible),#f-subject .f>.row>label:has(input:focus-visible){border-color:var(--beige)}
+.task-list-row .g{align-items:end}
+#f-subject .g>label.row{display:flex}
+#f-subject .f>.row{justify-content:flex-start;gap:8px;padding:2px 0 8px;border:0}
+.task-list-row{transition:border-color .3s,background .3s,box-shadow .3s}
+.task-list-row:has(.task-list-complete:checked){border-color:color-mix(in srgb,var(--green) 55%,var(--line));background:color-mix(in srgb,var(--green) 7%,var(--panel));box-shadow:inset 3px 0 0 var(--green)}
+.task-list-row:has(.task-list-complete:checked) .task-list-task{color:var(--mute);text-decoration:line-through;text-decoration-color:var(--green);text-decoration-thickness:2px}
+.task-list-row:has(.task-list-complete:checked) .ih b::after{content:"Done";margin-left:10px;padding:1px 9px;border-radius:99px;background:var(--green);color:#fff;font:700 10px/1.7 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;vertical-align:middle;animation:m-pop .4s var(--spring)}
+@keyframes ck-pop{0%{transform:scale(.8);box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 60%,transparent)}50%{transform:scale(1.16)}100%{transform:none;box-shadow:0 0 0 9px transparent}}
+@media(prefers-reduced-motion:reduce){.task-list-row input[type=checkbox]:checked,#f-subject input[type=checkbox]:checked,.task-list-row .ih b::after{animation:none!important}}
     </style>
   </head>
   <body>
@@ -7729,6 +7762,23 @@ main>[id^="f-"],.card,.top.m-retitle,.hero,.hero-badge,#hq:focus,.hero kbd,#home
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.2.2<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
+          <div class="body">
+            <h3>v2.2.2</h3>
+            <h3>Page transitions</h3>
+            <ul>
+              <li>Clicking a page now travels to it: the page you leave slides and fades away, and the new one eases in from the direction of the page in the sidebar order. The pages in between stream past as ghost cards at different speeds, like a parallax scroll.</li>
+              <li>It only happens on click. Scrolling never switches pages, and clicking again mid-animation jumps straight to the page.</li>
+              <li>It only moves and fades the live page, with no snapshots or blur, so it stays smooth on long forms. It is skipped when reduced motion is on.</li>
+            </ul>
+            <h3>Task List and Subject Information</h3>
+            <ul>
+              <li>The checkboxes are reworked into custom boxes with an animated check mark and a small pop when ticked. Each label is a tile that turns green when checked: Complete on Task List, Known, Suspected and Affiliate, and the Left and Right boxes in the marks section on Subject Information.</li>
+              <li>A completed task also marks its whole row as done: a green edge, a Done badge and a struck-through task.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.2.1<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
           <div class="body">
@@ -14659,6 +14709,99 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             top.classList.add("m-retitle");
           }
           return result;
+        };
+      })();
+      // Clicking a page travels through the pages in between (parallax); it never reacts to scrolling.
+      // Only transform and opacity are animated on the live page: no snapshots, no blur, so it stays smooth.
+      (() => {
+        const before = window.show, main = document.querySelector("main");
+        if (typeof before !== "function" || !main || !main.animate) return;
+        const norm = (k) => (k === "davis-citation" ? "citation" : k);
+        let active = null;
+        function order() {
+          const keys = [], labels = {};
+          document.querySelectorAll('#si [onclick*="show("]').forEach((b) => {
+            const m = /show\('([^']+)'\)/.exec(b.getAttribute("onclick") || "");
+            if (!m || keys.includes(m[1])) return;
+            keys.push(m[1]);
+            labels[m[1]] = (b.textContent || "").replace(/\s+/g, " ").trim().slice(0, 44);
+          });
+          return { keys, labels };
+        }
+        function ghosts(mids, labels, dir) {
+          const box = document.createElement("div");
+          box.className = "pt-ghosts";
+          const aside = document.querySelector("aside"), wide = innerWidth > 760;
+          box.style.setProperty("--pt-dir", dir);
+          box.style.setProperty("--pt-left", wide && aside ? aside.getBoundingClientRect().right + "px" : "0px");
+          box.style.setProperty("--pt-top", !wide && aside ? aside.getBoundingClientRect().bottom + "px" : "0px");
+          const make = (text, o) => {
+            const g = document.createElement("div");
+            g.className = "pt-ghost";
+            if (text) {
+              const b = document.createElement("b");
+              b.textContent = text;
+              g.append(b);
+            }
+            g.append(document.createElement("i"), document.createElement("i"), document.createElement("i"));
+            Object.entries(o).forEach(([k, v]) => g.style.setProperty(k, v));
+            box.append(g);
+          };
+          make("", { "--s": 0.8, "--o": 0.45, "--blur": "3px", "--x": "-22%", "--pt-dur": ".85s", "--pt-delay": "0s" });
+          mids.forEach((k, i) =>
+            make(labels[k] || "", { "--s": 1, "--o": 0.9, "--x": i % 2 ? "9%" : "-9%", "--pt-dur": ".72s", "--pt-delay": 0.05 * (i + 1) + "s" }),
+          );
+          make("", { "--s": 0.74, "--o": 0.4, "--blur": "4px", "--x": "24%", "--pt-dur": ".9s", "--pt-delay": ".06s" });
+          document.body.append(box);
+          return box;
+        }
+        function finish() {
+          if (!active) return;
+          active.anims.forEach((a) => { try { a.cancel(); } catch (e) {} });
+          active.box.remove();
+          main.style.willChange = "";
+          active = null;
+        }
+        window.show = function (k) {
+          const args = arguments, self = this;
+          const cur = document.querySelector('main > [id^="f-"]:not([hidden])');
+          const from = cur ? cur.id.slice(2) : null, to = norm(k);
+          if (active) { finish(); return before.apply(this, args); }
+          if (!from || from === to || matchMedia("(prefers-reduced-motion: reduce)").matches)
+            return before.apply(this, args);
+          const { keys, labels } = order();
+          const a = keys.indexOf(from);
+          let b = keys.indexOf(k);
+          if (b < 0) b = keys.indexOf(to);
+          const known = a >= 0 && b >= 0, dir = !known || b >= a ? 1 : -1;
+          let mids = known ? keys.slice(Math.min(a, b) + 1, Math.max(a, b)) : [];
+          if (dir < 0) mids.reverse();
+          if (mids.length > 4) mids = Array.from({ length: 4 }, (_, i) => mids[Math.round((i * (mids.length - 1)) / 3)]);
+          const dist = known ? Math.abs(b - a) : 1;
+          const travel = (Math.min(24 + dist * 4, 54) * innerHeight) / 100;
+          const box = ghosts(mids, labels, dir);
+          main.style.willChange = "transform, opacity";
+          const out = main.animate(
+            [{ transform: "none", opacity: 1 }, { transform: `translateY(${-dir * travel}px) scale(.97)`, opacity: 0 }],
+            { duration: 280, easing: "cubic-bezier(.5,0,.8,.4)", fill: "forwards" },
+          );
+          active = { anims: [out], box };
+          out.onfinish = () => {
+            if (!active) return;
+            try {
+              before.apply(self, args); // swap the page while it is invisible
+            } catch (e) {
+              finish();
+              throw e;
+            }
+            const inn = main.animate(
+              [{ transform: `translateY(${dir * travel * 0.55}px) scale(1.02)`, opacity: 0 }, { transform: "none", opacity: 1 }],
+              { duration: 520, delay: 110, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" },
+            );
+            active.anims.push(inn);
+            out.cancel();
+            inn.onfinish = finish;
+          };
         };
       })();
       async function copy(k) {
