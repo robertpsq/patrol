@@ -2700,6 +2700,17 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .civ-fields:not([hidden]){animation:civIn .22s ease}
 @keyframes civIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.civ-toggle,.civ-ico,.civ-sw,.civ-sw::after{transition:none}.civ-fields:not([hidden]){animation:none}}
+/* ===== IAB Preliminary Review ===== */
+.iab-opts{display:grid;gap:10px}
+.iab-opt{position:relative;display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer;line-height:1.5;transition:border-color .2s,background .2s,box-shadow .2s}
+.iab-opt input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.iab-opt .mk{flex:0 0 auto;width:20px;height:20px;margin-top:1px;border:2px solid var(--mute);border-radius:50%;display:grid;place-items:center;transition:border-color .2s,background .2s}
+.iab-opt .mk::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff;transform:scale(0);transition:transform .15s}
+.iab-opt:hover{border-color:var(--beige)}
+.iab-opt:has(input:focus-visible){outline:2px solid var(--beige);outline-offset:2px}
+.iab-opt:has(input:checked){border-color:var(--green);background:color-mix(in srgb,var(--green) 9%,var(--bg));box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 14%,transparent)}
+.iab-opt:has(input:checked) .mk{border-color:var(--green);background:var(--green)}
+.iab-opt:has(input:checked) .mk::after{transform:scale(1)}
 /* ===== Credits ===== */
 .cr-lead{margin:0 0 10px;font-size:17px;font-weight:600;line-height:1.5;color:var(--text)}
 .cr-hero .body{text-align:center}
@@ -3069,7 +3080,12 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                   <button class="nav sub" id="nv-sib-activity" data-k="sib activity tracker media interview social post event" data-parent="nv-bu-sib" onclick="show('sib-activity')"><span>Activity Tracker</span></button>
                 </div>
               </div>
-              <button class="nav bu-sub empty" id="nv-bu-iab" data-k="iab internal affairs bureau" data-parent="nv-bu-standards" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/fohaYuPo27.png/raw" alt="" /><b>IAB</b> <small>Internal Affairs Bureau</small></span></button>
+              <div class="bu-item" data-bu="iab">
+                <button class="nav bu-sub" id="nv-bu-iab" data-k="iab internal affairs bureau" data-parent="nv-bu-standards" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/fohaYuPo27.png/raw" alt="" /><b>IAB</b> <small>Internal Affairs Bureau</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-iab-prelim" data-k="iab internal affairs preliminary review use of force" data-parent="nv-bu-iab" onclick="show('iab-prelim')"><span>UOF - Preliminary Review</span></button>
+                </div>
+              </div>
               <button class="nav bu-sub empty" id="nv-bu-csb" data-k="csb court services bureau" data-parent="nv-bu-standards" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/zUTExamO24.png/raw" alt="" /><b>CSB</b> <small>Court Services Bureau</small></span></button>
             </div>
           </div>
@@ -5275,6 +5291,25 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-forensic-lab" hidden></div>
+      <div id="f-iab-prelim" hidden>
+        <div class="card">
+          <h2><small>IAB</small>UOF - Preliminary Review</h2>
+          <div class="body">
+            <div class="f">
+              <span>Determination</span>
+              <div class="iab-opts" role="radiogroup" aria-label="Preliminary review determination">
+                <label class="iab-opt"><input type="radio" name="iab-prelim-result" id="iab-prelim-ok" value="ok" checked /><i class="mk" aria-hidden="true"></i><span>Be in line with Department policy and procedure, and the law.</span></label>
+                <label class="iab-opt"><input type="radio" name="iab-prelim-result" id="iab-prelim-flag" value="flag" /><i class="mk" aria-hidden="true"></i><span>Contain elements that indicate the use of force incident may not be in line with Department policy and procedure, and/or the law, warranting further investigation.</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('iab-prelim')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=469" target="_blank" rel="noopener noreferrer">Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetIabPrelim()">Reset</button>
+        </div>
+      </div>
       <div id="f-davis-k9-deployment" hidden>
         <div class="card">
           <h2><small>K9</small>Deployment Log</h2>
@@ -7199,6 +7234,18 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.1.10<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
+          <div class="body">
+            <h3>v2.1.10</h3>
+            <h3>IAB — Internal Affairs Bureau</h3>
+            <ul>
+              <li>Added the UOF - Preliminary Review under IAB in Professional Standards Bureaus, the first form of the unit: the Use of Force preliminary review, in the official BBCode format.</li>
+              <li>A single choice between the two determinations (in line with Department policy and procedure, and the law, or containing elements that warrant further investigation). The chosen one is written as [cbc][/cbc] and the other as [cb][/cb]; the first is selected to start with.</li>
+              <li>The Forum button goes to the Use of Force forum.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.1.9<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
           <div class="body">
@@ -12030,6 +12077,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "king-patrol",
           "apb",
           "supp",
+          "iab-prelim",
           "uof-supp",
           "task-list",
           "subject",
@@ -12096,6 +12144,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "king-patrol": "King Patrol Report",
           apb: "APB",
           supp: "Supplemental Report",
+          "iab-prelim": "IAB — UOF - Preliminary Review",
           "uof-supp": "Supplemental Use of Force Report",
           "task-list": "Task List",
           subject: "Subject Information",
@@ -15388,7 +15437,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     ] },
     { n: "Professional Standards Bureaus", id: "standards", u: [
       { id: "sib", n: "Sheriff's Information Bureau", a: "SIB", f: [["sib-story", "SIB Story", "Write a news release story for SIB.", "", "Story"], ["sib-activity", "SIB Activity Tracker", "Log an SIB activity for the tracker.", "", "Activity Tracker"]] },
-      { id: "iab", n: "Internal Affairs Bureau", a: "IAB", f: [] },
+      { id: "iab", n: "Internal Affairs Bureau", a: "IAB", f: [["iab-prelim", "UOF - Preliminary Review", "Preliminary review of a use of force incident.", "", "UOF - Preliminary Review"]] },
       { id: "csb", n: "Court Services Bureau", a: "CSB", f: [] },
     ] },
     { n: "Technology & Support Division", id: "tech", u: [
@@ -15431,6 +15480,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     incident: { mono: "IR" },
     supp: { mono: "SUP" },
     "uof-supp": { mono: "UOF" },
+    "iab-prelim": { unit: "iab", mono: "IAB" },
     "task-list": { mono: "TASK" },
     subject: { mono: "SUBJ" },
     tc: { mono: "TC" },
@@ -18431,6 +18481,38 @@ root.addEventListener('change',e=>{const t=e.target;if(t.type=='file'){const n=t
     if (k === "uof" || k === "uof-supp") { $("uof-is-supp").checked = false; $("usup-is-supp").checked = true; }
   };
   window.__usup = { build: buildUofSupp };
+})();
+
+/* ===== IAB: Use of Force Preliminary Review ===== */
+(() => {
+  function buildIabPrelim() {
+    const ok = $("iab-prelim-ok").checked;
+    return [
+      "[divbox=white][color=Transparent].[/color]",
+      "[center][size=120][b]USE OF FORCE \u2014 PRELIMINARY REVIEW[/b][/size]",
+      "[size=110]INTERNAL AFFAIRS BUREAU[/size][/center]",
+      "",
+      "",
+      "[list=none][justify][center]This use of force incident has been subject to preliminary review by Internal Affairs Bureau pursuant to [b]MPP [i]2-03/010.05 INTERNAL AFFAIRS BUREAU[/i][/b], and determined to:[/center][/justify]",
+      `[list=none]${ok ? "[cbc][/cbc]" : "[cb][/cb]"} Be in line with Department policy and procedure, and the law.`,
+      `${ok ? "[cb][/cb]" : "[cbc][/cbc]"}Contain elements that indicate the use of force incident may not be in line with Department policy and procedure, and/or the law, warranting further investigation.[/list]`,
+      "[justify]",
+      "[center][size=75][font=courier new][b]LEGAL NOTICE:[/b] THE FINDING ABOVE IS BASED ON A PRELIMINARY ASSESSMENT THAT MAY BE SUBJECT TO CHANGE IN THE EVENT THAT ADDITIONAL WITNESSES, PHYSICAL EVIDENCE, ELECTRONIC RECORDS, AND/OR OTHER FORENSIC EVIDENCE EMERGES. AS SUCH, THE DEPARTMENT'S UNDERSTANDING OF THE FACTS AND CIRCUMSTANCES MAY CHANGE AS ADDITIONAL EVIDENCE IS COLLECTED AND ANALYZED.[/center] [/size][/justify][/list][/divbox]",
+    ].join("\n");
+  }
+  window.resetIabPrelim = () => { $("iab-prelim-ok").checked = true; };
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "iab-prelim") return baseCopy.apply(this, arguments);
+    const txt = buildIabPrelim();
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  };
+  window.__iabPrelim = { build: buildIabPrelim };
 })();
 
 /* ===== Credits: copy the Discord username ===== */
