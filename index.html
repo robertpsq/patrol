@@ -73,41 +73,23 @@
           sans-serif;
         display: flex;
       }
+      /* Theme switch: sun/moon badge on a track whose sky changes with the theme */
       .theme-switch {
-        --toggle-size: 10px;
-        --container-width: 5.625em;
-        --container-height: 2.5em;
-        --container-radius: 6.25em;
-        --container-light-bg: #3d7eae;
-        --container-night-bg: #1d1f2c;
-        --circle-container-diameter: 3.375em;
-        --sun-moon-diameter: 2.125em;
-        --sun-bg: #ecca2f;
-        --moon-bg: #c4c9d1;
-        --spot-color: #959db1;
-        --circle-container-offset: calc(
-          (var(--circle-container-diameter) - var(--container-height)) / 2 * -1
-        );
-        --stars-color: #fff;
-        --clouds-color: #f3fdff;
-        --back-clouds-color: #aacadf;
-        --transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
-        --circle-transition: 0.3s cubic-bezier(0, -0.02, 0.35, 1.17);
+        --w: 68px;
+        --h: 34px;
+        --k: 26px;
+        --pad: 4px;
+        --spring: cubic-bezier(0.34, 1.45, 0.5, 1);
+        --ease: cubic-bezier(0.4, 0, 0.2, 1);
         position: fixed;
-        top: 16px;
+        top: 13px;
         right: calc(18px + env(safe-area-inset-right, 0px));
         z-index: 20;
         display: block;
+        width: var(--w);
+        height: var(--h);
         cursor: pointer;
-      }
-      .theme-switch,
-      .theme-switch *,
-      .theme-switch *::before,
-      .theme-switch *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-size: var(--toggle-size);
+        -webkit-tap-highlight-color: transparent;
       }
       .theme-switch__checkbox {
         position: absolute;
@@ -115,171 +97,273 @@
         z-index: 3;
         width: 100%;
         height: 100%;
+        margin: 0;
         opacity: 0.001;
         cursor: pointer;
       }
-      .theme-switch__container {
-        position: relative;
-        display: block;
-        width: var(--container-width);
-        height: var(--container-height);
-        overflow: hidden;
-        border-radius: var(--container-radius);
-        background-color: var(--container-light-bg);
-        box-shadow:
-          0 -0.062em 0.062em rgba(0, 0, 0, 0.25),
-          0 0.062em 0.125em rgba(255, 255, 255, 0.94);
-        transition: var(--transition);
-      }
-      .theme-switch__container::before {
-        content: "";
+      .ts-track {
         position: absolute;
-        z-index: 1;
         inset: 0;
-        border-radius: var(--container-radius);
-        box-shadow: inset 0 0.05em 0.187em rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #e9e3cf;
+        box-shadow:
+          inset 0 2px 5px rgba(0, 0, 0, 0.22),
+          0 1px 0 rgba(255, 255, 255, 0.07);
+        transition:
+          border-color 0.5s var(--ease),
+          transform 0.3s var(--spring);
       }
-      .theme-switch__checkbox:checked + .theme-switch__container {
-        background-color: var(--container-night-bg);
+      .theme-switch:hover .ts-track {
+        transform: scale(1.04);
       }
-      .theme-switch__checkbox:focus-visible + .theme-switch__container {
+      .theme-switch__checkbox:focus-visible + .ts-track {
         outline: 3px solid var(--green);
         outline-offset: 3px;
       }
-      .theme-switch__circle-container {
+      .ts-sky {
         position: absolute;
-        top: var(--circle-container-offset);
-        left: var(--circle-container-offset);
-        display: flex;
-        width: var(--circle-container-diameter);
-        height: var(--circle-container-diameter);
-        border-radius: var(--container-radius);
-        background-color: rgba(255, 255, 255, 0.1);
-        box-shadow:
-          inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
-          0 0 0 0.625em rgba(255, 255, 255, 0.1),
-          0 0 0 1.25em rgba(255, 255, 255, 0.1);
+        inset: 0;
         pointer-events: none;
-        transition: var(--circle-transition);
       }
-      .theme-switch__circle-container:hover {
-        left: calc(var(--circle-container-offset) + 0.187em);
+      .ts-day {
+        background:
+          radial-gradient(circle at 80% 50%, rgba(255, 244, 200, 0.95), rgba(255, 244, 200, 0) 55%),
+          linear-gradient(135deg, #f6f1df, #e1d8ba);
       }
-      .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container {
-        left: calc(100% - var(--circle-container-offset) - var(--circle-container-diameter));
+      .ts-night {
+        background:
+          radial-gradient(circle at 20% 50%, rgba(63, 156, 104, 0.35), rgba(63, 156, 104, 0) 60%),
+          linear-gradient(135deg, #0a100e, #17261f);
+        clip-path: circle(0 at 82% 50%);
+        transition: clip-path 0.6s var(--ease);
       }
-      .theme-switch__checkbox:checked
-        + .theme-switch__container
-        .theme-switch__circle-container:hover {
-        left: calc(
-          100% - var(--circle-container-offset) - var(--circle-container-diameter) - 0.187em
-        );
+      .theme-switch__checkbox:checked + .ts-track .ts-night {
+        clip-path: circle(120% at 82% 50%);
       }
-      .theme-switch__sun-moon-container {
-        position: relative;
+      .ts-glint,
+      .ts-star {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .ts-glint {
+        background: #cbb98f;
+        opacity: 0.75;
+        transition:
+          opacity 0.3s var(--ease),
+          transform 0.4s var(--ease);
+      }
+      .ts-glint:nth-of-type(1) {
+        top: 9px;
+        right: 10px;
+        width: 4px;
+        height: 4px;
+      }
+      .ts-glint:nth-of-type(2) {
+        bottom: 8px;
+        right: 20px;
+        width: 3px;
+        height: 3px;
+      }
+      .ts-glint:nth-of-type(3) {
+        top: 15px;
+        right: 24px;
+        width: 2px;
+        height: 2px;
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-glint {
+        opacity: 0;
+        transform: translateX(14px) scale(0.2);
+      }
+      .ts-star {
+        background: #f3efe0;
+        opacity: 0;
+        transform: scale(0) rotate(-90deg);
+        transition:
+          opacity 0.3s var(--ease),
+          transform 0.5s var(--spring);
+      }
+      .ts-star:nth-of-type(4) {
+        top: 8px;
+        left: 12px;
+        width: 4px;
+        height: 4px;
+      }
+      .ts-star:nth-of-type(5) {
+        bottom: 8px;
+        left: 22px;
+        width: 3px;
+        height: 3px;
+      }
+      .ts-star:nth-of-type(6) {
+        top: 14px;
+        left: 28px;
+        width: 2px;
+        height: 2px;
+      }
+      .ts-star:nth-of-type(7) {
+        bottom: 12px;
+        left: 9px;
+        width: 2px;
+        height: 2px;
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-star {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+        animation: ts-twinkle 2.6s ease-in-out 0.6s infinite;
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-star:nth-of-type(4) {
+        transition-delay: 0.18s;
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-star:nth-of-type(5) {
+        transition-delay: 0.26s;
+        animation-delay: 1.1s;
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-star:nth-of-type(6) {
+        transition-delay: 0.34s;
+        animation-delay: 1.6s;
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-star:nth-of-type(7) {
+        transition-delay: 0.42s;
+        animation-delay: 0.3s;
+      }
+      @keyframes ts-twinkle {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.35;
+        }
+      }
+      .ts-knob {
+        position: absolute;
+        top: calc(var(--pad) - 1px);
+        left: calc(var(--pad) - 1px);
         z-index: 2;
-        display: block;
-        width: var(--sun-moon-diameter);
-        height: var(--sun-moon-diameter);
-        margin: auto;
-        overflow: hidden;
-        border-radius: var(--container-radius);
-        background-color: var(--sun-bg);
+        display: grid;
+        place-items: center;
+        width: var(--k);
+        height: var(--k);
+        border-radius: 999px;
+        color: #3a2f0f;
+        background: radial-gradient(circle at 32% 28%, #fff1b8, #dcb94f 70%);
         box-shadow:
-          inset 0.062em 0.062em 0.062em rgba(254, 255, 239, 0.61),
-          inset 0 -0.062em 0.062em #a1872a;
-        filter: drop-shadow(0.062em 0.125em 0.125em rgba(0, 0, 0, 0.25))
-          drop-shadow(0 0.062em 0.125em rgba(0, 0, 0, 0.25));
-        pointer-events: auto;
-        transition: var(--transition);
+          0 2px 6px rgba(0, 0, 0, 0.35),
+          inset 0 1px 1px rgba(255, 255, 255, 0.7),
+          inset 0 -2px 3px rgba(120, 90, 10, 0.35);
+        pointer-events: none;
+        transition:
+          left 0.55s var(--spring),
+          width 0.2s var(--ease),
+          background 0.5s var(--ease),
+          color 0.5s var(--ease);
       }
-      .theme-switch__moon {
-        position: relative;
-        display: block;
-        width: 100%;
-        height: 100%;
-        transform: translateX(100%);
-        border-radius: inherit;
-        background-color: var(--moon-bg);
+      .ts-knob::after {
+        content: "";
+        position: absolute;
+        inset: -5px;
+        border-radius: 50%;
+        border: 2px solid rgba(220, 185, 79, 0.55);
+        opacity: 0;
+        transform: scale(0.7);
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-knob {
+        left: calc(100% - var(--k) - var(--pad) - 1px);
+        color: #16201b;
+        background: radial-gradient(circle at 32% 28%, #ffffff, #c3cdc6 72%);
         box-shadow:
-          inset 0.062em 0.062em 0.062em rgba(254, 255, 239, 0.61),
-          inset 0 -0.062em 0.062em #969696;
-        transition: var(--transition);
+          0 2px 6px rgba(0, 0, 0, 0.55),
+          0 0 12px rgba(170, 215, 190, 0.28),
+          inset 0 1px 1px rgba(255, 255, 255, 0.8),
+          inset 0 -2px 3px rgba(60, 80, 70, 0.4);
       }
-      .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__moon {
-        transform: translateX(0);
+      .theme-switch__checkbox:active + .ts-track .ts-knob {
+        width: calc(var(--k) + 7px);
       }
-      .theme-switch__spot {
-        position: absolute;
-        display: block;
-        top: 0.75em;
-        left: 0.312em;
-        width: 0.75em;
-        height: 0.75em;
-        border-radius: var(--container-radius);
-        background-color: var(--spot-color);
-        box-shadow: inset 0 0.0312em 0.062em rgba(0, 0, 0, 0.25);
+      .theme-switch__checkbox:checked:active + .ts-track .ts-knob {
+        left: calc(100% - var(--k) - var(--pad) - 8px);
       }
-      .theme-switch__spot:nth-of-type(2) {
-        top: 0.937em;
-        left: 1.375em;
-        width: 0.375em;
-        height: 0.375em;
+      .theme-switch__checkbox:checked + .ts-track .ts-knob::after {
+        border-color: rgba(200, 235, 215, 0.5);
       }
-      .theme-switch__spot:nth-last-of-type(1) {
-        top: 0.312em;
-        left: 0.812em;
-        width: 0.25em;
-        height: 0.25em;
+      .theme-switch.ts-pulse .ts-knob::after {
+        animation: ts-ring 0.7s var(--ease);
       }
-      .theme-switch__clouds {
-        position: absolute;
-        display: block;
-        bottom: -0.625em;
-        left: 0.312em;
-        width: 1.25em;
-        height: 1.25em;
-        border-radius: var(--container-radius);
-        background-color: var(--clouds-color);
-        box-shadow:
-          0.937em 0.312em var(--clouds-color),
-          -0.312em -0.312em var(--back-clouds-color),
-          1.437em 0.375em var(--clouds-color),
-          0.5em -0.125em var(--back-clouds-color),
-          2.187em 0 var(--clouds-color),
-          1.25em -0.062em var(--back-clouds-color),
-          2.937em 0.312em var(--clouds-color),
-          2em -0.312em var(--back-clouds-color),
-          3.625em -0.062em var(--clouds-color),
-          2.625em 0 var(--back-clouds-color),
-          4.5em -0.312em var(--clouds-color),
-          3.375em -0.437em var(--back-clouds-color),
-          4.625em -1.75em 0 0.437em var(--clouds-color),
-          4em -0.625em var(--back-clouds-color),
-          4.125em -2.125em 0 0.437em var(--back-clouds-color);
-        transition: var(--transition);
+      @keyframes ts-ring {
+        0% {
+          opacity: 0.9;
+          transform: scale(0.7);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1.5);
+        }
       }
-      .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__clouds {
-        bottom: -4.062em;
+      .ts-icon {
+        width: 18px;
+        height: 18px;
+        overflow: visible;
+        transform: rotate(-60deg);
+        transition: transform 0.6s var(--spring);
       }
-      .theme-switch__stars-container {
-        position: absolute;
-        display: block;
-        top: -100%;
-        left: 0.312em;
-        width: 2.75em;
-        height: auto;
-        color: var(--stars-color);
-        transition: var(--transition);
+      .theme-switch__checkbox:checked + .ts-track .ts-icon {
+        transform: rotate(0);
       }
-      .theme-switch__stars-container svg {
-        display: block;
-        width: 100%;
-        height: auto;
+      .ts-core {
+        transform: scale(0.62);
+        transform-origin: 12px 12px;
+        transition: transform 0.5s var(--spring);
       }
-      .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__stars-container {
-        top: 50%;
-        transform: translateY(-50%);
+      .theme-switch__checkbox:checked + .ts-track .ts-core {
+        transform: scale(1);
+      }
+      .ts-cut {
+        transform: translate(15px, -9px);
+        transition: transform 0.5s var(--spring);
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-cut {
+        transform: translate(0, 0);
+      }
+      .ts-rays {
+        transform-origin: 12px 12px;
+        transition:
+          transform 0.5s var(--spring),
+          opacity 0.25s var(--ease);
+      }
+      .theme-switch__checkbox:checked + .ts-track .ts-rays {
+        transform: rotate(90deg) scale(0.3);
+        opacity: 0;
+      }
+      @media (min-width: 761px) {
+        .theme-switch {
+          position: relative;
+          top: auto;
+          right: auto;
+          flex: none;
+          margin: 0;
+        }
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+      }
+      ::view-transition-old(root) {
+        z-index: 1;
+      }
+      ::view-transition-new(root) {
+        z-index: 2;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .theme-switch *,
+        .theme-switch *::after {
+          transition-duration: 0.01ms !important;
+          animation: none !important;
+          transition-delay: 0s !important;
+        }
       }
       aside {
         width: 278px;
@@ -329,7 +413,7 @@
         font-size: 13px;
         letter-spacing: 0.04em;
       }
-      .brand span {
+      .brand-text span {
         font-size: 11px;
         color: var(--mute);
       }
@@ -2294,7 +2378,32 @@ aside{width:264px;padding:18px 12px 14px;gap:2px}
 .brand{padding:2px 8px 16px;gap:12px}
 .logo{width:42px;height:46px}
 .brand b{font:700 18px/1.05 "Barlow Condensed",Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase}
-.brand span{display:block;margin-top:3px;font-size:12px}
+.brand-text span{display:block;margin-top:3px;font-size:12px}
+/* Sidebar brand: a plaque with a halo-ringed seal, shimmering title and a live "Forms" tag */
+.brand{flex:none;flex-wrap:wrap;align-content:flex-start;row-gap:10px;position:relative;isolation:isolate;overflow:hidden;gap:14px;padding:12px 14px 10px 12px;margin:0 0 10px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--beige) 11%,var(--panel)),var(--panel) 62%);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 6px 18px rgba(0,0,0,.18);animation:brand-in .7s cubic-bezier(.2,.8,.2,1) both}
+.brand::before{content:"";position:absolute;z-index:-1;right:-34px;top:-34px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--green) 38%,transparent),transparent 68%);opacity:.7;animation:brand-breathe 5s ease-in-out infinite}
+.brand::after{content:"";position:absolute;z-index:2;top:0;bottom:0;left:0;width:46%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);transform:translateX(-140%) skewX(-18deg);animation:brand-sweep 7s ease-in-out 1.2s infinite}
+.seal{position:relative;flex:none;display:grid;place-items:center;width:54px;height:54px}
+.seal::before{content:"";position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 8%,var(--beige) 22%,transparent 40% 58%,var(--green) 76%,transparent 92%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1.5px));animation:brand-spin 9s linear infinite}
+.seal::after{content:"";position:absolute;inset:3px;border-radius:50%;background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--beige) 22%,transparent),transparent 70%);z-index:0}
+.seal .logo{position:relative;z-index:1;width:40px;height:44px;transition:transform .6s cubic-bezier(.34,1.5,.5,1),filter .4s;animation:brand-float 4.5s ease-in-out infinite}
+.brand:hover .logo{transform:rotate(-8deg) scale(1.1);filter:drop-shadow(0 3px 10px color-mix(in srgb,var(--beige) 55%,transparent))}
+.brand-text{flex:1 1 0;min-width:0}
+.brand-text b{font:700 19px/1.02 "Barlow Condensed",Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;background:linear-gradient(100deg,var(--text) 0 38%,var(--beige) 50%,var(--text) 62% 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:brand-shimmer 6s ease-in-out 1.5s infinite}
+.brand-text span{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;color:var(--mute)}
+.brand-tag{display:inline-flex;align-items:center;gap:5px;padding:1px 8px 1px 6px;border:1px solid color-mix(in srgb,var(--beige) 55%,transparent);border-radius:99px;font:700 9.5px/1.5 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--beige);font-style:normal}
+.brand-tag::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 70%,transparent);animation:brand-live 2s ease-out infinite}
+.brand-foot{flex:1 0 100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--beige) 22%,var(--line))}
+@keyframes brand-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes brand-spin{to{transform:rotate(360deg)}}
+@keyframes brand-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}
+@keyframes brand-breathe{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.9;transform:scale(1.12)}}
+@keyframes brand-sweep{0%,55%{transform:translateX(-140%) skewX(-18deg)}85%,100%{transform:translateX(330%) skewX(-18deg)}}
+@keyframes brand-shimmer{0%,40%{background-position:100% 0}80%,100%{background-position:0 0}}
+@keyframes brand-live{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 70%,transparent)}70%,100%{box-shadow:0 0 0 6px transparent}}
+@media(max-width:760px){.brand-foot{display:contents}.brand-tag{display:none}.brand{padding:0;margin:0;border:0;border-radius:0;background:none;box-shadow:none;overflow:visible;animation:none}.brand::before,.brand::after{display:none}.seal{width:46px;height:46px}.seal .logo{width:34px;height:38px}.brand-text b{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.brand,.brand::before,.brand::after,.seal::before,.seal .logo,.brand-text b,.brand-tag::before{animation:none!important}.brand-text b{background-position:0 0}}
+
 #q{border-radius:9px;margin:0 0 12px}
 .nav-group,.nav-group.active{padding:0;margin:0 0 14px;border:0;border-radius:0;background:none;box-shadow:none}
 .grp{padding:4px 10px 6px;font:600 12px/1.3 Inter,sans-serif;letter-spacing:.02em;text-transform:none;color:var(--mute)}
@@ -2568,8 +2677,9 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
  body{display:block}
  aside{position:sticky;top:0;z-index:18;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:8px 14px;border-right:0;border-bottom:1px solid var(--line)}
  .brand{padding:0}
- #menu{margin-left:auto;margin-right:78px;padding:8px 14px}
- .side-in.open{position:fixed;inset:60px 0 0;z-index:17;overflow:auto;padding:14px 14px 40px;background:var(--side)}
+ #menu{flex:1 0 calc(100% + 28px);width:calc(100% + 28px);margin:4px -14px -8px;padding:13px 14px;justify-content:center;text-align:center;font-weight:600;letter-spacing:.06em;border-width:1px 0 0;border-radius:0;background:color-mix(in srgb,var(--green) 14%,var(--panel))}
+ .brand{flex:1 1 auto;min-width:0}
+ .side-in.open{position:fixed;inset:var(--bar-h,112px) 0 0;z-index:17;overflow:auto;padding:14px 14px 40px;background:var(--side)}
  .top{padding:20px 0 4px}
  .body{padding:6px 16px 16px}
 }
@@ -2897,41 +3007,170 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
 @media(prefers-reduced-motion:reduce){.p-loading i{animation-duration:2.4s}}
 @media(max-width:560px){.pc-top{grid-template-columns:84px minmax(0,1fr);gap:12px}.pc-photo img{width:84px;height:105px}}
 
+
+/* ===== Motion layer: entrances, hovers and a little ambient life (all off for reduced motion) ===== */
+:root{--spring:cubic-bezier(.34,1.45,.5,1);--out:cubic-bezier(.2,.8,.2,1)}
+@keyframes m-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes m-pop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes m-slide{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+@keyframes m-drop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes m-float{0%,100%{translate:0 0}50%{translate:0 -3px}}
+@keyframes m-glow{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 26px -6px color-mix(in srgb,var(--beige) 50%,transparent)}}
+@keyframes m-ring{0%{box-shadow:0 0 0 3px color-mix(in srgb,var(--beige) 26%,transparent)}70%,100%{box-shadow:0 0 0 9px transparent}}
+@keyframes m-kbd{0%,100%{scale:1;opacity:.75}50%{scale:1.1;opacity:1}}
+@keyframes m-navon{0%{transform:scale(.96);box-shadow:inset 3px 0 0 var(--beige),0 0 0 0 color-mix(in srgb,var(--green) 70%,transparent)}60%{transform:scale(1.01)}100%{transform:none;box-shadow:inset 3px 0 0 var(--beige),0 0 0 8px transparent}}
+@keyframes m-drift{to{transform:translate(4%,3%) scale(1.1)}}
+@keyframes cdp-in{from{opacity:0;transform:translate(-50%,46px) scale(.94)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+
+/* ambient light behind everything */
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;background:radial-gradient(40% 40% at 20% 25%,color-mix(in srgb,var(--green) 15%,transparent),transparent 70%),radial-gradient(34% 34% at 82% 72%,color-mix(in srgb,var(--beige) 9%,transparent),transparent 70%);animation:m-drift 28s ease-in-out infinite alternate}
+@media(max-width:760px){body::before{animation:none}}
+@media print{body::before{display:none}}
+
+/* pages and cards */
+main>[id^="f-"]:not([hidden]):not(#f-home){animation:m-rise .45s var(--out) backwards}
+.card{animation:m-rise .5s var(--out) backwards;transition:border-color .25s,box-shadow .3s}
+.card:hover{border-color:color-mix(in srgb,var(--beige) 32%,var(--line))}
+.card:nth-of-type(2){animation-delay:.06s}.card:nth-of-type(3){animation-delay:.12s}.card:nth-of-type(4){animation-delay:.18s}.card:nth-of-type(5){animation-delay:.24s}.card:nth-of-type(n+6){animation-delay:.28s}
+.top.m-retitle{animation:m-slide .5s var(--out)}
+
+/* home */
+.hero{animation:m-slide .6s var(--out) backwards,m-glow 6s ease-in-out 1.2s infinite}
+.hero-badge{animation:m-float 5s ease-in-out infinite;transition:transform .5s var(--spring)}
+.hero:hover .hero-badge{transform:rotate(-7deg) scale(1.07)}
+#hq{transition:border-color .2s,box-shadow .3s,background-color .2s}
+#hq:focus{animation:m-ring 1.8s ease-out infinite}
+.hero kbd{animation:m-kbd 2.6s ease-in-out infinite}
+.setup{transition:color .2s,text-underline-offset .25s}
+.setup:hover{text-underline-offset:6px;filter:brightness(1.15)}
+#home-groups>section{animation:m-pop .55s var(--out) backwards;transition:border-color .2s,box-shadow .3s,translate .35s var(--spring)}
+#home-groups>[data-a="patrol"]{animation-delay:.08s}#home-groups>[data-a="warrant"]{animation-delay:.14s}#home-groups>[data-a="gen"]{animation-delay:.2s}#home-groups>[data-a="bureaus"]{animation-delay:.26s}#home-groups>[data-a="misc"]{animation-delay:.32s}#home-groups>[data-a="notice"]{animation-delay:.38s}
+#home-groups>section:hover{translate:0 -2px;box-shadow:0 14px 28px -16px rgba(0,0,0,.55)}
+.home-h{position:relative}
+.home-h::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:0;border-radius:2px;background:linear-gradient(90deg,var(--beige),transparent);transition:width .55s var(--out)}
+#home-groups>section:hover .home-h::after{width:62%}
+.hh-ic{transition:transform .45s var(--spring),background .2s}
+#home-groups>section:hover .hh-ic{transform:rotate(-8deg) scale(1.1)}
+.home-h span{transition:transform .3s var(--spring),color .2s}
+#home-groups>section:hover .home-h span{transform:scale(1.12);color:var(--text)}
+#home-groups>section:not([data-a="bureaus"]) .tile{animation:m-rise .45s var(--out) backwards}
+.tile{transition:border-color .15s,background .15s,transform .3s var(--spring),box-shadow .3s}
+.tile:hover{transform:translateX(3px);box-shadow:0 8px 16px -10px rgba(0,0,0,.6)}
+.tile:active{transform:translateX(1px) scale(.98);transition-duration:.08s}
+.tl-ic{transition:background .15s,color .15s,transform .4s var(--spring)}
+.tile:hover .tl-ic{transform:rotate(-9deg) scale(1.14)}
+.chip{animation:m-pop .4s var(--spring) backwards;transition:border-color .15s,background .15s,transform .25s var(--spring)}
+.chip:hover{transform:translateY(-2px)}
+.chip:active{transform:scale(.95)}
+.bu-tab{transition:border-color .15s,background .15s,transform .3s var(--spring)}
+.bu-tab:hover{transform:translateX(3px)}
+
+/* sidebar */
+.side-in>*{animation:m-slide .5s var(--out) backwards}
+.nav:not(.sub):not(.division):not(.station)::before{content:"";position:absolute;left:0;top:24%;bottom:24%;width:3px;border-radius:3px;background:var(--beige);transform:scaleY(0);transition:transform .28s var(--spring)}
+.nav:hover:not([disabled]):not(.on):not(.sub):not(.division):not(.station)::before{transform:scaleY(1)}
+.nav.on{animation:m-navon .55s var(--spring)}
+.grp-count{transition:transform .3s var(--spring),border-color .2s}
+.nav-group:hover .grp-count{transform:scale(1.12);border-color:var(--beige)}
+.nav-group{transition:border-color .25s,box-shadow .3s}
+.bureaus .bu-item.expanded>.bu-body,.bureaus.searching .bu-body{animation:m-drop .3s var(--out)}
+.bureaus .bu-chev{transition:transform .3s var(--spring)}
+
+/* buttons */
+button.b{transition:filter .15s,border-color .15s,background .15s,transform .28s var(--spring),box-shadow .28s}
+button.b:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 8px 16px -8px rgba(0,0,0,.55)}
+button.b:not(:disabled):active{transform:translateY(0) scale(.97);transition-duration:.08s}
+button.b.p{position:relative;overflow:hidden}
+button.b.p::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28),transparent 70%);transform:translateX(-120%)}
+button.b.p:not(:disabled):hover::after{transform:translateX(120%);transition:transform .75s var(--out)}
+
+/* toast and the Character Details reminder */
+#toast{transform:translate(-50%,16px) scale(.96);transition:opacity .25s,transform .45s var(--spring)}
+#toast.s{transform:translate(-50%,0) scale(1)}
+#character-details-prompt{animation:cdp-in .7s var(--spring) backwards,cdp-pulse 2.2s ease-out .7s infinite}
+
+@media(prefers-reduced-motion:reduce){
+main>[id^="f-"],.card,.top.m-retitle,.hero,.hero-badge,#hq:focus,.hero kbd,#home-groups>section,#home-groups .tile,.chip,.side-in>*,.nav.on,.bureaus .bu-body,body::before,#character-details-prompt{animation:none!important}
+.tile:hover,.chip:hover,.bu-tab:hover,button.b:hover,#home-groups>section:hover{transform:none!important;translate:none!important}
+}
+.tiles .tile:nth-child(1){animation-delay:0.200s}
+.tiles .tile:nth-child(2){animation-delay:0.235s}
+.tiles .tile:nth-child(3){animation-delay:0.270s}
+.tiles .tile:nth-child(4){animation-delay:0.305s}
+.tiles .tile:nth-child(5){animation-delay:0.340s}
+.tiles .tile:nth-child(6){animation-delay:0.375s}
+.tiles .tile:nth-child(7){animation-delay:0.410s}
+.tiles .tile:nth-child(8){animation-delay:0.445s}
+.tiles .tile:nth-child(9){animation-delay:0.480s}
+.tiles .tile:nth-child(10){animation-delay:0.515s}
+.tiles .tile:nth-child(11){animation-delay:0.550s}
+.tiles .tile:nth-child(12){animation-delay:0.585s}
+.chips .chip:nth-child(1){animation-delay:0.150s}
+.chips .chip:nth-child(2){animation-delay:0.200s}
+.chips .chip:nth-child(3){animation-delay:0.250s}
+.chips .chip:nth-child(4){animation-delay:0.300s}
+.chips .chip:nth-child(5){animation-delay:0.350s}
+.chips .chip:nth-child(6){animation-delay:0.400s}
+.side-in>*:nth-child(1){animation-delay:0.050s}
+.side-in>*:nth-child(2){animation-delay:0.095s}
+.side-in>*:nth-child(3){animation-delay:0.140s}
+.side-in>*:nth-child(4){animation-delay:0.185s}
+.side-in>*:nth-child(5){animation-delay:0.230s}
+.side-in>*:nth-child(6){animation-delay:0.275s}
+.side-in>*:nth-child(7){animation-delay:0.320s}
+.side-in>*:nth-child(8){animation-delay:0.365s}
+.side-in>*:nth-child(9){animation-delay:0.410s}
+.side-in>*:nth-child(10){animation-delay:0.455s}
+.side-in>*:nth-child(11){animation-delay:0.500s}
+.side-in>*:nth-child(12){animation-delay:0.545s}
+.side-in>*:nth-child(13){animation-delay:0.590s}
+.side-in>*:nth-child(14){animation-delay:0.635s}
     </style>
   </head>
   <body>
-    <label class="theme-switch">
-      <input
-        class="theme-switch__checkbox"
-        type="checkbox"
-        id="theme-toggle"
-        aria-label="Dark mode"
-      />
-      <span class="theme-switch__container" aria-hidden="true">
-        <span class="theme-switch__stars-container"
-          ><svg viewBox="0 0 144 60" xmlns="http://www.w3.org/2000/svg">
-            <path
-              fill="currentColor"
-              d="M20 8l2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5zm30 20l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5 1.5-4zm39-16l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5 1.5-4zm35 24l2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5z"
-            /></svg
-        ></span>
-        <span class="theme-switch__clouds"></span>
-        <span class="theme-switch__circle-container"
-          ><span class="theme-switch__sun-moon-container"
-            ><span class="theme-switch__moon"
-              ><span class="theme-switch__spot"></span><span class="theme-switch__spot"></span
-              ><span class="theme-switch__spot"></span></span></span
-        ></span>
-      </span>
-    </label>
     <aside>
       <div class="brand">
-        <img
+        <div class="seal"><img
           class="logo"
           alt="LSSD"
           src="data:image/webp;base64,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"
         />
-        <div><b>SHERIFF'S DEPARTMENT</b><span>County of Los Santos · Forms</span></div>
+        </div>
+        <div class="brand-text"><b>SHERIFF'S DEPARTMENT</b><span>County of Los Santos</span></div>
+        <div class="brand-foot">
+          <i class="brand-tag">Forms</i>
+      <label class="theme-switch" title="Switch between light and dark">
+        <input
+          class="theme-switch__checkbox"
+          type="checkbox"
+          role="switch"
+          id="theme-toggle"
+          aria-label="Dark mode"
+        />
+        <span class="ts-track" aria-hidden="true">
+          <span class="ts-sky ts-day"></span>
+          <span class="ts-sky ts-night"></span>
+          <i class="ts-glint"></i><i class="ts-glint"></i><i class="ts-glint"></i>
+          <i class="ts-star"></i><i class="ts-star"></i><i class="ts-star"></i><i class="ts-star"></i>
+          <span class="ts-knob">
+            <svg class="ts-icon" viewBox="0 0 24 24" fill="none">
+              <defs>
+                <mask id="ts-moon-mask" maskUnits="userSpaceOnUse" x="-4" y="-4" width="32" height="32">
+                  <rect x="-4" y="-4" width="32" height="32" fill="#fff" />
+                  <circle class="ts-cut" cx="17" cy="8" r="7" fill="#000" />
+                </mask>
+              </defs>
+              <g mask="url(#ts-moon-mask)">
+                <circle class="ts-core" cx="12" cy="12" r="8" fill="currentColor" />
+              </g>
+              <g class="ts-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" />
+              </g>
+            </svg>
+          </span>
+        </span>
+      </label>
+        </div>
       </div>
       <button class="b" id="menu" onclick="document.getElementById('si').classList.toggle('open')">
         ☰ Menu
@@ -3251,10 +3490,10 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <button
             class="nav"
             id="nv-updates"
-            data-k="updates changelog version 1.0.0"
+            data-k="release notes updates changelog version 1.0.0"
             onclick="show('updates')"
           >
-            <span>Updates</span>
+            <span>Release Notes</span>
           </button>
         </section>
         <section class="nav-group" data-group="useful links">
@@ -6746,7 +6985,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               <li>Bureaus</li>
               <li>Generators</li>
               <li>Character Details</li>
-              <li>Updates</li>
+              <li>Release Notes</li>
             </ul>
             <h4>What's in it</h4>
             <ul class="cr-list">
@@ -7490,6 +7729,40 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.2.1<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
+          <div class="body">
+            <h3>v2.2.1</h3>
+            <h3>Light / dark mode switch</h3>
+            <ul>
+              <li>The switch is rebuilt from scratch for the site: a sun badge on a cream track in light mode, and a moon badge on a night-sky track with twinkling stars in dark mode. The sun folds its rays away and turns into the moon, and the knob springs across and stretches while pressed.</li>
+              <li>The new theme spreads across the whole page in a circle from the switch. This is skipped when reduced motion is on.</li>
+              <li>The knob is now centred on its track, and the yellow halo that appeared around the knob in dark mode is gone.</li>
+              <li>It now lives inside the sidebar brand plaque instead of floating over the page, so it no longer sits on top of content.</li>
+            </ul>
+            <h3>Sidebar brand</h3>
+            <ul>
+              <li>The Sheriff's Department header is now a taller plaque: the seal sits in a slowly rotating beige and green ring, the title has a soft shimmer, a light streak sweeps across the plaque every few seconds, and the seal tilts and glows on hover.</li>
+              <li>A footer strip holds a "Forms" tag with a live pulsing dot and the light / dark switch.</li>
+            </ul>
+            <h3>Release Notes</h3>
+            <ul>
+              <li>The Updates page is now called Release Notes, in the sidebar, on the home page and in the page title. Searching for "updates" still finds it.</li>
+            </ul>
+            <h3>Phone layout</h3>
+            <ul>
+              <li>The top bar now has the brand and the light / dark switch on one row, and the Menu button is a full-width bar running edge to edge below them. The opened menu starts right under the bar.</li>
+            </ul>
+            <h3>Animations</h3>
+            <ul>
+              <li>Pages fade and rise in, form cards cascade one after another, and the page title slides in each time you open another page.</li>
+              <li>Home: the hero slides in with a soft glow and its badge floats and tilts on hover. The search box pulses when focused. Panels cascade in and lift on hover, their header icons tilt and an underline sweeps across, and tiles stagger in and nudge sideways on hover with their icons tilting. Recent-form chips pop in.</li>
+              <li>Sidebar: items slide in one by one, a beige accent bar grows on hover, the active item pulses when selected, count badges pop, and the bureau lists drop open.</li>
+              <li>Buttons lift on hover and press down on click, and the green ones get a light sheen. The toast springs up and the Character Details reminder bounces in. A very slow glow drifts behind the page.</li>
+              <li>Every animation is turned off when reduced motion is enabled in your system settings.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.2.0<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
           <div class="body">
@@ -12512,7 +12785,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "search-warrant": "Search Warrant",
           "electronic-surveillance-warrant": "Electronic Surveillance Warrant",
           "financial-service-warrant": "Financial Service Warrant Request",
-          updates: "Updates",
+          updates: "Release Notes",
           card: "Business Card Generator",
           email: "Correspondence",
           depmail: "Email Template",
@@ -14317,8 +14590,48 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       const themeToggle = $("theme-toggle");
       themeToggle.checked = document.documentElement.dataset.theme === "dark";
       themeToggle.addEventListener("change", () => {
-        const theme = themeToggle.checked ? "dark" : "light";
-        document.documentElement.dataset.theme = theme;
+        const theme = themeToggle.checked ? "dark" : "light",
+          root = document.documentElement,
+          apply = () => {
+            root.dataset.theme = theme;
+          },
+          reduce = matchMedia("(prefers-reduced-motion: reduce)").matches,
+          label = themeToggle.closest(".theme-switch");
+        if (label && !reduce) {
+          label.classList.remove("ts-pulse");
+          void label.offsetWidth;
+          label.classList.add("ts-pulse");
+        }
+        if (!document.startViewTransition || reduce) apply();
+        else {
+          // The new theme spreads across the page from the switch, like the sky changing.
+          const r = themeToggle.getBoundingClientRect(),
+            x = r.left + r.width / 2,
+            y = r.top + r.height / 2,
+            radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+          try {
+            document
+              .startViewTransition(apply)
+              .ready.then(() =>
+                root.animate(
+                  {
+                    clipPath: [
+                      `circle(0px at ${x}px ${y}px)`,
+                      `circle(${radius}px at ${x}px ${y}px)`,
+                    ],
+                  },
+                  {
+                    duration: 650,
+                    easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+                    pseudoElement: "::view-transition-new(root)",
+                  },
+                ),
+              )
+              .catch(() => {});
+          } catch (e) {
+            apply();
+          }
+        }
         try {
           localStorage.setItem("lssd-theme", theme);
         } catch (e) {
@@ -14326,6 +14639,28 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           toast("Theme changed but could not be saved");
         }
       });
+      // phone layout: the opened menu starts right below the top bar, whatever its height
+      (() => {
+        const bar = document.querySelector("aside");
+        if (!bar || !window.ResizeObserver) return;
+        new ResizeObserver(() => {
+          document.documentElement.style.setProperty("--bar-h", bar.offsetHeight + "px");
+        }).observe(bar);
+      })();
+      // replay the page-title animation whenever another page is opened
+      (() => {
+        const original = window.show, top = document.querySelector("main .top, .top");
+        if (typeof original !== "function" || !top) return;
+        window.show = function () {
+          const result = original.apply(this, arguments);
+          if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            top.classList.remove("m-retitle");
+            void top.offsetWidth;
+            top.classList.add("m-retitle");
+          }
+          return result;
+        };
+      })();
       async function copy(k) {
         if (k === "citation") {
           await copyCitation();
@@ -15743,7 +16078,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["notices-commendations", "Commendations", "Commendation report for awards and commendations."]]],
     ["Miscellaneous", [
       ["deputy", "Character Details", "Save your name, badge, rank and optional callsign to prefill forms."],
-      ["updates", "Updates", "See what's new on this site."]]],
+      ["updates", "Release Notes", "See what's new on this site."]]],
   ];
   // Bureaus: division > unit > forms.  form = [key, title, description, group label, short title]
   const BU = [
@@ -19153,4 +19488,4 @@ window.copyDiscordName = async function () {
 })();
     </script>
   </body>
-</html>
+</html>
