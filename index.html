@@ -1540,7 +1540,6 @@
       .ar-recent[hidden],
       .ar-quick[hidden],
       .ar-check[hidden],
-      .ar-drawer[hidden],
       .ar-snack[hidden] {
         display: none;
       }
@@ -1763,37 +1762,6 @@
         background: var(--panel);
         box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
         font-size: 14px;
-      }
-      .ar-drawer {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 60;
-        display: flex;
-        flex-direction: column;
-        width: min(780px, 96vw);
-        border-left: 1px solid var(--line);
-        background: var(--panel);
-        box-shadow: -18px 0 44px rgba(0, 0, 0, 0.32);
-      }
-      .ar-drawer-h {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 16px;
-        border-bottom: 1px solid var(--line);
-        font: 600 20px/1 "Barlow Condensed", Inter, sans-serif;
-        letter-spacing: 0.04em;
-      }
-      .ar-drawer-b {
-        flex: 1;
-        overflow: auto;
-        padding: 16px;
-        background: #ececec;
-      }
-      #ar-paper2 {
-        min-width: 560px;
       }
       .ar-hint {
         margin: 12px 0 0;
@@ -2145,6 +2113,34 @@
       }
       #ar-narrative {
         min-height: 230px;
+        display: block;
+        position: relative;
+        background: transparent;
+      }
+      .ar-hl-wrap {
+        position: relative;
+        border-radius: 8px;
+        background: var(--bg);
+      }
+      .ar-hl-back {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        padding: 10px 12px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        font: inherit;
+        color: transparent;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+      .ar-hl-back mark {
+        color: transparent;
+        background: rgba(255, 196, 0, 0.45);
+        border-radius: 3px;
+        box-shadow: 0 0 0 1px rgba(255, 196, 0, 0.7);
       }
       #ar-card-evidence textarea {
         min-height: 150px;
@@ -3364,7 +3360,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               <button class="b add" type="button" onclick="arAddItem()">+ Add item</button>
             </div>
             <div class="f">
-              <textarea id="ar-narrative" class="ar-req" placeholder="Arrest narrative"></textarea>
+              <div class="ar-hl-wrap"><div class="ar-hl-back" id="ar-hl-back" aria-hidden="true"><div id="ar-hl-text"></div></div><textarea id="ar-narrative" class="ar-req" placeholder="Arrest narrative"></textarea></div>
               <small class="ar-warn">Describe the events leading up to the arrest in first person and in chronological order. Explain your probable cause for each charge and for the arrest itself.</small>
             </div>
           </div>
@@ -3399,7 +3395,6 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <div class="ar-check ar-gated" id="ar-check" hidden></div>
           <button class="b p ar-gated" type="button" id="ar-copy-btn" onclick="arCopyReport()">Copy report</button>
           <button class="b ar-gated" type="button" id="ar-png-btn" onclick="arDownloadPng()">Download PNG</button>
-          <button class="b ar-gated" type="button" id="ar-prev-btn" aria-pressed="false" onclick="arTogglePreview()">Live preview</button>
           <button class="b" type="button" onclick="arReset()">Reset</button>
         </div>
       </div>
@@ -6728,6 +6723,18 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v2.0.7</h2>
+          <div class="body">
+            <h3>v2.0.7</h3>
+            <h3>Arrest Report</h3>
+            <ul>
+              <li>The template narrative now opens with "At approximately 1234 hours I received call of service #12345, " (or just "At approximately 1234 hours I " when Call of Service is off), and the spot right after it is highlighted so you can see where to continue writing. The highlight is only on screen and is never part of the report; it disappears as soon as you type there.</li>
+              <li>Recent reports now saves automatically: any report with a suspect and at least one charge is kept as you work, without having to press Copy report or Download PNG first. The last 5 are kept, each report updates its own entry instead of adding duplicates, and Open, Reset and Undo keep following the right entry.</li>
+              <li>The Live preview button and its side panel are removed. The live preview at the bottom of the form stays.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v2.0.6</h2>
           <div class="body">
             <h3>v2.0.6</h3>
@@ -6735,7 +6742,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <ul>
               <li>The Arrest Report is a new form in Patrol Reports, above Incident Report. The Sheriff's Report stays where it was, just below it.</li>
               <li>Add the charges first (class, offence, addition, drug category, parole violator) and press Calculate. The sentencing, fine, points, impound, suspension and bail appear, per charge and in total, and the rest of the report unlocks. Sentences and impound/suspension are capped, Life sentences show as "Life", and STREETS / DEPA notices and stipulations are listed.</li>
-              <li>The report is the same table the MDC panel produces: Copy report puts it on the clipboard ready to paste, Download PNG saves an image, and a Live preview drawer shows it as you type.</li>
+              <li>The report is the same table the MDC panel produces: Copy report puts it on the clipboard ready to paste, Download PNG saves an image. The preview at the bottom of the form updates as you type.</li>
               <li>Your Character Details fill in the first officer, callsign and badge. Date uses the date picker, time has a Now button (UK time). District and street use the search dropdowns.</li>
             </ul>
             <h3>Narrative</h3>
@@ -13762,6 +13769,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         }
         const NL = "\n\n";
         const PARTS = ["open", "evaded", "resistedArrest", "searched", "booking"];
+        let fillTail = ",";
         let applied = {}; // part -> the exact text last written into the narrative for it
         const modOn = (n) => {
           const box = document.querySelector(`#ar-mods input[data-mod="${n}"]`);
@@ -13786,8 +13794,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           const mod = (n) => sub(MODIFIERS.find((m) => m.name === n).text);
           const parts = {};
           parts.open =
-            sub("On the {date}, I, {rank} {name} ({badge}) of the {department} while under the callsign {callsign}, conducted an arrest on {suspect}. At approximately {time} hours") +
-            (modOn("callOfService") ? " " + mod("callOfService") + val("ar-callnum") : ",");
+            sub("On the {date}, I, {rank} {name} ({badge}) of the {department} while under the callsign {callsign}, conducted an arrest on {suspect}. At approximately {time} hours I") +
+            (modOn("callOfService") ? " " + mod("callOfService") + val("ar-callnum") + "," : "") +
+            " ";
           if (modOn("evaded")) parts.evaded = mod("evaded");
           if (modOn("resistedArrest")) parts.resistedArrest = mod("resistedArrest");
           if (modOn("searched")) {
@@ -13797,9 +13806,10 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             } else parts.searched = mod("searched");
           }
           if (modOn("booking")) parts.booking = mod("booking");
+          fillTail = " ";
           return parts;
         }
-        function syncNarrative() {
+        let syncNarrative = function () {
           const preset = $("ar-preset").checked,
             ta = $("ar-narrative");
           $("ar-mods").dataset.off = preset ? "" : "1";
@@ -13853,7 +13863,35 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             }
           });
           if (v !== ta.value) ta.value = v;
+        };
+        // Screen-only marker (never part of the report text): highlights the end of the
+        // generated opening so the deputy sees where to continue writing by hand.
+        function updateFillHighlight() {
+          const ta = $("ar-narrative"),
+            box = $("ar-hl-text"),
+            back = $("ar-hl-back"),
+            v = ta.value,
+            open = applied.open;
+          let html = null;
+          if ($("ar-preset").checked && open && fillTail) {
+            const at = v.indexOf(open);
+            if (at >= 0) {
+              const end = at + open.length,
+                start = end - fillTail.length,
+                eol = v.indexOf("\n", end),
+                rest = v.slice(end, eol < 0 ? v.length : eol);
+              if (start >= at && !rest.trim()) html = esc(v.slice(0, start)) + "<mark>" + esc(v.slice(start, end)) + "</mark>" + esc(v.slice(end));
+            }
+          }
+          box.innerHTML = html == null ? "" : html + "\n";
+          back.style.height = ta.offsetHeight + "px";
+          box.style.transform = `translateY(${-ta.scrollTop}px)`;
         }
+        const syncNarrativeCore = syncNarrative;
+        syncNarrative = function () {
+          syncNarrativeCore();
+          updateFillHighlight();
+        };
         window.arRegenNarrative = function () {
           narrativeUserModified = false;
           syncNarrative();
@@ -14068,7 +14106,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         }
         let restoring = false;
         let pendingDraft = false;
-        let drawerOpen = false;
         window.arUpdate = function () {
           if (restoring || !$("ar-date")) return;
           syncNarrative();
@@ -14088,7 +14125,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           if (rh && rh._a) rh._a.hidden = !calculated;
           const html = buildReport(calc, meta);
           $("ar-paper").innerHTML = html;
-          if (drawerOpen) $("ar-paper2").innerHTML = html;
           const st = status(meta),
             ready = CHECKS.every(([k]) => st[k]);
           renderChecklist(st);
@@ -14130,10 +14166,12 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           const m = Math.round((Date.now() - t) / 60000);
           return m < 1 ? "just now" : m < 60 ? m + " min ago" : m < 1440 ? Math.round(m / 60) + " h ago" : Math.round(m / 1440) + " d ago";
         };
+        let recentId = null; // id of this report's entry in the "Recent reports" list
         function snapshot() {
           const v = (id) => $(id).value;
           return {
             v: 1,
+            rid: recentId,
             f: {
               date: v("ar-date"), time: v("ar-time"), callsign: v("ar-callsign"), department: v("ar-department"),
               district: v("ar-district"), street: v("ar-street"), suspect: v("ar-suspect"),
@@ -14186,6 +14224,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             applied = { ...(s.applied || {}) };
             calculated = !!s.calculated && charges.some((r) => r.chargeId) && charges.filter((r) => r.chargeId).every(isComplete);
             showErrors = false;
+            recentId = s.rid || null;
           } finally {
             restoring = false;
           }
@@ -14200,8 +14239,11 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           narrativeUserModified;
         function saveDraft() {
           if (pendingDraft || restoring) return;
-          if (hasContent()) store.set(DK, { saved: Date.now(), snap: snapshot() });
-          else store.del(DK);
+          if (hasContent()) {
+            store.set(DK, { saved: Date.now(), snap: snapshot() });
+            // every report with a suspect and a charge is kept in the recent list automatically
+            if (cleanName($("ar-suspect").value) && charges.some((r) => r.chargeId)) saveRecent();
+          } else store.del(DK);
         }
         function scheduleSave() {
           if (pendingDraft || restoring) return;
@@ -14251,11 +14293,12 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             .join("");
         }
         function saveRecent() {
+          if (!recentId) recentId = Date.now();
           const snap = snapshot(),
             ids = snap.charges.filter((c) => c.chargeId).map((c) => c.chargeId),
-            entry = { id: Date.now(), saved: Date.now(), suspect: snap.f.suspect, date: formatPickerDate(snap.f.date, "short"), charges: ids, snap };
+            entry = { id: recentId, saved: Date.now(), suspect: snap.f.suspect, date: formatPickerDate(snap.f.date, "short"), charges: ids, snap };
           let list = store.get(HK) || [];
-          list = list.filter((e) => !(e.suspect === entry.suspect && e.date === entry.date && JSON.stringify(e.charges) === JSON.stringify(ids)));
+          list = list.filter((e) => e.id !== recentId); // update this report's own entry
           list.unshift(entry);
           store.set(HK, list.slice(0, 5));
           renderRecent();
@@ -14419,17 +14462,11 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           const had = hasContent(),
             snap = snapshot();
           clearForm();
+          recentId = null;
           store.del(DK);
           if (had) snack("Report cleared.", "Undo", () => restore(snap));
         };
         window.arNowTime = () => ukTimeNow("HH:MM");
-        window.arTogglePreview = function (force) {
-          drawerOpen = typeof force === "boolean" ? force : !drawerOpen;
-          $("ar-drawer").hidden = !drawerOpen;
-          $("ar-prev-btn").setAttribute("aria-pressed", drawerOpen ? "true" : "false");
-          $("ar-prev-btn").textContent = drawerOpen ? "Hide preview" : "Live preview";
-          if (drawerOpen) $("ar-paper2").innerHTML = $("ar-paper").innerHTML;
-        };
 
         /* ---------------- init ---------------- */
         // Styled suggestion lists (free text is still allowed).
@@ -14503,7 +14540,10 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         $("ar-time").value = arNowTime();
         $("ar-narrative").addEventListener("input", () => {
           narrativeUserModified = true;
+          updateFillHighlight();
         });
+        $("ar-narrative").addEventListener("scroll", updateFillHighlight);
+        if (window.ResizeObserver) new ResizeObserver(updateFillHighlight).observe($("ar-narrative"));
         $("ar-preset").addEventListener("change", () => {
           if ($("ar-preset").checked) narrativeUserModified = false;
         });
@@ -14555,15 +14595,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         snackEl.hidden = true;
         snackEl.innerHTML = `<span></span><button type="button" class="b"></button>`;
         document.body.appendChild(snackEl);
-        const drawer = document.createElement("aside");
-        drawer.id = "ar-drawer";
-        drawer.className = "ar-drawer";
-        drawer.hidden = true;
-        drawer.setAttribute("aria-label", "Live report preview");
-        drawer.innerHTML = `<div class="ar-drawer-h"><b>Live preview</b><button type="button" class="b" onclick="arTogglePreview(false)">Close</button></div><div class="ar-drawer-b"><div id="ar-paper2"></div></div>`;
-        document.body.appendChild(drawer);
         addEventListener("keydown", (e) => {
-          if (e.key === "Escape" && drawerOpen) arTogglePreview(false);
           if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && !$("f-arrest-report").hidden) {
             e.preventDefault();
             if (calculated) arCopyReport();
