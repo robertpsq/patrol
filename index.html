@@ -1116,37 +1116,90 @@
       }
       #character-details-prompt {
         position: fixed;
-        z-index: 19;
+        z-index: 60;
         left: 50%;
         bottom: calc(20px + env(safe-area-inset-bottom, 0px));
         transform: translateX(-50%);
-        padding: 11px 20px;
-        border: 1px solid var(--beige);
-        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: max-content;
+        max-width: calc(100vw - 24px);
+        padding: 12px 12px 12px 20px;
+        border: 2px solid var(--beige);
+        border-radius: 18px;
         background: var(--green2);
         color: #fff;
         font:
-          700 14px Inter,
+          600 14px/1.35 Inter,
           system-ui,
           sans-serif;
-        box-shadow: 0 5px 22px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        animation: cdp-pulse 2.2s ease-out infinite;
+      }
+      #character-details-prompt .cdp-text {
+        flex: 1 1 auto;
+      }
+      #character-details-prompt .cdp-text b {
+        display: block;
+        font-size: 15px;
+        font-weight: 800;
+      }
+      #character-details-prompt .cdp-text span {
+        font-weight: 500;
+        opacity: 0.92;
+      }
+      #character-details-prompt .cdp-go {
+        flex: none;
+        padding: 10px 18px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--beige);
+        color: #0c1110;
+        font: inherit;
+        font-weight: 800;
         cursor: pointer;
       }
-      #character-details-prompt:hover {
-        background: var(--green);
-        filter: brightness(1.08);
+      #character-details-prompt .cdp-go:hover {
+        filter: brightness(1.1);
       }
       :root:not([data-theme="light"]) #character-details-prompt {
-        background: var(--beige);
-        color: var(--ink);
+        background: #1d2623;
+        color: #fff;
       }
-      :root:not([data-theme="light"]) #character-details-prompt:hover {
-        background: var(--beige);
-        filter: brightness(1.12);
+      #character-details-prompt button:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 2px;
       }
-      #character-details-prompt:focus-visible {
-        outline: 3px solid var(--beige);
-        outline-offset: 3px;
+      @keyframes cdp-pulse {
+        0% {
+          box-shadow:
+            0 8px 30px rgba(0, 0, 0, 0.5),
+            0 0 0 0 rgba(203, 185, 143, 0.7);
+        }
+        70%,
+        100% {
+          box-shadow:
+            0 8px 30px rgba(0, 0, 0, 0.5),
+            0 0 0 16px rgba(203, 185, 143, 0);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #character-details-prompt {
+          animation: none;
+        }
+      }
+      @media (max-width: 560px) {
+        #character-details-prompt {
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          gap: 8px;
+          width: calc(100vw - 24px);
+          padding: 14px;
+        }
+        #character-details-prompt .cdp-text {
+          flex-basis: 100%;
+        }
       }
       #character-details-prompt[hidden] {
         display: none;
@@ -7438,6 +7491,22 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v2.2.0<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
+          <div class="body">
+            <h3>v2.2.0</h3>
+            <h3>Character Details reminder</h3>
+            <ul>
+              <li>The Character Details reminder now appears on every page, the home page included, instead of only on forms that use your details. It is a larger card with a pulsing highlight and a button that goes straight to Character Details.</li>
+              <li>The reminder cannot be dismissed. It stays until Character Details are saved, and it never blocks a form: every form still works with the fields empty. It is hidden on the Character Details page itself.</li>
+              <li>On phones the card spans the width of the screen and sits above the form action bar.</li>
+            </ul>
+            <h3>MDC photo search</h3>
+            <ul>
+              <li>The MDC picture is now looked up 1 second after you stop typing, instead of 2 seconds. This applies to the Character Details avatar and to every person photo lookup in the forms.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v2.1.13<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
           <div class="body">
             <h3>v2.1.13</h3>
@@ -8551,7 +8620,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             if (!name || typeof personImageUrl !== "function") return;
             photoTimer = setTimeout(function () {
               if (name === photoName) showPhoto(personImageUrl(name));
-            }, typeof PERSON_PHOTO_LOOKUP_DELAY === "number" ? PERSON_PHOTO_LOOKUP_DELAY : 2000);
+            }, typeof PERSON_PHOTO_LOOKUP_DELAY === "number" ? PERSON_PHOTO_LOOKUP_DELAY : 1000);
           }
           function update() {
             var cur = {
@@ -8808,9 +8877,13 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
     </main>
     <div class="credits">Credits: <b>cirano</b></div>
     <div id="toast">Copied!</div>
-    <button id="character-details-prompt" type="button" hidden onclick="show('deputy')">
-      Fill your character details
-    </button>
+    <div id="character-details-prompt" role="region" aria-label="Character Details reminder" hidden>
+      <div class="cdp-text">
+        <b>Fill in your Character Details</b>
+        <span>Forms use your name, rank and badge to fill themselves in.</span>
+      </div>
+      <button class="cdp-go" type="button" onclick="show('deputy')">Go to Character Details</button>
+    </div>
     <script>
       const Q = [
         "Was someone injured as a result of the incident?",
@@ -8880,6 +8953,8 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         "hb-case",
         "hb-supplemental",
       ]);
+      // Shown on every page (home included) until Character Details are saved. It can't be
+      // dismissed, but it never blocks anything.
       function updateCharacterDetailsPrompt() {
         const prompt = $("character-details-prompt");
         if (!prompt) return;
@@ -8888,7 +8963,9 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           ),
           detailsFilled = Object.values(deputyDetails).some((value) => value.trim());
         prompt.hidden =
-          !activeForm || !characterPrefillForms.has(activeForm.id.slice(2)) || detailsFilled;
+          !activeForm ||
+          activeForm.id === "f-deputy" ||
+          detailsFilled;
       }
       function loadDeputyDetails() {
         try {
@@ -12565,7 +12642,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       // never ships a broken image link for a name with no MDC picture.
       // While typing, the URL field updates at once (so the BBCode is always current), but the
       // preview only looks the picture up once the user has stopped typing for this long.
-      const PERSON_PHOTO_LOOKUP_DELAY = 2000;
+      const PERSON_PHOTO_LOOKUP_DELAY = 1000;
       function wirePersonPhotoEls({ name, image, preview, resetBtn, profile }) {
         // Wrap the preview in a frame that can show a "searching" overlay.
         let frame = null;
