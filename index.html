@@ -2863,15 +2863,17 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           </button>
         </section>
         <section class="nav-group bureaus" data-group="bureaus divisions">
-          <div class="grp"><span class="grp-label">Bureaus</span><span class="grp-count">24</span></div>
+          <div class="grp"><span class="grp-label">Bureaus</span><span class="grp-count">22</span></div>
           <div class="bu-item" data-bu="central">
-            <button class="nav bu-div" id="nv-bu-central" data-k="central patrol division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Central Patrol Division</span><em class="bu-n">6</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <button class="nav bu-div" id="nv-bu-central" data-k="central patrol division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Central Patrol Division</span><em class="bu-n">7</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
               <div class="bu-item" data-bu="davis">
-                <button class="nav bu-sub" id="nv-bu-davis" data-k="davis station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.booskit.dev/gtaw/dvs.png" alt="" /><b>Davis Station</b></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-davis" data-k="davis station " data-parent="nv-bu-central" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.booskit.dev/gtaw/dvs.png" alt="" /><b>Davis Station</b></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
                   <button class="nav division" id="nv-bu-davis-k9" data-k="davis k9 davis k9 deployment log canine report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/KUnabIMA49.png/raw" alt="" />K9</span></button>
                   <button class="nav sub" id="nv-davis-k9-deployment" data-k="davis k9 deployment log canine report" data-parent="nv-bu-davis-k9" onclick="show('davis-k9-deployment')"><span>Deployment Log</span></button>
+                  <button class="nav division" id="nv-bu-davis-tsd" data-k="davis tsd tsd td citation infraction report traffic ticket" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/POhExOnA34/raw" alt="" />TSD</span></button>
+                  <button class="nav sub" id="nv-davis-citation" data-k="tsd td citation infraction report traffic ticket" data-parent="nv-bu-davis-tsd" onclick="show('davis-citation')"><span>Citation</span></button>
                 </div>
               </div>
               <div class="bu-item" data-bu="senora">
@@ -2979,8 +2981,6 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <div class="bu-body">
               <button class="nav bu-sub empty" id="nv-bu-ssb" data-k="ssb scientific services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.humour.ovh/WOho1/BIZAZAZu70.png/raw" alt="" /><b>SSB</b> <small>Scientific Services Bureau</small></span></button>
               <button class="nav bu-sub empty" id="nv-bu-cfmb" data-k="cfmb communications &amp; fleet management bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/PiyIcuSu04.png/raw" alt="" /><b>CFMB</b> <small>Communications &amp; Fleet Management Bureau</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-nmcc" data-k="nmcc nelson moler communications center" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>NMCC</b> <small>Nelson Moler Communications Center</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-csiu" data-k="csiu crime scene investigation unit" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><b>CSIU</b> <small>Crime Scene Investigation Unit</small></span></button>
               <div class="bu-item" data-bu="lsu">
                 <button class="nav bu-sub" id="nv-bu-lsu" data-k="lsu laboratory services unit" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>LSU</b> <small>Laboratory Services Unit</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
@@ -6794,6 +6794,20 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.1.0</h2>
+          <div class="body">
+            <h3>v2.1.0</h3>
+            <h3>Davis Station</h3>
+            <ul>
+              <li>TSD › Citation now also appears under Davis Station, next to K9. It opens the same Citation form as the one under Senora Station, so the form, its narrative and its report are identical from either place.</li>
+            </ul>
+            <h3>Technology &amp; Support Division</h3>
+            <ul>
+              <li>NMCC (Nelson Moler Communications Center) and CSIU (Crime Scene Investigation Unit) are removed from the Technology &amp; Support Division.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.0.9</h2>
           <div class="body">
@@ -11427,6 +11441,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         $("f-citation").addEventListener("click", updateCitationPreview);
       }
       function show(k) {
+        const via = k === "davis-citation" ? k : null; // the Citation form, reached from the Davis Station menu
+        if (via) k = "citation";
         [
           "home",
           "sheriff",
@@ -11479,12 +11495,13 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "deputy",
         ].forEach((x) => {
           $("f-" + x).hidden = x !== k;
-          $("nv-" + x).classList.toggle("on", x === k);
+          $("nv-" + x).classList.toggle("on", x === k && !via);
         });
+        $("nv-davis-citation").classList.toggle("on", !!via);
         document
           .querySelectorAll(".nav-group")
           .forEach((group) => group.classList.toggle("active", !!group.querySelector(".nav.on")));
-        if (k !== "home") revealBu($("nv-" + k));
+        if (k !== "home") revealBu($(via ? "nv-davis-citation" : "nv-" + k));
         if (k === "nccit" || k === "nccit-supp") growAllTextareas("f-" + k);
         $("ttl").textContent = {
           home: "Home",
@@ -14746,7 +14763,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   // Bureaus: division > unit > forms.  form = [key, title, description, group label, short title]
   const BU = [
     { n: "Central Patrol Division", id: "central", u: [
-      { id: "davis", n: "Davis Station", a: "", f: [["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", "K9", "Deployment Log"]] },
+      { id: "davis", n: "Davis Station", a: "", f: [["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", "K9", "Deployment Log"], ["davis-citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
       { id: "senora", n: "Senora Station", a: "", f: [["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", "", "Logbook"], ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", "NCCIT", "Personnel File"], ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", "NCCIT", "Supplemental"], ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", "K9", "Deployment Log"], ["citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
     ] },
     { n: "Special Operations Division", id: "special-ops", u: [
@@ -14773,8 +14790,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     { n: "Technology & Support Division", id: "tech", u: [
       { id: "ssb", n: "Scientific Services Bureau", a: "SSB", f: [] },
       { id: "cfmb", n: "Communications & Fleet Management Bureau", a: "CFMB", f: [] },
-      { id: "nmcc", n: "Nelson Moler Communications Center", a: "NMCC", f: [] },
-      { id: "csiu", n: "Crime Scene Investigation Unit", a: "CSIU", f: [] },
       { id: "lsu", n: "Laboratory Services Unit", a: "LSU", f: [["lab", "Laboratory Services Request", "Request lab services for evidence.", "", "Laboratory Services Requests"]] },
       { id: "dfu", n: "Digital Forensics Unit", a: "DFU", f: [["dforensics", "Digital Forensics Request", "Request digital forensics on evidence.", "", "Digital Forensics Requests"]] },
       { id: "psb", n: "Psychological Services Bureau", a: "PSB", f: [] },
@@ -14834,6 +14849,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     "nccit-supp": { unit: "senora-nccit", mono: "NCCIT" },
     "senora-k9-deployment": { unit: "senora-k9", mono: "K9" },
     citation: { unit: "senora-tsd", mono: "TSD" },
+    "davis-citation": { unit: "davis-tsd", mono: "TSD" },
     "csd-k9-deployment": { unit: "csd", mono: "CSD" },
     "ftp-phase1": { unit: "ftp", mono: "FTP" },
     "ftp-phase2": { unit: "ftp", mono: "FTP" },
