@@ -2652,6 +2652,43 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .p-adv .padv .pchk{align-self:flex-start;width:fit-content}
 .p-full{grid-column:1/-1}
 .p-rel textarea{min-height:76px}
+/* ===== K9 Emergency Medical Care ===== */
+#f-k9-emc textarea{min-height:84px;max-height:380px}
+#f-k9-emc #kem-out{min-height:200px;max-height:420px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+/* ===== K9 Checkup Card ===== */
+#f-k9-checkup textarea{min-height:84px;max-height:380px}
+#f-k9-checkup #kcc-out{min-height:200px;max-height:420px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+.kcc-badge{margin-left:10px;padding:2px 10px;border-radius:99px;background:var(--green);color:#fff;font:600 12px/1.6 Inter,sans-serif;letter-spacing:.04em;vertical-align:middle}
+/* ===== Laboratory Services Report ===== */
+#f-vet-lab-report textarea{min-height:84px;max-height:380px}
+#f-vet-lab-report #lr-out{min-height:200px;max-height:420px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+#f-vet-lab-report #lr-notify{min-height:70px}
+.lr-sec{margin:10px 0;border:1px solid var(--line);border-radius:10px;padding:0 12px 10px;background:var(--bg)}
+.lr-sec>summary{cursor:pointer;padding:10px 0;font-weight:600;color:var(--text)}
+.lr-sec>.f,.lr-sec>.g{margin-top:8px}
+.lr-h{margin:14px 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.actions-row{margin-top:12px}
+.outline a[hidden]{display:none}
+/* ===== Civilian alternate toggle ===== */
+.civ-cell{grid-column:1/-1}
+.civ-toggle{position:relative;display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer;user-select:none;transition:border-color .2s,background .2s,box-shadow .2s}
+.civ-toggle input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.civ-toggle:hover{border-color:var(--beige)}
+.civ-toggle:has(input:focus-visible){outline:2px solid var(--beige);outline-offset:2px}
+.civ-ico{display:grid;place-items:center;flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green);transition:background .2s,color .2s}
+.civ-txt{display:flex;flex:1;flex-direction:column;gap:2px;min-width:0}
+.civ-txt b{font-size:14.5px;font-weight:600;color:var(--text)}
+.civ-txt small{color:var(--mute);font-size:12.5px;line-height:1.4}
+.civ-sw{position:relative;flex:0 0 auto;width:44px;height:25px;border-radius:99px;background:var(--line);transition:background .2s}
+.civ-sw::after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.civ-toggle:has(input:checked){border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--bg));box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 14%,transparent)}
+.civ-toggle:has(input:checked) .civ-ico{background:var(--green);color:#fff}
+.civ-toggle:has(input:checked) .civ-sw{background:var(--green)}
+.civ-toggle:has(input:checked) .civ-sw::after{transform:translateX(19px)}
+.civ-fields{margin-top:10px;padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--green);border-radius:0 12px 12px 0;background:color-mix(in srgb,var(--green) 5%,var(--bg))}
+.civ-fields:not([hidden]){animation:civIn .22s ease}
+@keyframes civIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.civ-toggle,.civ-ico,.civ-sw,.civ-sw::after{transition:none}.civ-fields:not([hidden]){animation:none}}
 /* ===== Credits ===== */
 .cr-lead{margin:0 0 10px;font-size:17px;font-weight:600;line-height:1.5;color:var(--text)}
 .cr-hero .body{text-align:center}
@@ -3032,8 +3069,11 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 </div>
               </div>
               <div class="bu-item" data-bu="vst">
-                <button class="nav bu-sub" id="nv-bu-vst" data-k="vst veterinary services team" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/nayePoyA42.png/raw" alt="" /><b>VST</b> <small>Veterinary Services Team</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <button class="nav bu-sub" id="nv-bu-vst" data-k="vst veterinary services team" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/nayePoyA42.png/raw" alt="" /><b>VST</b> <small>Veterinary Services Team</small></span><em class="bu-n">4</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
+                  <button class="nav sub" id="nv-k9-checkup" data-k="vst veterinary services team k9 checkup card patient first follow-up medical test vet" data-parent="nv-bu-vst" onclick="show('k9-checkup')"><span>K9 Checkup Card</span></button>
+                  <button class="nav sub" id="nv-k9-emc" data-k="vst veterinary services team k9 emergency medical care report vet clinic" data-parent="nv-bu-vst" onclick="show('k9-emc')"><span>K9 Emergency Medical Care Report</span></button>
+                  <button class="nav sub" id="nv-vet-lab-report" data-k="vst veterinary services team laboratory services report autopsy biopsy blood screening vet lab" data-parent="nv-bu-vst" onclick="show('vet-lab-report')"><span>Laboratory Services Report</span></button>
                   <button class="nav sub" id="nv-vst-request" data-k="vst veterinary services request k9 vet appointment" data-parent="nv-bu-vst" onclick="show('vst-request')"><span>Veterinary Services Request</span></button>
                 </div>
               </div>
@@ -4943,13 +4983,13 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             </div>
             <div class="f">
               <span>Service Request Details</span>
-              <div class="g">
-                <label class="row"><span>Routine Check-up</span><input type="checkbox" id="vsr-svc-checkup" /></label>
-                <label class="row"><span>Vaccinations</span><input type="checkbox" id="vsr-svc-vaccinations" /></label>
-                <label class="row"><span>Injury</span><input type="checkbox" id="vsr-svc-injury" /></label>
-                <label class="row"><span>Illness</span><input type="checkbox" id="vsr-svc-illness" /></label>
-                <label class="row"><span>Dental Care</span><input type="checkbox" id="vsr-svc-dental" /></label>
-                <label class="row"><span>Other (please specify)</span><input type="checkbox" id="vsr-svc-other" onchange="updateVsrOther()" /></label>
+              <div class="dep-chips">
+                <label class="dep-chip"><input type="checkbox" id="vsr-svc-checkup" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d='M9 3h6M10 3v3h4V3'/><rect x='5' y='5' width='14' height='16' rx='2'/><path d='m9 14 2 2 4-4'/></svg><span class="dep-txt"><b>Routine Check-up</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="vsr-svc-vaccinations" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d='m18 2 4 4M17 7l3-3M3 21l5-5M9 15l-1-1 8-8 3 3-8 8z'/><path d='m12 8 4 4'/></svg><span class="dep-txt"><b>Vaccinations</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="vsr-svc-injury" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d='M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z'/><path d='M12 9v5M9.5 11.5h5'/></svg><span class="dep-txt"><b>Injury</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="vsr-svc-illness" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d='M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z'/><path d='M12 9v7'/></svg><span class="dep-txt"><b>Illness</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="vsr-svc-dental" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d='M7 3c-2.5 0-4 2-4 4.5 0 3 1.5 4 2 7 .4 2.3.8 6.5 2.5 6.5 1.5 0 1.3-4 3-4s1.5 4 3 4c1.7 0 2.1-4.2 2.5-6.5.5-3 2-4 2-7C19 5 17.500 3 15 3c-1.500 0-2 .8-4 .8S8.500 3 7 3z'/></svg><span class="dep-txt"><b>Dental Care</b></span><i class="dep-tick" aria-hidden="true"></i></label>
+                <label class="dep-chip"><input type="checkbox" id="vsr-svc-other" onchange="updateVsrOther()" /><svg class="dep-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx='6' cy='12' r='1.6'/><circle cx='12' cy='12' r='1.6'/><circle cx='18' cy='12' r='1.6'/></svg><span class="dep-txt"><b>Other</b><small>Specify below</small></span><i class="dep-tick" aria-hidden="true"></i></label>
               </div>
             </div>
             <div class="f" id="vsr-other-wrap" hidden>
@@ -4997,6 +5037,181 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 stroke-linejoin="round"
               /></svg></a
           ><button class="b" onclick="resetVsrRequest()">Reset</button>
+        </div>
+      </div>
+      <div id="f-k9-emc" hidden>
+        <div class="card">
+          <h2><small>VST</small>K9 Emergency Medical Care Report</h2>
+          <div class="body">
+            <div class="f civ-cell"><label class="civ-toggle"><input type="checkbox" id="kem-civ" /><span class="civ-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.9-3.6 3.8-5.6 7.5-5.6s6.6 2 7.5 5.6"/></svg></span><span class="civ-txt"><b>Posting as a Civilian alternate character</b><small>Adds a [postas=Name Surname,CIV] line before the post.</small></span><i class="civ-sw" aria-hidden="true"></i></label></div><div class="civ-fields" id="kem-civ-wrap" hidden><div class="f"><span>Name and surname</span><input type="text" id="kem-civ-name" placeholder="Name Surname" autocomplete="off" /></div></div>
+            <div class="g"><div class="f"><span>K-9 Name</span><input type="text" id="kem-name" placeholder="Enter K-9 name here..." autocomplete="off" /></div><div class="f"><span>Handler (rank, name, badge number)</span><input type="text" id="kem-handler" placeholder="Rank, Name, Badge Number" autocomplete="off" /></div><div class="f"><span>Breed</span><input type="text" id="kem-breed" placeholder="Enter breed here..." autocomplete="off" /></div><div class="f"><span>Age</span><input type="text" id="kem-age" placeholder="Enter age here..." autocomplete="off" /></div><div class="f"><span>Sex</span><select id="kem-sex"><option value="">Select sex</option><option>Male</option><option>Female</option></select></div><div class="f"><span>Date &amp; Time of Incident</span><div class="date-time-control"><input type="text" id="kem-date" placeholder="Select date" /><input type="time" id="kem-time" value="00:00" aria-label="Time of incident (hours and minutes, 24-hour format)" title="Hours and minutes (24-hour time)" /></div></div><div class="f"><span>Veterinarian/Veterinary Technician</span><input type="text" id="kem-vet" placeholder="Enter name here..." autocomplete="off" /></div><div class="f"><span>Clinic Name</span><input type="text" id="kem-clinic" placeholder="Enter clinic name here..." autocomplete="off" /></div></div><div class="f"><span>Narrative</span><textarea id="kem-narrative" placeholder="Enter narrative here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>VST</small>Emergency Survey</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Airway</span><input type="text" id="kem-airway" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Breathing</span><input type="text" id="kem-breathing" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Circulation</span><input type="text" id="kem-circulation" placeholder="Answer" autocomplete="off" /></div></div><div class="f"><span>Comments/Findings</span><textarea id="kem-emerg-comments" placeholder="Enter comments or findings here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>VST</small>Clinical Survey</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>General Appearance</span><input type="text" id="kem-general" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Eyes/Ears/Nose/Throat</span><input type="text" id="kem-eent" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Oral/Dental Health</span><input type="text" id="kem-oral" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Skin/Coat Condition</span><input type="text" id="kem-skin" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Cardiovascular System</span><input type="text" id="kem-cardio" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Respiratory System</span><input type="text" id="kem-resp" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Musculoskeletal System</span><input type="text" id="kem-musc" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Neurological Exam</span><input type="text" id="kem-neuro" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Abdominal Palpation</span><input type="text" id="kem-abd" placeholder="Answer" autocomplete="off" /></div></div><div class="f"><span>Comments/Findings</span><textarea id="kem-clin-comments" placeholder="Enter comments or findings here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>VST</small>Laboratory &amp; Diagnostic Tests</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Bloodwork Performed</span><input type="text" id="kem-blood" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Urinalysis</span><input type="text" id="kem-urine" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>Fecal Exam</span><input type="text" id="kem-fecal" placeholder="Answer" autocomplete="off" /></div><div class="f"><span>X-rays / Imaging</span><input type="text" id="kem-imaging" placeholder="Answer" autocomplete="off" /></div></div><div class="f"><span>Results/Interpretation</span><textarea id="kem-results" placeholder="Enter results or interpretation here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>VST</small>Medications &amp; Treatments</h2>
+          <div class="body">
+            <div class="f"><span>Treatment / Interventions</span><textarea id="kem-treatment" placeholder="Enter treatments or interventions here..."></textarea></div><div class="f"><span>Emergency Vaccination</span><input type="text" id="kem-vacc" placeholder="Enter vaccination here..." autocomplete="off" /></div><div class="f"><span>Medications Prescribed</span><textarea id="kem-meds" placeholder="Enter medications here..."></textarea></div><div class="f"><span>Follow-up Care</span><textarea id="kem-followup" placeholder="Enter follow-up care here..."></textarea></div><div class="f"><span>Disposition</span><textarea id="kem-disposition" placeholder="Enter disposition here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="kem-title" readonly aria-label="K9 Emergency Medical Care report title" /><button class="b" onclick="copyCardCommand('kem-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Example: [K9 Wiley] Emergency Care</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Preview</small>BBCode</h2>
+          <div class="body">
+            <textarea id="kem-out" readonly aria-label="Generated BBCode" spellcheck="false"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('k9-emc')">Copy BBCode</button><a class="b forum-link" id="kem-forum" href="#" target="_blank" rel="noopener noreferrer">Open VST Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetK9Emc()">Reset</button>
+        </div>
+      </div>
+      <div id="f-k9-checkup" hidden>
+        <div class="card">
+          <h2><small>VST</small>K9 Checkup Card <span class="kcc-badge" id="kcc-badge" hidden>Follow-up</span></h2>
+          <div class="body">
+            <div class="f"><span>Type of visit</span><div class="seg" role="radiogroup" aria-label="Type of visit"><input type="radio" name="kcc-mode" id="kcc-m-first" value="first" checked /><label for="kcc-m-first">First Checkup</label><input type="radio" name="kcc-mode" id="kcc-m-follow" value="follow" /><label for="kcc-m-follow">Follow-up Checkup</label><input type="radio" name="kcc-mode" id="kcc-m-test" value="test" /><label for="kcc-m-test">Medical Test</label></div></div><div class="g"><div class="f"><span>K-9 Name</span><input type="text" id="kcc-name" placeholder="Enter K-9 name here..." autocomplete="off" /></div><div class="f civ-cell"><label class="civ-toggle"><input type="checkbox" id="kcc-civ" /><span class="civ-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.9-3.6 3.8-5.6 7.5-5.6s6.6 2 7.5 5.6"/></svg></span><span class="civ-txt"><b>Posting as a Civilian alternate character</b><small>Adds a [postas=Name Surname,CIV] line before the post.</small></span><i class="civ-sw" aria-hidden="true"></i></label></div></div><div class="civ-fields" id="kcc-civ-wrap" hidden><div class="f"><span>Name and surname</span><input type="text" id="kcc-civ-name" placeholder="Name Surname" autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card" data-kcc="checkup">
+          <h2><small>VST</small>Patient Information</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Handler (rank, name, badge number)</span><input type="text" id="kcc-handler" placeholder="Rank, Name, Badge Number" autocomplete="off" /></div><div class="f"><span>Breed</span><input type="text" id="kcc-breed" placeholder="Enter breed here..." autocomplete="off" /></div><div class="f"><span>Age</span><input type="text" id="kcc-age" placeholder="Enter age here..." autocomplete="off" /></div><div class="f"><span>Sex</span><select id="kcc-sex"><option value="">Select sex</option><option>Male</option><option>Female</option></select></div><div class="f"><span>Date of Examination</span><input type="text" id="kcc-date" placeholder="Select date" /></div><div class="f"><span>Veterinarian/Veterinary Technician</span><input type="text" id="kcc-vet" placeholder="Enter name here..." autocomplete="off" /></div><div class="f"><span>Clinic Name</span><input type="text" id="kcc-clinic" placeholder="Enter clinic name here..." autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card" data-kcc="checkup">
+          <h2><small>VST</small>Physical Examination</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Weight</span><input type="text" id="kcc-weight" placeholder="Enter weight here..." autocomplete="off" /></div><div class="f"><span>Temperature</span><input type="text" id="kcc-temp" placeholder="Enter temperature here..." autocomplete="off" /></div><div class="f"><span>Heart Rate</span><input type="text" id="kcc-hr" placeholder="Enter heart rate here..." autocomplete="off" /></div><div class="f"><span>Respiration Rate</span><input type="text" id="kcc-rr" placeholder="Enter respiration rate here..." autocomplete="off" /></div><div class="f"><span>Body Condition Score (1–9)</span><select id="kcc-bcs"><option value="">Select score</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div></div><div class="g"><div class="f"><span>General Appearance</span><select id="kcc-sys-general"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-general-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div><div class="f"><span>Eyes/Ears/Nose/Throat</span><select id="kcc-sys-eent"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-eent-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div><div class="f"><span>Oral/Dental Health</span><select id="kcc-sys-oral"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-oral-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div><div class="f"><span>Skin/Coat Condition</span><select id="kcc-sys-skin"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-skin-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div><div class="f"><span>Cardiovascular System</span><select id="kcc-sys-cardio"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-cardio-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div><div class="f"><span>Respiratory System</span><select id="kcc-sys-resp"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-resp-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div><div class="f"><span>Musculoskeletal System</span><select id="kcc-sys-musc"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-musc-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div><div class="f"><span>Neurological Exam</span><select id="kcc-sys-neuro"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-neuro-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div><div class="f"><span>Abdominal Palpation</span><select id="kcc-sys-abd"><option>Normal</option><option>Abnormal</option><option>Not examined</option></select><input type="text" id="kcc-sys-abd-txt" placeholder="Describe the finding" autocomplete="off" hidden style="margin-top:6px" /></div></div><div class="f"><span>Comments/Findings</span><textarea id="kcc-comments" placeholder="Enter comments or findings here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card" data-kcc="checkup">
+          <h2><small>VST</small>Vaccinations &amp; Preventatives</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Rabies</span><select id="kcc-rabies"><option>Up to Date</option><option>Overdue</option><option>Administered Today</option><option>Not Applicable</option></select></div><div class="f"><span>Distemper/Parvo (DHPP)</span><select id="kcc-dhpp"><option>Up to Date</option><option>Overdue</option><option>Administered Today</option><option>Not Applicable</option></select></div><div class="f"><span>Bordetella</span><select id="kcc-bord"><option>Up to Date</option><option>Overdue</option><option>Administered Today</option><option>Not Applicable</option></select></div><div class="f"><span>Leptospirosis</span><select id="kcc-lepto"><option>Up to Date</option><option>Overdue</option><option>Administered Today</option><option>Not Applicable</option></select></div><div class="f"><span>Lyme Disease</span><select id="kcc-lyme"><option>Up to Date</option><option>Overdue</option><option>Administered Today</option><option>Not Applicable</option></select></div><div class="f"><span>Heartworm Test</span><select id="kcc-hwtest"><option>Negative</option><option>Positive</option><option>Not Performed</option></select></div><div class="f"><span>Heartworm Preventative Given</span><select id="kcc-hwprev"><option>Yes</option><option>No</option></select></div><div class="f"><span>Flea/Tick Preventative Given</span><select id="kcc-flea"><option>Yes</option><option>No</option></select></div><div class="f"><span>Deworming Completed</span><select id="kcc-deworm"><option>Yes</option><option>No</option></select></div></div><div class="f"><span>Vaccination Notes</span><textarea id="kcc-vnotes" placeholder="Enter vaccination notes here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card" data-kcc="checkup">
+          <h2><small>VST</small>Laboratory &amp; Diagnostic Tests</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Bloodwork Performed</span><select id="kcc-blood"><option>Yes</option><option>No</option></select></div><div class="f"><span>Urinalysis</span><select id="kcc-urine"><option>Yes</option><option>No</option></select></div><div class="f"><span>Fecal Exam</span><select id="kcc-fecal"><option>Yes</option><option>No</option></select></div><div class="f"><span>X-rays / Imaging</span><select id="kcc-imaging"><option>Yes</option><option>No</option></select></div></div><div class="f"><span>Results/Interpretation</span><textarea id="kcc-results" placeholder="Enter results or interpretation here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card" data-kcc="checkup">
+          <h2><small>VST</small>Medications &amp; Treatments</h2>
+          <div class="body">
+            <div class="f"><span>Medications Prescribed</span><textarea id="kcc-meds" placeholder="Enter medications here..."></textarea></div><div class="f"><span>Follow-up Care / Recommendations</span><textarea id="kcc-followup" placeholder="Enter follow-up care or recommendations here..."></textarea></div><div class="f"><span>Next Scheduled Checkup</span><input type="text" id="kcc-next" placeholder="Select date" /></div>
+          </div>
+        </div>
+        <div class="card" data-kcc="test" hidden>
+          <h2><small>VST</small>Medical Test</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Lab report link</span><input type="text" id="kcc-link" placeholder="https://" autocomplete="off" /></div><div class="f"><span>Topic name</span><input type="text" id="kcc-topic" placeholder="Enter topic name here..." autocomplete="off" /></div></div><small class="date-time-hint" id="kcc-link-hint" hidden>No lab report link yet. The BBCode is still generated.</small>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="kcc-title" readonly aria-label="K9 Checkup Card title" /><button class="b" onclick="copyCardCommand('kcc-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Example: [K9 Wiley] Patient Card</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Preview</small>BBCode</h2>
+          <div class="body">
+            <textarea id="kcc-out" readonly aria-label="Generated BBCode" spellcheck="false"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('k9-checkup')">Copy BBCode</button><a class="b forum-link" id="kcc-forum" href="#" target="_blank" rel="noopener noreferrer">Open VST Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetK9Checkup()">Reset</button>
+        </div>
+      </div>
+      <div id="f-vet-lab-report" hidden>
+        <div class="card">
+          <h2><small>VST</small>Laboratory Services Report</h2>
+          <div class="body">
+            <div class="f"><span>Report type</span><div class="seg" role="radiogroup"><input type="radio" name="lr-type" id="lr-type-autopsy" value="autopsy" checked /><label for="lr-type-autopsy">Autopsy Report</label><input type="radio" name="lr-type" id="lr-type-biopsy" value="biopsy" /><label for="lr-type-biopsy">Biopsy Report</label><input type="radio" name="lr-type" id="lr-type-blood" value="blood" /><label for="lr-type-blood">Blood Screening Report</label></div></div><div class="f civ-cell"><label class="civ-toggle"><input type="checkbox" id="lr-civ" /><span class="civ-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.9-3.6 3.8-5.6 7.5-5.6s6.6 2 7.5 5.6"/></svg></span><span class="civ-txt"><b>Posting as a Civilian alternate character</b><small>Adds a [postas=Name Surname,CIV] line before the post.</small></span><i class="civ-sw" aria-hidden="true"></i></label></div><div class="civ-fields" id="lr-civ-wrap" hidden><div class="f"><span>Name and surname</span><input type="text" id="lr-civ-name" placeholder="Name Surname" autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>VST</small>Report &amp; Patient</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Attending Veterinarian</span><input type="text" id="lr-vet" placeholder="Enter name here..." autocomplete="off" /></div><div class="f"><span>Date and Time</span><div class="date-time-control"><input type="text" id="lr-date" placeholder="Select date" /><input type="time" id="lr-time" value="00:00" aria-label="Time (hours and minutes, 24-hour format)" title="Hours and minutes (24-hour time)" /></div></div><div class="f"><span>Patient Name</span><input type="text" id="lr-name" placeholder="Enter patient name here..." autocomplete="off" /></div><div class="f"><span>Species</span><input type="text" id="lr-species" value="Canine" autocomplete="off" /></div><div class="f"><span>Breed</span><input type="text" id="lr-breed" placeholder="Enter breed here..." autocomplete="off" /></div><div class="f"><span>Age</span><input type="text" id="lr-age" placeholder="Enter age here..." autocomplete="off" /></div><div class="f"><span>Sex</span><select id="lr-sex"><option value="">Select sex</option><option>Male</option><option>Female</option></select></div><div class="f"><span>Handler</span><input type="text" id="lr-handler" placeholder="Enter handler here..." autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card" data-lr="autopsy">
+          <h2><small>VST</small>Autopsy Report</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Color/Markings</span><input type="text" id="lr-a-color" placeholder="Enter color or markings here..." autocomplete="off" /></div></div><details class="lr-sec" open><summary>Clinical History</summary><div class="f"><span>Presenting signs and symptoms — Results</span><textarea id="lr-a-ch1" placeholder="Results"></textarea></div><div class="f"><span>Duration of illness — Results</span><textarea id="lr-a-ch2" placeholder="Results"></textarea></div><div class="f"><span>Treatment history — Results</span><textarea id="lr-a-ch3" placeholder="Results"></textarea></div><div class="f"><span>Previous medical conditions — Results</span><textarea id="lr-a-ch4" placeholder="Results"></textarea></div></details><div class="g"><div class="f"><span>Date of Death</span><input type="text" id="lr-death" placeholder="Select date" /></div></div><div class="f"><span>Circumstances of Death — Description</span><textarea id="lr-a-circ" placeholder="Brief description of the circumstances leading to death, e.g. sudden onset, progressive illness, trauma"></textarea></div><details class="lr-sec" open><summary>External Examination</summary><div class="f"><span>General condition of the body — Results</span><textarea id="lr-a-ex1" placeholder="Results"></textarea></div><div class="f"><span>Signs of trauma or injury — Results</span><textarea id="lr-a-ex2" placeholder="Results"></textarea></div><div class="f"><span>Presence of parasites — Results</span><textarea id="lr-a-ex3" placeholder="Results"></textarea></div><div class="f"><span>External abnormalities — Results</span><textarea id="lr-a-ex4" placeholder="Results"></textarea></div></details><details class="lr-sec" open><summary>Internal Examination</summary><div class="f"><span>Body cavities opened (thoracic, abdominal, cranial) — Results</span><textarea id="lr-a-in1" placeholder="Results"></textarea></div><div class="f"><span>Description of major organs — Results</span><textarea id="lr-a-in2" placeholder="Results"></textarea></div><div class="f"><span>Size, color, texture, consistency — Results</span><textarea id="lr-a-in3" placeholder="Results"></textarea></div><div class="f"><span>Presence of abnormalities, lesions, or tumors — Results</span><textarea id="lr-a-in4" placeholder="Results"></textarea></div><div class="f"><span>Description of major organ systems — Results</span><textarea id="lr-a-in5" placeholder="Results"></textarea></div><div class="f"><span>Any abnormalities noted in each system — Results</span><textarea id="lr-a-in6" placeholder="Results"></textarea></div></details><div class="f"><span>Sample Collection — Results</span><textarea id="lr-a-sample" placeholder="Results"></textarea></div><details class="lr-sec" open><summary>Conclusion</summary><div class="f"><span>Cause of death — Results</span><textarea id="lr-a-co1" placeholder="Results"></textarea></div><div class="f"><span>Contributing factors — Results</span><textarea id="lr-a-co2" placeholder="Results"></textarea></div><div class="f"><span>Differential diagnoses considered — Results</span><textarea id="lr-a-co3" placeholder="Results"></textarea></div></details><div class="f"><span>Additional Notes</span><textarea id="lr-a-notes" placeholder="Enter additional notes here..."></textarea></div>
+          </div>
+        </div>
+        <div class="card" data-lr="biopsy" hidden>
+          <h2><small>VST</small>Biopsy Report</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Type of Biopsy</span><select id="lr-b-type"><option value="">Select type</option><option value="Fine-needle aspiration">Fine-needle aspiration</option><option value="Punch biopsy">Punch biopsy</option><option value="Incisional biopsy">Incisional biopsy</option><option value="Excisional biopsy">Excisional biopsy</option><option value="Other">Other</option></select></div><div id="lr-b-type-other-wrap" hidden><div class="f"><span>Specify Biopsy Type</span><input type="text" id="lr-b-type-other" placeholder="Describe the biopsy type" autocomplete="off" /></div></div><div class="f"><span>Tissue Sample Location</span><input type="text" id="lr-b-loc" placeholder="Enter location here..." autocomplete="off" /></div><div class="f"><span>Staining Method</span><input type="text" id="lr-b-stain" list="lr-stain-list" placeholder="e.g. Hematoxylin and Eosin (H&amp;E)" autocomplete="off" /><datalist id="lr-stain-list"><option value="Hematoxylin and Eosin (H&amp;E)"><option value="Diff-Quik"><option value="Gram stain"><option value="Periodic acid-Schiff (PAS)"><option value="Masson's trichrome"></datalist></div><div class="f"><span>Magnification</span><input type="text" id="lr-b-mag" placeholder="e.g. 40x" autocomplete="off" /></div></div><div class="f"><span>Description of Tissue Characteristics</span><textarea id="lr-b-tissue" placeholder="Enter description here..."></textarea></div><div class="f"><span>Abnormalities Detected</span><textarea id="lr-b-abn" placeholder="Enter abnormalities here..."></textarea></div><div class="f"><span>Final Diagnosis</span><textarea id="lr-b-diag" placeholder="Enter final diagnosis here..."></textarea></div><div class="f"><span>Interpretation</span><textarea id="lr-b-interp" placeholder="Enter interpretation here..."></textarea></div><div class="f"><span>Diagnostic Report</span><textarea id="lr-b-report" placeholder="Enter diagnostic report here..."></textarea></div><div class="f"><span>Recommendations</span><textarea id="lr-b-recs" placeholder="Enter recommendations here..."></textarea></div><div class="actions-row"><button class="b" type="button" onclick="copyLabAiPrompt()">Copy AI prompt</button></div>
+          </div>
+        </div>
+        <div class="card" data-lr="blood" hidden>
+          <h2><small>VST</small>Blood Screening Report</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Weight</span><input type="text" id="lr-c-weight" placeholder="Enter weight here..." autocomplete="off" /></div></div><div class="f"><span>Test Panel</span><div class="g"><label class="row"><span>Complete Blood Count (CBC)</span><input type="checkbox" id="lr-t-cbc" /></label><label class="row"><span>Serum Chemistry Profile</span><input type="checkbox" id="lr-t-chem" /></label><label class="row"><span>Canine Heartworm Antigen Test</span><input type="checkbox" id="lr-t-hw" /></label><label class="row"><span>Canine Lyme Disease Antibody Test</span><input type="checkbox" id="lr-t-lyme" /></label><label class="row"><span>Canine Ehrlichia Antibody Test</span><input type="checkbox" id="lr-t-ehr" /></label><label class="row"><span>Canine Anaplasma Antibody Test</span><input type="checkbox" id="lr-t-ana" /></label></div></div><div data-for="lr-t-cbc" hidden><h3 class="lr-h">Complete Blood Count (CBC)</h3><div class="g"><div class="f"><span>Red Blood Cells (RBC) — million/µL</span><input type="text" id="lr-c-rbc" placeholder="Guide: 5.5–8.5" autocomplete="off" /></div><div class="f"><span>White Blood Cells (WBC) — thousand/µL</span><input type="text" id="lr-c-wbc" placeholder="Guide: 6–17" autocomplete="off" /></div><div class="f"><span>Hemoglobin (Hb) — g/dL</span><input type="text" id="lr-c-hb" placeholder="Guide: 12–18" autocomplete="off" /></div><div class="f"><span>Hematocrit (HCT) — %</span><input type="text" id="lr-c-hct" placeholder="Guide: 37–55" autocomplete="off" /></div><div class="f"><span>Platelets — thousand/µL</span><input type="text" id="lr-c-plt" placeholder="Guide: 200–500" autocomplete="off" /></div></div><small class="date-time-hint">The range in each field is a rough guide only. It is not written to the BBCode.</small></div><div data-for="lr-t-chem" hidden><h3 class="lr-h">Serum Chemistry Profile</h3><div class="g"><div class="f"><span>Blood Urea Nitrogen (BUN) — mg/dL</span><input type="text" id="lr-c-bun" placeholder="Guide: 7–27" autocomplete="off" /></div><div class="f"><span>Creatinine — mg/dL</span><input type="text" id="lr-c-cre" placeholder="Guide: 0.5–1.8" autocomplete="off" /></div><div class="f"><span>Glucose — mg/dL</span><input type="text" id="lr-c-glu" placeholder="Guide: 70–143" autocomplete="off" /></div><div class="f"><span>Total Protein — g/dL</span><input type="text" id="lr-c-tp" placeholder="Guide: 5.2–8.2" autocomplete="off" /></div><div class="f"><span>Albumin — g/dL</span><input type="text" id="lr-c-alb" placeholder="Guide: 2.3–4.0" autocomplete="off" /></div><div class="f"><span>Alkaline Phosphatase (ALP) — U/L</span><input type="text" id="lr-c-alp" placeholder="Guide: 23–212" autocomplete="off" /></div><div class="f"><span>Alanine Aminotransferase (ALT) — U/L</span><input type="text" id="lr-c-alt" placeholder="Guide: 10–100" autocomplete="off" /></div><div class="f"><span>Calcium — mg/dL</span><input type="text" id="lr-c-ca" placeholder="Guide: 7.9–12.0" autocomplete="off" /></div><div class="f"><span>Phosphorus — mg/dL</span><input type="text" id="lr-c-phos" placeholder="Guide: 2.5–6.8" autocomplete="off" /></div></div></div><div class="f" data-for="lr-t-hw" hidden><span>Canine Heartworm Antigen Test</span><div class="seg" role="radiogroup"><input type="radio" name="lr-r-hw" id="lr-r-hw-neg" value="neg" checked /><label for="lr-r-hw-neg">Negative</label><input type="radio" name="lr-r-hw" id="lr-r-hw-pos" value="pos" /><label for="lr-r-hw-pos">Positive</label></div></div><div class="f" data-for="lr-t-lyme" hidden><span>Canine Lyme Disease Antibody Test</span><div class="seg" role="radiogroup"><input type="radio" name="lr-r-lyme" id="lr-r-lyme-neg" value="neg" checked /><label for="lr-r-lyme-neg">Negative</label><input type="radio" name="lr-r-lyme" id="lr-r-lyme-pos" value="pos" /><label for="lr-r-lyme-pos">Positive</label></div></div><div class="f" data-for="lr-t-ehr" hidden><span>Canine Ehrlichia Antibody Test</span><div class="seg" role="radiogroup"><input type="radio" name="lr-r-ehr" id="lr-r-ehr-neg" value="neg" checked /><label for="lr-r-ehr-neg">Negative</label><input type="radio" name="lr-r-ehr" id="lr-r-ehr-pos" value="pos" /><label for="lr-r-ehr-pos">Positive</label></div></div><div class="f" data-for="lr-t-ana" hidden><span>Canine Anaplasma Antibody Test</span><div class="seg" role="radiogroup"><input type="radio" name="lr-r-ana" id="lr-r-ana-neg" value="neg" checked /><label for="lr-r-ana-neg">Negative</label><input type="radio" name="lr-r-ana" id="lr-r-ana-pos" value="pos" /><label for="lr-r-ana-pos">Positive</label></div></div><div class="f"><span>Comments/Interpretation</span><textarea id="lr-c-comments" placeholder="Enter comments or interpretation here..."></textarea></div><div class="f"><span>Recommendations</span><textarea id="lr-c-recs" placeholder="Enter recommendations here..."></textarea></div><div class="actions-row"><button class="b" type="button" onclick="copyLabAiPrompt()">Copy AI prompt</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>VST</small>Signature</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Signature</span><input type="text" id="lr-sig" placeholder="Enter signature here..." autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="lr-title" readonly aria-label="Laboratory Services Report title" /><button class="b" onclick="copyCardCommand('lr-title')">Copy title</button>
+            </div>
+            <span class="f"><span>#NUMBER stays as it is. Fill in the real ID on the forum.</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>VST</small>Notification Reply</h2>
+          <div class="body">
+            <details class="lr-sec"><summary>Notify requester &amp; supervisor</summary><div class="g"><div class="f"><span>Requested by</span><input type="text" id="lr-req" placeholder="Name of the requester" autocomplete="off" /></div><div class="f"><span>Supervisor</span><input type="text" id="lr-sup" placeholder="Name of the supervisor" autocomplete="off" /></div></div><small class="date-time-hint" id="lr-notify-hint">Add a name above to generate the reply quotes. Post this as a reply once the report is up.</small><div id="lr-notify-wrap" hidden><div class="command-row"><textarea id="lr-notify" readonly aria-label="Notification reply BBCode" spellcheck="false"></textarea><button class="b" onclick="copyCardCommand('lr-notify')">Copy quotes</button></div></div></details>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Preview</small>BBCode</h2>
+          <div class="body">
+            <textarea id="lr-out" readonly aria-label="Generated BBCode" spellcheck="false"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('vet-lab-report')">Copy BBCode</button><a class="b forum-link" id="lr-forum" href="#" target="_blank" rel="noopener noreferrer">Open VST Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetLabReport()">Reset</button>
         </div>
       </div>
       <div id="f-davis-k9-deployment" hidden>
@@ -6902,6 +7117,31 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v2.1.3</h2>
+          <div class="body">
+            <h3>v2.1.3</h3>
+            <h3>VST — Veterinary Services Team</h3>
+            <ul>
+              <li>Three new forms under VST in Technology &amp; Support Division, next to the Veterinary Services Request: the K9 Emergency Medical Care Report, the K9 Checkup Card and the Laboratory Services Report.</li>
+              <li>K9 Emergency Medical Care Report: Header, Emergency survey, Clinical survey, Laboratory &amp; Diagnostic Tests, and Medications &amp; Treatments, in the official BBCode format. The forum topic title is generated live from the K-9 Name as [K9 Name] Emergency Care (a leading K9 or K-9 is not doubled), with its own Copy title button. The signature quotes are always left empty, to be signed on the forum.</li>
+              <li>K9 Checkup Card: a Type of visit selector switches between First Checkup, Follow-up Checkup and Medical Test, and what you typed is kept when switching. The checkups cover the patient information, physical examination (nine systems set to Normal, Abnormal or Not examined, with a field for the finding), vaccinations and preventatives, laboratory tests, medications and the next scheduled checkup. Each mode has its own template. Medical Test writes the Medical Tests block from a lab report link and a topic name. The title is [K9 Name] Patient Card.</li>
+              <li>Laboratory Services Report: one form for Autopsy, Biopsy and Blood Screening, with a Report type selector that keeps what you typed in the other types. The title follows the type, for example [VET-#NUMBER] Autopsy Report, and #NUMBER is left as it is, to be replaced with the real ID on the forum. Date and time is written as 04/Nov/2026 - 14:30. Autopsy has collapsible sections, Biopsy has a biopsy type picker with an Other field and staining suggestions, and Blood Screening reveals the result fields of each ticked test and leaves unticked tests out of the BBCode (the ranges in the fields are a guide only). Biopsy and Blood Screening have a Copy AI prompt button, and a collapsible Notify requester &amp; supervisor section writes the two reply quotes to post under the report.</li>
+              <li>All three forms have a Posting as a Civilian alternate character switch with a single Name and surname box, which adds a [postas=Name Surname,CIV] line before the BBCode.</li>
+              <li>The Veterinarian is prefilled from Character Details and stays editable. The Handler is not prefilled, since the person filing is not the handler. The Open VST Forum buttons go to the Veterinary Services Team, Patient Files and Laboratory Services forums.</li>
+              <li>The Service Request Details on the Veterinary Services Request are now icon chips with a tick, like the Deployment Type chips on the K9 forms. The BBCode is unchanged.</li>
+            </ul>
+            <h3>Character Details</h3>
+            <ul>
+              <li>Rank now has a Custom option. Picking it opens a box below to type your own rank, which is saved with your details and used everywhere your rank appears, exactly as typed.</li>
+            </ul>
+            <h3>Sidebar</h3>
+            <ul>
+              <li>The counters in the Bureaus section of the sidebar are now worked out from the same list as the home page, so they always match (Technology &amp; Support Division was showing 4 instead of its real number of forms). The Bureaus total now counts forms.</li>
+              <li>The Sections outline on the right of the checkup and laboratory forms only lists the sections of the selected type.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v2.1.2</h2>
           <div class="body">
             <h3>v2.1.2</h3>
@@ -7772,12 +8012,16 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 <option>Undersheriff</option>
                 <option>Assistant Sheriff</option>
                 <option>Sheriff</option>
+                <option id="deputy-rank-custom-opt" value="">Custom</option>
               </select>
             </div>
             <div class="f">
               <span>Badge number</span
               ><input type="text" id="deputy-badge-number" inputmode="numeric" />
               <em class="dp-hint">Numbers only, no # needed.</em>
+            </div>
+            <div class="f" id="deputy-rank-custom-wrap" hidden>
+              <span>Custom rank</span><input type="text" id="deputy-rank-custom" maxlength="40" placeholder="Your rank" autocomplete="off" />
             </div>
               </div>
             </section>
@@ -8158,6 +8402,9 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         "davis-k9-deployment",
         "csd-k9-deployment",
         "vst-request",
+        "k9-emc",
+        "k9-checkup",
+        "vet-lab-report",
         "ftp-phase1",
         "ftp-phase2",
         "ftp-phase3",
@@ -8200,7 +8447,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             deputyDetails = {
               fullName: parsed.fullName,
               badgeNumber: parsed.badgeNumber,
-              rank: deputyRanks.includes(parsed.rank) ? parsed.rank : "",
+              rank: parsed.rank.trim().slice(0, 40),
               bureau:
                 typeof parsed.bureau === "string"
                   ? parsed.bureau
@@ -8380,17 +8627,36 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         }
         $("deputy-full-name").value = "";
         $("deputy-badge-number").value = "";
-        $("deputy-rank").selectedIndex = 0;
+        setDeputyRankField("");
         $("deputy-bureau").value = "";
         $("deputy-callsign").value = "";
         applyDeputyDetails();
         toast("Character Details cleared");
       }
+      // Rank: the "Custom" option takes whatever is typed in the box below it as its value,
+      // so every form that reads the Rank dropdown gets the custom text with no other change.
+      function setDeputyRankField(rank) {
+        const sel = $("deputy-rank"), opt = $("deputy-rank-custom-opt"), box = $("deputy-rank-custom");
+        const known = [...sel.options].find((o) => o !== opt && o.value && o.value === rank);
+        if (known) sel.value = rank;
+        else if (rank) { opt.value = rank; box.value = rank; opt.selected = true; }
+        else { opt.value = ""; box.value = ""; sel.selectedIndex = 0; }
+        $("deputy-rank-custom-wrap").hidden = !opt.selected;
+      }
+      $("deputy-rank").addEventListener("change", () => {
+        const opt = $("deputy-rank-custom-opt"), box = $("deputy-rank-custom");
+        $("deputy-rank-custom-wrap").hidden = !opt.selected;
+        if (opt.selected) { opt.value = box.value.trim(); box.focus(); }
+      });
+      $("deputy-rank-custom").addEventListener("input", () => {
+        $("deputy-rank-custom-opt").value = $("deputy-rank-custom").value.trim();
+        $("deputy-rank").dispatchEvent(new Event("change", { bubbles: true }));
+      });
       function initializeDeputyDetails() {
         loadDeputyDetails();
         $("deputy-full-name").value = deputyDetails.fullName;
         $("deputy-badge-number").value = deputyDetails.badgeNumber;
-        $("deputy-rank").value = deputyDetails.rank;
+        setDeputyRankField(deputyDetails.rank);
         $("deputy-bureau").value = deputyDetails.bureau;
         $("deputy-callsign").value = deputyDetails.callsign;
         applyDeputyDetails();
@@ -11602,6 +11868,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "davis-k9-deployment",
           "csd-k9-deployment",
           "vst-request",
+          "k9-emc",
+          "k9-checkup",
+          "vet-lab-report",
           "ftp-phase1",
           "ftp-phase2",
           "ftp-phase3",
@@ -11678,6 +11947,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "davis-k9-deployment": "K9 — Deployment Log (Davis)",
           "csd-k9-deployment": "K9 — Deployment Log (CSD)",
           "vst-request": "VST — Veterinary Services Request",
+          "k9-emc": "VST — K9 Emergency Medical Care Report",
+          "k9-checkup": "VST — K9 Checkup Card",
+          "vet-lab-report": "VST — Laboratory Services Report",
           "arrest-warrant": "Arrest Warrant",
           "search-warrant": "Search Warrant",
           "electronic-surveillance-warrant": "Electronic Surveillance Warrant",
@@ -12623,6 +12895,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "k9-time": "HH:MM",
         "ck9-time": "HH:MM",
         "dk9-time": "HH:MM",
+        "kem-time": "HH:MM",
+        "lr-time": "HH:MM",
         "citation-time": "HH:MM:SS",
         "citation-ni-stop": "HH:MM:SS",
         "senora-logbook-time": "HH:MM",
@@ -12745,6 +13019,11 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "dk9-date",
         "ck9-date",
         "vsr-date",
+        "kem-date",
+        "kcc-date",
+        "kcc-next",
+        "lr-date",
+        "lr-death",
         "citation-date",
         "ftp1-date",
         "ftp2-date",
@@ -14926,7 +15205,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       { id: "cfmb", n: "Communications & Fleet Management Bureau", a: "CFMB", f: [] },
       { id: "psb", n: "Psychological Services Bureau", a: "PSB", f: [] },
       { id: "fmu", n: "Fleet Management Unit", a: "FMU", f: [["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate.", "", "Fleet Maintenance Requests"]] },
-      { id: "vst", n: "Veterinary Services Team", a: "VST", f: [["vst-request", "Veterinary Services Request", "Request veterinary services for a K9.", "", "Veterinary Services Requests"]] },
+      { id: "vst", n: "Veterinary Services Team", a: "VST", f: [["k9-checkup", "K9 Checkup Card", "First checkup, follow-up checkup or medical test card for a K9.", "", "K9 Checkup Card"], ["k9-emc", "K9 Emergency Medical Care Report", "Emergency medical care report for a K9.", "", "K9 Emergency Care"], ["vet-lab-report", "Laboratory Services Report", "Autopsy, biopsy and blood screening reports.", "", "Laboratory Services Report"], ["vst-request", "Veterinary Services Request", "Request veterinary services for a K9.", "", "Veterinary Services Requests"]] },
     ] },
   ];
   const buForms = BU.flatMap((d) => d.u.flatMap((u) => u.f.map((f) => ({ f, d, u }))));
@@ -14934,6 +15213,16 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   const info = {};
   G.forEach(([g, items]) => items.forEach(([k, t, d]) => (info[k] = { g, t, d })));
   buForms.forEach(({ f, d, u }) => (info[f[0]].g = d.n + " \u00b7 " + u.n));
+  // Sidebar counters come from the same data as the home page, so they can never go stale.
+  (() => {
+    const set = (id, n) => { const b = document.getElementById(id); const c = b && b.querySelector(".bu-n"); if (c) c.textContent = n; };
+    BU.forEach((d) => {
+      set("nv-bu-" + d.id, d.u.reduce((t, u) => t + u.f.length, 0));
+      d.u.forEach((u) => set("nv-bu-" + u.id, u.f.length));
+    });
+    const gc = document.querySelector(".nav-group.bureaus .grp-count");
+    if (gc) gc.textContent = buForms.length;
+  })();
   info.credits = { g: "About", t: "Credits", d: "Who made this site, and why." };
   let buSel = "central";
   const RK = "lssd-recent", base = window.show;
@@ -14996,6 +15285,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     dforensics: { unit: "ssb", mono: "SSB" },
     fleet: { unit: "fmu", mono: "FMU" },
     "vst-request": { unit: "vst", mono: "VST" },
+    "k9-emc": { unit: "vst", mono: "VST" },
+    "k9-checkup": { unit: "vst", mono: "VST" },
+    "vet-lab-report": { unit: "vst", mono: "VST" },
   };
   function setFormSeal(k) {
     const seal = $("top-seal"), img = $("top-seal-img"), mono = $("top-seal-mono");
@@ -16596,6 +16888,714 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   window.show = function (k) {
     baseShow.apply(this, arguments);
     if (k === "peu-letters" || k === "peu-admin") { fillDefaults(); refreshLetter(); refreshAdmin(); }
+  };
+})();
+
+/* ===== VST: K9 Emergency Medical Care Report ===== */
+(() => {
+  const K9EMC_FORUM_URL = "https://lssd.gta.world/viewforum.php?f=2134";
+  const K9EMC_IMG = "https://i.imgur.com/fKnA8Rv.png";
+  const ID = ["name","handler","breed","age","sex","date","time","vet","clinic","narrative","airway","breathing","circulation","emerg-comments","general","eent","oral","skin","cardio","resp","musc","neuro","abd","clin-comments","blood","urine","fecal","imaging","results","treatment","vacc","meds","followup","disposition"];
+  const g = (i) => $("kem-" + i);
+  // pure: v = { key: string }, dateTime already formatted
+  function k9emcBuild(v) {
+    return [
+      "[block=1,20,black,white]",
+      "[center][img]" + K9EMC_IMG + "[/img]",
+      "[b][size=150]K-9 Emergency Medical Care[/size][/b][/center]",
+      "[hr]",
+      "[b]K-9 Name:[/b] " + v.name,
+      "[b]Handler (rank, name, badge number):[/b] " + v.handler,
+      "[b]Breed:[/b] " + v.breed,
+      "[b]Age:[/b] " + v.age,
+      "[b]Sex:[/b] " + v.sex,
+      "[b]Date & Time of Incident:[/b] " + v.dateTime,
+      "[b]Veterinarian/Veterinary Technician:[/b] " + v.vet,
+      "[b]Clinic Name:[/b] " + v.clinic,
+      "[b]Narrative:[/b]",
+      "[quote]" + v.narrative + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Emergency survey[/b][/size]",
+      "[b]Airway:[/b] " + v.airway,
+      "[b]Breathing:[/b] " + v.breathing,
+      "[b]Circulation:[/b] " + v.circulation,
+      "",
+      "[b]Comments/Findings:[/b]",
+      "[quote]" + v.emergComments + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Clinical survey[/b][/size]",
+      "[b]General Appearance:[/b] " + v.general,
+      "[b]Eyes/Ears/Nose/Throat:[/b] " + v.eent,
+      "[b]Oral/Dental Health:[/b] " + v.oral,
+      "[b]Skin/Coat Condition:[/b] " + v.skin,
+      "[b]Cardiovascular System:[/b] " + v.cardio,
+      "[b]Respiratory System:[/b] " + v.resp,
+      "[b]Musculoskeletal System:[/b] " + v.musc,
+      "[b]Neurological Exam:[/b] " + v.neuro,
+      "[b]Abdominal Palpation:[/b] " + v.abd,
+      "",
+      "[b]Comments/Findings:[/b]",
+      "[quote]" + v.clinComments + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Laboratory & Diagnostic Tests[/b][/size]",
+      "[b]Bloodwork Performed:[/b] " + v.blood,
+      "[b]Urinalysis:[/b] " + v.urine,
+      "[b]Fecal Exam:[/b] " + v.fecal,
+      "[b]X-rays / Imaging:[/b] " + v.imaging,
+      "",
+      "[b]Results/Interpretation:[/b]",
+      "[quote]" + v.results + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Medications & Treatments[/b][/size]",
+      "[b]Treatment / Interventions:[/b]",
+      "[quote]" + v.treatment + "[/quote]",
+      "",
+      "[b]Emergency Vaccination:[/b] " + v.vacc,
+      "[b]Medications Prescribed:[/b]",
+      "[quote]" + v.meds + "[/quote]",
+      "",
+      "[b]Follow-up Care:[/b]",
+      "[quote]" + v.followup + "[/quote]",
+      "",
+      "[b]Disposition:[/b]",
+      "[quote]" + v.disposition + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[quote=K9 Handler][/quote]",
+      "[quote=K9 Supervisor][/quote]",
+      "[quote=Lead Veterinarian][/quote][/block]",
+    ].join("\n");
+  }
+  const civPrefix = () => ($("kem-civ").checked ? "[postas=" + $("kem-civ-name").value.trim() + ",CIV]\n" : "");
+  function k9emcTitle(name) {
+    return "[K9 " + String(name || "").trim().replace(/^k-?9[\s-]+/i, "").trim() + "] Emergency Care";
+  }
+  const ML = new Set(["narrative","emerg-comments","clin-comments","results","treatment","meds","followup","disposition"]);
+  function values() {
+    const v = {};
+    ID.forEach((i) => { v[i.replace(/-(\w)/g, (_, c) => c.toUpperCase())] = ML.has(i) ? g(i).value : g(i).value.trim(); });
+    v.dateTime = g("date").value ? formatPickerDate(g("date").value, "time-date", g("time").value) : "";
+    return v;
+  }
+  function refresh() {
+    $("kem-civ-wrap").hidden = !$("kem-civ").checked;
+    $("kem-title").value = k9emcTitle(g("name").value);
+    $("kem-out").value = civPrefix() + k9emcBuild(values());
+    growTextarea($("kem-out"));
+  }
+  function applyDeputy() {
+    const rn = [$("deputy-rank").value, $("deputy-full-name").value.trim()].filter(Boolean).join(" ");
+    prefillDeputyField("kem-vet", rn);
+    refresh();
+  }
+  window.resetK9Emc = function () {
+    ID.forEach((i) => { if (i !== "sex" && i !== "date" && i !== "time") g(i).value = ""; });
+    g("sex").selectedIndex = 0;
+    $("kem-civ").checked = false; $("kem-civ-name").value = "";
+    g("date").value = taskListTodayDate();
+    g("time").value = "00:00";
+    updateTaskListDateLabel("kem-date");
+    $("kem-vet").dataset.deputyPrefill = "";
+    applyDeputy();
+    growAllTextareas("f-k9-emc");
+  };
+  g("date").value = taskListTodayDate();
+  updateTaskListDateLabel("kem-date");
+  $("kem-forum").href = K9EMC_FORUM_URL;
+  const form = $("f-k9-emc");
+  ["input", "change", "click"].forEach((ev) => form.addEventListener(ev, (e) => {
+    if (ev === "input" && e.target.matches("textarea")) growTextarea(e.target);
+    refresh();
+  }));
+  ["deputy-full-name", "deputy-rank", "deputy-badge-number"].forEach((id) =>
+    ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyDeputy)));
+  $("f-deputy").addEventListener("click", (e) => { if (e.target.closest("button")) applyDeputy(); });
+  applyDeputy();
+  window.__k9emc = { build: k9emcBuild, title: k9emcTitle, values, prefix: civPrefix };
+
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "k9-emc") return baseCopy.apply(this, arguments);
+    const txt = civPrefix() + k9emcBuild(values());
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  };
+  const baseShow = window.show;
+  window.show = function (k) {
+    baseShow.apply(this, arguments);
+    if (k === "k9-emc") { refresh(); growAllTextareas("f-k9-emc"); }
+  };
+})();
+
+/* ===== VST: K9 Checkup Card ===== */
+(() => {
+  const K9CC_FORUM_URL = "https://lssd.gta.world/viewforum.php?f=2100";
+  const K9CC_IMG = "https://i.imgur.com/fKnA8Rv.png";
+  const g = (i) => $("kcc-" + i);
+  // One template per mode, so either can be changed without touching the other.
+  function tplFirst(v) {
+    return [
+      "[block=1,20,black,white]",
+      "[center][img]https://i.imgur.com/fKnA8Rv.png[/img]",
+      "[b][size=150]K-9 Veterinary Patient Card[/size][/b][/center]",
+      "[hr]",
+      "[b]K-9 Name:[/b] " + v.name,
+      "[b]Handler (rank, name, badge number):[/b] " + v.handler,
+      "[b]Breed:[/b] " + v.breed,
+      "[b]Age:[/b] " + v.age,
+      "[b]Sex:[/b] " + v.sex,
+      "[b]Date of Examination:[/b] " + v.date,
+      "[b]Veterinarian/Veterinary Technician:[/b] " + v.vet,
+      "[b]Clinic Name:[/b] " + v.clinic,
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Physical Examination[/b][/size]",
+      "[b]Weight:[/b] " + v.weight,
+      "[b]Temperature:[/b] " + v.temp,
+      "[b]Heart Rate:[/b] " + v.hr,
+      "[b]Respiration Rate:[/b] " + v.rr,
+      "[b]Body Condition Score (1–9):[/b] " + v.bcs,
+      "",
+      "[b]General Appearance:[/b] " + v.sysGeneral,
+      "[b]Eyes/Ears/Nose/Throat:[/b] " + v.sysEent,
+      "[b]Oral/Dental Health:[/b] " + v.sysOral,
+      "[b]Skin/Coat Condition:[/b] " + v.sysSkin,
+      "[b]Cardiovascular System:[/b] " + v.sysCardio,
+      "[b]Respiratory System:[/b] " + v.sysResp,
+      "[b]Musculoskeletal System:[/b] " + v.sysMusc,
+      "[b]Neurological Exam:[/b] " + v.sysNeuro,
+      "[b]Abdominal Palpation:[/b] " + v.sysAbd,
+      "",
+      "[b]Comments/Findings:[/b]",
+      "[quote]" + v.comments + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Vaccinations & Preventatives[/b][/size]",
+      "[b]Rabies:[/b] " + v.rabies,
+      "[b]Distemper/Parvo (DHPP):[/b] " + v.dhpp,
+      "[b]Bordetella:[/b] " + v.bord,
+      "[b]Leptospirosis:[/b] " + v.lepto,
+      "[b]Lyme Disease:[/b] " + v.lyme,
+      "",
+      "[b]Heartworm Test:[/b] " + v.hwtest,
+      "[b]Heartworm Preventative Given:[/b] " + v.hwprev,
+      "[b]Flea/Tick Preventative Given:[/b] " + v.flea,
+      "[b]Deworming Completed:[/b] " + v.deworm,
+      "",
+      "[b]Vaccination Notes:[/b]",
+      "[quote]" + v.vnotes + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Laboratory & Diagnostic Tests[/b][/size]",
+      "[b]Bloodwork Performed:[/b] " + v.blood,
+      "[b]Urinalysis:[/b] " + v.urine,
+      "[b]Fecal Exam:[/b] " + v.fecal,
+      "[b]X-rays / Imaging:[/b] " + v.imaging,
+      "",
+      "[b]Results/Interpretation:[/b]",
+      "[quote]" + v.results + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Medications & Treatments[/b][/size]",
+      "[b]Medications Prescribed:[/b]",
+      "[quote]" + v.meds + "[/quote]",
+      "",
+      "[b]Follow-up Care / Recommendations:[/b]",
+      "[quote]" + v.followup + "[/quote]",
+      "",
+      "[hr]",
+      "[b]Next Scheduled Checkup:[/b] " + v.next,
+      "",
+      "[quote=K9 Handler][/quote]",
+      "[quote=K9 Supervisor][/quote]",
+      "[quote=Lead Veterinarian][/quote][/block]",
+    ].join("\n");
+  }
+
+  function tplFollow(v) {
+    return [
+      "[block=1,20,black,white]",
+      "[center][img]https://i.imgur.com/fKnA8Rv.png[/img]",
+      "[b][size=150]K-9 Veterinary Patient Card[/size][/b][/center]",
+      "[hr]",
+      "[b]K-9 Name:[/b] " + v.name,
+      "[b]Handler (rank, name, badge number):[/b] " + v.handler,
+      "[b]Breed:[/b] " + v.breed,
+      "[b]Age:[/b] " + v.age,
+      "[b]Sex:[/b] " + v.sex,
+      "[b]Date of Examination:[/b] " + v.date,
+      "[b]Veterinarian/Veterinary Technician:[/b] " + v.vet,
+      "[b]Clinic Name:[/b] " + v.clinic,
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Physical Examination[/b][/size]",
+      "[b]Weight:[/b] " + v.weight,
+      "[b]Temperature:[/b] " + v.temp,
+      "[b]Heart Rate:[/b] " + v.hr,
+      "[b]Respiration Rate:[/b] " + v.rr,
+      "[b]Body Condition Score (1–9):[/b] " + v.bcs,
+      "",
+      "[b]General Appearance:[/b] " + v.sysGeneral,
+      "[b]Eyes/Ears/Nose/Throat:[/b] " + v.sysEent,
+      "[b]Oral/Dental Health:[/b] " + v.sysOral,
+      "[b]Skin/Coat Condition:[/b] " + v.sysSkin,
+      "[b]Cardiovascular System:[/b] " + v.sysCardio,
+      "[b]Respiratory System:[/b] " + v.sysResp,
+      "[b]Musculoskeletal System:[/b] " + v.sysMusc,
+      "[b]Neurological Exam:[/b] " + v.sysNeuro,
+      "[b]Abdominal Palpation:[/b] " + v.sysAbd,
+      "",
+      "[b]Comments/Findings:[/b]",
+      "[quote]" + v.comments + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Vaccinations & Preventatives[/b][/size]",
+      "[b]Rabies:[/b] " + v.rabies,
+      "[b]Distemper/Parvo (DHPP):[/b] " + v.dhpp,
+      "[b]Bordetella:[/b] " + v.bord,
+      "[b]Leptospirosis:[/b] " + v.lepto,
+      "[b]Lyme Disease:[/b] " + v.lyme,
+      "",
+      "[b]Heartworm Test:[/b] " + v.hwtest,
+      "[b]Heartworm Preventative Given:[/b] " + v.hwprev,
+      "[b]Flea/Tick Preventative Given:[/b] " + v.flea,
+      "[b]Deworming Completed:[/b] " + v.deworm,
+      "",
+      "[b]Vaccination Notes:[/b]",
+      "[quote]" + v.vnotes + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Laboratory & Diagnostic Tests[/b][/size]",
+      "[b]Bloodwork Performed:[/b] " + v.blood,
+      "[b]Urinalysis:[/b] " + v.urine,
+      "[b]Fecal Exam:[/b] " + v.fecal,
+      "[b]X-rays / Imaging:[/b] " + v.imaging,
+      "",
+      "[b]Results/Interpretation:[/b]",
+      "[quote]" + v.results + "[/quote]",
+      "",
+      "[hr]",
+      "",
+      "[size=120][b]Medications & Treatments[/b][/size]",
+      "[b]Medications Prescribed:[/b]",
+      "[quote]" + v.meds + "[/quote]",
+      "",
+      "[b]Follow-up Care / Recommendations:[/b]",
+      "[quote]" + v.followup + "[/quote]",
+      "",
+      "[hr]",
+      "[b]Next Scheduled Checkup:[/b] " + v.next,
+      "",
+      "[quote=K9 Handler][/quote]",
+      "[quote=K9 Supervisor][/quote]",
+      "[quote=Lead Veterinarian][/quote][/block]",
+    ].join("\n");
+  }
+
+  function tplMedical(v) {
+    return [
+      "[block=1,20,black,white]",
+      "[center][img]" + K9CC_IMG + "[/img]",
+      "[b][size=150]Medical Tests[/size][/b][/center]",
+      "[b][url=" + v.link + "]" + v.topic + "[/url][/b][/block]",
+    ].join("\n");
+  }
+  function kccTitle(name) {
+    return "[K9 " + String(name || "").trim().replace(/^k-?9[\s-]+/i, "").trim() + "] Patient Card";
+  }
+  const SYS = ["general", "eent", "oral", "skin", "cardio", "resp", "musc", "neuro", "abd"];
+  const TXT = ["name", "handler", "breed", "age", "sex", "vet", "clinic", "weight", "temp", "hr", "rr", "bcs", "rabies", "dhpp", "bord", "lepto", "lyme", "hwtest", "hwprev", "flea", "deworm", "blood", "urine", "fecal", "imaging", "link", "topic"];
+  const ML = ["comments", "vnotes", "results", "meds", "followup"];
+  const cap = (x) => x[0].toUpperCase() + x.slice(1);
+  function mode() { return (document.querySelector('input[name="kcc-mode"]:checked') || {}).value || "first"; }
+  function values() {
+    const v = {};
+    TXT.forEach((i) => (v[i] = g(i).value.trim()));
+    ML.forEach((i) => (v[i] = g(i).value));
+    SYS.forEach((i) => {
+      const pick = g("sys-" + i).value, t = g("sys-" + i + "-txt").value.trim();
+      v["sys" + cap(i)] = pick === "Abnormal" ? t || "Abnormal" : pick;
+    });
+    v.date = g("date").value ? formatPickerDate(g("date").value) : "";
+    v.next = g("next").value ? formatPickerDate(g("next").value) : "";
+    return v;
+  }
+  function prefix() {
+    if (!g("civ").checked) return "";
+    return "[postas=" + g("civ-name").value.trim() + ",CIV]\n";
+  }
+  function kccBuild(m, v, civ) {
+    const body = (m === "test" ? tplMedical : m === "follow" ? tplFollow : tplFirst)(v);
+    return (civ === undefined ? prefix() : civ) + body;
+  }
+  function refresh() {
+    const m = mode();
+    const cards = [...form.querySelectorAll(":scope > .card")], links = [...form.querySelectorAll(".rail .outline a")];
+    cards.forEach((c, i) => {
+      const hide = !!c.dataset.kcc && c.dataset.kcc !== (m === "test" ? "test" : "checkup");
+      c.hidden = hide;
+      if (links.length === cards.length) links[i].hidden = hide;
+    });
+    $("kcc-badge").hidden = m !== "follow";
+    $("kcc-civ-wrap").hidden = !g("civ").checked;
+    SYS.forEach((i) => (g("sys-" + i + "-txt").hidden = g("sys-" + i).value !== "Abnormal"));
+    $("kcc-link-hint").hidden = m !== "test" || !!g("link").value.trim();
+    $("kcc-title").value = kccTitle(g("name").value);
+    $("kcc-out").value = kccBuild(m, values());
+    growTextarea($("kcc-out"));
+  }
+  function applyDeputy() {
+    prefillDeputyField("kcc-vet", [$("deputy-rank").value, $("deputy-full-name").value.trim()].filter(Boolean).join(" "));
+    refresh();
+  }
+  window.resetK9Checkup = function () {
+    TXT.forEach((i) => { const e = g(i); if (e.tagName === "SELECT") e.selectedIndex = 0; else e.value = ""; });
+    ML.forEach((i) => (g(i).value = ""));
+    SYS.forEach((i) => { g("sys-" + i).selectedIndex = 0; g("sys-" + i + "-txt").value = ""; });
+    g("civ").checked = false; g("civ-name").value = "";
+    g("date").value = taskListTodayDate(); g("next").value = "";
+    updateTaskListDateLabel("kcc-date"); updateTaskListDateLabel("kcc-next");
+    g("vet").dataset.deputyPrefill = "";
+    applyDeputy();
+    growAllTextareas("f-k9-checkup");
+  };
+  g("date").value = taskListTodayDate();
+  updateTaskListDateLabel("kcc-date");
+  $("kcc-forum").href = K9CC_FORUM_URL;
+  const form = $("f-k9-checkup");
+  ["input", "change", "click"].forEach((ev) => form.addEventListener(ev, (e) => {
+    if (ev === "input" && e.target.matches("textarea")) growTextarea(e.target);
+    refresh();
+  }));
+  ["deputy-full-name", "deputy-rank"].forEach((id) =>
+    ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyDeputy)));
+  $("f-deputy").addEventListener("click", (e) => { if (e.target.closest("button")) applyDeputy(); });
+  applyDeputy();
+  window.__kcc = { first: tplFirst, follow: tplFollow, medical: tplMedical, title: kccTitle, values, build: kccBuild };
+
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "k9-checkup") return baseCopy.apply(this, arguments);
+    const txt = kccBuild(mode(), values());
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  };
+  const baseShow = window.show;
+  window.show = function (k) {
+    baseShow.apply(this, arguments);
+    if (k === "k9-checkup") { refresh(); growAllTextareas("f-k9-checkup"); }
+  };
+})();
+
+/* ===== VST: Laboratory Services Report (Autopsy / Biopsy / Blood Screening) ===== */
+(() => {
+  const LAB_REPORTS_FORUM_URL = "https://lssd.gta.world/viewforum.php?f=1674";
+  const LR_IMG = "https://i.imgur.com/fKnA8Rv.png";
+  const g = (i) => $("lr-" + i);
+  const TYPES = { autopsy: "Autopsy Report", biopsy: "Biopsy Report", blood: "Blood Screening Report" };
+  // One template per report type.
+  function tplAutopsy(v) {
+    return [
+      "[block=1,20,black,white]",
+      "[center][imgmh=200]https://i.imgur.com/fKnA8Rv.png[/imgmh][/center]",
+      "[b][center]VETERINARY AUTOPSY REPORT[/center][/b]",
+      "[b]Attending Veterinarian:[/b] " + v.vet,
+      "[b]Date and Time:[/b] " + v.dateTime,
+      "",
+      "[b][u]Patient Information[/u][/b]",
+      "[b]Name:[/b] " + v.name,
+      "[b]Species:[/b] " + v.species,
+      "[b]Breed:[/b] " + v.breed,
+      "[b]Age:[/b] " + v.age,
+      "[b]Sex:[/b] " + v.sex,
+      "[b]Color/Markings:[/b] " + v.a_color,
+      "",
+      "[b][u]Clinical History[/u][/b]",
+      "[list]Presenting signs and symptoms:",
+      "Results: " + v.a_ch1,
+      "[*]Duration of illness:",
+      "Results: " + v.a_ch2,
+      "[*]Treatment history:",
+      "Results: " + v.a_ch3,
+      "[*]Previous medical conditions:",
+      "Results: " + v.a_ch4 + "[/list]",
+      "",
+      "[b][u]Date and Time of Death:[/u][/b]",
+      "[list]" + v.deathDate + "[/list]",
+      "",
+      "[b][u]Circumstances of Death:[/u][/b] (Brief description of the circumstances leading to death (e.g., sudden onset, progressive illness, trauma))",
+      "[b]Description:[/b] " + v.a_circ,
+      "",
+      "[b][u]External Examination[/u][/b]",
+      "[list]General condition of the body:",
+      "Results: " + v.a_ex1,
+      "[*]Signs of trauma or injury:",
+      "Results: " + v.a_ex2,
+      "[*]Presence of parasites:",
+      "Results: " + v.a_ex3,
+      "[*]External abnormalities:",
+      "Results: " + v.a_ex4 + "[/list]",
+      "",
+      "[b][u]Internal Examination[/u][/b]",
+      "[list]Body cavities opened (thoracic, abdominal, cranial):",
+      "Results: " + v.a_in1,
+      "[*]Description of major organs:",
+      "Results: " + v.a_in2,
+      "[*]Size, color, texture, consistency:",
+      "Results: " + v.a_in3,
+      "[*]Presence of abnormalities, lesions, or tumors:",
+      "Results: " + v.a_in4,
+      "[*]Description of major organ systems:",
+      "Results: " + v.a_in5,
+      "[*]Any abnormalities noted in each system:",
+      "Results: " + v.a_in6 + "[/list]",
+      "",
+      "[b][u]Sample Collection[/u][/b]",
+      "Results: " + v.a_sample,
+      "",
+      "[b][u]Conclusion[/u][/b]",
+      "[list]Cause of death:",
+      "Results: " + v.a_co1,
+      "[*]Contributing factors:",
+      "Results: " + v.a_co2,
+      "[*]Differential diagnoses considered:",
+      "Results: " + v.a_co3 + "[/list]",
+      "",
+      "[b]Additional Notes:[/b] " + v.a_notes,
+      "",
+      "[b]Signature:[/b] " + v.sig + "[/block]",
+    ].join("\n");
+  }
+
+  function tplBiopsy(v) {
+    return [
+      "[block=1,20,black,white]",
+      "[center][imgmh=200]https://i.imgur.com/fKnA8Rv.png[/imgmh][/center]",
+      "[b][center]VETERINARY BIOPSY REPORT[/center][/b]",
+      "",
+      "[b]Attending Veterinarian:[/b] " + v.vet,
+      "[b]Date and Time:[/b] " + v.dateTime,
+      "",
+      "[b][u]Patient Information:[/u][/b]",
+      "",
+      "Name: " + v.name,
+      "Species: " + v.species,
+      "Breed: " + v.breed,
+      "Age: " + v.age,
+      "Gender: " + v.sex,
+      "Handler: " + v.handler,
+      "",
+      "[b][u]Biopsy Procedure:[/u][/b]",
+      "",
+      "[b]Type of Biopsy: [/b]",
+      v.biopsyType,
+      "",
+      "[b]Tissue Sample Location:[/b] " + v.b_loc,
+      "",
+      "[b][u]Microscopic Examination:[/u][/b]",
+      "",
+      "[b]Staining Method:[/b] " + v.b_stain,
+      "",
+      "[b]Magnification: [/b]" + v.b_mag,
+      "Findings:",
+      "",
+      "[b]Description of Tissue Characteristics:[/b] " + v.b_tissue,
+      "Abnormalities Detected: " + v.b_abn,
+      "Final Diagnosis: " + v.b_diag,
+      "",
+      "Interpretation:",
+      v.b_interp,
+      "",
+      "[b]Diagnostic Report:[/b]",
+      v.b_report,
+      "",
+      "[b]Recommendations:[/b]",
+      v.b_recs,
+      "",
+      "[i][b]Signature:[/b][/i] " + v.sig + "[/block]",
+    ].join("\n");
+  }
+
+  const cb = (on) => (on ? "[cbc][/cbc]" : "[cb][/cb]");
+  const TESTS = [["cbc", "Complete Blood Count (CBC)"], ["chem", "Serum Chemistry Profile"], ["hw", "Canine Heartworm Antigen Test"], ["lyme", "Canine Lyme Disease Antibody Test"], ["ehr", "Canine Ehrlichia Antibody Test"], ["ana", "Canine Anaplasma Antibody Test"]];
+  const CBC = [["c_rbc", "Red Blood Cells (RBC)", "million/µL"], ["c_wbc", "White Blood Cells (WBC)", "thousand/µL"], ["c_hb", "Hemoglobin (Hb)", "g/dL"], ["c_hct", "Hematocrit (HCT)", "%"], ["c_plt", "Platelets", "thousand/µL"]];
+  const CHEM = [["c_bun", "Blood Urea Nitrogen (BUN)", "mg/dL"], ["c_cre", "Creatinine", "mg/dL"], ["c_glu", "Glucose", "mg/dL"], ["c_tp", "Total Protein", "g/dL"], ["c_alb", "Albumin", "g/dL"], ["c_alp", "Alkaline Phosphatase (ALP)", "U/L"], ["c_alt", "Alanine Aminotransferase (ALT)", "U/L"], ["c_ca", "Calcium", "mg/dL"], ["c_phos", "Phosphorus", "mg/dL"]];
+  function tplBlood(v) {
+    const L = [
+      "[block=1,20,black,white]",
+      "[center][imgmh=200]" + LR_IMG + "[/imgmh][/center]",
+      "[b][center]VETERINARY BLOOD SCREENING REPORT[/center][/b]",
+      "[b]Attending Veterinarian:[/b] " + v.vet,
+      "[b]Date and Time:[/b] " + v.dateTime,
+      "",
+      "[b][u]Patient Information:[/u][/b]",
+      "Name: " + v.name,
+      "Species: " + v.species,
+      "Breed: " + v.breed,
+      "Age: " + v.age,
+      "Sex: " + v.sex,
+      "Weight: " + v.c_weight,
+      "Handler's name: " + v.handler,
+      "",
+      "[b][u]Test Panel:[/u][/b]",
+    ];
+    TESTS.forEach(([k, label]) => L.push(cb(v.tests[k]) + " " + label));
+    L.push("", "[b][u]Results:[/u][/b]");
+    if (v.tests.cbc) {
+      L.push("Complete Blood Count (CBC):");
+      CBC.forEach(([k, label, unit]) => L.push(label + ": " + v[k] + " " + unit));
+    }
+    if (v.tests.chem) {
+      L.push("Serum Chemistry Profile:");
+      CHEM.forEach(([k, label, unit]) => L.push(label + ": " + v[k] + " " + unit));
+    }
+    L.push("");
+    TESTS.slice(2).forEach(([k, label]) => {
+      if (!v.tests[k]) return;
+      L.push("[b][u]" + label + ":[/u][/b]", "Result: " + cb(v.res[k] === "neg") + " Negative / " + cb(v.res[k] === "pos") + " Positive", "");
+    });
+    L.push("[b]Comments/Interpretation:[/b]", v.c_comments, "", "[b]Recommendations:[/b]", v.c_recs, "", "Signature: " + v.sig, "[/block]");
+    return L.join("\n");
+  }
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function lrDate(value) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || "");
+    return m ? m[3] + "/" + MONTHS[+m[2] - 1] + "/" + m[1] : "";
+  }
+  function lrTitle(type) { return "[VET-#NUMBER] " + (TYPES[type] || TYPES.autopsy); }
+  function lrNotify(requested, supervisor) {
+    return [requested, supervisor].map((n) => String(n || "").trim()).filter(Boolean).map((n) => "[quote=" + n + "][/quote]").join("\n");
+  }
+  const TXT = ["vet", "name", "species", "breed", "age", "sex", "handler", "sig", "a-color", "b-loc", "b-stain", "b-mag", "c-weight"].concat(CBC.concat(CHEM).map((x) => x[0].replace(/_/g, "-")));
+  const ML = ["a-ch1", "a-ch2", "a-ch3", "a-ch4", "a-circ", "a-ex1", "a-ex2", "a-ex3", "a-ex4", "a-in1", "a-in2", "a-in3", "a-in4", "a-in5", "a-in6", "a-sample", "a-co1", "a-co2", "a-co3", "a-notes", "b-tissue", "b-abn", "b-diag", "b-interp", "b-report", "b-recs", "c-comments", "c-recs"];
+  const key = (i) => i.replace(/-/g, "_");
+  function type() { return (document.querySelector('input[name="lr-type"]:checked') || {}).value || "autopsy"; }
+  function values() {
+    const v = {};
+    TXT.forEach((i) => (v[key(i)] = g(i).value.trim()));
+    ML.forEach((i) => (v[key(i)] = g(i).value));
+    const t = g("date").value ? lrDate(g("date").value) : "", tm = g("time").value;
+    v.dateTime = t ? (tm ? t + " - " + tm : t) : "";
+    v.deathDate = lrDate(g("death").value);
+    const bt = g("b-type").value;
+    v.biopsyType = bt === "Other" ? g("b-type-other").value.trim() || "Other" : bt;
+    v.tests = {}; v.res = {};
+    TESTS.forEach(([k]) => {
+      v.tests[k] = g("t-" + k).checked;
+      const r = document.querySelector('input[name="lr-r-' + k + '"]:checked');
+      v.res[k] = r ? r.value : "neg";
+    });
+    return v;
+  }
+  function prefix() {
+    if (!g("civ").checked) return "";
+    return "[postas=" + g("civ-name").value.trim() + ",CIV]\n";
+  }
+  function lrBuild(t, v, civ) {
+    const body = (t === "biopsy" ? tplBiopsy : t === "blood" ? tplBlood : tplAutopsy)(v);
+    return (civ === undefined ? prefix() : civ) + body;
+  }
+  function refresh() {
+    const t = type();
+    const cards = [...form.querySelectorAll(":scope > .card")], links = [...form.querySelectorAll(".rail .outline a")];
+    cards.forEach((c, i) => {
+      const hide = !!c.dataset.lr && c.dataset.lr !== t;
+      c.hidden = hide;
+      if (links.length === cards.length) links[i].hidden = hide;
+    });
+    $("lr-civ-wrap").hidden = !g("civ").checked;
+    $("lr-b-type-other-wrap").hidden = g("b-type").value !== "Other";
+    TESTS.forEach(([k]) => form.querySelectorAll('[data-for="lr-t-' + k + '"]').forEach((e) => (e.hidden = !g("t-" + k).checked)));
+    $("lr-title").value = lrTitle(t);
+    $("lr-out").value = lrBuild(t, values());
+    growTextarea($("lr-out"));
+    const n = lrNotify(g("req").value, g("sup").value);
+    $("lr-notify").value = n;
+    $("lr-notify-wrap").hidden = !n;
+    $("lr-notify-hint").hidden = !!n;
+  }
+  function applyDeputy() {
+    const full = $("deputy-full-name").value.trim();
+    prefillDeputyField("lr-vet", [$("deputy-rank").value, full].filter(Boolean).join(" "));
+    prefillDeputyField("lr-sig", full);
+    refresh();
+  }
+  window.resetLabReport = function () {
+    const card = form.querySelector('.card[data-lr="' + type() + '"]');
+    card.querySelectorAll("input, textarea, select").forEach((e) => {
+      if (e.type === "checkbox" || e.type === "radio") e.checked = e.defaultChecked;
+      else if (e.tagName === "SELECT") e.selectedIndex = 0;
+      else e.value = e.defaultValue;
+    });
+    updateTaskListDateLabel("lr-death");
+    refresh();
+    growAllTextareas("f-vet-lab-report");
+  };
+  async function clip(txt) {
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  }
+  function aiPrompt() {
+    const t = type(), v = values();
+    if (t === "autopsy") return "";
+    const what = t === "biopsy" ? "biopsy report results" : "blood test report results";
+    const L = ["Generate a randomized " + what + " using the provided criteria and patient information.", "", "Patient information:", "Name: " + v.name, "Species: " + v.species, "Breed: " + v.breed, "Age: " + v.age, "Sex: " + v.sex];
+    if (t === "biopsy") L.push("Handler: " + v.handler, "", "Biopsy:", "Type of biopsy: " + v.biopsyType, "Tissue sample location: " + v.b_loc, "Staining method: " + v.b_stain, "Magnification: " + v.b_mag);
+    else L.push("Weight: " + v.c_weight, "Handler: " + v.handler, "", "Tests performed: " + (TESTS.filter(([k]) => v.tests[k]).map((x) => x[1]).join(", ") || "none selected"));
+    return L.join("\n");
+  }
+  window.copyLabAiPrompt = () => clip(aiPrompt());
+  const form = $("f-vet-lab-report");
+  g("date").value = taskListTodayDate();
+  updateTaskListDateLabel("lr-date");
+  $("lr-forum").href = LAB_REPORTS_FORUM_URL;
+  ["input", "change", "click"].forEach((ev) => form.addEventListener(ev, (e) => {
+    if (ev === "input" && e.target.matches("textarea")) growTextarea(e.target);
+    refresh();
+  }));
+  ["deputy-full-name", "deputy-rank"].forEach((id) =>
+    ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyDeputy)));
+  $("f-deputy").addEventListener("click", (e) => { if (e.target.closest("button")) applyDeputy(); });
+  applyDeputy();
+  window.__lr = { build: lrBuild, values, title: lrTitle, notify: lrNotify, aiPrompt, type };
+
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "vet-lab-report") return baseCopy.apply(this, arguments);
+    return clip(lrBuild(type(), values()));
+  };
+  const baseShow = window.show;
+  window.show = function (k) {
+    baseShow.apply(this, arguments);
+    if (k === "vet-lab-report") { refresh(); growAllTextareas("f-vet-lab-report"); }
   };
 })();
 
