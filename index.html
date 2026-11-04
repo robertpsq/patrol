@@ -2260,6 +2260,7 @@ aside{width:264px;padding:18px 12px 14px;gap:2px}
 .bureaus .nav.bu-div{padding:9px 10px;font-weight:600;font-size:14px}
 .bureaus .nav.bu-sub{padding:7px 10px;font-size:13px;font-weight:500;color:var(--text)}
 .bureaus .nav.bu-sub small{color:var(--mute);font-size:11px;font-weight:500}
+.bureaus .nav.division small{font-size:11px;font-weight:500;letter-spacing:0;text-transform:none}
 .bureaus .nav.bu-sub b{font-weight:700;letter-spacing:.02em}
 .bureaus .nav.bu-sub.empty{color:var(--mute);opacity:.8}
 .bureaus .nav.bu-sub.empty b{font-weight:600}
@@ -2438,6 +2439,7 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .bu-ic.lg.mono{font-size:13px}
 .bu-lab{display:flex;align-items:center;gap:7px;margin:12px 0 6px;color:var(--text);font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .bu-lab:first-of-type{margin-top:0}
+.bu-lab small{color:var(--mute);font:500 12px/1 Inter,sans-serif;letter-spacing:0;text-transform:none}
 .bu-lab::after{content:"";flex:1;height:1px;background:var(--line)}
 .bu-unit .tiles{grid-template-columns:1fr}
 .bu-idle{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
@@ -2982,9 +2984,9 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               <div class="bu-item" data-bu="ssb">
                 <button class="nav bu-sub" id="nv-bu-ssb" data-k="ssb scientific services bureau" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.humour.ovh/WOho1/BIZAZAZu70.png/raw" alt="" /><b>SSB</b> <small>Scientific Services Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
-                  <button class="nav division" id="nv-bu-ssb-csiu" data-k="ssb csiu crime scene investigation unit laboratory services" data-parent="nv-bu-ssb" disabled aria-disabled="true"><span>CSIU</span></button>
+                  <button class="nav division" id="nv-bu-ssb-csiu" data-k="ssb csiu crime scene investigation unit laboratory services" data-parent="nv-bu-ssb" disabled aria-disabled="true"><span><b>CSIU</b> <small>Crime Scene Investigation Unit</small></span></button>
                   <button class="nav sub" id="nv-lab" data-k="laboratory services requests evidence dna" data-parent="nv-bu-ssb-csiu" onclick="show('lab')"><span>Laboratory Services Requests</span></button>
-                  <button class="nav division" id="nv-bu-ssb-dfu" data-k="ssb dfu digital forensics unit" data-parent="nv-bu-ssb" disabled aria-disabled="true"><span>DFU</span></button>
+                  <button class="nav division" id="nv-bu-ssb-dfu" data-k="ssb dfu digital forensics unit" data-parent="nv-bu-ssb" disabled aria-disabled="true"><span><b>DFU</b> <small>Digital Forensics Unit</small></span></button>
                   <button class="nav sub" id="nv-dforensics" data-k="digital forensics requests evidence" data-parent="nv-bu-ssb-dfu" onclick="show('dforensics')"><span>Digital Forensics Requests</span></button>
                 </div>
               </div>
@@ -6799,6 +6801,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               <li>Scientific Services Bureau (SSB) is now the main bureau for the division's evidence requests, with two sub-categories under it, in the same way as TSD, K9 and NCCIT sit under Senora Station: CSIU (Crime Scene Investigation Unit) and DFU (Digital Forensics Unit).</li>
               <li>The Laboratory Services Request moved under CSIU, and the Digital Forensics Request is under DFU. Both forms are unchanged.</li>
               <li>LSU (Laboratory Services Unit) and the separate DFU unit are removed from the division.</li>
+              <li>CSIU and DFU now show both their short form and their full name (CSIU, Crime Scene Investigation Unit; DFU, Digital Forensics Unit), in the sidebar and on the home Bureaus panel, the same way units like SSB and FMU are shown.</li>
             </ul>
           </div>
         </div>
@@ -15013,6 +15016,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     return wrap;
   }
   const buMono = (u) => (u.a && u.a.length <= 5 ? u.a : u.n.split(/[\s&]+/).filter(Boolean).map((w) => w[0]).join("")).slice(0, 4).toUpperCase();
+  const SUB_FULL = { CSIU: "Crime Scene Investigation Unit", DFU: "Digital Forensics Unit" }; // sub-categories shown with their full name
   function bureauSection(count) {
     const sec = el("section", "bu-home"); sec.dataset.g = "Bureaus"; sec.dataset.a = "bureaus";
     const h = el("h3", "home-h", "Bureaus"); h.prepend(svgIc("hh-ic", "bank")); h.append(el("span", "", String(count))); sec.append(h);
@@ -15048,7 +15052,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             if (lab) {
               const lb = el("div", "bu-lab"), li = buIco(u.id + "-" + lab.toLowerCase(), "", "sm", false);
               if (li) lb.append(li);
-              lb.append(el("span", "", lab)); card.append(lb);
+              lb.append(el("span", "", lab));
+              if (SUB_FULL[lab]) lb.append(el("small", "", SUB_FULL[lab]));
+              card.append(lb);
             }
             grid2 = el("div", "tiles"); card.append(grid2);
           }
