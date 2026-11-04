@@ -2650,6 +2650,9 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .p-adv .padv .pchk{align-self:flex-start;width:fit-content}
 .p-full{grid-column:1/-1}
 .p-rel textarea{min-height:76px}
+/* ===== PEU ===== */
+.peu-hint{margin:6px 0 0;color:var(--mute);font-size:13px}
+#peu-title-out{font-weight:600}
 /* ===== Field Training Program ===== */
 .ftp-note{margin:0 0 14px;padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--beige);border-radius:10px;background:var(--bg);font-size:13px;line-height:1.55;color:color-mix(in srgb,var(--text) 80%,var(--mute))}
 .ftp-note b{color:var(--text)}
@@ -2937,9 +2940,15 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             </div>
           </div>
           <div class="bu-item" data-bu="personnel">
-            <button class="nav bu-div" id="nv-bu-personnel" data-k="personnel command" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Personnel Command</span><em class="bu-n">4</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <button class="nav bu-div" id="nv-bu-personnel" data-k="personnel command" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Personnel Command</span><em class="bu-n">6</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
-              <button class="nav bu-sub empty" id="nv-bu-peu" data-k="peu pre-employment unit" data-parent="nv-bu-personnel" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.imgur.com/dRyWptQ.png" alt="" /><b>PEU</b> <small>Pre-Employment Unit</small></span></button>
+          <div class="bu-item" data-bu="peu">
+            <button class="nav bu-sub" id="nv-bu-peu" data-k="peu pre-employment unit" data-parent="nv-bu-personnel" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.imgur.com/dRyWptQ.png" alt="" /><b>PEU</b> <small>Pre-Employment Unit</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <button class="nav sub" id="nv-peu-letters" data-k="peu applicant letters deputy sheriff trainee application written test academy" data-parent="nv-bu-peu" onclick="show('peu-letters')"><span>Applicant Letters</span></button>
+              <button class="nav sub" id="nv-peu-admin" data-k="peu administrative file title status tag deputy sheriff trainee" data-parent="nv-bu-peu" onclick="show('peu-admin')"><span>Administrative File</span></button>
+            </div>
+          </div>
           <div class="bu-item" data-bu="ftp">
             <button class="nav bu-sub" id="nv-bu-ftp" data-k="ftp field training program" data-parent="nv-bu-personnel" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>FTP</b> <small>Field Training Program</small></span><em class="bu-n">4</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
@@ -6022,6 +6031,69 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           >
         </div>
       </div>
+      <div id="f-peu-letters" hidden>
+        <div class="card">
+          <h2><small>PEU</small>Applicant Letters</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f"><span>Letter type</span><select id="peu-type"></select></div>
+              <div class="f">
+                <span>Date</span>
+                <div class="date-time-control"><input type="text" id="peu-date" placeholder="Select date" /></div>
+              </div>
+              <div class="f"><span>Salutation</span><select id="peu-sal"><option>Mr.</option><option>Mrs.</option><option>Ms.</option></select></div>
+              <div class="f"><span>Applicant name</span><input type="text" id="peu-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+            </div>
+            <div id="peu-issues-wrap" hidden>
+              <h3>Issues to correct</h3>
+              <div id="peu-issues"></div>
+              <button class="b add" type="button" id="peu-add-issue">+ Add issue</button>
+            </div>
+            <div id="peu-dq-wrap" hidden>
+              <h3>Reasons</h3>
+              <div class="cp-chips" id="peu-reasons"></div>
+              <div class="f"><span>OOC denial reasoning (optional)</span><textarea id="peu-dq-ooc" placeholder="Leave empty to leave this bullet out."></textarea></div>
+            </div>
+            <div id="peu-af-wrap" hidden>
+              <div class="f"><span>OOC denial reason (optional)</span><textarea id="peu-af-ooc" placeholder="Leave empty to leave this line out."></textarea></div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('peu-letters')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=177" target="_blank" rel="noopener noreferrer"
+            >Open Applications Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetPeuLetter()">Reset</button>
+        </div>
+      </div>
+      <div id="f-peu-admin" hidden>
+        <div class="card">
+          <h2><small>PEU</small>Thread Title</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f"><span>Applicant name</span><input type="text" id="peu-a-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+              <div class="f"><span>Status tag</span><select id="peu-tag"></select></div>
+            </div>
+            <p class="peu-hint" id="peu-tag-help"></p>
+            <div class="f"><span>Title</span><input type="text" id="peu-title-out" readonly /></div>
+            <div class="actions"><button class="b p" onclick="copyPeuTitle()">Copy title</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>PEU</small>Administrative File</h2>
+          <div class="body">
+            <div class="f"><span>Application URL</span><input type="text" id="peu-a-url" placeholder="https://lssd.gta.world/..." autocomplete="off" /></div>
+            <div class="f"><span>Notes</span><textarea id="peu-a-notes" placeholder="Optional notes."></textarea></div>
+            <div class="f"><span>Checklist</span><div class="cp-chips" id="peu-a-checks"></div></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('peu-admin')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=2015" target="_blank" rel="noopener noreferrer"
+            >Open Administrative Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetPeuAdmin()">Reset</button>
+        </div>
+      </div>
       <div id="f-ftp-phase1" hidden>
         <div class="card">
           <h2><small>FTP</small>Phase 1 Patrol Summary</h2>
@@ -6722,6 +6794,18 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.0.8</h2>
+          <div class="body">
+            <h3>v2.0.8</h3>
+            <h3>PEU — Pre-Employment Unit</h3>
+            <ul>
+              <li>Pre-Employment Unit (under Personnel Command) is no longer empty. It has two pages: Applicant Letters and Administrative File.</li>
+              <li>Applicant Letters: one form for all eight Deputy Sheriff Trainee letters, chosen from a grouped list: Application (Received, On-Hold, Accepted, Disqualified), Written Test (Passed, Failed) and Academy (Passed, Failed). Pick the date (it starts on today, UK time), salutation and applicant name. On-Hold has a list of issues to correct, Disqualified has tick-boxes for the reasons (none ticked to start) plus an optional OOC reasoning, and Academy Failed has an optional OOC reason. Every letter is signed by Sheriff Grant Mendez and Division Chief Richard Dunne, and an Open Applications Forum button next to Copy goes straight to the forum.</li>
+              <li>Administrative File: build the thread title ([DST] Firstname Lastname [TAG]) with a status tag and see what each tag means, then fill in the administrative file with the applicant name, application link, notes and a checklist (an open box is written as [cb][/cb], a ticked one as [cbc][/cbc]). The applicant name is shared between both pages, and an Open Administrative Forum button next to Copy goes straight to the forum.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.0.7</h2>
           <div class="body">
@@ -7922,6 +8006,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         "ftp-phase2",
         "ftp-phase3",
         "ftp-fto-eval",
+        "peu-letters",
         "mcb-case",
         "mcb-supplemental",
         "hb-case",
@@ -11363,6 +11448,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "ftp-phase2",
           "ftp-phase3",
           "ftp-fto-eval",
+          "peu-letters",
+          "peu-admin",
           "mcb-poi",
           "mcb-case",
           "mcb-supplemental",
@@ -11417,6 +11504,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "ftp-phase2": "FTP — Phase 2 Report",
           "ftp-phase3": "FTP — Phase 3 Evaluation",
           "ftp-fto-eval": "FTP — FTO Evaluation Patrol Report",
+          "peu-letters": "PEU — Applicant Letters",
+          "peu-admin": "PEU — Administrative File",
           "mcb-poi": "Person of Interest File",
           "mcb-case": "MCB — Case Package",
           "mcb-supplemental": "MCB — Supplemental Report",
@@ -12502,6 +12591,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "fto-date",
         "mcb-case-date",
         "hb-case-date",
+        "peu-date",
       ];
       function datePickerIds(name) {
         if (name === "task-list")
@@ -14662,7 +14752,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       { id: "ossb", n: "Operation Safe Streets Bureau", a: "OSSB", f: [["ossb-poi", "Person of Interest File", "Operation Safe Streets Bureau person of interest file.", "", "Person of Interest"], ["oss-incident", "OSS Case Package", "Operation Safe Streets Bureau case package.", "", "Case Package"], ["oss-supplemental", "OSS Supplemental", "Operation Safe Streets Bureau supplemental report.", "", "Supplemental"]] },
     ] },
     { n: "Personnel Command", id: "personnel", u: [
-      { id: "peu", n: "Pre-Employment Unit", a: "PEU", f: [] },
+      { id: "peu", n: "Pre-Employment Unit", a: "PEU", f: [["peu-letters", "PEU Applicant Letters", "Deputy Sheriff Trainee hiring letters: application, written test and academy.", "", "Applicant Letters"], ["peu-admin", "PEU Administrative File", "Thread title with status tag and the applicant administrative file.", "", "Administrative File"]] },
       { id: "ftp", n: "Field Training Program", a: "FTP", f: [["ftp-phase1", "Phase 1 Patrol Summary", "Document a trainee's Phase 1 observations and delivered knowledge.", "", "Phase 1 Patrol Summary"], ["ftp-phase2", "Phase 2 Report", "Field Training Observational Report with ratings for Phase 2.", "", "Phase 2 Report"], ["ftp-phase3", "Phase 3 Evaluation", "Field Training Evaluation Report for Phase 3.", "", "Phase 3 Evaluation"], ["ftp-fto-eval", "FTO Evaluation Patrol Report", "Field Training Program FTO evaluation patrol report.", "", "FTO Evaluation Patrol Report"]] },
     ] },
     { n: "Professional Standards Bureaus", id: "standards", u: [
@@ -14739,6 +14829,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     "ftp-phase2": { unit: "ftp", mono: "FTP" },
     "ftp-phase3": { unit: "ftp", mono: "FTP" },
     "ftp-fto-eval": { unit: "ftp", mono: "FTP" },
+    "peu-letters": { unit: "peu", mono: "PEU" },
+    "peu-admin": { unit: "peu", mono: "PEU" },
     "sib-story": { unit: "sib", mono: "SIB" },
     "sib-activity": { unit: "sib", mono: "SIB" },
     lab: { unit: "lsu", mono: "LSU" },
@@ -16063,6 +16155,303 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     if (k === "ftp-phase1" || k === "ftp-phase2" || k === "ftp-phase3" || k === "ftp-fto-eval") requestAnimationFrame(growAll);
   };
   window.__ftp = { buildP1, buildP2, buildP3, buildFtoEval };
+})();
+
+/* ===== PEU — Pre-Employment Unit: Applicant Letters + Administrative File ===== */
+(() => {
+  // PEU-PURE-BEGIN (no DOM access below this line until PEU-PURE-END; the test script runs this block on its own)
+  const PEU = {
+    sheriff: "Grant Mendez",
+    banner: "https://i.imgur.com/LEWTXbL.png",
+    sheriffSig: "https://i.booskit.dev/gtaw/signature-sheriff.png",
+    footer: "https://i.imgur.com/vggSUzN.png",
+    discord: "https://discord.gg/j97T7Yz6h4",
+    intranet: "https://lssd.gta.world/viewforum.php?f=371",
+    chief: "Richard Dunne",
+    chiefRank: "Division Chief",
+    chiefUnit: "Personnel Command",
+    chiefSig: "https://www.upload.ee/image/18776202/signature_3_.png",
+  };
+  const DST = "[b]Deputy Sheriff Trainee[/b]";
+  const APPEAL_TRAINING = "Training Bureau Command";
+  const APPEAL_PERSONNEL = "Personnel Command: Headquarters";
+  const DQ_REASONS = [
+    "Employment history;",
+    "Credit or financial history;",
+    "Discovered undisclosed information;",
+    "Dishonesty;",
+    "Incomplete application;",
+    "Other reason(s) as not listed.",
+  ];
+  const paras = (...a) => a.filter((x) => x != null && x !== "").join("\n\n");
+  const appeal = (to) =>
+    "[b]Any formal appeal must be in writing and received by " + to + " within ten (10) business days from the [u]postmark date[/u] of this letter. Please note, appeals may take 5-7 business days to be processed.\n\nTo appeal, you must demonstrate that the factors leading to your disqualification are in error.[/b]";
+  const evaluated = "We have evaluated your application and qualifications for the position of " + DST;
+  // one object per letter: add a 9th letter by adding one entry here
+  const LETTERS = [
+    { id: "app-received", group: "Application", label: "Received", body: () => paras(
+      "We have received your application and qualifications for the position of " + DST + ". Thank you for showing interest in employment with the Los Santos County Sheriff's Department.",
+      "Your request has been acknowledged and forwarded to the Pre-Employment Unit for further deliberation & conclusion. This deliberation will include a thorough examination of your previous service with the Department and personal background information.",
+      "While extraneous circumstances may preclude a fixed timeframe, you should expect a response to your request within 72 hours.") },
+    { id: "app-hold", group: "Application", label: "On-Hold", body: (s) => {
+      const n = (s.issues || []).filter(Boolean);
+      const list = n.length ? n : ["Issue 1", "Issue 2", "Issue 3"];
+      const items = list.map((t, i) => "[*]" + t + (i === list.length - 1 ? "." : ";")).join("\n");
+      return paras(
+        "We have reviewed your application and qualifications for the position of " + DST + ".",
+        "We have noticed one or more errors in your application and may not process it further. The following issue(s) must first be corrected:",
+        "[list=1]\n" + items + "\n[/list]",
+        "You have 24 hours to correct the aforementioned issue(s). Once corrected, you must forward a reply, stating that amendments have been made.");
+    } },
+    { id: "app-accepted", group: "Application", label: "Accepted (to Written Test)", body: () => paras(
+      evaluated + ".",
+      "We are pleased to inform you that your application has been successful. The next step in the recruitment process is to attend and complete your Written Test.",
+      "You will shortly receive correspondence with instructions on completing your Written Test.",
+      "Should you have any questions, comments, or concerns, please contact Training Bureau Command.") },
+    { id: "app-dq", group: "Application", label: "Disqualified", body: (s) => {
+      const on = (s.reasons || []).map((v, i) => (v ? DQ_REASONS[i] : null)).filter(Boolean);
+      const lines = on.map((t) => "[*]" + t);
+      if ((s.dqOoc || "").trim()) lines.push("[*][ooc]" + s.dqOoc.trim() + "[/ooc]");
+      return paras(
+        evaluated + " and regret to inform you that you were not selected for this position due to issues that may have involved:",
+        "[list]" + lines.join("\n") + "[/list][br][/br]\nUnder all circumstances, you are ineligible to reapply during the current recruitment drive as well as any concurrent recruitment drives for civilian employment. You may reapply [b]three (3)[/b] weeks from the date of your denial.",
+        appeal(APPEAL_TRAINING));
+    } },
+    { id: "wt-passed", group: "Written Test", label: "Passed (to Academy)", body: () => paras(
+      "We have evaluated your written test for the position of " + DST + " and are pleased to inform you that you have been successful. The next step in the recruitment process is to attend and complete the Academy.",
+      "You will be sent further correspondence explaining the process for this stage, along with available dates for you to sign up and undergo training.",
+      "[ooc]At this point, your character will advance one step forward in the recruitment process and will be enrolled in academy training.\n\nYou are now also asked to join the LSSD Discord [url=" + PEU.discord + "]here[/url] and follow the verification steps found in the \"group-requests\" channel to verify and/or sync your roles. Verifying your Discord account will give you access to the Deputy Sheriff Trainee channel where important correspondence will be communicated to you by Training Bureau Command in regards to the Academy process and further beyond. You may also ask questions in the channel.[/ooc]") },
+    { id: "wt-failed", group: "Written Test", label: "Failed", body: () => paras(
+      evaluated + " and regret to inform you that you were not selected for this position due to issues involving your Written Test.",
+      "Under all circumstances, you are ineligible to take the Written Test again or reapply during the current recruitment drive as well as any concurrent recruitment drives for civilian employment. You may reapply three weeks after the date of your denial.",
+      appeal(APPEAL_TRAINING)) },
+    { id: "acad-passed", group: "Academy", label: "Passed (to Sworn In)", body: () => paras(
+      evaluated + ".",
+      "Pursuant to personnel guidelines and hiring standards of the County of Los Santos, we would like to offer you a conditional offer of employment at the sworn title of " + DST + ".",
+      "[b]Any request for refusal of this offer must be in writing and received by Training Bureau Command within ten (10) business days from the [u]postmark date[/u] of this letter.[/b]",
+      "You will be sent further correspondence explaining the process of your swearing-in further.",
+      "[ooc]At this point, your character would be sworn in following completion of academy training.\n\nSince you already have access to the Deputy Sheriff Trainee channel, important correspondence will be communicated to you by Training Bureau Command regarding the final examination and beyond. You may also ask questions in the channel.\n\nAs of this moment, your next step is to familiarize yourself with the academy material on our [url=" + PEU.intranet + "]intranet page[/url] in order to take your final exam.[/ooc]") },
+    { id: "acad-failed", group: "Academy", label: "Failed", body: (s) => paras(
+      evaluated + " and regret to inform you that you were not selected for this position due to issues related to your Academy training.",
+      "Under all circumstances, you are ineligible to undergo Academy training again or reapply during the current recruitment drive, as well as any concurrent recruitment drives for civilian employment. You may reapply three weeks after the date of your denial.",
+      (s.failOoc || "").trim() ? "[ooc]" + s.failOoc.trim() + "[/ooc]" : "",
+      appeal(APPEAL_PERSONNEL)) },
+  ];
+  const lastWord = (n) => String(n || "").trim().split(/\s+/).pop();
+  function buildLetter(s) {
+    const L = LETTERS.find((l) => l.id === s.type) || LETTERS[0];
+    return [
+      "[center][b][size=150]OFFICE OF THE SHERIFF[/size][/b][/center]",
+      "",
+      "[center][aligntable=left,200,0,0,0,0,transparent]",
+      "[indent][b]" + PEU.sheriff.toUpperCase() + "[/b]",
+      "LOS SANTOS COUNTY SHERIFF[/indent][/aligntable]",
+      "[aligntable=right,200,0,0,0,0,transparent]",
+      "[b][indent]HALL OF JUSTICE[/b]",
+      "301 INNOCENCE BOULEVARD[indent][/aligntable]",
+      "[img]" + PEU.banner + "[/img][hr][/hr][/center]",
+      "",
+      "[indent]" + ((s.date || "").trim() || "Month Day, Year"),
+      "",
+      "Dear " + (s.salutation || "Mr.") + " " + (lastWord(s.name) || "Lastname") + ",",
+      "",
+      L.body(s),
+      "",
+      "Sincerely,",
+      "[imgmw=100]" + PEU.sheriffSig + "[/imgmw]",
+      PEU.sheriff + ", Sheriff",
+      "[imgmw=200]" + PEU.chiefSig + "[/imgmw]",
+      PEU.chief + ", " + PEU.chiefRank,
+      PEU.chiefUnit + "[/indent]",
+      "[br][/br]",
+      "[center][img]" + PEU.footer + "[/img][/center]",
+    ].join("\n");
+  }
+  // Administrative File: each checklist line is a checkbox, [cb][/cb] when open and [cbc][/cbc] when ticked
+  const CHECKS = [
+    "Application", "Written Test (WT)", "Supervisor WT Grade Approval",
+    "Academy (1)", "Academy (2)", "Supervisor Academy Grade Approval", "Pre-Employment Unit Commander Review",
+    "Executive Staff Review & Pre-Employment Unit Commander Approval", "Final Examination",
+  ];
+  function buildAdmin(s) {
+    const k = (i) => (s.checks && s.checks[i] ? "[cbc][/cbc]" : "[cb][/cb]");
+    const notes = (s.notes || "").trim();
+    return [
+      "[block=0,30,transparent,white][center][img]" + PEU.banner + "[/img]",
+      "",
+      "[b]DEPUTY SHERIFF TRAINEE ADMINISTRATIVE FILE[/b]",
+      "LOS SANTOS COUNTY SHERIFF'S DEPARTMENT — PRE-EMPLOYMENT UNIT[/center]",
+      "",
+      "[hr][/hr]",
+      "",
+      "[b]INFORMATION[/b]",
+      "",
+      "[indent]Applicant Name: " + ((s.name || "").trim() || "Firstname Lastname"),
+      "Application: [url=" + ((s.url || "").trim() || "https://lssd.gta.world/") + "]ACCESS[/url]",
+      "Notes:" + (notes ? " " + notes : ""),
+      "[/indent]",
+      "",
+      "[hr][/hr]",
+      "",
+      "[b]PRE-EMPLOYMENT UNIT CHECKLIST[/b]",
+      "[indent]" + k(0) + " " + CHECKS[0],
+      k(1) + " " + CHECKS[1],
+      k(2) + " " + CHECKS[2],
+      "[/indent]",
+      "",
+      "[b]PRE-EMPLOYMENT UNIT SERGEANT CHECKLIST[/b]",
+      "[indent]Academy :[list][*]" + k(3) + " " + CHECKS[3],
+      "[*]" + k(4) + " " + CHECKS[4] + "[/list]",
+      k(5) + " " + CHECKS[5],
+      k(6) + " " + CHECKS[6],
+      "[/indent]",
+      "",
+      "[b]TRAINING BUREAU OPERATIONS CHECKLIST[/b]",
+      "[indent]" + k(7) + " " + CHECKS[7],
+      k(8) + " " + CHECKS[8] + "[/indent][/block]",
+    ].join("\n");
+  }
+  // thread title: one template string, so the tag position is a one-line change
+  const TITLE_TEMPLATE = "[DST] {name}{tag}";
+  const TAGS = {
+    internal: [
+      ["REVIEW", "The application is currently under review by a member."],
+      ["ON-HOLD", "The application requires amendments to be made and is pending per such."],
+      ["DQ", "The application was rejected for one of the disqualifying reasons."],
+      ["WT SENT", "The applicant has been sent the Written Test."],
+      ["WT RETURNED", "Written Test returned from the applicant."],
+      ["WT FAILED", "Written Test has been reviewed and the applicant has failed."],
+      ["ACADEMY", "The applicant has been moved to Academy training."],
+      ["ACADEMY CONDUCTED", "The applicant has undergone Academy training, and the logs are pending grading."],
+      ["ES/UC APPROVAL", "The applicant has passed their Academy training and is ready for ES/PEU Unit Commander review."],
+      ["FINAL EXAM", "The applicant has been approved by TB Command & Executive Staff and is qualified to sit the final exam."],
+      ["ACCEPTED", "The applicant has passed the final examination."],
+    ],
+  };
+  function buildTitle(s) {
+    return TITLE_TEMPLATE.replace("{name}", (s.name || "").trim() || "Firstname Lastname").replace("{tag}", s.tag ? " [" + s.tag + "]" : "");
+  }
+  // PEU-PURE-END
+  window.__peu = { PEU, LETTERS, TAGS, CHECKS, DQ_REASONS, buildLetter, buildAdmin, buildTitle };
+
+  /* ---------------- page wiring ---------------- */
+  const $ = (id) => document.getElementById(id);
+  const AK = "lssd-peu-applicant";
+  const load = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
+  const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage unavailable: the form still works */ } };
+  const ukToday = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  const setDate = (v) => { $("peu-date").value = v; updateTaskListDateLabel("peu-date"); };
+  const letterState = () => ({
+    type: $("peu-type").value,
+    date: formatPickerDate($("peu-date").value),
+    salutation: $("peu-sal").value,
+    name: $("peu-name").value,
+    issues: [...document.querySelectorAll("#peu-issues .peu-issue")].map((i) => i.value.trim()),
+    reasons: [...document.querySelectorAll("#peu-reasons input")].map((c) => c.checked),
+    dqOoc: $("peu-dq-ooc").value,
+    failOoc: $("peu-af-ooc").value,
+  });
+  const adminState = () => ({
+    name: $("peu-a-name").value,
+    url: $("peu-a-url").value,
+    notes: $("peu-a-notes").value,
+    checks: [...document.querySelectorAll("#peu-a-checks input")].map((c) => c.checked),
+    tag: $("peu-tag").value,
+  });
+  function addIssue(v) {
+    const row = document.createElement("div");
+    row.className = "eg";
+    row.innerHTML = '<input type="text" class="peu-issue" aria-label="Issue" placeholder="Describe the issue" autocomplete="off" /><button class="b" type="button" aria-label="Remove issue">−</button>';
+    row.querySelector("input").value = v || "";
+    row.querySelector("button").onclick = () => { row.remove(); refreshLetter(); };
+    $("peu-issues").appendChild(row);
+  }
+  function refreshLetter() {
+    const s = letterState();
+    $("peu-issues-wrap").hidden = s.type !== "app-hold";
+    $("peu-dq-wrap").hidden = s.type !== "app-dq";
+    $("peu-af-wrap").hidden = s.type !== "acad-failed";
+    save(AK, s.name);
+  }
+  function refreshTags() {
+    $("peu-tag").replaceChildren(new Option("No tag", ""), ...TAGS.internal.map(([t]) => new Option(t, t)));
+  }
+  function refreshAdmin() {
+    const s = adminState(), hit = TAGS.internal.find(([t]) => t === s.tag);
+    $("peu-tag-help").textContent = hit ? hit[0] + " — " + hit[1] : "Pick a tag to add it to the thread title.";
+    $("peu-title-out").value = buildTitle(s);
+    save(AK, s.name);
+  }
+  function syncApplicant(from) {
+    const v = $(from).value;
+    $(from === "peu-name" ? "peu-a-name" : "peu-name").value = v;
+  }
+  function fillDefaults() {
+    const a = load(AK);
+    if (typeof a === "string" && !$("peu-name").value && !$("peu-a-name").value) { $("peu-name").value = a; $("peu-a-name").value = a; }
+  }
+  window.resetPeuLetter = function () {
+    $("peu-type").selectedIndex = 0;
+    setDate(ukToday());
+    $("peu-sal").selectedIndex = 0;
+    $("peu-name").value = $("peu-a-name").value = "";
+    $("peu-issues").replaceChildren();
+    addIssue("");
+    document.querySelectorAll("#peu-reasons input").forEach((c) => (c.checked = false));
+    $("peu-dq-ooc").value = $("peu-af-ooc").value = "";
+    refreshLetter(); refreshAdmin();
+  };
+  window.resetPeuAdmin = function () {
+    $("peu-a-name").value = $("peu-name").value = "";
+    $("peu-a-url").value = $("peu-a-notes").value = "";
+    document.querySelectorAll("#peu-a-checks input").forEach((c) => (c.checked = false));
+    $("peu-tag").value = "";
+    refreshAdmin(); refreshLetter();
+  };
+  async function toClipboard(txt) {
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  }
+  window.copyPeuTitle = () => toClipboard($("peu-title-out").value);
+
+  // build the dynamic parts of the two forms
+  const sel = $("peu-type");
+  [...new Set(LETTERS.map((l) => l.group))].forEach((g) => {
+    const og = document.createElement("optgroup");
+    og.label = g;
+    LETTERS.filter((l) => l.group === g).forEach((l) => og.appendChild(new Option(l.label, l.id)));
+    sel.appendChild(og);
+  });
+  $("peu-reasons").innerHTML = DQ_REASONS.map((t, i) => '<label class="pchk"><input type="checkbox" /><i class="mk" aria-hidden="true"></i><span>' + t.replace(/;$|\.$/, "") + "</span></label>").join("");
+  $("peu-a-checks").innerHTML = CHECKS.map((t) => '<label class="pchk"><input type="checkbox" /><i class="mk" aria-hidden="true"></i><span>' + t.replace(/&/g, "&amp;") + "</span></label>").join("");
+  addIssue("");
+  setDate(ukToday());
+  $("peu-add-issue").onclick = () => { addIssue(""); refreshLetter(); };
+  refreshTags();
+  fillDefaults();
+  const fl = $("f-peu-letters"), fa = $("f-peu-admin");
+  ["input", "change", "click"].forEach((ev) => {
+    fl.addEventListener(ev, (e) => { if (e.target.id === "peu-name") syncApplicant("peu-name"); refreshLetter(); refreshAdmin(); });
+    fa.addEventListener(ev, (e) => { if (e.target.id === "peu-a-name") syncApplicant("peu-a-name"); refreshAdmin(); refreshLetter(); });
+  });
+  refreshLetter(); refreshAdmin();
+
+  // ---- hook into copy + navigation (same pattern as FTP) ----
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k === "peu-letters") return toClipboard(window.__peu.buildLetter(letterState()));
+    if (k === "peu-admin") return toClipboard(buildAdmin(adminState()));
+    return baseCopy.apply(this, arguments);
+  };
+  const baseShow = window.show;
+  window.show = function (k) {
+    baseShow.apply(this, arguments);
+    if (k === "peu-letters" || k === "peu-admin") { fillDefaults(); refreshLetter(); refreshAdmin(); }
+  };
 })();
     </script>
   </body>
