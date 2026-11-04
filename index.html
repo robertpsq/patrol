@@ -6084,7 +6084,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <div class="body">
             <div class="f"><span>Application URL</span><input type="text" id="peu-a-url" placeholder="https://lssd.gta.world/..." autocomplete="off" /></div>
             <div class="f"><span>Notes</span><textarea id="peu-a-notes" placeholder="Optional notes."></textarea></div>
-            <div class="f"><span>Checklist</span><div class="cp-chips" id="peu-a-checks"></div></div>
+            <div class="f"><span>Pre-Employment Unit checklist</span><div class="cp-chips" id="peu-a-checks"></div></div>
           </div>
         </div>
         <div class="actions">
@@ -6794,6 +6794,16 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.0.9</h2>
+          <div class="body">
+            <h3>v2.0.9</h3>
+            <h3>PEU — Administrative File</h3>
+            <ul>
+              <li>The checklist now only has the Pre-Employment Unit checklist, with two items side by side: Application and Written Test (WT). The Supervisor WT Grade Approval, Sergeant and Training Bureau Operations items are removed from the page and from the copied BBCode, since those are handled in the forum. An open box is still written as [cb][/cb] and a ticked one as [cbc][/cbc].</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.0.8</h2>
           <div class="body">
@@ -16268,11 +16278,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     ].join("\n");
   }
   // Administrative File: each checklist line is a checkbox, [cb][/cb] when open and [cbc][/cbc] when ticked
-  const CHECKS = [
-    "Application", "Written Test (WT)", "Supervisor WT Grade Approval",
-    "Academy (1)", "Academy (2)", "Supervisor Academy Grade Approval", "Pre-Employment Unit Commander Review",
-    "Executive Staff Review & Pre-Employment Unit Commander Approval", "Final Examination",
-  ];
+  const CHECKS = ["Application", "Written Test (WT)"];
   function buildAdmin(s) {
     const k = (i) => (s.checks && s.checks[i] ? "[cbc][/cbc]" : "[cb][/cb]");
     const notes = (s.notes || "").trim();
@@ -16295,20 +16301,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       "",
       "[b]PRE-EMPLOYMENT UNIT CHECKLIST[/b]",
       "[indent]" + k(0) + " " + CHECKS[0],
-      k(1) + " " + CHECKS[1],
-      k(2) + " " + CHECKS[2],
-      "[/indent]",
-      "",
-      "[b]PRE-EMPLOYMENT UNIT SERGEANT CHECKLIST[/b]",
-      "[indent]Academy :[list][*]" + k(3) + " " + CHECKS[3],
-      "[*]" + k(4) + " " + CHECKS[4] + "[/list]",
-      k(5) + " " + CHECKS[5],
-      k(6) + " " + CHECKS[6],
-      "[/indent]",
-      "",
-      "[b]TRAINING BUREAU OPERATIONS CHECKLIST[/b]",
-      "[indent]" + k(7) + " " + CHECKS[7],
-      k(8) + " " + CHECKS[8] + "[/indent][/block]",
+      k(1) + " " + CHECKS[1] + "[/indent][/block]",
     ].join("\n");
   }
   // thread title: one template string, so the tag position is a one-line change
@@ -16427,7 +16420,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     sel.appendChild(og);
   });
   $("peu-reasons").innerHTML = DQ_REASONS.map((t, i) => '<label class="pchk"><input type="checkbox" /><i class="mk" aria-hidden="true"></i><span>' + t.replace(/;$|\.$/, "") + "</span></label>").join("");
-  $("peu-a-checks").innerHTML = CHECKS.map((t) => '<label class="pchk"><input type="checkbox" /><i class="mk" aria-hidden="true"></i><span>' + t.replace(/&/g, "&amp;") + "</span></label>").join("");
+  $("peu-a-checks").innerHTML = CHECKS.map((t) => '<label class="pchk"><input type="checkbox" /><i class="mk" aria-hidden="true"></i><span>' + t + "</span></label>").join("");
   addIssue("");
   setDate(ukToday());
   $("peu-add-issue").onclick = () => { addIssue(""); refreshLetter(); };
