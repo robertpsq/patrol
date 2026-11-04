@@ -2863,7 +2863,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           </button>
         </section>
         <section class="nav-group bureaus" data-group="bureaus divisions">
-          <div class="grp"><span class="grp-label">Bureaus</span><span class="grp-count">22</span></div>
+          <div class="grp"><span class="grp-label">Bureaus</span><span class="grp-count">20</span></div>
           <div class="bu-item" data-bu="central">
             <button class="nav bu-div" id="nv-bu-central" data-k="central patrol division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Central Patrol Division</span><em class="bu-n">7</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
@@ -2979,20 +2979,16 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <div class="bu-item" data-bu="tech">
             <button class="nav bu-div" id="nv-bu-tech" data-k="technology support division" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Technology &amp; Support Division</span><em class="bu-n">4</em><i class="bu-chev" aria-hidden="true"></i></button>
             <div class="bu-body">
-              <button class="nav bu-sub empty" id="nv-bu-ssb" data-k="ssb scientific services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.humour.ovh/WOho1/BIZAZAZu70.png/raw" alt="" /><b>SSB</b> <small>Scientific Services Bureau</small></span></button>
+              <div class="bu-item" data-bu="ssb">
+                <button class="nav bu-sub" id="nv-bu-ssb" data-k="ssb scientific services bureau" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://i.humour.ovh/WOho1/BIZAZAZu70.png/raw" alt="" /><b>SSB</b> <small>Scientific Services Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav division" id="nv-bu-ssb-csiu" data-k="ssb csiu crime scene investigation unit laboratory services" data-parent="nv-bu-ssb" disabled aria-disabled="true"><span>CSIU</span></button>
+                  <button class="nav sub" id="nv-lab" data-k="laboratory services requests evidence dna" data-parent="nv-bu-ssb-csiu" onclick="show('lab')"><span>Laboratory Services Requests</span></button>
+                  <button class="nav division" id="nv-bu-ssb-dfu" data-k="ssb dfu digital forensics unit" data-parent="nv-bu-ssb" disabled aria-disabled="true"><span>DFU</span></button>
+                  <button class="nav sub" id="nv-dforensics" data-k="digital forensics requests evidence" data-parent="nv-bu-ssb-dfu" onclick="show('dforensics')"><span>Digital Forensics Requests</span></button>
+                </div>
+              </div>
               <button class="nav bu-sub empty" id="nv-bu-cfmb" data-k="cfmb communications &amp; fleet management bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/PiyIcuSu04.png/raw" alt="" /><b>CFMB</b> <small>Communications &amp; Fleet Management Bureau</small></span></button>
-              <div class="bu-item" data-bu="lsu">
-                <button class="nav bu-sub" id="nv-bu-lsu" data-k="lsu laboratory services unit" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>LSU</b> <small>Laboratory Services Unit</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
-                <div class="bu-body">
-                  <button class="nav sub" id="nv-lab" data-k="laboratory services requests evidence dna" data-parent="nv-bu-lsu" onclick="show('lab')"><span>Laboratory Services Requests</span></button>
-                </div>
-              </div>
-              <div class="bu-item" data-bu="dfu">
-                <button class="nav bu-sub" id="nv-bu-dfu" data-k="dfu digital forensics unit" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>DFU</b> <small>Digital Forensics Unit</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
-                <div class="bu-body">
-                  <button class="nav sub" id="nv-dforensics" data-k="digital forensics requests evidence" data-parent="nv-bu-dfu" onclick="show('dforensics')"><span>Digital Forensics Requests</span></button>
-                </div>
-              </div>
               <button class="nav bu-sub empty" id="nv-bu-psb" data-k="psb psychological services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/halACEdo29.png/raw" alt="" /><b>PSB</b> <small>Psychological Services Bureau</small></span></button>
               <div class="bu-item" data-bu="fmu">
                 <button class="nav bu-sub" id="nv-bu-fmu" data-k="fmu fleet management unit" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><b>FMU</b> <small>Fleet Management Unit</small></span><em class="bu-n">1</em><i class="bu-chev" aria-hidden="true"></i></button>
@@ -6794,6 +6790,18 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.1.1</h2>
+          <div class="body">
+            <h3>v2.1.1</h3>
+            <h3>Technology &amp; Support Division</h3>
+            <ul>
+              <li>Scientific Services Bureau (SSB) is now the main bureau for the division's evidence requests, with two sub-categories under it, in the same way as TSD, K9 and NCCIT sit under Senora Station: CSIU (Crime Scene Investigation Unit) and DFU (Digital Forensics Unit).</li>
+              <li>The Laboratory Services Request moved under CSIU, and the Digital Forensics Request is under DFU. Both forms are unchanged.</li>
+              <li>LSU (Laboratory Services Unit) and the separate DFU unit are removed from the division.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.1.0</h2>
           <div class="body">
@@ -14788,10 +14796,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       { id: "csb", n: "Court Services Bureau", a: "CSB", f: [] },
     ] },
     { n: "Technology & Support Division", id: "tech", u: [
-      { id: "ssb", n: "Scientific Services Bureau", a: "SSB", f: [] },
+      { id: "ssb", n: "Scientific Services Bureau", a: "SSB", f: [["lab", "Laboratory Services Request", "Request lab services for evidence.", "CSIU", "Laboratory Services Requests"], ["dforensics", "Digital Forensics Request", "Request digital forensics on evidence.", "DFU", "Digital Forensics Requests"]] },
       { id: "cfmb", n: "Communications & Fleet Management Bureau", a: "CFMB", f: [] },
-      { id: "lsu", n: "Laboratory Services Unit", a: "LSU", f: [["lab", "Laboratory Services Request", "Request lab services for evidence.", "", "Laboratory Services Requests"]] },
-      { id: "dfu", n: "Digital Forensics Unit", a: "DFU", f: [["dforensics", "Digital Forensics Request", "Request digital forensics on evidence.", "", "Digital Forensics Requests"]] },
       { id: "psb", n: "Psychological Services Bureau", a: "PSB", f: [] },
       { id: "fmu", n: "Fleet Management Unit", a: "FMU", f: [["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate.", "", "Fleet Maintenance Requests"]] },
       { id: "vst", n: "Veterinary Services Team", a: "VST", f: [["vst-request", "Veterinary Services Request", "Request veterinary services for a K9.", "", "Veterinary Services Requests"]] },
@@ -14859,8 +14865,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     "peu-admin": { unit: "peu", mono: "PEU" },
     "sib-story": { unit: "sib", mono: "SIB" },
     "sib-activity": { unit: "sib", mono: "SIB" },
-    lab: { unit: "lsu", mono: "LSU" },
-    dforensics: { unit: "dfu", mono: "DFU" },
+    lab: { unit: "ssb", mono: "SSB" },
+    dforensics: { unit: "ssb", mono: "SSB" },
     fleet: { unit: "fmu", mono: "FMU" },
     "vst-request": { unit: "vst", mono: "VST" },
   };
