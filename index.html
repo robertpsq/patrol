@@ -3173,6 +3173,31 @@ main>[id^="f-"],.card,.top.m-retitle,.hero,.hero-badge,#hq:focus,.hero kbd,#home
 @keyframes hero-word{from{opacity:0;transform:translateY(.55em) scale(.96)}to{opacity:1;transform:none}}
 @container homefit (max-width:1000px){.hero{grid-template-columns:auto minmax(0,1fr)}.hero-badge{width:58px;height:58px;border-radius:14px}.hero-text{grid-column:2;grid-row:1}.hero-right{grid-column:1/-1;grid-row:2}}
 @media(prefers-reduced-motion:reduce){.hero-badge,.hero-hello,.hero h2 .w{animation:none!important}}
+/* ===== Phones and touch screens: no hover effects (a finger on the screen must not light things up) ===== */
+@media (hover:none),(max-width:760px){
+html{-webkit-tap-highlight-color:transparent}
+.tile:hover{transform:none;box-shadow:none;border-left-color:var(--line);background:var(--bg)}
+.tile:hover::after{opacity:0;transform:none}
+.tile:hover .tl-ic{transform:none;background:color-mix(in srgb,var(--green) 16%,var(--bg));color:var(--beige)}
+#home-groups>section:hover{translate:none;box-shadow:none;border-color:var(--line)}
+#home-groups>section:hover .home-h::after{width:0}
+#home-groups>section:hover .hh-ic{transform:none}
+#home-groups>section:hover .home-h span{transform:none;color:var(--mute)}
+.bu-tab:not([aria-selected="true"]):hover{transform:none;border-left-color:var(--line);background:var(--bg)}
+.bu-tab[aria-selected="true"]:hover{transform:none}
+.chip:hover{transform:none;border-color:var(--line)}
+.nav:hover:not([disabled]):not(.on){background:none;transform:none}
+.nav.on:hover:not([disabled]){background:var(--green2);transform:none}
+.nav:hover:not([disabled]):not(.on):not(.sub):not(.division):not(.station)::before{transform:scaleY(0)}
+.nav-group:hover .grp-count{transform:none;border-color:var(--line)}
+button.b:not(:disabled):hover{transform:none;box-shadow:none;filter:none}
+button.b:not(.p):not(:disabled):hover{border-color:var(--line)}
+button.b.p:not(:disabled):hover::after{transform:translateX(-120%);transition:none}
+.card:hover{border-color:var(--line)}
+.setup:hover{text-underline-offset:3px;filter:none}
+.task-list-row label.row:hover,#f-subject label.row:hover,#f-subject .f>.row>label:hover{transform:none}
+.task-list-row label.row:not(:has(input:checked)):hover,#f-subject label.row:not(:has(input:checked)):hover,#f-subject .f>.row>label:not(:has(input:checked)):hover{border-color:var(--line);color:var(--mute)}
+}
     </style>
   </head>
   <body>
@@ -7777,6 +7802,20 @@ main>[id^="f-"],.card,.top.m-retitle,.hero,.hero-badge,#hq:focus,.hero kbd,#home
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.2.4<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
+          <div class="body">
+            <h3>v2.2.4</h3>
+            <h3>Phones and touch screens</h3>
+            <ul>
+              <li>Hover effects are switched off on phones and touch screens. Resting or scrolling a finger over the home page no longer lights up tiles, panels, sidebar items, recent chips, buttons and cards as if they were hovered. Desktop hover effects are unchanged.</li>
+            </ul>
+            <h3>Page transitions</h3>
+            <ul>
+              <li>Opening a page can no longer get stuck: the page now swaps even when the browser is not painting (for example a background tab), and the transition is skipped when the tab is hidden.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.2.3<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
           <div class="body">
@@ -14786,6 +14825,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         function finish() {
           if (!active) return;
           active.anims.forEach((a) => { try { a.cancel(); } catch (e) {} });
+          active.timers.forEach(clearTimeout);
           active.box.remove();
           main.style.willChange = "";
           active = null;
@@ -14795,7 +14835,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           const cur = document.querySelector('main > [id^="f-"]:not([hidden])');
           const from = cur ? cur.id.slice(2) : null, to = norm(k);
           if (active) { finish(); return before.apply(this, args); }
-          if (!from || from === to || matchMedia("(prefers-reduced-motion: reduce)").matches)
+          if (!from || from === to || document.hidden || matchMedia("(prefers-reduced-motion: reduce)").matches)
             return before.apply(this, args);
           const { keys, labels } = order();
           const a = keys.indexOf(from);
@@ -14813,9 +14853,11 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
             [{ transform: "none", opacity: 1 }, { transform: `translateY(${-dir * travel}px) scale(.97)`, opacity: 0 }],
             { duration: 280, easing: "cubic-bezier(.5,0,.8,.4)", fill: "forwards" },
           );
-          active = { anims: [out], box };
-          out.onfinish = () => {
-            if (!active) return;
+          const me = (active = { anims: [out], box, timers: [] });
+          let swapped = false;
+          const swap = () => {
+            if (swapped || active !== me) return;
+            swapped = true;
             try {
               before.apply(self, args); // swap the page while it is invisible
             } catch (e) {
@@ -14826,10 +14868,13 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
               [{ transform: `translateY(${dir * travel * 0.55}px) scale(1.02)`, opacity: 0 }, { transform: "none", opacity: 1 }],
               { duration: 520, delay: 110, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" },
             );
-            active.anims.push(inn);
+            me.anims.push(inn);
             out.cancel();
             inn.onfinish = finish;
           };
+          out.onfinish = swap;
+          // never get stuck if the browser is not painting (background tab): swap and clean up on timers
+          me.timers.push(setTimeout(swap, 450), setTimeout(() => active === me && finish(), 1800));
         };
       })();
       // the search box types out example searches while it is idle
