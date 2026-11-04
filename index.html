@@ -2665,7 +2665,7 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 }
 @container homefit (max-width:900px){
  .hero{grid-template-columns:auto minmax(0,1fr)}
- .hero-search,.hero-foot{grid-column:1/-1}
+ .hero-search,#recent,.setup{grid-column:1/-1;grid-row:auto}.hero-text{grid-column:auto;grid-row:auto}.hero-badge{width:54px;height:54px}
  .hero-badge{grid-row:auto;width:42px;height:42px}
 }
 @container homefit (max-width:640px){
@@ -3036,8 +3036,6 @@ main>[id^="f-"]:not([hidden]):not(#f-home){animation:m-rise .45s var(--out) back
 
 /* home */
 .hero{animation:m-slide .6s var(--out) backwards,m-glow 6s ease-in-out 1.2s infinite}
-.hero-badge{animation:m-float 5s ease-in-out infinite;transition:transform .5s var(--spring)}
-.hero:hover .hero-badge{transform:rotate(-7deg) scale(1.07)}
 #hq{transition:border-color .2s,box-shadow .3s,background-color .2s}
 #hq:focus{animation:m-ring 1.8s ease-out infinite}
 .hero kbd{animation:m-kbd 2.6s ease-in-out infinite}
@@ -3158,6 +3156,23 @@ main>[id^="f-"],.card,.top.m-retitle,.hero,.hero-badge,#hq:focus,.hero kbd,#home
 .task-list-row:has(.task-list-complete:checked) .ih b::after{content:"Done";margin-left:10px;padding:1px 9px;border-radius:99px;background:var(--green);color:#fff;font:700 10px/1.7 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;vertical-align:middle;animation:m-pop .4s var(--spring)}
 @keyframes ck-pop{0%{transform:scale(.8);box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 60%,transparent)}50%{transform:scale(1.16)}100%{transform:none;box-shadow:0 0 0 9px transparent}}
 @media(prefers-reduced-motion:reduce){.task-list-row input[type=checkbox]:checked,#f-subject input[type=checkbox]:checked,.task-list-row .ih b::after{animation:none!important}}
+/* ===== Home hero: picture, text beside it (centred against the picture) and search with recents ===== */
+.hero{grid-template-columns:auto minmax(0,1fr) minmax(280px,520px);gap:8px 22px;padding:18px 24px;align-items:center}
+.hero-text{grid-column:2;grid-row:1;justify-self:start;min-width:0;text-align:left}
+.hero-right{grid-column:3;grid-row:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.hero-search{grid-column:auto}
+#recent{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:6px;min-width:0;overflow:hidden}
+#recent>b{flex:none}
+#recent .chip{flex:0 1 auto;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setup{display:block;margin-top:7px;text-align:left}
+.hero-badge{grid-column:1;grid-row:1;justify-self:start;width:72px;height:72px;object-fit:contain;border:0;border-radius:16px;background:none;box-shadow:none;animation:hero-breathe 4.2s ease-in-out infinite}
+.hero-hello{animation:hero-hello .9s var(--out) .15s backwards}
+.hero h2 .w{display:inline-block;animation:hero-word .7s var(--out) backwards;animation-delay:calc(.3s + var(--i)*.09s)}
+@keyframes hero-breathe{0%,100%{filter:drop-shadow(0 0 0 transparent)}50%{filter:drop-shadow(0 0 11px color-mix(in srgb,var(--beige) 60%,transparent))}}
+@keyframes hero-hello{from{opacity:0;letter-spacing:.34em}to{opacity:1;letter-spacing:normal}}
+@keyframes hero-word{from{opacity:0;transform:translateY(.55em) scale(.96)}to{opacity:1;transform:none}}
+@container homefit (max-width:1000px){.hero{grid-template-columns:auto minmax(0,1fr)}.hero-badge{width:58px;height:58px;border-radius:14px}.hero-text{grid-column:2;grid-row:1}.hero-right{grid-column:1/-1;grid-row:2}}
+@media(prefers-reduced-motion:reduce){.hero-badge,.hero-hello,.hero h2 .w{animation:none!important}}
     </style>
   </head>
   <body>
@@ -3659,15 +3674,15 @@ main>[id^="f-"],.card,.top.m-retitle,.hero,.hero-badge,#hq:focus,.hero kbd,#home
           <img class="hero-badge" id="home-badge" alt="" />
           <div class="hero-text">
             <p class="hero-hello" id="hello"></p>
-            <h2>What are you filing today?</h2>
+            <h2><span class="w" style="--i:0">What</span> <span class="w" style="--i:1">are</span> <span class="w" style="--i:2">you</span> <span class="w" style="--i:3">filing</span> <span class="w" style="--i:4">today?</span></h2>
+            <button class="setup" id="setup" type="button" onclick="show('deputy')" hidden>Save your Character Details so forms fill themselves in</button>
           </div>
+          <div class="hero-right">
           <div class="hero-search">
             <input type="text" id="hq" placeholder="Search forms, e.g. incident, warrant, senora" autocomplete="off" aria-label="Search forms" />
             <kbd aria-hidden="true">/</kbd>
           </div>
-          <div class="hero-foot">
             <div id="recent" hidden><b>Recent</b><div class="chips" id="recent-list"></div></div>
-            <button class="setup" id="setup" type="button" onclick="show('deputy')" hidden>Save your Character Details so forms fill themselves in</button>
           </div>
         </section>
         <p class="home-empty" id="home-empty" hidden></p>
@@ -7762,6 +7777,19 @@ main>[id^="f-"],.card,.top.m-retitle,.hero,.hero-badge,#hq:focus,.hero kbd,#home
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.2.3<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
+          <div class="body">
+            <h3>v2.2.3</h3>
+            <h3>Home page header</h3>
+            <ul>
+              <li>The greeting and "What are you filing today?" sit on the left, right next to the picture, and stay vertically centred against it whether or not your Character Details are saved. The Character Details link now sits inside that text block.</li>
+              <li>The search box and your recent forms are one block on the right. Recents show at most 3 and always stay on a single line: names that do not fit are shortened with an ellipsis instead of wrapping.</li>
+              <li>The picture is 72px, so the seal stays sharp when the page is scaled to fit your screen, and it has no outline. It no longer floats and tilts: it has a slow breathing glow instead.</li>
+              <li>New motion: the words of the headline rise in one after another, the greeting eases in, and the search box types out example searches while it is idle (it stops when you click it or type, and with reduced motion).</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.2.2<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
           <div class="body">
@@ -14804,6 +14832,28 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           };
         };
       })();
+      // the search box types out example searches while it is idle
+      (() => {
+        const input = document.getElementById("hq"), home = document.getElementById("f-home");
+        if (!input || !home || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const base = input.getAttribute("placeholder") || "";
+        const phrases = ["incident report", "arrest warrant", "senora k9 deployment", "use of force", "citation", "commendations", "task list"];
+        let p = 0, n = 0, dir = 1, wait = 0;
+        setInterval(() => {
+          if (home.hidden || document.hidden) return;
+          if (input.value || document.activeElement === input) {
+            if (input.placeholder !== base) input.placeholder = base;
+            n = 0; dir = 1; wait = 0;
+            return;
+          }
+          if (wait > 0) { wait--; return; }
+          n += dir;
+          const text = phrases[p];
+          input.placeholder = "Search forms, e.g. " + text.slice(0, n) + (n < text.length || dir < 0 ? "|" : "");
+          if (n >= text.length) { dir = -1; wait = 22; }
+          else if (n <= 0 && dir < 0) { dir = 1; p = (p + 1) % phrases.length; wait = 6; }
+        }, 70);
+      })();
       async function copy(k) {
         if (k === "citation") {
           await copyCitation();
@@ -16277,7 +16327,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   const RK = "lssd-recent", base = window.show;
   const recents = () => { try { return JSON.parse(localStorage.getItem(RK)) || []; } catch (e) { return []; } };
   const remember = (k) => {
-    try { localStorage.setItem(RK, JSON.stringify([k, ...recents().filter((x) => x !== k)].slice(0, 4))); }
+    try { localStorage.setItem(RK, JSON.stringify([k, ...recents().filter((x) => x !== k)].slice(0, 3))); }
     catch (e) { console.warn("Could not save recent forms:", e); }
   };
   const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt) n.textContent = txt; return n; };
@@ -16389,7 +16439,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("hello").textContent = name ? "Welcome back, " + ((d.rank || "").trim() ? d.rank.trim() + " " : "") + last + "." : "Welcome to the paperwork desk.";
     updateHomeBadge(name);
     $("setup").hidden = Object.values(d).some((v) => String(v).trim());
-    const rc = recents().filter((k) => info[k]), rl = $("recent-list");
+    const rc = recents().filter((k) => info[k]).slice(0, 3), rl = $("recent-list");
     rl.replaceChildren(...rc.map((k) => { const c = el("button", "chip", info[k].t); c.type = "button"; c.onclick = open(k); return c; }));
     $("recent").hidden = !rc.length;
     const box = $("home-groups");
