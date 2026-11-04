@@ -2652,6 +2652,39 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .p-adv .padv .pchk{align-self:flex-start;width:fit-content}
 .p-full{grid-column:1/-1}
 .p-rel textarea{min-height:76px}
+/* ===== Credits ===== */
+.cr-lead{margin:0 0 10px;font-size:17px;font-weight:600;line-height:1.5;color:var(--text)}
+.cr-hero .body{text-align:center}
+.cr-hero p{max-width:68ch;margin-inline:auto;line-height:1.6}
+.cr-aims{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0}
+.cr-aims span{padding:5px 13px;border:1px solid var(--line);border-radius:99px;background:var(--bg);color:var(--beige);font-size:13px;font-weight:600}
+.cr-contacts{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.cr-tile{display:inline-flex;align-items:center;gap:12px;min-width:210px;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);font:inherit;text-align:left;text-decoration:none;cursor:pointer;transition:border-color .2s,transform .2s}
+.cr-tile:hover{border-color:var(--green);transform:translateY(-1px)}
+.cr-tile:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.cr-tile svg{flex:0 0 auto;color:var(--beige)}
+.cr-tile b{display:block;font-size:14px}
+.cr-tile small{display:block;margin-top:2px;color:var(--mute);font-size:12.5px}
+@media (prefers-reduced-motion:reduce){.cr-tile{transition:none}.cr-tile:hover{transform:none}}
+.cr-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:16px}
+.cr-box{position:relative;overflow:hidden;display:flex;flex-direction:column;flex:0 1 calc((100% - 28px) / 3);min-width:240px;max-width:100%;padding:16px 16px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);transition:transform .2s,border-color .2s,box-shadow .2s}
+@media (max-width:640px){.cr-box{flex-basis:100%}}
+.cr-box::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--green),var(--beige))}
+.cr-box:hover{transform:translateY(-2px);border-color:var(--green);box-shadow:0 10px 26px rgba(0,0,0,.18)}
+@media (prefers-reduced-motion:reduce){.cr-box{transition:none}.cr-box:hover{transform:none}}
+.cr-box{text-align:center}
+.cr-top{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:10px}
+.cr-av{display:grid;place-items:center;flex:0 0 auto;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--beige));color:#fff;font:700 21px/1 "Barlow Condensed",Inter,sans-serif}
+.cr-top h3{margin:0;font:600 20px/1.1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
+.cr-role{margin:2px 0 0;color:var(--beige);font-size:12px;font-weight:600}
+.cr-sum{margin:0 0 4px;font-size:13px;line-height:1.5}
+.cr-box h4{margin:12px 0 6px;color:var(--mute);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.cr-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:0;padding:0;list-style:none}
+.cr-chips li{padding:2px 9px;border:1px solid var(--line);border-radius:99px;background:var(--bg);font-size:12px;font-weight:600}
+.cr-list{margin:0;padding:0;list-style:none;font-size:12.5px;line-height:1.5}
+.cr-list li{margin:2px 0}
+.cr-link{display:block;margin-top:auto;padding-top:12px;color:var(--green);font-size:12.5px;font-weight:600;text-decoration:none}
+.cr-link:hover{text-decoration:underline}
 /* ===== PEU ===== */
 .peu-hint{margin:6px 0 0;color:var(--mute);font-size:13px}
 #peu-title-out{font-weight:600}
@@ -3152,6 +3185,14 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                 stroke-linejoin="round"
               /></svg
           ></a>
+        </section>
+        <section class="nav-group" data-group="about credits">
+          <div class="grp">
+            <span class="grp-label">About</span><span class="grp-count">1</span>
+          </div>
+          <button class="nav" id="nv-credits" data-k="credits about github made by" onclick="show('credits')">
+            <span>Credits</span>
+          </button>
         </section>
       </div>
     </aside>
@@ -6092,6 +6133,74 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           ><button class="b" onclick="resetPeuAdmin()">Reset</button>
         </div>
       </div>
+      <div id="f-credits" hidden>
+        <div class="card cr-hero">
+          <h2><small>About</small>Credits</h2>
+          <div class="body">
+            <p class="cr-lead">This site was made out of courtesy, and in the general interest of everyone who files paperwork for the department.</p>
+            <p>The aim is simple: one unitary place for everything you need, kept as simple as possible and with as many automations as possible. Fewer fields to retype, fewer formatting mistakes, and one click to copy.</p>
+            <div class="cr-aims" aria-label="Aims of the site">
+              <span>One place</span><span>As simple as possible</span><span>As automated as possible</span>
+            </div>
+            <div class="cr-contacts">
+              <a class="cr-tile" href="https://github.com/robertpsq/patrol" target="_blank" rel="noopener noreferrer"
+                ><svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></svg><span><b>GitHub</b><small>robertpsq/patrol</small></span></a
+              >
+              <!-- Discord has no link that opens a profile from a username; with a numeric user ID this could become
+                   <a href="https://discord.com/users/USER_ID">. Until then the tile copies the username. -->
+              <button class="cr-tile" type="button" onclick="copyDiscordName()" aria-label="Discord: cirano (copies the username)"
+                ><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" /></svg><span><b>Discord</b><small>cirano</small></span></button
+              >
+            </div>
+          </div>
+        </div>
+        <!-- One box per person: copy an <article class="cr-box"> to add someone. -->
+        <div class="cr-grid">
+          <article class="cr-box">
+            <div class="cr-top">
+              <span class="cr-av" aria-hidden="true">C</span>
+              <div>
+                <h3>cirano</h3>
+                <p class="cr-role">Creator &amp; maintainer</p>
+              </div>
+            </div>
+            <p class="cr-sum">Designed the structure of the site and built the forms that live in it.</p>
+            <h4>Structure</h4>
+            <ul class="cr-chips">
+              <li>Patrol Reports</li>
+              <li>Warrant Services</li>
+              <li>Bureaus</li>
+              <li>Generators</li>
+              <li>Character Details</li>
+              <li>Updates</li>
+            </ul>
+            <h4>What's in it</h4>
+            <ul class="cr-list">
+              <li>Arrest Report with sentencing, fines and bail calculator</li>
+              <li>Incident, Supplemental, Use of Force, Traffic Collision, APB and King Patrol</li>
+              <li>Arrest, Search, Electronic Surveillance and Financial Service warrants</li>
+              <li>Bureau forms: K9, NCCIT, TSD Citation, SIB, FTP, PEU letters, SSB requests and more</li>
+              <li>Business Card, Email Template and Correspondence</li>
+            </ul>
+            <a class="cr-link" href="https://github.com/robertpsq" target="_blank" rel="noopener noreferrer">@robertpsq on GitHub</a>
+          </article>
+          <article class="cr-box">
+            <div class="cr-top">
+              <span class="cr-av" aria-hidden="true">B</span>
+              <div>
+                <h3>booskit</h3>
+                <p class="cr-role">MDC Panel +</p>
+              </div>
+            </div>
+            <p class="cr-sum">The Arrest Report was taken from booskit's MDC Panel +. We did our best to make it easier to use than that version.</p>
+            <h4>Credit for</h4>
+            <ul class="cr-chips">
+              <li>Arrest Report</li>
+            </ul>
+            <a class="cr-link" href="https://panel.booskit.dev/" target="_blank" rel="noopener noreferrer">panel.booskit.dev</a>
+          </article>
+        </div>
+      </div>
       <div id="f-ftp-phase1" hidden>
         <div class="card">
           <h2><small>FTP</small>Phase 1 Patrol Summary</h2>
@@ -6792,6 +6901,18 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.1.2</h2>
+          <div class="body">
+            <h3>v2.1.2</h3>
+            <h3>Credits</h3>
+            <ul>
+              <li>A new Credits page at the very bottom of the sidebar, under About. It explains that the site was made out of courtesy and in the general interest, and that the aim is one unitary place for everything needed, as simple as possible and with as many automations as possible.</li>
+              <li>GitHub and Discord boxes at the top: GitHub opens the project, and the Discord box copies the username.</li>
+              <li>A box for each person, three to a row, with a short row centred when there are fewer. The first credits cirano for the structure and the forms; the second credits booskit and the MDC Panel +, where the Arrest Report was taken from before being made easier to use.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.1.1</h2>
           <div class="body">
@@ -11487,6 +11608,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "ftp-fto-eval",
           "peu-letters",
           "peu-admin",
+          "credits",
           "mcb-poi",
           "mcb-case",
           "mcb-supplemental",
@@ -11544,6 +11666,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "ftp-fto-eval": "FTP — FTO Evaluation Patrol Report",
           "peu-letters": "PEU — Applicant Letters",
           "peu-admin": "PEU — Administrative File",
+          credits: "Credits",
           "mcb-poi": "Person of Interest File",
           "mcb-case": "MCB — Case Package",
           "mcb-supplemental": "MCB — Supplemental Report",
@@ -14811,6 +14934,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   const info = {};
   G.forEach(([g, items]) => items.forEach(([k, t, d]) => (info[k] = { g, t, d })));
   buForms.forEach(({ f, d, u }) => (info[f[0]].g = d.n + " \u00b7 " + u.n));
+  info.credits = { g: "About", t: "Credits", d: "Who made this site, and why." };
   let buSel = "central";
   const RK = "lssd-recent", base = window.show;
   const recents = () => { try { return JSON.parse(localStorage.getItem(RK)) || []; } catch (e) { return []; } };
@@ -14907,7 +15031,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("crumb").textContent = m ? m.g : "Paperwork";
     $("lede").textContent = m ? m.d : "";
     setFormSeal(k);
-    if (k === "home") renderHome(); else remember(k);
+    if (k === "home") renderHome(); else if (k !== "credits") remember(k);
     window.scrollTo(0, 0);
   };
 
@@ -16474,6 +16598,17 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     if (k === "peu-letters" || k === "peu-admin") { fillDefaults(); refreshLetter(); refreshAdmin(); }
   };
 })();
+
+/* ===== Credits: copy the Discord username ===== */
+window.copyDiscordName = async function () {
+  const name = "cirano";
+  try { await navigator.clipboard.writeText(name); toast("Copied " + name); }
+  catch (e) {
+    const a = document.createElement("textarea"); a.value = name; document.body.appendChild(a); a.select();
+    try { document.execCommand("copy"); toast("Copied " + name); } catch (e2) { toast("Copy failed"); }
+    a.remove();
+  }
+};
     </script>
   </body>
 </html>
