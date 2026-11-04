@@ -2372,11 +2372,12 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .chip[hidden],.tile[hidden],#home-groups section[hidden],.home-empty[hidden],#recent[hidden],.home-sub[hidden],.setup[hidden]{display:none!important}
 
 /* category panels */
-#home-groups{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"patrol patrol warrant gen" "bureaus bureaus bureaus misc";align-items:start}
+#home-groups{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"patrol patrol warrant gen" "bureaus bureaus bureaus misc" "notice notice notice misc";align-items:start}
 #home-groups>section{min-width:0;padding:12px 14px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
 #home-groups>[data-a="patrol"]{grid-area:patrol}
 #home-groups>[data-a="warrant"]{grid-area:warrant}
 #home-groups>[data-a="bureaus"]{grid-area:bureaus}
+#home-groups>[data-a="notice"]{grid-area:notice}
 #home-groups>[data-a="gen"]{grid-area:gen}
 #home-groups>[data-a="misc"]{grid-area:misc}
 #home-groups.searching{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));grid-template-areas:none}
@@ -2498,7 +2499,7 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .home-div-h.plain{color:var(--mute)}
 
 @container homefit (max-width:900px){
- #home-groups{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"patrol patrol" "warrant gen" "bureaus bureaus" "misc misc"}
+ #home-groups{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"patrol patrol" "warrant gen" "bureaus bureaus" "notice notice" "misc misc"}
 }
 @container homefit (max-width:900px){
  .hero{grid-template-columns:auto minmax(0,1fr)}
@@ -2506,7 +2507,7 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
  .hero-badge{grid-row:auto;width:42px;height:42px}
 }
 @container homefit (max-width:640px){
- #home-groups{grid-template-columns:1fr;grid-template-areas:"patrol" "warrant" "gen" "bureaus" "misc"}
+ #home-groups{grid-template-columns:1fr;grid-template-areas:"patrol" "warrant" "gen" "bureaus" "notice" "misc"}
  .home-divs{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
@@ -2711,6 +2712,29 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .iab-opt:has(input:checked){border-color:var(--green);background:color-mix(in srgb,var(--green) 9%,var(--bg));box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 14%,transparent)}
 .iab-opt:has(input:checked) .mk{border-color:var(--green);background:var(--green)}
 .iab-opt:has(input:checked) .mk::after{transform:scale(1)}
+/* ===== Notice Board ===== */
+.nb-slider{position:relative;display:grid;grid-template-columns:repeat(5,1fr);padding:4px;border:1px solid var(--line);border-radius:14px;background:var(--bg);--i:0}
+.nb-slider input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.nb-slider label{position:relative;z-index:1;display:grid;place-items:center;padding:12px 8px;border-radius:10px;text-align:center;font-size:13.5px;font-weight:600;color:var(--mute);cursor:pointer;user-select:none;transition:color .25s}
+.nb-slider label:hover{color:var(--text)}
+.nb-slider input:checked+label{color:#fff}
+.nb-slider input:focus-visible+label{outline:2px solid var(--beige);outline-offset:-2px}
+.nb-thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 5);border-radius:10px;background:var(--green);box-shadow:0 4px 14px color-mix(in srgb,var(--green) 40%,transparent);transform:translateX(calc(var(--i) * 100%));transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.nb-slider:has(#nb-t-reassignment:checked){--i:1}
+.nb-slider:has(#nb-t-bonus-assignment:checked){--i:2}
+.nb-slider:has(#nb-t-bonus-removal:checked){--i:3}
+.nb-slider:has(#nb-t-demotion:checked){--i:4}
+.nb-slider.n4{grid-template-columns:repeat(4,1fr)}
+.nb-slider.n4 .nb-thumb{width:calc((100% - 8px) / 4)}
+.nb-slider:has(#nbd-t-discharge:checked){--i:1}
+.nb-slider:has(#nbd-t-removal:checked){--i:2}
+.nb-slider:has(#nbd-t-leave:checked){--i:3}
+.nb-slider.n3{grid-template-columns:repeat(3,1fr)}
+.nb-slider.n3 .nb-thumb{width:calc((100% - 8px) / 3)}
+.nb-slider:has(#nbt-t-reinstatement:checked){--i:1}
+.nb-slider:has(#nbt-t-resignation:checked){--i:2}
+@media (max-width:760px){.nb-slider{grid-template-columns:repeat(2,1fr);gap:4px}.nb-thumb{display:none}.nb-slider input:checked+label{background:var(--green)}}
+@media (prefers-reduced-motion:reduce){.nb-thumb{transition:none}}
 /* ===== Credits ===== */
 .cr-lead{margin:0 0 10px;font-size:17px;font-weight:600;line-height:1.5;color:var(--text)}
 .cr-hero .body{text-align:center}
@@ -3120,6 +3144,18 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
                   <button class="nav sub" id="nv-vst-request" data-k="vst veterinary services request k9 vet appointment" data-parent="nv-bu-vst" onclick="show('vst-request')"><span>Veterinary Services Request</span></button>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+        <section class="nav-group bureaus" data-group="administration notice board">
+          <div class="grp"><span class="grp-label">Administration</span><span class="grp-count">4</span></div>
+          <div class="bu-item" data-bu="notice">
+            <button class="nav bu-div" id="nv-bu-notice" data-k="notice board" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span>Notice Board</span><em class="bu-n">4</em><i class="bu-chev" aria-hidden="true"></i></button>
+            <div class="bu-body">
+              <button class="nav sub" id="nv-notices" data-k="notice board promotions promotion bonus assignments bonus removal reductions demotion reassignment" data-parent="nv-bu-notice" onclick="show('notices')"><span>Promotions, Bonus Assignments, Reductions</span></button>
+              <button class="nav sub" id="nv-notices-discipline" data-k="notice board suspensions suspension discharges discharge faction removal administrative leave" data-parent="nv-bu-notice" onclick="show('notices-discipline')"><span>Suspensions, Discharges, Administrative Leave</span></button>
+              <button class="nav sub" id="nv-notices-moves" data-k="notice board transfers transfer reinstatements reinstatement resignations resignation" data-parent="nv-bu-notice" onclick="show('notices-moves')"><span>Transfers, Reinstatements, Resignations</span></button>
+              <button class="nav sub" id="nv-notices-commendations" data-k="notice board commendations commendation awards report" data-parent="nv-bu-notice" onclick="show('notices-commendations')"><span>Commendations</span></button>
             </div>
           </div>
         </section>
@@ -5310,6 +5346,173 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           ><button class="b" onclick="resetIabPrelim()">Reset</button>
         </div>
       </div>
+      <div id="f-notices" hidden>
+        <div class="card">
+          <h2><small>Notice Board</small>Type of notice</h2>
+          <div class="body">
+            <div class="nb-slider" role="radiogroup" aria-label="Notice type"><i class="nb-thumb" aria-hidden="true"></i><input type="radio" name="nb-type" id="nb-t-promotion" value="promotion" checked /><label for="nb-t-promotion">Promotion</label><input type="radio" name="nb-type" id="nb-t-reassignment" value="reassignment" /><label for="nb-t-reassignment">Reassignment</label><input type="radio" name="nb-type" id="nb-t-bonus-assignment" value="bonus-assignment" /><label for="nb-t-bonus-assignment">Bonus Assignment</label><input type="radio" name="nb-type" id="nb-t-bonus-removal" value="bonus-removal" /><label for="nb-t-bonus-removal">Bonus Removal</label><input type="radio" name="nb-type" id="nb-t-demotion" value="demotion" /><label for="nb-t-demotion">Demotion</label></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Notice Board</small>Employee</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Employee name</span><input type="text" id="nb-name" placeholder="Firstname Lastname" autocomplete="off" /></div><div class="f"><span id="nb-rank-label">Former rank</span><select id="nb-rank-sel"><option value="">Select rank</option><option>Deputy Sheriff</option><option>Deputy Sheriff (Bonus I)</option><option>Deputy Sheriff (Bonus II)</option><option>Sergeant</option><option>Detective</option><option>Lieutenant</option><option>Captain</option><option>Area Commander</option><option>Division Chief</option><option>Assistant Sheriff</option><option>Undersheriff</option><option>Sheriff</option><option value="__custom">Custom</option></select></div></div><div class="f" id="nb-rank-custom-wrap" hidden><span>Custom rank</span><input type="text" id="nb-rank" maxlength="40" placeholder="Type the rank" autocomplete="off" /></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Notice Board</small>Assignment</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span id="nb-pos-label">Position</span><input type="text" id="nb-position" placeholder="Position" autocomplete="off" /></div><div class="f"><span id="nb-unit-label">Unit of assignment</span><input type="text" id="nb-unit" placeholder="Unit of Assignment" autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card" data-nb="promotion" hidden>
+          <h2><small>Notice Board</small>Appointed rank</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Appointed rank</span><select id="nb-appointed"><option value="">Select…</option><option>Deputy Sheriff</option><option>Deputy Sheriff (Bonus I)</option><option>Deputy Sheriff (Bonus II)</option><option>Sergeant</option><option>Detective</option><option>Lieutenant</option><option>Captain</option><option>Area Commander</option><option>Division Chief</option><option>Assistant Sheriff</option><option>Undersheriff</option><option>Sheriff</option></select></div></div>
+          </div>
+        </div>
+        <div class="card" data-nb="reassignment" hidden>
+          <h2><small>Notice Board</small>New assignment</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Position</span><input type="text" id="nb-newposition" placeholder="Position" autocomplete="off" /></div><div class="f"><span>Unit of assignment</span><input type="text" id="nb-newunit" placeholder="Unit of Assignment" autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card" data-nb="bonus-assignment" hidden>
+          <h2><small>Notice Board</small>Bonus level</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Upgraded to</span><select id="nb-upgraded"><option value="">Select…</option><option>Bonus I</option><option>Bonus II</option></select></div></div>
+          </div>
+        </div>
+        <div class="card" data-nb="bonus-removal" hidden>
+          <h2><small>Notice Board</small>Bonus level</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Downgraded to</span><select id="nb-downgraded"><option value="">Select…</option><option>Generalist</option><option>Bonus I</option><option>Bonus II</option></select></div></div>
+          </div>
+        </div>
+        <div class="card" data-nb="demotion" hidden>
+          <h2><small>Notice Board</small>Demoted rank</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Demoted to</span><select id="nb-demoted"><option value="">Select…</option><option>Deputy Sheriff</option><option>Deputy Sheriff (Bonus I)</option><option>Deputy Sheriff (Bonus II)</option><option>Sergeant</option><option>Detective</option><option>Lieutenant</option><option>Captain</option><option>Area Commander</option><option>Division Chief</option><option>Assistant Sheriff</option><option>Undersheriff</option><option>Sheriff</option></select></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="nb-title" readonly aria-label="Notice title" /><button class="b" onclick="copyCardCommand('nb-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Example: [Promotion] Sergeant Firstname Lastname</span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('notices')">Copy BBCode</button
+          ><button class="b" onclick="resetNotices()">Reset</button>
+        </div>
+      </div>
+      <div id="f-notices-discipline" hidden>
+        <div class="card">
+          <h2><small>Notice Board</small>Type of notice</h2>
+          <div class="body">
+            <div class="nb-slider n4" role="radiogroup" aria-label="Notice type"><i class="nb-thumb" aria-hidden="true"></i><input type="radio" name="nbd-type" id="nbd-t-suspension" value="suspension" checked /><label for="nbd-t-suspension">Suspension</label><input type="radio" name="nbd-type" id="nbd-t-discharge" value="discharge" /><label for="nbd-t-discharge">Discharge</label><input type="radio" name="nbd-type" id="nbd-t-removal" value="removal" /><label for="nbd-t-removal">Faction Removal</label><input type="radio" name="nbd-type" id="nbd-t-leave" value="leave" /><label for="nbd-t-leave">Administrative Leave</label></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Notice Board</small>Employee</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Employee name</span><input type="text" id="nbd-name" placeholder="Firstname Lastname" autocomplete="off" /></div><div class="f"><span>Rank</span><select id="nbd-rank-sel"><option value="">Select rank</option><option>Deputy Sheriff</option><option>Deputy Sheriff (Bonus I)</option><option>Deputy Sheriff (Bonus II)</option><option>Sergeant</option><option>Detective</option><option>Lieutenant</option><option>Captain</option><option>Area Commander</option><option>Division Chief</option><option>Assistant Sheriff</option><option>Undersheriff</option><option>Sheriff</option><option value="__custom">Custom</option></select></div></div><div class="f" id="nbd-rank-custom-wrap" hidden><span>Custom rank</span><input type="text" id="nbd-rank" maxlength="40" placeholder="Type the rank" autocomplete="off" /></div>
+          </div>
+        </div>
+        <div class="card" data-nbd="suspension leave" hidden>
+          <h2><small>Notice Board</small>Expiry</h2>
+          <div class="body">
+            <div class="f"><span>Expiry date &amp; time</span><small class="date-time-hint">Choose a date and enter the time in 24-hour format.</small><div class="date-time-control"><input type="text" id="nbd-date" placeholder="Select date" /><input type="time" id="nbd-time" value="00:00" aria-label="Expiry time (hours and minutes, 24-hour format)" title="Hours and minutes (24-hour time)" /></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Notice Board</small>Reason</h2>
+          <div class="body">
+            <div class="f"><span>Reason</span><textarea id="nbd-reason" placeholder="Suspension Reason"></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="nbd-title" readonly aria-label="Notice title" /><button class="b" onclick="copyCardCommand('nbd-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Example: [Suspension] Sergeant Firstname Lastname</span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('notices-discipline')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=181" target="_blank" rel="noopener noreferrer">Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetNoticesDiscipline()">Reset</button>
+        </div>
+      </div>
+      <div id="f-notices-moves" hidden>
+        <div class="card">
+          <h2><small>Notice Board</small>Type of notice</h2>
+          <div class="body">
+            <div class="nb-slider n3" role="radiogroup" aria-label="Notice type"><i class="nb-thumb" aria-hidden="true"></i><input type="radio" name="nbt-type" id="nbt-t-transfer" value="transfer" checked /><label for="nbt-t-transfer">Transfer</label><input type="radio" name="nbt-type" id="nbt-t-reinstatement" value="reinstatement" /><label for="nbt-t-reinstatement">Reinstatement</label><input type="radio" name="nbt-type" id="nbt-t-resignation" value="resignation" /><label for="nbt-t-resignation">Resignation</label></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Notice Board</small>Employee</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Employee name</span><input type="text" id="nbt-name" placeholder="Firstname Lastname" autocomplete="off" /></div><div class="f"><span id="nbt-rank-label">Former rank</span><select id="nbt-rank-sel"><option value="">Select rank</option><option>Deputy Sheriff</option><option>Deputy Sheriff (Bonus I)</option><option>Deputy Sheriff (Bonus II)</option><option>Sergeant</option><option>Detective</option><option>Lieutenant</option><option>Captain</option><option>Area Commander</option><option>Division Chief</option><option>Assistant Sheriff</option><option>Undersheriff</option><option>Sheriff</option><option value="__custom">Custom</option></select></div></div><div class="f" id="nbt-rank-custom-wrap" hidden><span>Custom rank</span><input type="text" id="nbt-rank" maxlength="40" placeholder="Type the rank" autocomplete="off" /></div>
+          </div>
+        </div>
+        <div class="card" data-nbt="transfer reinstatement" hidden>
+          <h2><small>Notice Board</small>Appointed rank</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Appointed rank</span><select id="nbt-appointed"><option value="">Select…</option><option>Deputy Sheriff</option><option>Deputy Sheriff (Bonus I)</option><option>Deputy Sheriff (Bonus II)</option><option>Sergeant</option><option>Detective</option><option>Lieutenant</option><option>Captain</option><option>Area Commander</option><option>Division Chief</option><option>Assistant Sheriff</option><option>Undersheriff</option><option>Sheriff</option></select></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Notice Board</small>Assignment</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Position</span><input type="text" id="nbt-position" placeholder="Position" autocomplete="off" /></div><div class="f"><span>Unit of assignment</span><input type="text" id="nbt-unit" placeholder="Unit of Assignment" autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="nbt-title" readonly aria-label="Notice title" /><button class="b" onclick="copyCardCommand('nbt-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Example: [Transfer] Sergeant Firstname Lastname</span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('notices-moves')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=410" target="_blank" rel="noopener noreferrer">Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetNoticesMoves()">Reset</button>
+        </div>
+      </div>
+      <div id="f-notices-commendations" hidden>
+        <div class="card">
+          <h2><small>Notice Board</small>Commendation Report</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f"><span>Name of employee</span><input type="text" id="nbc-name" placeholder="Firstname Lastname" autocomplete="off" /></div>
+              <div class="f"><span>Issuing employee</span><input type="text" id="nbc-issuer" placeholder="Rank Firstname Lastname" autocomplete="off" /></div>
+            </div>
+            <div class="f">
+              <span>OOC commendation</span>
+              <div class="yn" role="radiogroup" aria-label="OOC commendation">
+                <input type="radio" name="nbc-ooc" id="nbc-ooc-yes" value="Yes" /><label for="nbc-ooc-yes">Yes</label>
+                <input class="no" type="radio" name="nbc-ooc" id="nbc-ooc-no" value="No" /><label for="nbc-ooc-no">No</label>
+              </div>
+            </div>
+            <div class="f"><span>Notes</span><textarea id="nbc-notes" placeholder="Why is this commendation being given?"></textarea></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('notices-commendations')">Copy BBCode</button
+          ><a class="b forum-link" href="https://lssd.gta.world/viewtopic.php?t=72032" target="_blank" rel="noopener noreferrer">Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a
+          ><button class="b" onclick="resetNoticesCommendations()">Reset</button>
+        </div>
+      </div>
       <div id="f-davis-k9-deployment" hidden>
         <div class="card">
           <h2><small>K9</small>Deployment Log</h2>
@@ -7235,6 +7438,22 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v2.1.12<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
+          <div class="body">
+            <h3>v2.1.12</h3>
+            <h3>Administration</h3>
+            <ul>
+              <li>A new Administration category in the sidebar and on the home page, right below Bureaus, with its first subcategory, Notice Board.</li>
+              <li>The first Notice Board form is Promotions, Bonus Assignments, Reductions. A slider at the top picks the notice: Promotion, Reassignment, Bonus Assignment, Bonus Removal or Demotion, each in its official BBCode format. The name, rank and assignment you typed are kept when you switch between notices, and the extra fields (appointed rank, new assignment, upgraded to, downgraded to, demoted to) appear for the notice that needs them.</li>
+              <li>The second Notice Board form is Suspensions, Discharges, Administrative Leave, with a slider for Suspension, Discharge, Faction Removal or Administrative Leave. Suspension and Administrative Leave also ask for the expiry date (calendar) and time (24-hour, with a Now button), and every notice has a Reason box. Its title follows the same pattern, with the Faction Removal title written out of character inside (( )), and its Forum button goes to the Suspensions, Discharges and Administrative Leave forum.</li>
+              <li>The third Notice Board form is Transfers, Reinstatements, Resignations, with a slider for Transfer, Reinstatement or Resignation. Transfer and Reinstatement ask for the appointed rank, and all three take the assignment. The title is the notice, the former rank and the name, and its Forum button goes to the Transfers, Reinstatements and Resignations forum.</li>
+              <li>The fourth Notice Board form is Commendations, with the name of the employee, a Yes or No choice for an OOC commendation, the notes and the issuing employee, in the official commendation report BBCode and with no title. The issuing employee is prefilled from Character Details, since you are the one filing it, and stays editable. The Forum button goes to the Commendations topic.</li>
+              <li>Every rank dropdown on the notice forms (appointed rank, demoted to) lists all ranks, including Deputy Sheriff (Bonus I), Deputy Sheriff (Bonus II) and Detective. The employee's rank is the same dropdown as in Character Details, with a Custom option that opens its own box.</li>
+              <li>The forum topic title is built live at the bottom as [Promotion], [Reassignment], [Bonus Assignment], [Bonus Removal] or [Demotion] followed by the rank and name, with its own Copy title button. A promotion or demotion uses the new rank.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v2.1.11<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
           <div class="body">
             <h3>v2.1.11</h3>
@@ -8612,6 +8831,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         "arrest-report",
         "incident",
         "supp",
+        "notices-commendations",
         "uof-supp",
         "uof",
         "king-patrol",
@@ -12087,6 +12307,10 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "king-patrol",
           "apb",
           "supp",
+          "notices",
+          "notices-discipline",
+          "notices-moves",
+          "notices-commendations",
           "iab-prelim",
           "uof-supp",
           "task-list",
@@ -12154,6 +12378,10 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "king-patrol": "King Patrol Report",
           apb: "APB",
           supp: "Supplemental Report",
+          notices: "Notice Board — Promotions, Bonus Assignments, Reductions",
+          "notices-discipline": "Notice Board — Suspensions, Discharges, Administrative Leave",
+          "notices-moves": "Notice Board — Transfers, Reinstatements, Resignations",
+          "notices-commendations": "Notice Board — Commendations",
           "iab-prelim": "IAB — UOF - Preliminary Review",
           "uof-supp": "Supplemental Use of Force Report",
           "task-list": "Task List",
@@ -13147,6 +13375,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "oss-supp-time": "HHMM",
         "ftp1-time": "HH:MM",
         "usup-time": "HH:MM",
+        "nbd-time": "HH:MM",
         "ftp2-time": "HH:MM",
         "ftp3-time": "HH:MM",
         "fto-time": "HH:MM",
@@ -13246,6 +13475,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "ar-date",
         "i1",
         "uof-date",
+        "nbd-date",
         "usup-date",
         "king-report-date",
         "apb-date",
@@ -15419,6 +15649,11 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["depmail", "Email Template", "Departmental email in the official depmail BBCode format."],
       ["email", "Correspondence", "Departmental correspondence in the official BBCode format."]]],
     ["Bureaus", []],
+    ["Administration", [
+      ["notices", "Promotions, Bonus Assignments, Reductions", "Notices of promotion, reassignment, bonus assignment, bonus removal and demotion."],
+      ["notices-discipline", "Suspensions, Discharges, Administrative Leave", "Notices of suspension, discharge, faction removal and administrative leave."],
+      ["notices-moves", "Transfers, Reinstatements, Resignations", "Notices of transfer, reinstatement and resignation."],
+      ["notices-commendations", "Commendations", "Commendation report for awards and commendations."]]],
     ["Miscellaneous", [
       ["deputy", "Character Details", "Save your name, badge, rank and optional callsign to prefill forms."],
       ["updates", "Updates", "See what's new on this site."]]],
@@ -15490,6 +15725,10 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     incident: { mono: "IR" },
     supp: { mono: "SUP" },
     "uof-supp": { mono: "UOF" },
+    notices: { mono: "NB" },
+    "notices-discipline": { mono: "NB" },
+    "notices-moves": { mono: "NB" },
+    "notices-commendations": { mono: "NB" },
     "iab-prelim": { unit: "iab", mono: "IAB" },
     "task-list": { mono: "TASK" },
     subject: { mono: "SUBJ" },
@@ -15590,7 +15829,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("recent").hidden = !rc.length;
     const box = $("home-groups");
     if (!box.children.length) {
-      const AREA = { "Patrol Reports": "patrol", "Warrant Services": "warrant", "Bureaus": "bureaus", "Generators": "gen", "Miscellaneous": "misc" };
+      const AREA = { "Patrol Reports": "patrol", "Warrant Services": "warrant", "Bureaus": "bureaus", "Administration": "notice", "Generators": "gen", "Miscellaneous": "misc" };
       const tile = ([k, t, desc, path], g) => {
         const b = withIcon(el("button", "tile"), t, k); b.type = "button"; b.onclick = open(k);
         b.title = desc;
@@ -15662,8 +15901,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   };
   const FORM_IC = { sheriff: "shield", "arrest-report": "shield", incident: "file", supp: "filePlus", "uof-supp": "filePlus", "task-list": "list", subject: "user", tc: "car", uof: "alert",
     "king-patrol": "crown", apb: "mega", "arrest-warrant": "scales", "search-warrant": "search", "electronic-surveillance-warrant": "eye",
-    "financial-service-warrant": "coin", card: "card", depmail: "mail", email: "send", deputy: "id", updates: "spark" };
-  const PANEL_IC = { "Patrol Reports": "shield", "Warrant Services": "scales", Generators: "layers", Miscellaneous: "grid", Bureaus: "bank" };
+    "financial-service-warrant": "coin", card: "card", notices: "crown", "notices-discipline": "alert", "notices-moves": "send", "notices-commendations": "spark", depmail: "mail", email: "send", deputy: "id", updates: "spark" };
+  const PANEL_IC = { "Patrol Reports": "shield", "Warrant Services": "scales", Generators: "layers", Miscellaneous: "grid", Bureaus: "bank", Administration: "id" };
   const svgIc = (cls, name) => {
     const i = el("i", cls); i.setAttribute("aria-hidden", "true");
     i.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (IC[name] || IC.file) + "</svg>";
@@ -18523,6 +18762,282 @@ root.addEventListener('change',e=>{const t=e.target;if(t.type=='file'){const n=t
     }
   };
   window.__iabPrelim = { build: buildIabPrelim };
+})();
+
+/* ===== Notice Board: Promotions, Bonus Assignments, Reductions ===== */
+(() => {
+  const RANKS_ALL = "Deputy Sheriff/Sergeant/Lieutenant/Captain/Area Commander/Division Chief/Assistant Sheriff/Undersheriff/Sheriff";
+  const TYPES = {
+    promotion: { head: "PROMOTION", word: "Promotion" },
+    reassignment: { head: "REASSIGNMENT", word: "Reassignment" },
+    "bonus-assignment": { head: "BONUS ASSIGNMENT", word: "Bonus Assignment" },
+    "bonus-removal": { head: "BONUS REMOVAL", word: "Bonus Removal" },
+    demotion: { head: "DEMOTION", word: "Demotion" },
+  };
+  // keeps the right-hand Sections outline in step with the cards that are showing for the chosen notice
+  // Rank: the same dropdown as Character Details (all ranks, then Custom with its own box). The hidden-or-shown
+  // text box always holds the final value, so every builder keeps reading the same field.
+  window.nbRankReset = (pre) => {
+    $(pre + "-rank-sel").selectedIndex = 0;
+    $(pre + "-rank-custom-wrap").hidden = true;
+    $(pre + "-rank").value = "";
+  };
+  document.addEventListener("change", (e) => {
+    const t = e.target;
+    if (!t.id || !/^nb[dt]?-rank-sel$/.test(t.id)) return;
+    const pre = t.id.replace("-rank-sel", ""), box = $(pre + "-rank"), wrap = $(pre + "-rank-custom-wrap");
+    if (t.value === "__custom") {
+      wrap.hidden = false;
+      if ([...t.options].some((o) => o.value && o.value === box.value)) box.value = "";
+      box.focus();
+    } else {
+      wrap.hidden = true;
+      box.value = t.value;
+    }
+  }, true);
+  window.syncCardOutline = (f) => {
+    const cards = [...f.querySelectorAll(":scope > .card")], links = [...f.querySelectorAll(".rail .outline a")];
+    if (links.length === cards.length) cards.forEach((c, i) => (links[i].hidden = c.hidden));
+  };
+  const g = (id) => $("nb-" + id);
+  const val = (id) => g(id).value.trim();
+  const type = () => (document.querySelector('input[name="nb-type"]:checked') || {}).value || "promotion";
+  const name = () => val("name") || "Firstname Lastname";
+  const rank = () => val("rank") || "Rank";
+  const asg = (p, u) => (val(p) || "Position") + ", " + (val(u) || "Unit of Assignment");
+  function nbBuild(t) {
+    const head = [
+      "[block=0,40,white,white][center][imgmh=150]https://i.imgur.com/iaZp7uU.png[/imgmh]",
+      "",
+      "[color=black][b]NOTICE OF " + TYPES[t].head + "[/b][/center]",
+      "",
+      "",
+      "[width=80,auto]",
+    ];
+    const foot = ["", "[/width][br][br][center][img]https://i.imgur.com/DsKIRPf.png[/img][/center][/color][/block]"];
+    let body;
+    if (t === "promotion")
+      body = ["[b]EMPLOYEE NAME & FORMER RANK:[/b] " + name() + ", " + rank(), "[b]APPOINTED RANK:[/b] " + (val("appointed") || RANKS_ALL), "[b]ASSIGNMENT:[/b] " + asg("position", "unit")];
+    else if (t === "reassignment")
+      body = ["[b]EMPLOYEE NAME & RANK:[/b] " + name() + ", " + rank(), "[b]CURRENT ASSIGNMENT:[/b] " + asg("position", "unit"), "[b]NEW ASSIGNMENT:[/b] " + asg("newposition", "newunit")];
+    else if (t === "bonus-assignment")
+      body = ["[b]EMPLOYEE NAME & RANK:[/b] " + name() + ", " + rank(), "[b]UPGRADED TO:[/b] " + (val("upgraded") || "Bonus I/Bonus II"), "[b]ASSIGNMENT:[/b] " + asg("position", "unit")];
+    else if (t === "bonus-removal")
+      body = ["[b]EMPLOYEE NAME & RANK:[/b] " + name() + ", " + rank(), "[b]DOWNGRADED TO:[/b] " + (val("downgraded") || "Generalist/Bonus I/Bonus II"), "[b]ASSIGNMENT:[/b] " + asg("position", "unit")];
+    else
+      body = ["[b]EMPLOYEE NAME & RANK:[/b] " + name() + ", " + rank(), "[b]DEMOTED TO:[/b] " + (val("demoted") || RANKS_ALL), "[b]ASSIGNMENT:[/b] " + asg("position", "unit")];
+    return head.concat(body, foot).join("\n");
+  }
+  // "[Promotion] Rank Firstname Lastname": a promotion or demotion is announced with the new rank
+  function nbTitle(t) {
+    const r = t === "promotion" ? val("appointed") || rank() : t === "demotion" ? val("demoted") || rank() : rank();
+    return "[" + TYPES[t].word + "] " + r + " " + name();
+  }
+  function refresh() {
+    const t = type();
+    document.querySelectorAll("#f-notices [data-nb]").forEach((c) => (c.hidden = c.dataset.nb !== t));
+    $("nb-rank-label").textContent = t === "promotion" ? "Former rank" : "Rank";
+    $("nb-pos-label").textContent = t === "reassignment" ? "Current position" : "Position";
+    $("nb-unit-label").textContent = t === "reassignment" ? "Current unit of assignment" : "Unit of assignment";
+    $("nb-title").value = nbTitle(t);
+    syncCardOutline($("f-notices"));
+  }
+  window.resetNotices = function () {
+    ["name", "position", "unit", "newposition", "newunit"].forEach((i) => (g(i).value = ""));
+    nbRankReset("nb");
+    ["appointed", "upgraded", "downgraded", "demoted"].forEach((i) => (g(i).selectedIndex = 0));
+    refresh();
+  };
+  const form = $("f-notices");
+  ["input", "change"].forEach((ev) => form.addEventListener(ev, refresh));
+  refresh();
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "notices") return baseCopy.apply(this, arguments);
+    const txt = nbBuild(type());
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  };
+  window.__notices = { build: nbBuild, title: nbTitle, type };
+})();
+
+/* ===== Notice Board: Suspensions, Discharges, Administrative Leave ===== */
+(() => {
+  const TYPES = {
+    suspension: { head: "SUSPENSION", word: "Suspension", expiry: true, ph: "Suspension Reason" },
+    discharge: { head: "DISCHARGE", word: "Discharge", ph: "Discharge Reason" },
+    removal: { head: "FACTION REMOVAL", word: "Faction Removal", ph: "Removal Reason", ooc: true },
+    leave: { head: "ADMINISTRATIVE LEAVE", word: "Administrative Leave", expiry: true, ph: "Administrative Leave Reason" },
+  };
+  const g = (id) => $("nbd-" + id);
+  const val = (id) => g(id).value.trim();
+  const type = () => (document.querySelector('input[name="nbd-type"]:checked') || {}).value || "suspension";
+  const name = () => val("name") || "Firstname Lastname";
+  const rank = () => val("rank") || "Rank";
+  function expiry() {
+    const d = g("date").value ? formatPickerDate(g("date").value, "short") : "";
+    return d ? d + ", " + (g("time").value || "00:00") : "DD/MMM/YYYY, HH:MM";
+  }
+  function nbdBuild(t) {
+    const T = TYPES[t];
+    const L = [
+      "[block=0,40,white,white][center][imgmh=150]https://i.imgur.com/iaZp7uU.png[/imgmh]",
+      "",
+      "[color=black][b]NOTICE OF " + T.head + "[/b][/center]",
+      "",
+      "",
+      "[width=80,auto]",
+      "[b]EMPLOYEE NAME & RANK:[/b] " + name() + ", " + rank(),
+    ];
+    if (T.expiry) L.push("[b]EXPIRY DATE & TIME:[/b] " + expiry());
+    L.push("[b]REASON:[/b] " + (val("reason") || T.ph), "", "[/width][br][br][center][img]https://i.imgur.com/DsKIRPf.png[/img][/center][/color][/block]");
+    return L.join("\n");
+  }
+  // Faction Removal is an out-of-character notice, so its title sits inside (( ))
+  function nbdTitle(t) {
+    const x = "[" + TYPES[t].word + "] " + rank() + " " + name();
+    return TYPES[t].ooc ? "(( " + x + " ))" : x;
+  }
+  function refresh() {
+    const t = type();
+    document.querySelectorAll("#f-notices-discipline [data-nbd]").forEach((c) => (c.hidden = !c.dataset.nbd.split(" ").includes(t)));
+    g("reason").placeholder = TYPES[t].ph;
+    $("nbd-title").value = nbdTitle(t);
+    syncCardOutline($("f-notices-discipline"));
+  }
+  window.resetNoticesDiscipline = function () {
+    ["name", "reason"].forEach((i) => (g(i).value = ""));
+    nbRankReset("nbd");
+    g("date").value = "";
+    g("time").value = "00:00";
+    updateTaskListDateLabel("nbd-date");
+    refresh();
+  };
+  const form = $("f-notices-discipline");
+  ["input", "change"].forEach((ev) => form.addEventListener(ev, refresh));
+  refresh();
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "notices-discipline") return baseCopy.apply(this, arguments);
+    const txt = nbdBuild(type());
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  };
+  window.__noticesD = { build: nbdBuild, title: nbdTitle, type };
+})();
+
+/* ===== Notice Board: Transfers, Reinstatements, Resignations ===== */
+(() => {
+  const RANKS_ALL = "Deputy Sheriff/Sergeant/Lieutenant/Captain/Area Commander/Division Chief/Assistant Sheriff/Undersheriff/Sheriff";
+  const TYPES = {
+    transfer: { head: "TRANSFER", word: "Transfer", moves: true },
+    reinstatement: { head: "REINSTATEMENT", word: "Reinstatement", moves: true },
+    resignation: { head: "RESIGNATION", word: "Resignation" },
+  };
+  const g = (id) => $("nbt-" + id);
+  const val = (id) => g(id).value.trim();
+  const type = () => (document.querySelector('input[name="nbt-type"]:checked') || {}).value || "transfer";
+  const name = () => val("name") || "Firstname Lastname";
+  const rank = () => val("rank") || "Rank";
+  function nbtBuild(t) {
+    const T = TYPES[t];
+    const L = [
+      "[block=0,40,white,white][center][imgmh=150]https://i.imgur.com/iaZp7uU.png[/imgmh]",
+      "",
+      "[color=black][b]NOTICE OF " + T.head + "[/b][/center]",
+      "",
+      "",
+      "[width=80,auto]",
+      "[b]EMPLOYEE NAME & " + (T.moves ? "FORMER " : "") + "RANK:[/b] " + name() + ", " + rank(),
+    ];
+    if (T.moves) L.push("[b]APPOINTED RANK:[/b] " + (val("appointed") || RANKS_ALL));
+    L.push("[b]ASSIGNMENT:[/b] " + (val("position") || "Position") + ", " + (val("unit") || "Unit of Assignment"), "", "[/width][br][br][center][img]https://i.imgur.com/DsKIRPf.png[/img][/center][/color][/block]");
+    return L.join("\n");
+  }
+  // "[Transfer] Former Rank Firstname Lastname"
+  const nbtTitle = (t) => "[" + TYPES[t].word + "] " + rank() + " " + name();
+  function refresh() {
+    const t = type();
+    document.querySelectorAll("#f-notices-moves [data-nbt]").forEach((c) => (c.hidden = !c.dataset.nbt.split(" ").includes(t)));
+    $("nbt-rank-label").textContent = TYPES[t].moves ? "Former rank" : "Rank";
+    $("nbt-title").value = nbtTitle(t);
+    syncCardOutline($("f-notices-moves"));
+  }
+  window.resetNoticesMoves = function () {
+    ["name", "position", "unit"].forEach((i) => (g(i).value = ""));
+    nbRankReset("nbt");
+    g("appointed").selectedIndex = 0;
+    refresh();
+  };
+  const form = $("f-notices-moves");
+  ["input", "change"].forEach((ev) => form.addEventListener(ev, refresh));
+  refresh();
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "notices-moves") return baseCopy.apply(this, arguments);
+    const txt = nbtBuild(type());
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  };
+  window.__noticesM = { build: nbtBuild, title: nbtTitle, type };
+})();
+
+/* ===== Notice Board: Commendations ===== */
+(() => {
+  const g = (id) => $("nbc-" + id);
+  function nbcBuild() {
+    const ooc = (document.querySelector('input[name="nbc-ooc"]:checked') || {}).value || "Yes/No",
+      issuer = g("issuer").value.trim();
+    return [
+      "[center][imgmh=300]https://i.booskit.dev/gtaw/lssd.png[/imgmh]",
+      "[b][size=125]COMMENDATION REPORT[/size][/b]",
+      "[size=110]AWARDS AND COMMENDATIONS[/size][/center][hr][/hr]",
+      "",
+      "[b]Name of Employee:[/b] " + g("name").value.trim(),
+      "[ooc][b]OOC Commendation:[/b] " + ooc + "[/ooc]",
+      "",
+      "[b]Notes:[/b] " + g("notes").value.trim(),
+      "",
+      "[b]Issuing Employee:[/b]" + (issuer ? " " + issuer : ""),
+    ].join("\n");
+  }
+  // the person filing the commendation is the issuing employee, so Character Details fill that box (still editable)
+  function applyDeputy() {
+    prefillDeputyField("nbc-issuer", [$("deputy-rank").value, $("deputy-full-name").value.trim()].filter(Boolean).join(" "));
+  }
+  window.resetNoticesCommendations = function () {
+    ["name", "notes", "issuer"].forEach((i) => (g(i).value = ""));
+    g("issuer").dataset.deputyPrefill = "";
+    document.querySelectorAll('input[name="nbc-ooc"]').forEach((r) => (r.checked = false));
+    applyDeputy();
+  };
+  ["deputy-full-name", "deputy-rank"].forEach((id) => ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyDeputy)));
+  $("f-deputy").addEventListener("click", (e) => { if (e.target.closest("button")) applyDeputy(); });
+  applyDeputy();
+  const baseCopy = window.copy;
+  window.copy = async function (k) {
+    if (k !== "notices-commendations") return baseCopy.apply(this, arguments);
+    const txt = nbcBuild();
+    try { await navigator.clipboard.writeText(txt); toast("Copied!"); }
+    catch (e) {
+      const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select();
+      try { document.execCommand("copy"); toast("Copied!"); } catch (e2) { toast("Copy failed"); }
+      a.remove();
+    }
+  };
+  window.__noticesC = { build: nbcBuild };
 })();
 
 /* ===== Credits: copy the Discord username ===== */
