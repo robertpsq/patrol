@@ -2704,6 +2704,11 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .cr-lead{margin:0 0 10px;font-size:17px;font-weight:600;line-height:1.5;color:var(--text)}
 .cr-hero .body{text-align:center}
 .cr-hero p{max-width:68ch;margin-inline:auto;line-height:1.6}
+.cr-note{display:flex;align-items:flex-start;gap:14px;width:100%;max-width:68ch;margin:18px auto 4px;padding:14px 18px;text-align:left;border:1px solid color-mix(in srgb,var(--green) 45%,var(--line));border-left:4px solid var(--green);border-radius:12px;background:color-mix(in srgb,var(--green) 9%,var(--panel))}
+.cr-note-ic{display:grid;place-items:center;flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff}
+.cr-note b{display:block;margin-bottom:3px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--beige)}
+.cr-note p{margin:0;font-size:14px;line-height:1.55;color:var(--text)}
+@media (max-width:520px){.cr-note{flex-direction:column;gap:10px}}
 .cr-aims{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0}
 .cr-aims span{padding:5px 13px;border:1px solid var(--line);border-radius:99px;background:var(--bg);color:var(--beige);font-size:13px;font-weight:600}
 .cr-contacts{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
@@ -6413,6 +6418,13 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <div class="cr-aims" aria-label="Aims of the site">
               <span>One place</span><span>As simple as possible</span><span>As automated as possible</span>
             </div>
+            <div class="cr-note" role="note" aria-label="A note on ownership">
+              <span class="cr-note-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.4 3.1 8.1 7.5 9.5 4.4-1.4 7.5-5.1 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg></span>
+              <div>
+                <b>A note on ownership</b>
+                <p>As this project was built in the interest of the faction (LSSD), I consider it the faction's property. Any change to my faction membership status will not alter the site as it stands today, and may only affect its further progression.</p>
+              </div>
+            </div>
             <div class="cr-contacts">
               <a class="cr-tile" href="https://github.com/robertpsq/patrol" target="_blank" rel="noopener noreferrer"
                 ><svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></svg><span><b>GitHub</b><small>robertpsq/patrol</small></span></a
@@ -7187,6 +7199,16 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.1.9<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
+          <div class="body">
+            <h3>v2.1.9</h3>
+            <h3>Credits</h3>
+            <ul>
+              <li>Added a highlighted note on ownership to the Credits page: the project was built in the interest of the faction (LSSD) and is considered the faction's property, and a change in the author's faction membership status will not alter the site as it stands, and may only affect its further progression.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.1.8<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
           <div class="body">
