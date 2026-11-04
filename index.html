@@ -2372,7 +2372,7 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .chip[hidden],.tile[hidden],#home-groups section[hidden],.home-empty[hidden],#recent[hidden],.home-sub[hidden],.setup[hidden]{display:none!important}
 
 /* category panels */
-#home-groups{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"patrol patrol warrant gen" "bureaus bureaus bureaus misc" "notice notice notice misc";align-items:start}
+#home-groups{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"patrol patrol warrant gen" "bureaus bureaus bureaus misc" "bureaus bureaus bureaus notice";grid-template-rows:auto auto 1fr;align-items:start}
 #home-groups>section{min-width:0;padding:12px 14px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
 #home-groups>[data-a="patrol"]{grid-area:patrol}
 #home-groups>[data-a="warrant"]{grid-area:warrant}
@@ -2380,7 +2380,7 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 #home-groups>[data-a="notice"]{grid-area:notice}
 #home-groups>[data-a="gen"]{grid-area:gen}
 #home-groups>[data-a="misc"]{grid-area:misc}
-#home-groups.searching{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));grid-template-areas:none}
+#home-groups.searching{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));grid-template-areas:none;grid-template-rows:none}
 #home-groups.searching>section{grid-area:auto}
 #home-groups.searching .home-divs{grid-template-columns:repeat(auto-fit,minmax(138px,1fr))}
 .home-h{display:flex;align-items:baseline;gap:8px;margin:0 0 10px;font:600 19px/1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.04em}
@@ -2499,7 +2499,7 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .home-div-h.plain{color:var(--mute)}
 
 @container homefit (max-width:900px){
- #home-groups{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"patrol patrol" "warrant gen" "bureaus bureaus" "notice notice" "misc misc"}
+ #home-groups{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"patrol patrol" "warrant gen" "bureaus bureaus" "misc misc" "notice notice";grid-template-rows:none}
 }
 @container homefit (max-width:900px){
  .hero{grid-template-columns:auto minmax(0,1fr)}
@@ -2507,7 +2507,7 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
  .hero-badge{grid-row:auto;width:42px;height:42px}
 }
 @container homefit (max-width:640px){
- #home-groups{grid-template-columns:1fr;grid-template-areas:"patrol" "warrant" "gen" "bureaus" "notice" "misc"}
+ #home-groups{grid-template-columns:1fr;grid-template-areas:"patrol" "warrant" "gen" "bureaus" "misc" "notice";grid-template-rows:none}
  .home-divs{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
@@ -7437,6 +7437,16 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.1.13<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
+          <div class="body">
+            <h3>v2.1.13</h3>
+            <h3>Home page</h3>
+            <ul>
+              <li>The Administration panel moved to the right of Bureaus, below Miscellaneous.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.1.12<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
           <div class="body">
