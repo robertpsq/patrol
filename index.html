@@ -2299,6 +2299,7 @@ main>[id^="f-"]:not([hidden]){display:block}
 main>[id^="f-"]>.rail{margin-top:2px}
 .card{max-width:none;border-radius:12px;box-shadow:none;scroll-margin-top:64px}
 .card h2{display:flex;align-items:center;gap:10px;padding:14px 20px;font:600 21px/1.1 "Barlow Condensed",Inter,sans-serif;letter-spacing:.03em;text-transform:none;background:color-mix(in srgb,var(--green2) 20%,var(--panel))}
+.card h2 .rel-date{font:500 13px Inter,sans-serif;letter-spacing:0;color:var(--mute)}
 .card h2 small{order:2;margin:0 0 0 auto;padding:2px 10px;border:1px solid var(--line);border-radius:99px;font:500 12px Inter,sans-serif;letter-spacing:0}
 .body{padding:8px 20px 20px}
 .f>span{color:color-mix(in srgb,var(--text) 75%,var(--mute));font-weight:500;font-size:13px;margin-bottom:6px}
@@ -2654,14 +2655,24 @@ body.homefit #home-fit{position:absolute;left:0;top:0;transform-origin:0 0}
 .p-rel textarea{min-height:76px}
 /* ===== K9 Emergency Medical Care ===== */
 #f-k9-emc textarea{min-height:84px;max-height:380px}
-#f-k9-emc #kem-out{min-height:200px;max-height:420px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+/* compact layout: short answers line up several to a row */
+#f-k9-emc .g{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px 14px}
+#f-k9-emc .g>.f{grid-column:span 2;min-width:0}
+#f-k9-emc .g>.f:has(#kem-handler){grid-column:span 4}
+#f-k9-emc .g>.f:has(#kem-age),#f-k9-emc .g>.f:has(#kem-sex){grid-column:span 1}
+#f-k9-emc .g>.f:has(#kem-vet),#f-k9-emc .g>.f:has(#kem-date){grid-column:span 3}
+#f-k9-emc .g:has(#kem-blood){grid-template-columns:repeat(4,minmax(0,1fr))}
+#f-k9-emc .g:has(#kem-blood)>.f{grid-column:span 1}
+@media (max-width:700px){
+  #f-k9-emc .g,#f-k9-emc .g:has(#kem-blood){grid-template-columns:1fr 1fr}
+  #f-k9-emc .g>.f,#f-k9-emc .g:has(#kem-blood)>.f{grid-column:span 1}
+  #f-k9-emc .g>.f:has(#kem-handler),#f-k9-emc .g>.f:has(#kem-vet),#f-k9-emc .g>.f:has(#kem-clinic),#f-k9-emc .g>.f:has(#kem-date),#f-k9-emc .g>.f:has(#kem-name){grid-column:span 2}
+}
 /* ===== K9 Checkup Card ===== */
 #f-k9-checkup textarea{min-height:84px;max-height:380px}
-#f-k9-checkup #kcc-out{min-height:200px;max-height:420px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
 .kcc-badge{margin-left:10px;padding:2px 10px;border-radius:99px;background:var(--green);color:#fff;font:600 12px/1.6 Inter,sans-serif;letter-spacing:.04em;vertical-align:middle}
 /* ===== Laboratory Services Report ===== */
 #f-vet-lab-report textarea{min-height:84px;max-height:380px}
-#f-vet-lab-report #lr-out{min-height:200px;max-height:420px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
 #f-vet-lab-report #lr-notify{min-height:70px}
 .lr-sec{margin:10px 0;border:1px solid var(--line);border-radius:10px;padding:0 12px 10px;background:var(--bg)}
 .lr-sec>summary{cursor:pointer;padding:10px 0;font-weight:600;color:var(--text)}
@@ -5045,7 +5056,7 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <h2><small>VST</small>K9 Emergency Medical Care Report</h2>
           <div class="body">
             <div class="f civ-cell"><label class="civ-toggle"><input type="checkbox" id="kem-civ" /><span class="civ-ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.9-3.6 3.8-5.6 7.5-5.6s6.6 2 7.5 5.6"/></svg></span><span class="civ-txt"><b>Posting as a Civilian alternate character</b><small>Adds a [postas=Name Surname,CIV] line before the post.</small></span><i class="civ-sw" aria-hidden="true"></i></label></div><div class="civ-fields" id="kem-civ-wrap" hidden><div class="f"><span>Name and surname</span><input type="text" id="kem-civ-name" placeholder="Name Surname" autocomplete="off" /></div></div>
-            <div class="g"><div class="f"><span>K-9 Name</span><input type="text" id="kem-name" placeholder="Enter K-9 name here..." autocomplete="off" /></div><div class="f"><span>Handler (rank, name, badge number)</span><input type="text" id="kem-handler" placeholder="Rank, Name, Badge Number" autocomplete="off" /></div><div class="f"><span>Breed</span><input type="text" id="kem-breed" placeholder="Enter breed here..." autocomplete="off" /></div><div class="f"><span>Age</span><input type="text" id="kem-age" placeholder="Enter age here..." autocomplete="off" /></div><div class="f"><span>Sex</span><select id="kem-sex"><option value="">Select sex</option><option>Male</option><option>Female</option></select></div><div class="f"><span>Date &amp; Time of Incident</span><div class="date-time-control"><input type="text" id="kem-date" placeholder="Select date" /><input type="time" id="kem-time" value="00:00" aria-label="Time of incident (hours and minutes, 24-hour format)" title="Hours and minutes (24-hour time)" /></div></div><div class="f"><span>Veterinarian/Veterinary Technician</span><input type="text" id="kem-vet" placeholder="Enter name here..." autocomplete="off" /></div><div class="f"><span>Clinic Name</span><input type="text" id="kem-clinic" placeholder="Enter clinic name here..." autocomplete="off" /></div></div><div class="f"><span>Narrative</span><textarea id="kem-narrative" placeholder="Enter narrative here..."></textarea></div>
+            <div class="g"><div class="f"><span>K-9 Name</span><input type="text" id="kem-name" placeholder="Enter K-9 name here..." autocomplete="off" /></div><div class="f"><span>Handler (rank, name, badge number)</span><input type="text" id="kem-handler" placeholder="Rank, Name, Badge Number" autocomplete="off" /></div><div class="f"><span>Breed</span><input type="text" id="kem-breed" placeholder="Enter breed here..." autocomplete="off" /></div><div class="f"><span>Age</span><input type="text" id="kem-age" placeholder="Age" autocomplete="off" /></div><div class="f"><span>Sex</span><select id="kem-sex"><option value="">Select sex</option><option>Male</option><option>Female</option></select></div><div class="f"><span>Clinic Name</span><input type="text" id="kem-clinic" placeholder="Enter clinic name here..." autocomplete="off" /></div><div class="f"><span>Date &amp; Time of Incident</span><div class="date-time-control"><input type="text" id="kem-date" placeholder="Select date" /><input type="time" id="kem-time" value="00:00" aria-label="Time of incident (hours and minutes, 24-hour format)" title="Hours and minutes (24-hour time)" /></div></div><div class="f"><span>Veterinarian/Veterinary Technician</span><input type="text" id="kem-vet" placeholder="Enter name here..." autocomplete="off" /></div></div><div class="f"><span>Narrative</span><textarea id="kem-narrative" placeholder="Enter narrative here..."></textarea></div>
           </div>
         </div>
         <div class="card">
@@ -5079,12 +5090,6 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
               <input type="text" id="kem-title" readonly aria-label="K9 Emergency Medical Care report title" /><button class="b" onclick="copyCardCommand('kem-title')">Copy title</button>
             </div>
             <span class="f"><span>Example: [K9 Wiley] Emergency Care</span></span>
-          </div>
-        </div>
-        <div class="card">
-          <h2><small>Preview</small>BBCode</h2>
-          <div class="body">
-            <textarea id="kem-out" readonly aria-label="Generated BBCode" spellcheck="false"></textarea>
           </div>
         </div>
         <div class="actions">
@@ -5143,12 +5148,6 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
             <span class="f"><span>Example: [K9 Wiley] Patient Card</span></span>
           </div>
         </div>
-        <div class="card">
-          <h2><small>Preview</small>BBCode</h2>
-          <div class="body">
-            <textarea id="kcc-out" readonly aria-label="Generated BBCode" spellcheck="false"></textarea>
-          </div>
-        </div>
         <div class="actions">
           <button class="b p" onclick="copy('k9-checkup')">Copy BBCode</button><a class="b forum-link" id="kcc-forum" href="#" target="_blank" rel="noopener noreferrer">Open VST Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetK9Checkup()">Reset</button>
         </div>
@@ -5203,12 +5202,6 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
           <h2><small>VST</small>Notification Reply</h2>
           <div class="body">
             <details class="lr-sec"><summary>Notify requester &amp; supervisor</summary><div class="g"><div class="f"><span>Requested by</span><input type="text" id="lr-req" placeholder="Name of the requester" autocomplete="off" /></div><div class="f"><span>Supervisor</span><input type="text" id="lr-sup" placeholder="Name of the supervisor" autocomplete="off" /></div></div><small class="date-time-hint" id="lr-notify-hint">Add a name above to generate the reply quotes. Post this as a reply once the report is up.</small><div id="lr-notify-wrap" hidden><div class="command-row"><textarea id="lr-notify" readonly aria-label="Notification reply BBCode" spellcheck="false"></textarea><button class="b" onclick="copyCardCommand('lr-notify')">Copy quotes</button></div></div></details>
-          </div>
-        </div>
-        <div class="card">
-          <h2><small>Preview</small>BBCode</h2>
-          <div class="body">
-            <textarea id="lr-out" readonly aria-label="Generated BBCode" spellcheck="false"></textarea>
           </div>
         </div>
         <div class="actions">
@@ -7117,6 +7110,18 @@ button.photo-reset{width:100%;font-size:12.5px;padding:8px 12px}
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.1.6<time class="rel-date" datetime="2026-11-04">November 4, 2026</time></h2>
+          <div class="body">
+            <h3>v2.1.6</h3>
+            <h3>VST — Veterinary Services Team</h3>
+            <ul>
+              <li>The K9 Emergency Medical Care Report has a denser layout: short answers line up several to a row (the three emergency survey answers together, the nine clinical survey answers in a 3 by 3 block, the four laboratory tests in one row), and it drops to two columns on a phone.</li>
+              <li>The BBCode preview at the bottom of the three new veterinary forms is removed. The Copy BBCode button is all you need.</li>
+              <li>Release notes now show the release date next to the version number, starting with this release.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.1.5</h2>
           <div class="body">
@@ -17013,8 +17018,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
   function refresh() {
     $("kem-civ-wrap").hidden = !$("kem-civ").checked;
     $("kem-title").value = k9emcTitle(g("name").value);
-    $("kem-out").value = civPrefix() + k9emcBuild(values());
-    growTextarea($("kem-out"));
   }
   function applyDeputy() {
     const rn = [$("deputy-rank").value, $("deputy-full-name").value.trim()].filter(Boolean).join(" ");
@@ -17286,8 +17289,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("kcc-civ-wrap").hidden = !g("civ").checked;
     $("kcc-link-hint").hidden = m !== "test" || !!g("link").value.trim();
     $("kcc-title").value = kccTitle(g("name").value);
-    $("kcc-out").value = kccBuild(m, values());
-    growTextarea($("kcc-out"));
   }
   function applyDeputy() {
     prefillDeputyField("kcc-vet", [$("deputy-rank").value, $("deputy-full-name").value.trim()].filter(Boolean).join(" "));
@@ -17556,8 +17557,6 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
     $("lr-b-type-other-wrap").hidden = g("b-type").value !== "Other";
     TESTS.forEach(([k]) => form.querySelectorAll('[data-for="lr-t-' + k + '"]').forEach((e) => (e.hidden = !g("t-" + k).checked)));
     $("lr-title").value = lrTitle(t);
-    $("lr-out").value = lrBuild(t, values());
-    growTextarea($("lr-out"));
     const n = lrNotify(g("req").value, g("sup").value);
     $("lr-notify").value = n;
     $("lr-notify-wrap").hidden = !n;
