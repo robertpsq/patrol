@@ -52,6 +52,8 @@
         "davis-k9-deployment",
         "csd-k9-deployment",
         "vst-request",
+        "cfid",
+        "met-incident",
         "k9-emc",
         "k9-checkup",
         "vet-lab-report",
@@ -3529,6 +3531,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "davis-k9-deployment",
           "csd-k9-deployment",
           "vst-request",
+          "cfid",
+          "met-incident",
           "k9-emc",
           "k9-checkup",
           "vet-lab-report",
@@ -3613,6 +3617,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "davis-k9-deployment": "K9 — Deployment Log (Davis)",
           "csd-k9-deployment": "K9 — Deployment Log (CSD)",
           "vst-request": "VST — Veterinary Services Request",
+          cfid: "PSB — Crisis and Field Intervention Database",
+          "met-incident": "PSB — MET Incident Report",
           "k9-emc": "VST — K9 Emergency Medical Care Report",
           "k9-checkup": "VST — K9 Checkup Card",
           "vet-lab-report": "VST — Laboratory Services Report",
@@ -4298,7 +4304,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       };
       // "Location" fields: split into a Street picker + a District picker, written back to the
       // original field as "Street, District" (so every BBCode builder keeps reading that field).
-      const LOCATION_FIELDS = ["i3", "uof-location", "usup-location", "tc-location", "citation-location", "senora-logbook-location", "oss-ir-location"];
+      const LOCATION_FIELDS = ["i3", "uof-location", "usup-location", "tc-location", "citation-location", "senora-logbook-location", "oss-ir-location", "cfid-location", "met-location"];
       const LOCATION_JOIN = ", ";
       let placeUid = 0;
       function placeMatches(list, query) {
@@ -4689,6 +4695,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "ck9-date",
         "vsr-date",
         "kem-date",
+        "cfid-date",
+        "met-date",
         "kcc-date",
         "kcc-next",
         "lr-date",

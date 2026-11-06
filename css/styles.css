@@ -3174,3 +3174,36 @@ button.b.p:not(:disabled):hover::after{transform:translateX(-120%);transition:no
 .task-list-row label.row:not(:has(input:checked)):hover,#f-subject label.row:not(:has(input:checked)):hover,#f-subject .f>.row>label:not(:has(input:checked)):hover{border-color:var(--line);color:var(--mute)}
 }
     
+
+/* PSB: CFID + MET Incident Report */
+#f-cfid .g,#f-met-incident .g{gap:12px 14px}
+.psb-g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.psb-g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.psb-g4{grid-template-columns:minmax(0,1.25fr) minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr)}
+.psb-g4>.f:first-child{grid-column:span 1}
+.psb-g4>.f:nth-child(3){grid-column:1/-1;order:5}
+.psb-g4>.f:nth-child(n+4){grid-column:span 1}
+.psb-sub{margin:14px 0 6px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--beige)}
+.psb-sub:first-child{margin-top:0}
+.psb-hint{display:block;margin-top:6px;font-size:12px;line-height:1.45;color:var(--mute);font-weight:400}
+.actions-row .psb-hint{display:inline-block;margin:0 0 0 10px;vertical-align:middle}
+.psb-now{flex:0 0 auto;min-height:43px;padding:0 14px}
+.psb-victim{padding:14px;margin-bottom:10px;border:1px solid var(--line)}
+.psb-victim .f{margin-top:10px}
+.psb-vh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.psb-vh .b{padding:4px 12px;font-size:12px}
+.psb-age{display:flex;gap:8px}
+.psb-age input{flex:1;min-width:0}
+.psb-age .b{flex:0 0 auto;padding:0 12px}
+#f-cfid textarea,#f-met-incident textarea{min-height:96px;max-height:420px}
+@media (max-width:760px){
+  .psb-g3,.psb-g4{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .psb-g2,.psb-g3,.psb-g4{grid-template-columns:1fr}
+}
+.psb-person .g.psb-gp{grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr) minmax(0,1.4fr) minmax(0,.9fr)}
+.psb-person .g>.f{grid-column:auto!important;margin-top:0}
+.psb-person+.add,.psb-victim+.add{margin-top:2px}
+@media (max-width:760px){.psb-person .g{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.psb-person .g{grid-template-columns:1fr}}

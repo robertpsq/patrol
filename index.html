@@ -315,7 +315,13 @@
                   <button class="nav division" id="nv-bu-cfmb-nmcc" data-k="cfmb nmcc nelson moler communications center" data-parent="nv-bu-cfmb" title="No forms yet" disabled aria-disabled="true"><span><b>NMCC</b> <small>Nelson Moler Communications Center</small></span></button>
                 </div>
               </div>
-              <button class="nav bu-sub empty" id="nv-bu-psb" data-k="psb psychological services bureau" data-parent="nv-bu-tech" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/halACEdo29.png/raw" alt="" /><b>PSB</b> <small>Psychological Services Bureau</small></span></button>
+              <div class="bu-item" data-bu="psb">
+                <button class="nav bu-sub" id="nv-bu-psb" data-k="psb psychological services bureau mental evaluation team met" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/halACEdo29.png/raw" alt="" /><b>PSB</b> <small>Psychological Services Bureau</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-cfid" data-k="psb psychological services bureau crisis and field intervention database cfid mental evaluation team met" data-parent="nv-bu-psb" onclick="show('cfid')"><span>Crisis and Field Intervention Database</span></button>
+                  <button class="nav sub" id="nv-met-incident" data-k="psb psychological services bureau met incident report mental evaluation team crisis victim" data-parent="nv-bu-psb" onclick="show('met-incident')"><span>MET Incident Report</span></button>
+                </div>
+              </div>
               <div class="bu-item" data-bu="vst">
                 <button class="nav bu-sub" id="nv-bu-vst" data-k="vst veterinary services team" data-parent="nv-bu-tech" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/nayePoyA42.png/raw" alt="" /><b>VST</b> <small>Veterinary Services Team</small></span><em class="bu-n">4</em><i class="bu-chev" aria-hidden="true"></i></button>
                 <div class="bu-body">
@@ -4517,7 +4523,132 @@
           ><button class="b" onclick="resetNbPoi()">Reset</button>
         </div>
       </div>
+      <div id="f-cfid" hidden>
+        <div class="card">
+          <h2><small>PSB</small>General Information</h2>
+          <div class="body">
+                        <div class="g psb-g4">
+              <div class="f"><span>Date</span><input type="text" id="cfid-date" placeholder="Select date" /></div>
+              <div class="f"><span>Time</span><div class="date-time-control"><input type="time" id="cfid-time" value="00:00" aria-label="Time of incident (24-hour format)" /><button class="b psb-now" type="button" id="cfid-now" title="Set date and time to now (UK time)">Now</button></div></div>
+              <div class="f"><span>Location</span><input type="text" id="cfid-location" placeholder="Address, City" autocomplete="off" /></div>
+              <div class="f"><span>County</span><input type="text" id="cfid-county" placeholder="Los Santos" autocomplete="off" /></div>
+              <div class="f"><span>State</span><input type="text" id="cfid-state" placeholder="San Andreas" autocomplete="off" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>PSB</small>Personnel &amp; Unit</h2>
+          <div class="body">
+            <div id="cfid-people"></div>
+            <button class="b add" type="button" id="cfid-add-person">+ Add personnel</button>
+            <small class="psb-hint">Add everyone on the unit: one Deputy or Provider per row. The first row is you and fills from Character Details. Empty fields post as N/A.</small>
+            <div class="psb-sub">Incident</div>
+            <div class="g psb-g2">
+              <div class="f"><span>Type of Incident</span><select id="cfid-type"><option>Call of Service</option><option>Inter-Agency Request</option><option>Field Request</option></select></div>
+              <div class="f"><span>Unit Callsign</span><input type="text" id="cfid-callsign" placeholder="e.g. T4C" autocomplete="off" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>PSB</small>Narrative</h2>
+          <div class="body">
+            <div class="f"><span>Subject Name</span><input type="text" id="cfid-subject" placeholder="Firstname Surname of the subject (used in the forum title)" autocomplete="off" /></div>
+            <div class="f"><span>Contact Narrative &amp; External References</span><textarea id="cfid-narrative" placeholder="Write narrative here..."></textarea></div>
+            <div class="actions-row"><button class="b" type="button" id="cfid-draft">Draft opening sentence</button><small class="psb-hint">Builds the first sentence from the fields above. Keep writing after it.</small></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="cfid-title" readonly aria-label="CFID topic title" /><button class="b" onclick="copyCardCommand('cfid-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Example: [CFID] Katz, Kaleb</span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('cfid')">Copy BBCode</button><a class="b forum-link" id="cfid-forum" href="https://lssd.gta.world/viewforum.php?f=1898" target="_blank" rel="noopener noreferrer">Open PSB Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetPsb('cfid')">Reset</button>
+        </div>
+      </div>
+      <div id="f-met-incident" hidden>
+        <div class="card">
+          <h2><small>PSB</small>General Information</h2>
+          <div class="body">
+                        <div class="g psb-g4">
+              <div class="f"><span>Date</span><input type="text" id="met-date" placeholder="Select date" /></div>
+              <div class="f"><span>Time</span><div class="date-time-control"><input type="time" id="met-time" value="00:00" aria-label="Time of incident (24-hour format)" /><button class="b psb-now" type="button" id="met-now" title="Set date and time to now (UK time)">Now</button></div></div>
+              <div class="f"><span>Location</span><input type="text" id="met-location" placeholder="Address, City" autocomplete="off" /></div>
+              <div class="f"><span>County</span><input type="text" id="met-county" placeholder="Los Santos" autocomplete="off" /></div>
+              <div class="f"><span>State</span><input type="text" id="met-state" placeholder="San Andreas" autocomplete="off" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>PSB</small>Personnel &amp; Unit</h2>
+          <div class="body">
+            <div id="met-people"></div>
+            <button class="b add" type="button" id="met-add-person">+ Add personnel</button>
+            <small class="psb-hint">Add everyone on the unit: one Deputy or Provider per row. The first row is you and fills from Character Details. Empty fields post as N/A.</small>
+            <div class="psb-sub">Incident</div>
+            <div class="g psb-g2">
+              <div class="f"><span>Type of Incident</span><select id="met-type"><option>Call of Service</option><option>Inter-Agency Request</option><option>Field Request</option></select></div>
+              <div class="f"><span>Unit Callsign</span><input type="text" id="met-callsign" placeholder="e.g. T4C" autocomplete="off" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>PSB</small>Request Information</h2>
+          <div class="body">
+            <div class="g psb-g2">
+              <div class="f"><span>Deputy Rank &amp; Name</span><input type="text" id="met-req-name" placeholder="e.g. Sergeant Eileen McKenzie" autocomplete="off" /></div>
+              <div class="f"><span>Services Requested</span><input type="text" id="met-services" list="met-services-list" placeholder="Mental Evaluation/Assistance" autocomplete="off" /><datalist id="met-services-list"><option value="Mental Evaluation/Assistance"><option value="Crisis Intervention"><option value="Crisis Negotiation Support"><option value="Welfare Check"><option value="Post-Incident Support"><option value="Peer Support / Debrief"><option value="Fitness-for-Duty Evaluation"></datalist></div>
+            </div>
+            <div class="f"><span>Request Reason</span><textarea id="met-reason" placeholder="Why was MET requested?"></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>PSB</small>Victim Information</h2>
+          <div class="body">
+            <div id="met-victims"></div>
+            <button class="b add" type="button" id="met-add-victim">+ Add victim</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>PSB</small>Narrative</h2>
+          <div class="body">
+            <div class="f"><span>Contact Narrative &amp; External References</span><textarea id="met-narrative" placeholder="Write narrative here..."></textarea></div>
+            <div class="actions-row"><button class="b" type="button" id="met-draft">Draft opening sentence</button><small class="psb-hint">Builds the first sentence from the fields above. Keep writing after it.</small></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="met-title" readonly aria-label="MET Incident Report topic title" /><button class="b" onclick="copyCardCommand('met-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Example: [MET] 28/Apr/2026</span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('met-incident')">Copy BBCode</button><a class="b forum-link" id="met-forum" href="https://lssd.gta.world/viewforum.php?f=2152" target="_blank" rel="noopener noreferrer">Open PSB Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetPsb('met')">Reset</button>
+        </div>
+      </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.2.7<time class="rel-date" datetime="2026-11-06">November 6, 2026</time></h2>
+          <div class="body">
+            <h3>v2.2.7</h3>
+            <h3>Psychological Services Bureau</h3>
+            <ul>
+              <li>New Crisis and Field Intervention Database (CFID) form for the Mental Evaluation Team, in the official BBCode format. Posts to viewforum.php?f=1898. The forum title is built as [CFID] Surname, Firstname from the new Subject Name field above the narrative.</li>
+              <li>New MET Incident Report form with Request Information and any number of victims (name, age with a D.N.A button, details). Posts to viewforum.php?f=2152. The forum title is built as [MET] followed by the date.</li>
+              <li>Personnel is a flexible list on both forms: add as many people as ride in the unit and pick Deputy or Provider for each. Every person gets their own table row in the BBCode, labelled Deputy Full Name, Assignment and Badge Number, or Provider Full Name, Assignment and Service Number. The first row is you and fills from your Character Details, along with the unit callsign.</li>
+              <li>Location uses the same Street and District pickers as the other reports and is written as Street, District.</li>
+              <li>Date and time start on the current UK time (Europe/London), with a Now button to refresh them. County, State and Assignment are prefilled, and any empty field is posted as N/A.</li>
+              <li>A Draft opening sentence button writes the first line of the narrative from the form: who responded, the callsign, the type of incident, the requester and reason (MET), the subject (CFID) and the location.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.2.6<time class="rel-date" datetime="2026-11-05">November 5, 2026</time></h2>
           <div class="body">
@@ -5949,5 +6080,6 @@
     <script src="js/major-crimes.js"></script>
     <script src="js/charges.js"></script>
     <script src="js/training-and-tools.js"></script>
+    <script src="js/psb.js"></script>
   </body>
 </html>

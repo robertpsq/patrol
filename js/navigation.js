@@ -59,7 +59,7 @@
     { n: "Technology & Support Division", id: "tech", u: [
       { id: "ssb", n: "Scientific Services Bureau", a: "SSB", f: [["forensic-lab", "Forensic Lab Workspace", "Sessions, evidence identifiers, evidence records and every SSB lab report.", "CSIU", "Forensic Lab Workspace"], ["lab", "Laboratory Services Request", "Request lab services for evidence.", "CSIU", "Laboratory Services Requests"], ["dforensics", "Digital Forensics Request", "Request digital forensics on evidence.", "DFU", "Digital Forensics Requests"]] },
       { id: "cfmb", n: "Communications & Fleet Management Bureau", a: "CFMB", f: [["fleet", "Fleet Maintenance Request", "Request service for a vehicle by plate.", "FMU", "Fleet Maintenance Requests"]] },
-      { id: "psb", n: "Psychological Services Bureau", a: "PSB", f: [] },
+      { id: "psb", n: "Psychological Services Bureau", a: "PSB", f: [["cfid", "Crisis and Field Intervention Database", "Mental Evaluation Team crisis and field intervention record.", "", "CFID"], ["met-incident", "MET Incident Report", "Mental Evaluation Team incident report with request and victim details.", "", "MET Incident Report"]] },
       { id: "vst", n: "Veterinary Services Team", a: "VST", f: [["k9-checkup", "K9 Checkup Card", "First checkup, follow-up checkup or medical test card for a K9.", "", "K9 Checkup Card"], ["k9-emc", "K9 Emergency Medical Care Report", "Emergency medical care report for a K9.", "", "K9 Emergency Care"], ["vet-lab-report", "Laboratory Services Report", "Autopsy, biopsy and blood screening reports.", "", "Laboratory Services Report"], ["vst-request", "Veterinary Services Request", "Request veterinary services for a K9.", "", "Veterinary Services Requests"]] },
     ] },
   ];
@@ -148,6 +148,8 @@
     "k9-checkup": { unit: "vst", mono: "VST" },
     "vet-lab-report": { unit: "vst", mono: "VST" },
     "forensic-lab": { unit: "ssb", mono: "SSB" },
+    cfid: { unit: "psb", mono: "PSB" },
+    "met-incident": { unit: "psb", mono: "PSB" },
   };
   function setFormSeal(k) {
     const seal = $("top-seal"), img = $("top-seal-img"), mono = $("top-seal-mono");
