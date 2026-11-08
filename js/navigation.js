@@ -28,6 +28,7 @@
       ["notices", "Bonus Assignments, Bonus Removals", "Notices of bonus assignment and bonus removal."],
       ["notices-commendations", "Commendations", "Commendation report for awards and commendations."]]],
     ["Miscellaneous", [
+      ["chatlog", "Chatlog Parser", "Read a GTA:World chatlog with filters, forensics, mentions and export."],
       ["deputy", "Character Details", "Save your name, badge, rank and optional callsign to prefill forms."],
       ["updates", "Release Notes", "See what's new on this site."]]],
   ];
@@ -116,6 +117,7 @@
     card: { mono: "CARD" },
     depmail: { mono: "MAIL" },
     email: { mono: "CORR" },
+    chatlog: { mono: "LOG" },
     deputy: { mono: "ID" },
     updates: { mono: "NEW" },
     "mcb-poi": { unit: "mcb", mono: "MCB" },
@@ -284,7 +286,7 @@
   };
   const FORM_IC = { sheriff: "shield", "arrest-report": "shield", incident: "file", supp: "filePlus", "uof-supp": "filePlus", "task-list": "list", subject: "user", tc: "car", trespass: "ban", impound: "car", uof: "alert",
     "king-patrol": "crown", apb: "mega", "arrest-warrant": "scales", "search-warrant": "search", "electronic-surveillance-warrant": "eye",
-    "financial-service-warrant": "coin", card: "card", notices: "crown", "notices-commendations": "spark", depmail: "mail", email: "send", deputy: "id", updates: "spark" };
+    "financial-service-warrant": "coin", card: "card", notices: "crown", "notices-commendations": "spark", depmail: "mail", email: "send", deputy: "id", updates: "spark", chatlog: "search" };
   const PANEL_IC = { "Patrol Reports": "shield", "Warrant Services": "scales", Generators: "layers", Miscellaneous: "grid", Bureaus: "bank", Administration: "id" };
   const svgIc = (cls, name) => {
     const i = el("i", cls); i.setAttribute("aria-hidden", "true");

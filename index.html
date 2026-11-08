@@ -390,7 +390,7 @@
         </section>
         <section class="nav-group" data-group="miscellaneous settings">
           <div class="grp">
-            <span class="grp-label">Miscellaneous</span><span class="grp-count">2</span>
+            <span class="grp-label">Miscellaneous</span><span class="grp-count">3</span>
           </div>
           <button
             class="nav"
@@ -399,6 +399,14 @@
             onclick="show('deputy')"
           >
             <span>Character Details</span>
+          </button>
+          <button
+            class="nav"
+            id="nv-chatlog"
+            data-k="chatlog parser chat log logs forensics evidence mentions uglee younix"
+            onclick="show('chatlog')"
+          >
+            <span>Chatlog Parser</span>
           </button>
           <button
             class="nav"
@@ -4018,6 +4026,20 @@
           </article>
           <article class="cr-box">
             <div class="cr-top">
+              <span class="cr-av" aria-hidden="true">Y</span>
+              <div>
+                <h3>Younix</h3>
+                <p class="cr-role">Uglee Web</p>
+              </div>
+            </div>
+            <p class="cr-sum">The Chatlog Parser is built on Uglee Web by Younix: the line classification, forensics extraction, mentions, filters and export logic all come from it. We only gave it this site's look and home.</p>
+            <h4>Credit for</h4>
+            <ul class="cr-chips">
+              <li>Chatlog Parser</li>
+            </ul>
+          </article>
+          <article class="cr-box">
+            <div class="cr-top">
               <span class="cr-av" aria-hidden="true">B</span>
               <div>
                 <h3>booskit</h3>
@@ -4917,7 +4939,30 @@
           <button class="b p" type="button" id="sq-export">Export CSV</button><button class="b" type="button" id="sq-import">Import CSV</button><input type="file" id="sq-file" accept=".csv,text/csv" hidden />
         </div>
       </div>
+      <div id="f-chatlog" class="norail" hidden>
+        <div class="card">
+          <h2><small>Misc</small>Chatlog Parser</h2>
+          <div class="body">
+            <p class="cl-credit">Drop in a GTA:World chatlog to read it with filters, forensics, mentions and export. Everything stays in your browser. Based on <b>Uglee Web</b> by <b>Younix</b>.</p>
+            <div id="cl-host"></div>
+          </div>
+        </div>
+      </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.3.3<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
+          <div class="body">
+            <h3>v2.3.3</h3>
+            <h3>Miscellaneous</h3>
+            <ul>
+              <li>New Chatlog Parser under Miscellaneous. Open, drop or paste a GTA:World chatlog and read it with every line coloured by kind (say, /me, /do, OOC, PM, radio, phone, 911, HQ and more), a search with next and previous, and timestamp, date, tag, wrap and colour toggles.</li>
+              <li>Filters on the left: show or hide each kind of line, names and words, whole words only, pinned lines only, a time slice, and a People list built from who spoke. Double click a line to pin it, and click or shift click to pick lines.</li>
+              <li>The Forensics tab gathers evidence bag numbers, ballistic analysis, DNA, laboratory signatures, fingerprints, corpse examinations and contacts, each with copy buttons. The Mentions tab collects every line that says your character name and every PM sent to you.</li>
+              <li>Export as plain text, a styled web page, Markdown, forum BBCode, JSON or CSV, with options to shorten or hide names, money and numbers. A sample log is loaded the first time so you can see how it works.</li>
+              <li>The log is read by the page only and nothing is uploaded. Based on Uglee Web by Younix, who is credited on the Credits page.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.3.2<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
           <div class="body">
@@ -6440,8 +6485,125 @@
     <script src="js/major-crimes.js"></script>
     <script src="js/charges.js"></script>
     <script src="js/training-and-tools.js"></script>
+    <template id="cl-tpl">
+<div class="app" id="cl-app">
+  <header class="top">
+    <div class="brand">
+      <b>Chatlog Parser</b><span>Based on Uglee Web by Younix</span>
+    </div>
+    <div class="grow"></div>
+    <span class="pill" title="The log is read by this page only. Nothing is uploaded."><i class="dot on"></i>Stays in your browser</span>
+  </header>
+
+  <div class="tools">
+    <button class="btn filters-btn" id="cl-filtersBtn" aria-controls="cl-side">Filters</button>
+    <button class="btn primary" id="cl-openBtn">Open log</button>
+    <button class="btn" id="cl-pasteBtn">Paste log</button>
+    <input type="file" id="cl-file" accept=".txt,.log,.md,.html,.htm,.json,text/plain" multiple hidden>
+    <label class="search" for="cl-find">
+      <span aria-hidden="true" style="color:var(--cl-faint)">&#x2315;</span>
+      <input id="cl-find" type="text" placeholder="Search this log  (Ctrl+F)" autocomplete="off" spellcheck="false">
+      <span class="info" id="cl-findInfo"></span>
+      <button class="nav" id="cl-findPrev" title="Previous match (Shift+Enter)" aria-label="Previous match">&#x25B2;</button>
+      <button class="nav" id="cl-findNext" title="Next match (Enter)" aria-label="Next match">&#x25BC;</button>
+    </label>
+    <div class="toggles">
+      <button class="tg" data-opt="clocks" aria-pressed="true" title="Show timestamps">Clocks</button>
+      <button class="tg" data-opt="dates" aria-pressed="false" title="Show the date in front of each timestamp">Dates</button>
+      <button class="tg" data-opt="tags" aria-pressed="false" title="Show what kind of line each one is">Tags</button>
+      <button class="tg" data-opt="wrap" aria-pressed="true" title="Wrap long lines">Wrap</button>
+      <button class="tg" data-opt="colour" aria-pressed="true" title="Colour lines by kind">Colour</button>
+    </div>
+  </div>
+
+  <div class="body">
+    <aside class="side" id="cl-side">
+      <h3>Session</h3>
+      <div class="card">
+        <div class="stats">
+          <div><b id="cl-sLines">0</b><span>lines</span></div>
+          <div><b id="cl-sWords">0</b><span>words</span></div>
+          <div><b id="cl-sDur">-</b><span>duration</span></div>
+        </div>
+        <svg class="spark" id="cl-spark" viewBox="0 0 240 38" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="range" id="cl-sRange"></div>
+      </div>
+
+      <h3>Show <span><button class="link" id="cl-kAll">All</button><button class="link" id="cl-kNone">None</button><button class="link" id="cl-kRp" title="Local, /me, /do, radio, phone and emergency calls">RP</button></span></h3>
+      <div class="chips" id="cl-chips"></div>
+
+      <h3>Names and words</h3>
+      <textarea id="cl-names" placeholder="One name or word per line" spellcheck="false"></textarea>
+      <label class="check"><input type="checkbox" id="cl-whole"> Whole words only</label>
+      <label class="check"><input type="checkbox" id="cl-pinnedOnly"> Pinned lines only</label>
+
+      <h3>Time slice</h3>
+      <div class="slice"><input type="text" id="cl-from" placeholder="21:00" inputmode="numeric"> <span>to</span> <input type="text" id="cl-to" placeholder="23:30" inputmode="numeric"> <button class="link" id="cl-sliceClear" aria-label="Clear the time slice">&#x2715;</button></div>
+
+      <h3>Mentions</h3>
+      <input type="text" id="cl-me" placeholder="Your character name" spellcheck="false">
+      <p class="note">Lines that say it, and every PM sent to you, go to the Mentions tab. Separate several names with commas.</p>
+
+      <h3 id="cl-peopleHead">People</h3>
+      <div class="people" id="cl-people"></div>
+    </aside>
+
+    <main class="main">
+      <nav class="tabs" role="tablist">
+        <button class="tab" role="tab" data-tab="log" aria-selected="true">Transcript</button>
+        <button class="tab" role="tab" data-tab="fx" aria-selected="false">Forensics<sup id="cl-fxCount"></sup></button>
+        <button class="tab" role="tab" data-tab="men" aria-selected="false">Mentions<sup id="cl-menCount"></sup></button>
+      </nav>
+      <section class="pane" id="cl-paneLog">
+        <div class="banner" id="cl-banner" hidden><span id="cl-bannerText"></span><button class="btn small" id="cl-clearSample">Open your own log</button></div>
+        <div class="log" id="cl-log"></div>
+        <div class="empty-state" id="cl-empty" hidden><div id="cl-emptyText"></div></div>
+      </section>
+      <section class="pane" id="cl-paneFx" hidden>
+        <div class="fpills" id="cl-fpills"></div>
+        <div class="flist" id="cl-flist"></div>
+      </section>
+      <section class="pane" id="cl-paneMen" hidden>
+        <div class="flist" id="cl-mlist"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <div class="l" id="cl-footL"></div>
+    <div class="c" id="cl-footC"></div>
+    <div class="r">
+      <button class="btn ghost small" id="cl-clearPins">Clear pins</button>
+      <button class="btn small" id="cl-copyBtn" title="Copy the picked lines, or everything shown (Ctrl+C)">Copy</button>
+      <button class="btn primary small" id="cl-exportBtn">Export</button>
+    </div>
+  </footer>
+</div>
+
+<div class="drop" id="cl-drop"><div>Drop your chatlog to read it</div></div>
+
+<div class="modal" id="cl-pasteModal" hidden>
+  <div class="dlg paste" role="dialog" aria-label="Paste a log">
+    <header>Paste a chatlog <button class="btn ghost small" data-close>Close</button></header>
+    <div style="min-height:0;display:grid"><textarea id="cl-pasteText" placeholder="Paste the contents of your chatlog here (Ctrl+V)" spellcheck="false"></textarea></div>
+    <footer><span>Everything stays in this page.</span><button class="btn" data-close>Cancel</button><button class="btn primary" id="cl-pasteGo">Read it</button></footer>
+  </div>
+</div>
+
+<div class="modal" id="cl-exportModal" hidden>
+  <div class="dlg" role="dialog" aria-label="Export">
+    <header>Export <button class="btn ghost small" data-close>Close</button></header>
+    <div class="in">
+      <div class="opts" id="cl-exOpts"></div>
+      <textarea id="cl-exText" readonly spellcheck="false"></textarea>
+    </div>
+    <footer><span id="cl-exSum"></span><button class="btn" data-close>Close</button><button class="btn primary" id="cl-exCopy">Copy</button></footer>
+  </div>
+</div>
+    </template>
     <script src="js/psb.js"></script>
     <script src="js/sed.js"></script>
     <script src="js/sed-squad.js"></script>
+    <script src="js/chatlog-parser.js"></script>
   </body>
 </html>

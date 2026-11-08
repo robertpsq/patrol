@@ -3402,3 +3402,16 @@ button.b.p:not(:disabled):hover::after{transform:translateX(-120%);transition:no
 .sed-combo-opt{padding-right:10px}
 .sed-combo-opt .sed-opt-t{padding-right:26px}
 .sed-combo-opt.on::after{right:48px}
+
+/* ---- Chatlog Parser (the tool itself lives in css/chatlog.css, inside a shadow root) ---- */
+#f-chatlog .cl-credit{margin:0 0 14px;color:var(--mute);font-size:13px}
+#f-chatlog .cl-credit b{color:var(--text)}
+#cl-host{display:block;height:clamp(520px,calc(100vh - 230px),900px);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  --k-Local:#E8EEF4;--k-Emote:#C9A0FF;--k-Action:#9AD0A8;--k-Ooc:#8A97A6;--k-Pm:#F2C14E;--k-Radio:#6FB7FF;--k-Phone:#F5A3C7;
+  --k-Emergency:#FF6B6B;--k-Hq:#5ED3C3;--k-HqOoc:#4FB0A4;--k-Ads:#7BD389;--k-News:#FFB86B;--k-Money:#A3E635;--k-Admin:#FF8A8A;
+  --k-Server:#B0B8C4;--k-Error:#E57373;--k-Other:#CBD5E1;--k-Marker:#5B6B7C}
+:root[data-theme="light"] #cl-host{
+  --k-Local:#1F2933;--k-Emote:#6B46C1;--k-Action:#2F7A4D;--k-Ooc:#5F6B7A;--k-Pm:#A86B00;--k-Radio:#1F6FB5;--k-Phone:#B83280;
+  --k-Emergency:#C53030;--k-Hq:#13877A;--k-HqOoc:#0F6E63;--k-Ads:#2F855A;--k-News:#C05621;--k-Money:#4D7C0F;--k-Admin:#C53030;
+  --k-Server:#4A5568;--k-Error:#9B2C2C;--k-Other:#2D3748;--k-Marker:#718096}
+main>#f-chatlog{max-width:none}
