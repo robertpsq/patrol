@@ -3362,3 +3362,43 @@ button.b.p:not(:disabled):hover::after{transform:translateX(-120%);transition:no
 .sed-combo-opt.on{background:rgba(80,160,110,.16)}
 .sed-combo-opt.on::after{content:"\2713";position:absolute;right:10px;top:50%;transform:translateY(-50%);font-weight:700;color:#3fa66b}
 .sed-combo-done{width:100%;margin-top:4px}
+
+/* ---- SED polish: match the site's own pickers, buttons and cards ---- */
+.sed-combo>input,.sed-combo>textarea{width:100%}
+.sed-combo>input{padding-right:38px}
+.sed-combo-btn{top:50%;transform:translateY(-50%);right:6px;color:var(--mute);transition:background .15s,color .15s}
+.sed-combo-btn:hover,.sed-combo-btn:focus-visible{background:color-mix(in srgb,var(--green) 16%,var(--panel));color:var(--green)}
+.sed-combo-list{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 28px rgba(0,0,0,.22);overscroll-behavior:contain;padding:4px}
+.sed-combo-opt{padding:8px 10px;border-radius:7px;color:var(--text);transition:background .12s}
+.sed-combo-opt:hover,.sed-combo-opt:focus-visible{background:color-mix(in srgb,var(--green) 10%,var(--panel));outline:0}
+.sed-combo-opt.on{background:color-mix(in srgb,var(--green) 16%,var(--panel))}
+.sed-combo-opt.on::after{color:var(--green)}
+.sed-combo-opt b{font-weight:600}
+.sed-combo-empty{color:var(--mute)}
+.sed-combo-done{margin-top:6px}
+.sed-combo.multi>.sed-combo-add{transform:none;border:1px dashed color-mix(in srgb,var(--green) 55%,var(--line));background:color-mix(in srgb,var(--green) 8%,transparent);color:var(--text);min-height:40px;border-radius:9px}
+.sed-combo.multi>.sed-combo-add:hover{background:color-mix(in srgb,var(--green) 16%,transparent);border-style:solid}
+.sed-combo.multi>.sed-combo-add svg:first-child{color:var(--green)}
+.sed-combo.multi>.sed-combo-add svg:last-child{margin-left:2px;opacity:.7}
+.sed-combo.multi>.sed-combo-list{top:48px}
+#f-sed-deployment select{width:100%}
+#f-sed-deployment .g{align-items:start}
+.sq-group h4{color:var(--green)}
+.sq-group h4 span{color:var(--mute);border-color:var(--line)}
+.sq-row{background:var(--bg);border-color:var(--line);transition:border-color .15s}
+.sq-row:hover{border-color:color-mix(in srgb,var(--green) 45%,var(--line))}
+.sq-av{border:1px solid var(--line)}
+.sq-ib{border-color:var(--line);color:var(--mute)}
+.sq-ib:hover{color:var(--green);border-color:var(--green);background:color-mix(in srgb,var(--green) 10%,transparent)}
+.sq-ib.danger:hover{color:#e5484d;border-color:#e5484d;background:color-mix(in srgb,#e5484d 10%,transparent)}
+.sq-row.editing{border-color:var(--green)}
+
+.sed-combo-grp{padding:8px 10px 4px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+.sed-combo-grp:not(:first-child){margin-top:4px;border-top:1px solid var(--line)}
+.sed-combo-opt{flex-direction:row;align-items:center;justify-content:space-between;gap:10px;padding-right:44px}
+.sed-combo-opt .sed-opt-t{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.sed-combo-opt .sq-av{flex:none;width:28px;height:28px}
+.sed-combo-opt.on::after{right:48px}
+.sed-combo-opt{padding-right:10px}
+.sed-combo-opt .sed-opt-t{padding-right:26px}
+.sed-combo-opt.on::after{right:48px}

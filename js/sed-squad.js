@@ -61,6 +61,7 @@
   }
   const unitOf = (m) => { const u = (m.div || "").split(":")[0]; return DIV[u] ? u : "Other"; };
   const shortDiv = (d) => (d || "").replace(/^\w+:\s*/, "");
+  Object.assign(window.__sedSquad, { avatar, unit: unitOf });
   let editing = null;
 
   function viewRow(m) {
@@ -196,12 +197,22 @@
       e.textContent = window.__sedSquad.get().length ? "No match. Keep typing to use it as written." : "No squad members saved yet.";
       c.list.append(e);
     }
+    const ORDER = ["CSD", "ESD", "SED", "Other"];
+    items.sort((a, b) => ORDER.indexOf(window.__sedSquad.unit(a)) - ORDER.indexOf(window.__sedSquad.unit(b)));
+    let lastUnit = null;
     items.forEach((m) => {
+      const u = window.__sedSquad.unit(m);
+      if (u !== lastUnit) {
+        lastUnit = u;
+        const h = document.createElement("div"); h.className = "sed-combo-grp"; h.textContent = u === "Other" ? "No division" : u;
+        c.list.append(h);
+      }
       const o = document.createElement("button"); o.type = "button"; o.className = "sed-combo-opt"; o.setAttribute("role", "option");
       const b = document.createElement("b"); b.textContent = window.__sedSquad.label(m);
       const sm = document.createElement("small"); sm.textContent = (m.div || "").replace(/^\w+:\s*/, "");
       o.dataset.text = window.__sedSquad.label(m);
-      o.append(b, sm);
+      const tx = document.createElement("span"); tx.className = "sed-opt-t"; tx.append(b, sm);
+      o.append(tx, window.__sedSquad.avatar(m.name));
       o.addEventListener("mousedown", (e) => e.preventDefault());
       o.addEventListener("click", () => {
         const text = o.dataset.text;
