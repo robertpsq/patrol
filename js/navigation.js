@@ -34,11 +34,11 @@
   // Bureaus: division > unit > forms.  form = [key, title, description, group label, short title]
   const BU = [
     { n: "Central Patrol Division", id: "central", u: [
-      { id: "davis", n: "Davis Station", a: "", f: [["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", "K9", "Deployment Log"], ["davis-citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
-      { id: "senora", n: "Senora Station", a: "", f: [["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", "", "Logbook"], ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", "NCCIT", "Personnel File"], ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", "NCCIT", "Supplemental"], ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", "K9", "Deployment Log"], ["citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
+      { id: "davis", n: "Davis Station", a: "", f: [["davis-k9-deployment", "Davis K9 Deployment Log", "Davis Station K9 Team.", "K9", "Deployment Log"], ["davis-k9-caselaws", "Davis K9 Caselaws", "Canine caselaws on bites and searches, with the key holding highlighted.", "K9", "Caselaws"], ["davis-citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
+      { id: "senora", n: "Senora Station", a: "", f: [["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", "", "Logbook"], ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", "NCCIT", "Personnel File"], ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", "NCCIT", "Supplemental"], ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", "K9", "Deployment Log"], ["senora-k9-caselaws", "Senora K9 Caselaws", "Canine caselaws on bites and searches, with the key holding highlighted.", "K9", "Caselaws"], ["citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
     ] },
     { n: "Special Operations Division", id: "special-ops", u: [
-      { id: "csd", n: "Canine Services Detail", a: "CSD", f: [["csd-k9-deployment", "CSD K9 Deployment Log", "Canine Services Detail K9 deployment report.", "K9", "Deployment Log"], ["csd-training-log", "CSD Training Log", "Canine Services Detail training schedule.", "", "Training Log"]] },
+      { id: "csd", n: "Canine Services Detail", a: "CSD", f: [["csd-k9-deployment", "CSD K9 Deployment Log", "Canine Services Detail K9 deployment report.", "K9", "Deployment Log"], ["csd-k9-caselaws", "CSD K9 Caselaws", "Canine caselaws on bites and searches, with the key holding highlighted.", "K9", "Caselaws"], ["csd-training-log", "CSD Training Log", "Canine Services Detail training schedule.", "", "Training Log"], ["csd-tecc", "K-9 Tactical Emergency Casualty Care", "Tick the situation to see how to treat an injured K-9.", "", "Tactical Emergency Casualty Care"]] },
       { id: "esd", n: "Emergency Services Detail", a: "ESD", f: [] },
       { id: "sed", n: "Special Enforcement Detail", a: "SED", f: [] },
       { id: "aero", n: "Aero Bureau", a: "Aero Bureau", f: [] },
@@ -136,7 +136,11 @@
     citation: { unit: "senora-tsd", mono: "TSD" },
     "davis-citation": { unit: "davis-tsd", mono: "TSD" },
     "csd-k9-deployment": { unit: "csd", mono: "CSD" },
+    "davis-k9-caselaws": { unit: "davis-k9", mono: "K9" },
+    "senora-k9-caselaws": { unit: "senora-k9", mono: "K9" },
+    "csd-k9-caselaws": { unit: "csd", mono: "CSD" },
     "csd-training-log": { unit: "csd", mono: "CSD" },
+    "csd-tecc": { unit: "csd", mono: "CSD" },
     "ftp-phase1": { unit: "ftp", mono: "FTP" },
     "ftp-phase2": { unit: "ftp", mono: "FTP" },
     "ftp-phase3": { unit: "ftp", mono: "FTP" },

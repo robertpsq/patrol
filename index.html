@@ -191,6 +191,7 @@
                 <div class="bu-body">
                   <button class="nav division" id="nv-bu-davis-k9" data-k="davis k9 davis k9 deployment log canine report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/KUnabIMA49.png/raw" alt="" />K9</span></button>
                   <button class="nav sub" id="nv-davis-k9-deployment" data-k="davis k9 deployment log canine report" data-parent="nv-bu-davis-k9" onclick="show('davis-k9-deployment')"><span>Deployment Log</span></button>
+                  <button class="nav sub" id="nv-davis-k9-caselaws" data-k="davis k9 caselaws case law canine bite search" data-parent="nv-bu-davis-k9" onclick="show('davis-k9-caselaws')"><span>Caselaws</span></button>
                   <a class="nav sub" id="nv-davis-k9-pool-dogs" data-k="davis k9 pool dogs" data-parent="nv-bu-davis-k9" href="https://lssd.gta.world/viewtopic.php?t=26295" target="_blank" rel="noopener noreferrer"><span>Pool Dogs</span></a>
                   <button class="nav division" id="nv-bu-davis-tsd" data-k="davis tsd tsd td citation infraction report traffic ticket" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/POhExOnA34/raw" alt="" />TSD</span></button>
                   <button class="nav sub" id="nv-davis-citation" data-k="tsd td citation infraction report traffic ticket" data-parent="nv-bu-davis-tsd" onclick="show('davis-citation')"><span>Citation</span></button>
@@ -205,6 +206,7 @@
                   <button class="nav sub" id="nv-nccit-supp" data-k="north county cit supplemental file activity investigation" data-parent="nv-bu-senora-nccit" onclick="show('nccit-supp')"><span>Supplemental</span></button>
                   <button class="nav division" id="nv-bu-senora-k9" data-k="senora k9 senora k9 deployment log canine report" data-parent="nv-bu-senora" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/WuQOkuFO62.png/raw" alt="" />K9</span></button>
                   <button class="nav sub" id="nv-senora-k9-deployment" data-k="senora k9 deployment log canine report" data-parent="nv-bu-senora-k9" onclick="show('senora-k9-deployment')"><span>Deployment Log</span></button>
+                  <button class="nav sub" id="nv-senora-k9-caselaws" data-k="senora k9 caselaws case law canine bite search" data-parent="nv-bu-senora-k9" onclick="show('senora-k9-caselaws')"><span>Caselaws</span></button>
                   <a class="nav sub" id="nv-senora-k9-pool-dogs" data-k="senora k9 pool dogs" data-parent="nv-bu-senora-k9" href="https://lssd.gta.world/viewtopic.php?t=26295" target="_blank" rel="noopener noreferrer"><span>Pool Dogs</span></a>
                   <button class="nav division" id="nv-bu-senora-tsd" data-k="senora tsd tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/POhExOnA34/raw" alt="" />TSD</span></button>
                   <button class="nav sub" id="nv-citation" data-k="tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora-tsd" onclick="show('citation')"><span>Citation</span></button>
@@ -220,8 +222,10 @@
                 <div class="bu-body">
                   <button class="nav division" id="nv-bu-csd-k9" data-k="csd k9 csd k9 deployment log canine report" data-parent="nv-bu-csd" disabled aria-disabled="true"><span>K9</span></button>
                   <button class="nav sub" id="nv-csd-k9-deployment" data-k="csd k9 deployment log canine report" data-parent="nv-bu-csd-k9" onclick="show('csd-k9-deployment')"><span>Deployment Log</span></button>
+                  <button class="nav sub" id="nv-csd-k9-caselaws" data-k="csd k9 caselaws case law canine bite search" data-parent="nv-bu-csd-k9" onclick="show('csd-k9-caselaws')"><span>Caselaws</span></button>
                   <a class="nav sub" id="nv-csd-k9-pool-dogs" data-k="csd k9 pool dogs" data-parent="nv-bu-csd-k9" href="https://lssd.gta.world/viewtopic.php?t=26295" target="_blank" rel="noopener noreferrer"><span>Pool Dogs</span></a>
                   <button class="nav sub" id="nv-csd-training-log" data-k="csd training log training schedule k9 basic apprehension tracking canine" data-parent="nv-bu-csd" onclick="show('csd-training-log')"><span>Training Log</span></button>
+                  <button class="nav sub" id="nv-csd-tecc" data-k="csd tecc tactical emergency casualty care k9 first aid medical trauma bleeding canine dog" data-parent="nv-bu-csd" onclick="show('csd-tecc')"><span>Tactical Emergency Casualty Care</span></button>
                 </div>
               </div>
               <button class="nav bu-sub empty" id="nv-bu-esd" data-k="esd emergency services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/pozejEFO29.png/raw" alt="" /><b>ESD</b> <small>Emergency Services Detail</small></span></button>
@@ -2460,6 +2464,10 @@
           <button class="b p" onclick="copy('csd-training-log')">Copy BBCode</button><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=1877" target="_blank" rel="noopener noreferrer">Open Training Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetCsdTrainingLog()">Reset</button>
         </div>
       </div>
+      <div id="f-davis-k9-caselaws" class="k9cl" hidden></div>
+      <div id="f-senora-k9-caselaws" class="k9cl" hidden></div>
+      <div id="f-csd-k9-caselaws" class="k9cl" hidden></div>
+      <div id="f-csd-tecc" class="tecc" hidden></div>
       <div id="f-vst-request" hidden>
         <div class="card">
           <h2><small>VST</small>Veterinary Services Request</h2>
@@ -4847,6 +4855,26 @@
       </div>
       <div id="f-updates" hidden>
         <div class="card">
+          <h2><small>Release</small>v2.3.1<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
+          <div class="body">
+            <h3>v2.3.1</h3>
+            <h3>K9 — Davis Station, Senora Station and CSD</h3>
+            <ul>
+              <li>New Caselaws page under K9 in Davis Station, Senora Station and CSD, built from the Canine Services Detail Case Law Education post. It holds 39 canine caselaws in four groups: Bite Related, Essential Search Caselaw, Search Related, and Unrelated or Miscellaneous.</li>
+              <li>Every case has its name, what the court said, and a Case docket link. The key holding of each case is highlighted so it can be spotted at a glance.</li>
+              <li>Search by case name or any word in the text, or pick a group with the buttons at the top. Each button shows how many cases it holds.</li>
+              <li>The page is read only: nothing to fill in and nothing to copy.</li>
+            </ul>
+            <h3>CSD — Canine Services Detail</h3>
+            <ul>
+              <li>New Tactical Emergency Casualty Care page under CSD, built from the CSD K-9 TECC post. The M³ARCH² reminder and the four never rules (human tourniquets, human supplies, CPR after blast or penetrating injury, airway work on a conscious canine) stay visible at the top.</li>
+              <li>Under it, tick where you are: under fire, threat reduced, evacuating, or a non-tactical emergency. Each tick opens the next questions: where the bleeding is, what caused the arrest, the canine's state (airway), chest wound or tension PTX signs, or the emergency type (heat, paw, sting, vomiting, dehydration, bandaging).</li>
+              <li>Every tick shows the full care for it with the essential part highlighted and prohibitions in red. A Do this list beside it collects one short step for everything ticked, in order, and Reset clears all ticks.</li>
+              <li>The K-9 IFAK, Vitals Card, Evaluation and Treatment, Heat Injuries, High Altitude Sickness and Trauma Management charts from the post are at the bottom.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
           <h2><small>Release</small>v2.2.9<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
           <div class="body">
             <h3>v2.2.9</h3>
@@ -6326,6 +6354,8 @@
     <script src="js/arrest-report.js"></script>
     <script src="js/vehicles-data.js"></script>
     <script src="js/patrol-reports.js"></script>
+    <script src="js/k9-caselaws.js"></script>
+    <script src="js/csd-tecc.js"></script>
     <script src="js/navigation.js"></script>
     <script src="js/major-crimes.js"></script>
     <script src="js/charges.js"></script>
