@@ -40,7 +40,7 @@
     { n: "Special Operations Division", id: "special-ops", u: [
       { id: "csd", n: "Canine Services Detail", a: "CSD", f: [["csd-k9-deployment", "CSD K9 Deployment Log", "Canine Services Detail K9 deployment report.", "K9", "Deployment Log"], ["csd-k9-caselaws", "CSD K9 Caselaws", "Canine caselaws on bites and searches, with the key holding highlighted.", "K9", "Caselaws"], ["csd-training-log", "CSD Training Log", "Canine Services Detail training schedule.", "", "Training Log"], ["csd-tecc", "K-9 Tactical Emergency Casualty Care", "Tick the situation to see how to treat an injured K-9.", "", "Tactical Emergency Casualty Care"]] },
       { id: "esd", n: "Emergency Services Detail", a: "ESD", f: [] },
-      { id: "sed", n: "Special Enforcement Detail", a: "SED", f: [] },
+      { id: "sed", n: "Special Enforcement Detail", a: "SED", f: [["sed-deployment", "SED Deployment Log", "Special Enforcement Detail deployment log.", "", "Deployment Log"], ["sed-squad", "SED Squad Members", "Locally stored team roster with CSV export and import; feeds the Deployment Log.", "", "Squad Members"]] },
       { id: "aero", n: "Aero Bureau", a: "Aero Bureau", f: [] },
     ] },
     { n: "Detective Division", id: "detective", u: [
@@ -141,6 +141,8 @@
     "csd-k9-caselaws": { unit: "csd", mono: "CSD" },
     "csd-training-log": { unit: "csd", mono: "CSD" },
     "csd-tecc": { unit: "csd", mono: "CSD" },
+    "sed-deployment": { unit: "sed", mono: "SED" },
+    "sed-squad": { unit: "sed", mono: "SED" },
     "ftp-phase1": { unit: "ftp", mono: "FTP" },
     "ftp-phase2": { unit: "ftp", mono: "FTP" },
     "ftp-phase3": { unit: "ftp", mono: "FTP" },

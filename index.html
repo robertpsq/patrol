@@ -229,7 +229,13 @@
                 </div>
               </div>
               <button class="nav bu-sub empty" id="nv-bu-esd" data-k="esd emergency services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/pozejEFO29.png/raw" alt="" /><b>ESD</b> <small>Emergency Services Detail</small></span></button>
-              <button class="nav bu-sub empty" id="nv-bu-sed" data-k="sed special enforcement detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/gAluTOwo92.png/raw" alt="" /><b>SED</b> <small>Special Enforcement Detail</small></span></button>
+              <div class="bu-item" data-bu="sed">
+                <button class="nav bu-sub" id="nv-bu-sed" data-k="sed special enforcement detail" data-parent="nv-bu-special-ops" data-cat="1" aria-expanded="false" onclick="toggleBu(this)"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/gAluTOwo92.png/raw" alt="" /><b>SED</b> <small>Special Enforcement Detail</small></span><em class="bu-n">2</em><i class="bu-chev" aria-hidden="true"></i></button>
+                <div class="bu-body">
+                  <button class="nav sub" id="nv-sed-deployment" data-k="sed special enforcement detail deployment log activation barricaded hostage il#" data-parent="nv-bu-sed" onclick="show('sed-deployment')"><span>Deployment Log</span></button>
+                  <button class="nav sub" id="nv-sed-squad" data-k="sed special enforcement detail squad members team roster" data-parent="nv-bu-sed" onclick="show('sed-squad')"><span>Squad Members</span></button>
+                </div>
+              </div>
               <button class="nav bu-sub empty" id="nv-bu-aero" data-k="aero bureau " data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/VozAReka49.png/raw" alt="" /><b>Aero Bureau</b></span></button>
             </div>
           </div>
@@ -4853,7 +4859,81 @@
           <button class="b p" onclick="copy('met-incident')">Copy BBCode</button><a class="b forum-link" id="met-forum" href="https://lssd.gta.world/viewforum.php?f=2152" target="_blank" rel="noopener noreferrer">Open PSB Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetPsb('met')">Reset</button>
         </div>
       </div>
+      <div id="f-sed-deployment" hidden>
+        <div class="card">
+          <h2><small>SED</small>Deployment Log</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Activation number (IL#)</span><input type="text" id="sed-no" placeholder="26-311" autocomplete="off" /></div><div class="f"><span>Station/Unit requesting</span><input type="text" id="sed-unit" placeholder="OSS, MCB, DVS..." autocomplete="off" /></div><div class="f"><span>Date &amp; Time</span><div class="date-time-control"><input type="text" id="sed-date" placeholder="Select date" /><input type="time" id="sed-time" value="00:00" aria-label="Time of activation (hours and minutes, 24-hour format)" title="Hours and minutes (24-hour time)" /><button class="b" type="button" id="sed-now" title="Set date and time to now">NOW</button></div></div><div class="f"><span>Location</span><input type="text" id="sed-location" autocomplete="off" /></div><div class="f"><span>City</span><select id="sed-city"><option value="">Select city</option><option>Los Santos City</option><option>San Andreas County</option></select></div><div class="f"><span>Type of incident</span><input type="text" id="sed-type" placeholder="Barricaded, 998, Hostage..." autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>SED</small>Scene Command</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Incident Commander</span><input type="text" id="sed-ic" placeholder="Name Lastname" autocomplete="off" /></div><div class="f"><span>Tactical Commander</span><input type="text" id="sed-tc" placeholder="Name Lastname" autocomplete="off" /></div><div class="f"><span>Designated Scout</span><input type="text" id="sed-scout" placeholder="Name Lastname" autocomplete="off" /></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>SED</small>Responding Personnel</h2>
+          <div class="body">
+            <div class="f"><span>One person per line, with rank</span><textarea id="sed-personnel" placeholder="Deputy Sheriff Name Lastname&#10;Deputy Sheriff Name Lastname"></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>SED</small>Incident Narrative &amp; External References</h2>
+          <div class="body">
+            <div class="f"><span>Narrative</span><textarea id="sed-narrative" placeholder="List as needed."></textarea></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            
+            <div class="command-row">
+              <input type="text" id="sed-title" readonly aria-label="SED deployment log title" /><button class="b" onclick="copyCardCommand('sed-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Built from the activation number, the street in Location and the Type of incident. Example: [IL#26-311] Elgin Avenue, armed pursuit.</span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('sed-deployment')">Copy BBCode</button><a class="b forum-link" id="sed-forum" href="https://lssd.gta.world/viewforum.php?f=456" target="_blank" rel="noopener noreferrer">Open SED Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetSedDeployment()">Reset</button>
+        </div>
+      </div>
+      <div id="f-sed-squad" hidden>
+        <div class="card">
+          <h2><small>SED</small>Add Squad Member</h2>
+          <div class="body">
+            <div class="g"><div class="f"><span>Name</span><input type="text" id="sq-name" placeholder="Name Lastname" autocomplete="off" /></div><div class="f"><span>Rank</span><select id="sq-rank"></select></div><div class="f"><span>Divisional Rank</span><select id="sq-div"></select></div></div>
+            <button class="b p" type="button" id="sq-add">Add member</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>SED</small>Squad Members <span id="sq-count" class="kcc-badge"></span></h2>
+          <div class="body">
+            <p class="f"><span>Saved in this browser only. Use the pen to edit a member and the minus to remove one. Use Export to share the roster as a .csv and Import to load one.</span></p>
+            <div id="sq-list"></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" type="button" id="sq-export">Export CSV</button><button class="b" type="button" id="sq-import">Import CSV</button><input type="file" id="sq-file" accept=".csv,text/csv" hidden />
+        </div>
+      </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.3.2<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
+          <div class="body">
+            <h3>v2.3.2</h3>
+            <h3>SED — Special Enforcement Detail</h3>
+            <ul>
+              <li>New Deployment Log form under SED in Special Operations Division, in the official SED activation BBCode format: IL# number, date and time, location, type of incident, requesting station or unit, scene command, responding personnel and narrative.</li>
+              <li>The date and time has a NOW button that fills in the current UK time (GMT or BST), whatever your computer's clock says.</li>
+              <li>Location is a Street picker, a District picker and a City dropdown (Los Santos City or San Andreas County), written as Street, District, City.</li>
+              <li>The forum topic title is built live as [IL#26-311] Elgin Avenue, armed pursuit., from the IL# number, the street and the type of incident, with its own Copy title button. Open SED Forum goes straight to the SED forum.</li>
+              <li>New Squad Members page under SED. Add people with a free name, a departmental rank and a divisional rank (CSD, ESD or SED ranks). Members are shown in compact rows with their MDC photo, grouped under CSD, ESD and SED, with a pen to edit and a minus to remove.</li>
+              <li>The roster is saved in your browser. Export CSV downloads it and Import CSV loads one from a colleague, skipping people you already have.</li>
+              <li>In the Deployment Log, Incident Commander, Tactical Commander and Designated Scout open a list of your squad members as you click in, and Responding Personnel has an Add from Squad Members button that lets you tick several people before closing. Everything stays editable, and you can still type anyone by hand.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.3.1<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
           <div class="body">
@@ -6361,5 +6441,7 @@
     <script src="js/charges.js"></script>
     <script src="js/training-and-tools.js"></script>
     <script src="js/psb.js"></script>
+    <script src="js/sed.js"></script>
+    <script src="js/sed-squad.js"></script>
   </body>
-</html>
+</html>

@@ -3612,6 +3612,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "k9-checkup",
           "vet-lab-report",
           "forensic-lab",
+          "sed-deployment",
+          "sed-squad",
           "ftp-phase1",
           "ftp-phase2",
           "ftp-phase3",
@@ -3705,6 +3707,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "k9-checkup": "VST — K9 Checkup Card",
           "vet-lab-report": "VST — Laboratory Services Report",
           "forensic-lab": "SSB — Forensic Lab Workspace",
+          "sed-deployment": "SED — Deployment Log",
+          "sed-squad": "SED — Squad Members",
           "arrest-warrant": "Arrest Warrant",
           "search-warrant": "Search Warrant",
           "electronic-surveillance-warrant": "Electronic Surveillance Warrant",
@@ -4386,7 +4390,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       };
       // "Location" fields: split into a Street picker + a District picker, written back to the
       // original field as "Street, District" (so every BBCode builder keeps reading that field).
-      const LOCATION_FIELDS = ["i3", "uof-location", "usup-location", "tc-location", "citation-location", "senora-logbook-location", "oss-ir-location", "cfid-location", "met-location"];
+      const LOCATION_FIELDS = ["i3", "uof-location", "usup-location", "tc-location", "citation-location", "senora-logbook-location", "oss-ir-location", "cfid-location", "met-location", "sed-location"];
       const LOCATION_JOIN = ", ";
       let placeUid = 0;
       function placeMatches(list, query) {
@@ -4783,6 +4787,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "ctl-date",
         "vsr-date",
         "kem-date",
+        "sed-date",
         "cfid-date",
         "met-date",
         "kcc-date",
