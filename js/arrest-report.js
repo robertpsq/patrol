@@ -801,7 +801,34 @@
             b.setAttribute("aria-disabled", ready ? "false" : "true");
           });
           markRequired(meta);
+          // Offered only once every check is ticked and at least one charge carries an impound.
+          const impoundDays = Math.round(calc.impoundCapped),
+            impoundBtn = $("ar-impound-btn");
+          if (impoundBtn) {
+            impoundBtn.hidden = !(ready && impoundDays > 0);
+            impoundBtn.title = `Impound: ${impoundDays} ${impoundDays === 1 ? "day" : "days"}. Opens the Impound Report with this arrest's details filled in.`;
+          }
           scheduleSave();
+        };
+        // Hands what an impound report needs to the Impound Report form (js/patrol-reports.js).
+        window.arCreateImpound = function () {
+          if (typeof window.prFillImpound !== "function" || !lastCalc) return;
+          const meta = collectMeta(),
+            days = Math.round(lastCalc.impoundCapped),
+            impounded = lastCalc.results.filter((r) => r.impound > 0).map((r) => `${r.c.id}. ${r.c.charge}`);
+          window.prFillImpound({
+            date: $("ar-date").value,
+            time: meta.time,
+            callsign: meta.callsign,
+            district: meta.district,
+            street: meta.street,
+            officers: meta.officers,
+            owner: meta.suspect,
+            days,
+            reason:
+              "Vehicle was used in the commission of a crime, see arrest report #." +
+              (impounded.length ? `\nImpound applies to: ${impounded.join("; ")}.` : ""),
+          });
         };
 
         /* ---------------- drafts, history, undo ---------------- */

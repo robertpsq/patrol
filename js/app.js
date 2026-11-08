@@ -33,6 +33,8 @@
         "king-patrol",
         "apb",
         "tc",
+        "trespass",
+        "impound",
         "lab",
         "dforensics",
         "nccit",
@@ -207,6 +209,14 @@
           ["electronic-deputy-name", fullName],
           ["electronic-badge", deputyDetails.badgeNumber],
           ["electronic-bureau", deputyDetails.bureau],
+          ["trespass-rank", rank],
+          ["trespass-name", fullName],
+          ["trespass-badge", deputyDetails.badgeNumber.trim().replace(/^#/, "")],
+          ["trespass-callsign", deputyDetails.callsign],
+          ["impound-rank", rank],
+          ["impound-name", fullName],
+          ["impound-badge", deputyDetails.badgeNumber.trim().replace(/^#/, "")],
+          ["impound-callsign", deputyDetails.callsign],
           ["tc-prepared-by", tcName],
           ["tc-employee", deputyDetails.badgeNumber],
           ["citation-officer", fullName],
@@ -254,6 +264,7 @@
         updateNcCitTitle();
         drawSheriffReport();
         if (typeof arUpdate === "function") arUpdate();
+        if (typeof window.prRender === "function") window.prRender();
         drawC();
         updateCharacterDetailsPrompt();
       }
@@ -3516,6 +3527,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "task-list",
           "subject",
           "tc",
+          "trespass",
+          "impound",
           "lab",
           "fleet",
           "dforensics",
@@ -3587,6 +3600,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "task-list": "Task List",
           subject: "Subject Information",
           tc: "Traffic Collision Report",
+          trespass: "Trespass Notice",
+          impound: "Impound Report",
           lab: "Laboratory Services Requests",
           fleet: "Fleet Maintenance Requests",
           dforensics: "Digital Forensics Requests",
@@ -4558,6 +4573,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       const TIME_NOW_FIELDS = {
         "incident-time": "HH:MM",
         "ar-time": "HH:MM",
+        "trespass-time": "HH:MM",
+        "impound-time": "HH:MM",
         "uof-time": "HH:MM",
         "mcb-case-time": "HH:MM",
         "hb-case-time": "HH:MM",
@@ -4680,6 +4697,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "king-report-date",
         "apb-date",
         "tc-date",
+        "trespass-date",
+        "impound-date",
         "depmail-date",
         "arrest-date",
         "search-date",

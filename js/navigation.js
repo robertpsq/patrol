@@ -7,6 +7,8 @@
       ["task-list", "Task List", "Establish clear tasks and who handles them on an incident report."],
       ["subject", "Subject Information", "Document subjects."],
       ["tc", "Traffic Collision Report", "Document a traffic collision."],
+      ["trespass", "Trespass Notice", "Issue a formal trespass notice for a property."],
+      ["impound", "Impound Report", "Generate a vehicle impound report."],
       ["uof", "Use of Force Report", "Document a use of force."],
       ["uof-supp", "Supplemental Use of Force Report", "Add a supplemental to a use of force report."],
       ["king-patrol", "King Patrol Report", "Log a King Patrol report."],
@@ -102,6 +104,8 @@
     "task-list": { mono: "TASK" },
     subject: { mono: "SUBJ" },
     tc: { mono: "TC" },
+    trespass: { mono: "TRES" },
+    impound: { mono: "IMP" },
     uof: { mono: "UOF" },
     "king-patrol": { mono: "KING" },
     apb: { mono: "APB" },
@@ -253,6 +257,7 @@
     shield: '<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
     list: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+    ban: '<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
     car: '<path d="M5 16l1.5-5a2 2 0 0 1 2-1.5h7a2 2 0 0 1 2 1.5L19 16"/><rect x="3" y="16" width="18" height="4" rx="1.5"/><path d="M7 20v1M17 20v1"/>',
     alert: '<path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4M12 17h.01"/>',
     crown: '<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>',
@@ -270,7 +275,7 @@
     grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
     bank: '<path d="M3 9l9-5 9 5M5 10v8M9 10v8M15 10v8M19 10v8M3 21h18"/>',
   };
-  const FORM_IC = { sheriff: "shield", "arrest-report": "shield", incident: "file", supp: "filePlus", "uof-supp": "filePlus", "task-list": "list", subject: "user", tc: "car", uof: "alert",
+  const FORM_IC = { sheriff: "shield", "arrest-report": "shield", incident: "file", supp: "filePlus", "uof-supp": "filePlus", "task-list": "list", subject: "user", tc: "car", trespass: "ban", impound: "car", uof: "alert",
     "king-patrol": "crown", apb: "mega", "arrest-warrant": "scales", "search-warrant": "search", "electronic-surveillance-warrant": "eye",
     "financial-service-warrant": "coin", card: "card", notices: "crown", "notices-commendations": "spark", depmail: "mail", email: "send", deputy: "id", updates: "spark" };
   const PANEL_IC = { "Patrol Reports": "shield", "Warrant Services": "scales", Generators: "layers", Miscellaneous: "grid", Bureaus: "bank", Administration: "id" };
