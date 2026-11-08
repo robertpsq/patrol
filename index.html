@@ -191,6 +191,7 @@
                 <div class="bu-body">
                   <button class="nav division" id="nv-bu-davis-k9" data-k="davis k9 davis k9 deployment log canine report" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/KUnabIMA49.png/raw" alt="" />K9</span></button>
                   <button class="nav sub" id="nv-davis-k9-deployment" data-k="davis k9 deployment log canine report" data-parent="nv-bu-davis-k9" onclick="show('davis-k9-deployment')"><span>Deployment Log</span></button>
+                  <a class="nav sub" id="nv-davis-k9-pool-dogs" data-k="davis k9 pool dogs" data-parent="nv-bu-davis-k9" href="https://lssd.gta.world/viewtopic.php?t=26295" target="_blank" rel="noopener noreferrer"><span>Pool Dogs</span></a>
                   <button class="nav division" id="nv-bu-davis-tsd" data-k="davis tsd tsd td citation infraction report traffic ticket" data-parent="nv-bu-davis" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/POhExOnA34/raw" alt="" />TSD</span></button>
                   <button class="nav sub" id="nv-davis-citation" data-k="tsd td citation infraction report traffic ticket" data-parent="nv-bu-davis-tsd" onclick="show('davis-citation')"><span>Citation</span></button>
                 </div>
@@ -204,6 +205,7 @@
                   <button class="nav sub" id="nv-nccit-supp" data-k="north county cit supplemental file activity investigation" data-parent="nv-bu-senora-nccit" onclick="show('nccit-supp')"><span>Supplemental</span></button>
                   <button class="nav division" id="nv-bu-senora-k9" data-k="senora k9 senora k9 deployment log canine report" data-parent="nv-bu-senora" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/WuQOkuFO62.png/raw" alt="" />K9</span></button>
                   <button class="nav sub" id="nv-senora-k9-deployment" data-k="senora k9 deployment log canine report" data-parent="nv-bu-senora-k9" onclick="show('senora-k9-deployment')"><span>Deployment Log</span></button>
+                  <a class="nav sub" id="nv-senora-k9-pool-dogs" data-k="senora k9 pool dogs" data-parent="nv-bu-senora-k9" href="https://lssd.gta.world/viewtopic.php?t=26295" target="_blank" rel="noopener noreferrer"><span>Pool Dogs</span></a>
                   <button class="nav division" id="nv-bu-senora-tsd" data-k="senora tsd tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/POhExOnA34/raw" alt="" />TSD</span></button>
                   <button class="nav sub" id="nv-citation" data-k="tsd td citation infraction report traffic ticket" data-parent="nv-bu-senora-tsd" onclick="show('citation')"><span>Citation</span></button>
                 </div>
@@ -218,6 +220,8 @@
                 <div class="bu-body">
                   <button class="nav division" id="nv-bu-csd-k9" data-k="csd k9 csd k9 deployment log canine report" data-parent="nv-bu-csd" disabled aria-disabled="true"><span>K9</span></button>
                   <button class="nav sub" id="nv-csd-k9-deployment" data-k="csd k9 deployment log canine report" data-parent="nv-bu-csd-k9" onclick="show('csd-k9-deployment')"><span>Deployment Log</span></button>
+                  <a class="nav sub" id="nv-csd-k9-pool-dogs" data-k="csd k9 pool dogs" data-parent="nv-bu-csd-k9" href="https://lssd.gta.world/viewtopic.php?t=26295" target="_blank" rel="noopener noreferrer"><span>Pool Dogs</span></a>
+                  <button class="nav sub" id="nv-csd-training-log" data-k="csd training log training schedule k9 basic apprehension tracking canine" data-parent="nv-bu-csd" onclick="show('csd-training-log')"><span>Training Log</span></button>
                 </div>
               </div>
               <button class="nav bu-sub empty" id="nv-bu-esd" data-k="esd emergency services detail" data-parent="nv-bu-special-ops" data-cat="1" title="No forms yet" disabled aria-disabled="true"><span><img class="bu-ico" referrerpolicy="no-referrer" src="https://img.humour.ovh/WOho1/pozejEFO29.png/raw" alt="" /><b>ESD</b> <small>Emergency Services Detail</small></span></button>
@@ -2406,6 +2410,54 @@
                 stroke-linejoin="round"
               /></svg></a
           ><button class="b" onclick="resetCsdK9Deployment()">Reset</button>
+        </div>
+      </div>
+      <div id="f-csd-training-log" hidden>
+        <div class="card">
+          <h2><small>CSD</small>Training Log</h2>
+          <div class="body">
+            <div class="g">
+              <div class="f">
+                <span>Type of Training</span>
+                <select id="ctl-type" onchange="updateCsdTrainingLog()">
+                  <option value="K9 Basic">K9 Basic</option>
+                  <option value="K9 Apprehension">K9 Apprehension</option>
+                  <option value="K9 Tracking">K9 Tracking</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="f" id="ctl-type-other-wrap" hidden>
+                <span>Other — Training Type</span><input type="text" id="ctl-type-other" placeholder="e.g. K9 Narcotics" oninput="updateCsdTrainingLog()" />
+              </div>
+              <div class="f">
+                <span>Date of Training</span><input type="text" id="ctl-date" placeholder="DD/MMM/YYYY" />
+              </div>
+              <div class="f">
+                <span>Time of Training</span><input type="text" id="ctl-time" placeholder="HH:MM" />
+              </div>
+            </div>
+            <div class="f">
+              <span>Organizer</span><input type="text" id="ctl-organizer" placeholder="Rank Firstname Lastname" />
+            </div>
+            <div class="f">
+              <span>Instructors</span><textarea id="ctl-instructors" placeholder="Names of the instructors"></textarea>
+            </div>
+            <div class="f">
+              <span>Attendants</span><textarea id="ctl-attendants" placeholder="Names of the attendants (no need to repeat the organizer or instructors)"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2><small>Title</small>Forum Topic Title</h2>
+          <div class="body">
+            <div class="command-row">
+              <input type="text" id="ctl-title" readonly aria-label="Training Log topic title" /><button class="b" onclick="copyCardCommand('ctl-title')">Copy title</button>
+            </div>
+            <span class="f"><span>Example: K9 BASIC - 09/NOV/2026</span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="b p" onclick="copy('csd-training-log')">Copy BBCode</button><a class="b forum-link" href="https://lssd.gta.world/viewforum.php?f=1877" target="_blank" rel="noopener noreferrer">Open Training Forum<svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H3.75A.75.75 0 0 0 3 3.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><path d="M9 2.75h4.25V7M13 3 7.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a><button class="b" onclick="resetCsdTrainingLog()">Reset</button>
         </div>
       </div>
       <div id="f-vst-request" hidden>
@@ -4794,6 +4846,24 @@
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.2.9<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
+          <div class="body">
+            <h3>v2.2.9</h3>
+            <h3>CSD — Canine Services Detail</h3>
+            <ul>
+              <li>New Training Log form under CSD in Special Operations Division, in the official Training Schedule BBCode format.</li>
+              <li>Pick the Type of Training (K9 Basic, K9 Apprehension, K9 Tracking, or Other with your own text), then the date and time of the training. The time has a Now button.</li>
+              <li>Organizer is filled in from Character Details and stays editable. Instructors and Attendants are free text lists. Attendants do not need to repeat the organizer or instructors.</li>
+              <li>The forum topic title is built live as TRAINING TYPE - DD/MMM/YYYY, with its own Copy title button.</li>
+              <li>Open Training Forum goes straight to viewforum.php?f=1877.</li>
+            </ul>
+            <h3>K9 — Davis Station, Senora Station and CSD</h3>
+            <ul>
+              <li>A new Pool Dogs button under K9 in Davis Station, Senora Station and CSD opens viewtopic.php?t=26295 directly in a new tab.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.2.8<time class="rel-date" datetime="2026-11-08">November 8, 2026</time></h2>
           <div class="body">

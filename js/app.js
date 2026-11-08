@@ -53,6 +53,7 @@
         "oss-supplemental",
         "davis-k9-deployment",
         "csd-k9-deployment",
+        "csd-training-log",
         "vst-request",
         "cfid",
         "met-incident",
@@ -1854,6 +1855,62 @@
         if (!$("ck9-date").value) $("ck9-date").value = taskListTodayDate();
         applyCsdK9DeputyDetails();
       }
+      function csdTrainingType() {
+        const t = $("ctl-type").value;
+        return t === "other" ? $("ctl-type-other").value.trim() : t;
+      }
+      function updateCsdTrainingLog() {
+        $("ctl-type-other-wrap").hidden = $("ctl-type").value !== "other";
+        const type = csdTrainingType().toLocaleUpperCase() || "TRAINING TYPE",
+          date = formatPickerDate($("ctl-date").value, "short") || "DD/MMM/YYYY";
+        $("ctl-title").value = `${type} - ${date}`;
+      }
+      function applyCsdTrainingDeputyDetails() {
+        prefillDeputyField(
+          "ctl-organizer",
+          [$("deputy-rank").value, $("deputy-full-name").value.trim()].filter(Boolean).join(" "),
+        );
+      }
+      function buildCsdTrainingLog() {
+        const val = (id) => $(id).value.trim(),
+          date = formatPickerDate($("ctl-date").value, "short");
+        return [
+          "[divbox=white][color=transparent].[/color]",
+          "[center][img]https://i.imgur.com/Oln4e7O.png[/img]",
+          "[/center]",
+          "[color=transparent].[/color]",
+          "[hr][/hr]",
+          "[center][size=150][b][color=#000000][font=Arial]TRAINING SCHEDULE[/color][/b][/size][/center]",
+          "[hr][/hr]",
+          "",
+          `[b]Type of Training:[/b] ${csdTrainingType() || "K9 Basic / K9 Apprehension / K9 Tracking / Other"}`,
+          `[b]Date/Time of Training:[/b] ${date || "DD/MMM/YYYY"} - ${val("ctl-time") || "HH:MM"}`,
+          "",
+          `[b]Organizer:[/b] ${val("ctl-organizer") || "NAME HERE"}`,
+          `[b]Instructors:[/b] ${val("ctl-instructors") || "NAMES HERE"}`,
+          `[b]Attendants:[/b] ${val("ctl-attendants") || "NAMES HERE (NO NEED TO REPEAT INSTRUCTORS/ORGANIZER)"}[/divbox]`,
+        ].join("\n");
+      }
+      function resetCsdTrainingLog() {
+        ["ctl-time", "ctl-organizer", "ctl-instructors", "ctl-attendants", "ctl-type-other"].forEach(
+          (id) => {
+            $(id).value = "";
+            delete $(id).dataset.deputyPrefill;
+          },
+        );
+        $("ctl-type").value = "K9 Basic";
+        $("ctl-date").value = taskListTodayDate();
+        updateTaskListDateLabel("ctl-date");
+        applyCsdTrainingDeputyDetails();
+        updateCsdTrainingLog();
+      }
+      function initializeCsdTrainingLog() {
+        if (!$("ctl-date").value) $("ctl-date").value = taskListTodayDate();
+        applyCsdTrainingDeputyDetails();
+        updateCsdTrainingLog();
+        $("f-csd-training-log").addEventListener("input", updateCsdTrainingLog);
+        $("f-csd-training-log").addEventListener("change", updateCsdTrainingLog);
+      }
       function updateVsrBreed() {
         $("vsr-breed-other-wrap").hidden = $("vsr-breed").value !== "other";
       }
@@ -3543,6 +3600,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "oss-supplemental",
           "davis-k9-deployment",
           "csd-k9-deployment",
+          "csd-training-log",
           "vst-request",
           "cfid",
           "met-incident",
@@ -3631,6 +3689,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "ossb-poi": "Person of Interest File",
           "davis-k9-deployment": "K9 — Deployment Log (Davis)",
           "csd-k9-deployment": "K9 — Deployment Log (CSD)",
+          "csd-training-log": "CSD — Training Log",
           "vst-request": "VST — Veterinary Services Request",
           cfid: "PSB — Crisis and Field Intervention Database",
           "met-incident": "PSB — MET Incident Report",
@@ -4584,6 +4643,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "tc-time": "HH:MM",
         "k9-time": "HH:MM",
         "ck9-time": "HH:MM",
+        "ctl-time": "HH:MM",
         "dk9-time": "HH:MM",
         "kem-time": "HH:MM",
         "lr-time": "HH:MM",
@@ -4712,6 +4772,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "k9-date",
         "dk9-date",
         "ck9-date",
+        "ctl-date",
         "vsr-date",
         "kem-date",
         "cfid-date",
@@ -5375,6 +5436,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       initializeSenoraK9Deployment();
       initializeDavisK9Deployment();
       initializeCsdK9Deployment();
+      initializeCsdTrainingLog();
       initializeVsrRequest();
       initializeSenoraLogbook();
       initializeSibStory();
@@ -5393,6 +5455,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["deputy-full-name", "deputy-rank", "deputy-badge-number", "deputy-callsign"].forEach((id) =>
         ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyCsdK9DeputyDetails)),
       );
+      ["deputy-full-name", "deputy-rank"].forEach((id) =>
+        ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyCsdTrainingDeputyDetails)),
+      );
       ["deputy-full-name", "deputy-rank", "deputy-bureau"].forEach((id) =>
         ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyVsrDeputyDetails)),
       );
@@ -5401,6 +5466,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           applySenoraK9DeputyDetails();
           applyDavisK9DeputyDetails();
           applyCsdK9DeputyDetails();
+          applyCsdTrainingDeputyDetails();
           applyVsrDeputyDetails();
         }
       });
@@ -5669,6 +5735,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
                 ? buildApb()
                 : k === "davis-k9-deployment"
                   ? buildDavisK9Deployment()
+                  : k === "csd-training-log"
+                  ? buildCsdTrainingLog()
                   : k === "csd-k9-deployment"
                   ? buildCsdK9Deployment()
                   : k === "vst-request"

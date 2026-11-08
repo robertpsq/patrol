@@ -38,7 +38,7 @@
       { id: "senora", n: "Senora Station", a: "", f: [["senora-logbook", "Senora Station Logbook", "Log an incident for Senora Station.", "", "Logbook"], ["nccit", "NCCIT Personnel File", "North County Crime Impact Team.", "NCCIT", "Personnel File"], ["nccit-supp", "NCCIT Supplemental", "North County Crime Impact Team.", "NCCIT", "Supplemental"], ["senora-k9-deployment", "K9 Deployment Log", "Senora Station K9 Team.", "K9", "Deployment Log"], ["citation", "TSD Citation", "Traffic Services Detail citation.", "TSD", "Citation"]] },
     ] },
     { n: "Special Operations Division", id: "special-ops", u: [
-      { id: "csd", n: "Canine Services Detail", a: "CSD", f: [["csd-k9-deployment", "CSD K9 Deployment Log", "Canine Services Detail K9 deployment report.", "K9", "Deployment Log"]] },
+      { id: "csd", n: "Canine Services Detail", a: "CSD", f: [["csd-k9-deployment", "CSD K9 Deployment Log", "Canine Services Detail K9 deployment report.", "K9", "Deployment Log"], ["csd-training-log", "CSD Training Log", "Canine Services Detail training schedule.", "", "Training Log"]] },
       { id: "esd", n: "Emergency Services Detail", a: "ESD", f: [] },
       { id: "sed", n: "Special Enforcement Detail", a: "SED", f: [] },
       { id: "aero", n: "Aero Bureau", a: "Aero Bureau", f: [] },
@@ -136,6 +136,7 @@
     citation: { unit: "senora-tsd", mono: "TSD" },
     "davis-citation": { unit: "davis-tsd", mono: "TSD" },
     "csd-k9-deployment": { unit: "csd", mono: "CSD" },
+    "csd-training-log": { unit: "csd", mono: "CSD" },
     "ftp-phase1": { unit: "ftp", mono: "FTP" },
     "ftp-phase2": { unit: "ftp", mono: "FTP" },
     "ftp-phase3": { unit: "ftp", mono: "FTP" },
