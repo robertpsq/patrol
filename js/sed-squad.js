@@ -1,11 +1,14 @@
 /* ===== SED: Squad Members (local roster + CSV, feeds the Deployment Log pickers) ===== */
 (() => {
   const KEY = "lssd-sed-squad";
+  // Order matters: SEB (the bureau above all three) first, then SED, ESD and CSD.
   const DIV = {
-    CSD: ["Probationary Tactical Canine Handler", "Tactical Canine Handler", "Senior Tactical Canine Handler", "Team Leader", "Detail Commander"],
-    ESD: ["Probationary Tactical Medic", "Tactical Medic", "Crew Chief", "Team Leader", "Detail Commander"],
+    SEB: ["Unit Commander", "Operations Lieutenant", "Operations Sergeant"],
     SED: ["Probationary Team Member", "Team Member", "Team Scout", "Team Leader", "Detail Commander"],
+    ESD: ["Probationary Tactical Medic", "Tactical Medic", "Crew Chief", "Team Leader", "Detail Commander"],
+    CSD: ["Probationary Tactical Canine Handler", "Tactical Canine Handler", "Senior Tactical Canine Handler", "Team Leader", "Detail Commander"],
   };
+
   const HEAD = ["Name", "Rank", "Divisional Rank"];
   const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt) n.textContent = txt; return n; };
   let members = [];
@@ -70,7 +73,10 @@
     info.append(el("b", "", m.name), el("small", "", [m.rank, shortDiv(m.div)].filter(Boolean).join(" · ") || "No rank set"));
     const edit = iconBtn(PEN, "Edit " + m.name), del = iconBtn(MINUS, "Remove " + m.name, "danger");
     edit.addEventListener("click", () => { editing = m; render(); });
-    del.addEventListener("click", () => { members.splice(members.indexOf(m), 1); if (editing === m) editing = null; save(); render(); });
+    del.addEventListener("click", () => {
+      if (m.src === "roster") hideRoster(m.name); // a removed roster member stays removed on later refreshes
+      members.splice(members.indexOf(m), 1); if (editing === m) editing = null; save(); render();
+    });
     row.append(avatar(m.name), info, edit, del);
     return row;
   }
@@ -82,7 +88,8 @@
     const ok = el("button", "b p", "Save"), no = el("button", "b", "Cancel"); ok.type = no.type = "button";
     const commit = () => {
       if (!name.value.trim()) { toast("Name can't be empty"); return; }
-      m.name = name.value.trim(); m.rank = rank.value; m.div = dv.value; editing = null; save(); render();
+      m.name = name.value.trim(); m.rank = rank.value; m.div = dv.value; delete m.src; // hand-edited: no longer overwritten by the roster
+      editing = null; save(); render();
     };
     ok.addEventListener("click", commit);
     no.addEventListener("click", () => { editing = null; render(); });
@@ -161,9 +168,37 @@
     toast(added ? "Imported " + added + (added === 1 ? " member" : " members") : "No new members found");
   });
 
+  // ---- roster snapshot (data/sed-roster.csv) ----
+  // A snapshot of the SOD roster (ESD, CSD and SED) shipped with the site. Each visit refreshes the entries that came
+  // from it, leaves anything added or edited by hand alone, and keeps removed people removed.
+  const HIDE_KEY = "lssd-sed-squad-hidden";
+  const hiddenNames = () => { try { return new Set(JSON.parse(localStorage.getItem(HIDE_KEY)) || []); } catch (e) { return new Set(); } };
+  function hideRoster(name) {
+    const h = hiddenNames(); h.add(name.trim().toLowerCase());
+    try { localStorage.setItem(HIDE_KEY, JSON.stringify([...h])); } catch (e) { /* storage unavailable */ }
+  }
+  let rosterBusy = false;
+  async function syncRoster() {
+    if (rosterBusy) return; rosterBusy = true;
+    try {
+      const res = await fetch("data/sed-roster.csv", { cache: "no-cache" });
+      if (!res.ok) return;
+      const rows = parseCsv(await res.text());
+      if (rows.length && /^name$/i.test((rows[0][0] || "").trim())) rows.shift();
+      const hidden = hiddenNames(), mine = new Set(members.filter((m) => m.src !== "roster").map((m) => m.name.trim().toLowerCase()));
+      const fresh = rows.map(([name = "", rank = "", div = ""]) => ({ name: name.trim(), rank: rank.trim(), div: div.trim(), src: "roster" }))
+        .filter((m) => m.name && !hidden.has(m.name.toLowerCase()) && !mine.has(m.name.toLowerCase()));
+      const before = JSON.stringify(members);
+      members = members.filter((m) => m.src !== "roster").concat(fresh);
+      if (JSON.stringify(members) !== before) { save(); render(); }
+    } catch (e) { /* offline or opened from a file: keep whatever is saved */ }
+    finally { rosterBusy = false; }
+  }
+
   render();
+  syncRoster();
   const baseShow = window.show;
-  window.show = function (k) { baseShow.apply(this, arguments); if (k === "sed-squad") render(); };
+  window.show = function (k) { baseShow.apply(this, arguments); if (k === "sed-squad") { render(); syncRoster(); } };
 })();
 
 /* ===== Deployment Log: one field per person; type anything, or open the list to pick a squad member ===== */
@@ -197,7 +232,7 @@
       e.textContent = window.__sedSquad.get().length ? "No match. Keep typing to use it as written." : "No squad members saved yet.";
       c.list.append(e);
     }
-    const ORDER = ["CSD", "ESD", "SED", "Other"];
+    const ORDER = ["SEB", "SED", "ESD", "CSD", "Other"];
     items.sort((a, b) => ORDER.indexOf(window.__sedSquad.unit(a)) - ORDER.indexOf(window.__sedSquad.unit(b)));
     let lastUnit = null;
     items.forEach((m) => {
