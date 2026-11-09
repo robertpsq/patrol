@@ -3415,3 +3415,8 @@ button.b.p:not(:disabled):hover::after{transform:translateX(-120%);transition:no
   --k-Emergency:#C53030;--k-Hq:#13877A;--k-HqOoc:#0F6E63;--k-Ads:#2F855A;--k-News:#C05621;--k-Money:#4D7C0F;--k-Admin:#C53030;
   --k-Server:#4A5568;--k-Error:#9B2C2C;--k-Other:#2D3748;--k-Marker:#718096}
 main>#f-chatlog{max-width:none}
+      .k9-narr {
+        display: block;
+        position: relative;
+        background: transparent;
+      }

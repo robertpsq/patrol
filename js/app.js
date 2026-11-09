@@ -1567,7 +1567,7 @@
           next = next.replace(prev, () => text);
           if (!text) next = next.replace(/\n{3,}/g, "\n\n").replace(/^\s+|\s+$/g, "");
         } else if (text && mayAppend) {
-          next = (next.trim() ? next.replace(/\s+$/, "") + "\n\n" : "") + text;
+          next = (next.trim() ? next.replace(/[\r\n]+$/, "") + "\n\n" : "") + text;
         } else {
           if (!text) narr.dataset[attr] = "";
           return;
@@ -1591,12 +1591,91 @@
           return `No medical care has been provided. Reason: ${unit || "REASON FOR LACK OF PROVIDED CARE"}.`;
         return "";
       }
+      // ---- K9 narrative opening (auto-written, with a yellow marker where the deputy continues) ----
+      function k9Esc(t) {
+        return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+      function buildK9Intro(p) {
+        const v = (id) => $(p + id).value.trim(),
+          d = $(p + "-date").value ? taskListDateFromValue($(p + "-date").value) : null,
+          ok = d && !Number.isNaN(d.getTime()),
+          n = ok ? d.getDate() : 0,
+          suffix = n % 100 >= 11 && n % 100 <= 13 ? "th" : { 1: "st", 2: "nd", 3: "rd" }[n % 10] || "th",
+          date = ok ? `${d.toLocaleString("en-US", { month: "long" })} ${n}${suffix}, ${d.getFullYear()}` : "MONTH DAYth, YEAR",
+          time = v("-time").replace(/\D/g, "") || "HHMM",
+          who = [v("-signature-rank"), v("-signature-name")].filter(Boolean).join(" ") || "RANK NAME",
+          badge = v("-signature-badge").replace(/^#/, "") || "BADGE",
+          callsign = v("-callsign") || "CALLSIGN",
+          head = `On ${date}, at approximately ${time} hours, I, ${who}, badge number ${badge}, while operating under ${callsign},`;
+        if ($(p + "-type-warrant").checked)
+          return `${head} assisted in the execution of Search Warrant ${v("-warrant-number") || "WARRANT NUMBER"} at ${v("-warrant-property") || "SUBJECT PROPERTY"}.\n `;
+        return head + " ";
+      }
+      function syncK9Intro(p) {
+        const narr = $(p + "-narrative"),
+          prev = narr.dataset.autointro || "",
+          text = buildK9Intro(p);
+        let v = narr.value,
+          old = prev;
+        if (old && !v.includes(old)) old = old.replace(/\s+$/, "");
+        if (old && v.includes(old)) {
+          const rep = old === prev ? text : text.replace(/\s+$/, "");
+          v = v.replace(old, () => rep);
+        } else if (!v.trim()) v = text;
+        else return updateK9Fill(p);
+        narr.dataset.autointro = text;
+        if (v !== narr.value) narr.value = v;
+        updateK9Fill(p);
+      }
+      // Screen-only yellow marker (never part of the report text) at the end of the opening.
+      function updateK9Fill(p) {
+        const ta = $(p + "-narrative"),
+          box = $(p + "-hl-text"),
+          back = $(p + "-hl-back"),
+          v = ta.value,
+          intro = ta.dataset.autointro || "",
+          at = intro ? v.indexOf(intro) : -1;
+        let html = "";
+        if (at >= 0 && /\s$/.test(intro)) {
+          const end = at + intro.length,
+            eol = v.indexOf("\n", end),
+            rest = v.slice(end, eol < 0 ? v.length : eol);
+          if (!rest.trim())
+            html = k9Esc(v.slice(0, end - 1)) + "<mark>" + k9Esc(v.slice(end - 1, end)) + "</mark>" + k9Esc(v.slice(end)) + "\n";
+        }
+        box.innerHTML = html;
+        back.style.height = ta.offsetHeight + "px";
+        box.style.transform = `translateY(${-ta.scrollTop}px)`;
+      }
+      function updateK9Warrant(p) {
+        $(p + "-warrant-wrap").hidden = !$(p + "-type-warrant").checked;
+        syncK9Intro(p);
+      }
+      function resetK9Intro(p) {
+        ["-warrant-number", "-warrant-property"].forEach((id) => ($(p + id).value = ""));
+        const narr = $(p + "-narrative");
+        narr.value = "";
+        delete narr.dataset.autointro;
+        updateK9Warrant(p);
+      }
+      ["k9", "dk9", "ck9"].forEach((p) => {
+        const form = $({ k9: "f-senora-k9-deployment", dk9: "f-davis-k9-deployment", ck9: "f-csd-k9-deployment" }[p]);
+        const go = (e) => {
+          if (e.target.id === p + "-narrative") return;
+          if (e.target.id === p + "-type-warrant") updateK9Warrant(p);
+          else syncK9Intro(p);
+        };
+        ["input", "change"].forEach((ev) => form.addEventListener(ev, go));
+        form.addEventListener("click", () => setTimeout(() => syncK9Intro(p), 0));
+        if (window.ResizeObserver) new ResizeObserver(() => updateK9Fill(p)).observe($(p + "-narrative"));
+      });
       function applySenoraK9DeputyDetails() {
         prefillDeputyField("k9-signature-name", $("deputy-full-name").value.trim());
         prefillDeputyField("k9-signature-rank", $("deputy-rank").value);
         const badge = $("deputy-badge-number").value.trim().replace(/^#/, "");
         prefillDeputyField("k9-signature-badge", badge ? "#" + badge : "");
         prefillDeputyField("k9-callsign", $("deputy-callsign").value.trim());
+        if ($("k9-narrative")) syncK9Intro("k9");
       }
       function buildSenoraK9Deployment() {
         const val = (id) =>
@@ -1672,6 +1751,7 @@
                 document.querySelectorAll('input[name="k9-medical"]').forEach((r) => (r.checked = false));
         $("k9-medical-unit").value = "";
         updateK9Medical("k9");
+        resetK9Intro("k9");
         applySenoraK9DeputyDetails();
       }
       function initializeSenoraK9Deployment() {
@@ -1684,6 +1764,7 @@
         prefillDeputyField("dk9-signature-rank", $("deputy-rank").value);
         prefillDeputyField("dk9-signature-badge", badge ? "#" + badge : "");
         prefillDeputyField("dk9-callsign", $("deputy-callsign").value.trim());
+        if ($("dk9-narrative")) syncK9Intro("dk9");
       }
       function buildDavisK9Deployment() {
         const val = (id) =>
@@ -1762,6 +1843,7 @@
                 document.querySelectorAll('input[name="dk9-medical"]').forEach((r) => (r.checked = false));
         $("dk9-medical-unit").value = "";
         updateK9Medical("dk9");
+        resetK9Intro("dk9");
         applyDavisK9DeputyDetails();
       }
       function initializeDavisK9Deployment() {
@@ -1774,6 +1856,7 @@
         const badge = $("deputy-badge-number").value.trim().replace(/^#/, "");
         prefillDeputyField("ck9-signature-badge", badge ? "#" + badge : "");
         prefillDeputyField("ck9-callsign", $("deputy-callsign").value.trim());
+        if ($("ck9-narrative")) syncK9Intro("ck9");
       }
       function buildCsdK9Deployment() {
         const val = (id) =>
@@ -1849,6 +1932,7 @@
                 document.querySelectorAll('input[name="ck9-medical"]').forEach((r) => (r.checked = false));
         $("ck9-medical-unit").value = "";
         updateK9Medical("ck9");
+        resetK9Intro("ck9");
         applyCsdK9DeputyDetails();
       }
       function initializeCsdK9Deployment() {

@@ -2284,9 +2284,16 @@
                 ><input type="text" id="k9-medical-unit" placeholder="e.g. Rescue 99" oninput="updateK9Medical('k9')" />
               </div>
             </fieldset>
+            <fieldset class="item" id="k9-warrant-wrap" hidden>
+              <legend>Search Warrant Details</legend>
+              <div class="g">
+                <div class="f"><span>Warrant Number *</span><input type="text" id="k9-warrant-number" placeholder="Warrant number" autocomplete="off" /></div>
+                <div class="f"><span>Subject Property *</span><input type="text" id="k9-warrant-property" placeholder="Subject property" autocomplete="off" /></div>
+              </div>
+            </fieldset>
             <div class="f">
               <span>Deployment Narrative</span
-              ><textarea id="k9-narrative" placeholder="Fill in the narrative here."></textarea>
+              ><div class="ar-hl-wrap"><div class="ar-hl-back" id="k9-hl-back" aria-hidden="true"><div id="k9-hl-text"></div></div><textarea id="k9-narrative" class="k9-narr" placeholder="Fill in the narrative here." oninput="updateK9Fill('k9')" onscroll="updateK9Fill('k9')"></textarea></div>
             </div>
             <div class="f">
               <span>Evidence Found</span>
@@ -2379,9 +2386,16 @@
                 ><input type="text" id="ck9-medical-unit" placeholder="e.g. Rescue 99" oninput="updateK9Medical('ck9')" />
               </div>
             </fieldset>
+            <fieldset class="item" id="ck9-warrant-wrap" hidden>
+              <legend>Search Warrant Details</legend>
+              <div class="g">
+                <div class="f"><span>Warrant Number *</span><input type="text" id="ck9-warrant-number" placeholder="Warrant number" autocomplete="off" /></div>
+                <div class="f"><span>Subject Property *</span><input type="text" id="ck9-warrant-property" placeholder="Subject property" autocomplete="off" /></div>
+              </div>
+            </fieldset>
             <div class="f">
               <span>Deployment Narrative</span
-              ><textarea id="ck9-narrative" placeholder="Fill in the narrative here."></textarea>
+              ><div class="ar-hl-wrap"><div class="ar-hl-back" id="ck9-hl-back" aria-hidden="true"><div id="ck9-hl-text"></div></div><textarea id="ck9-narrative" class="k9-narr" placeholder="Fill in the narrative here." oninput="updateK9Fill('ck9')" onscroll="updateK9Fill('ck9')"></textarea></div>
             </div>
             <div class="f">
               <span>Evidence Found</span>
@@ -2876,9 +2890,16 @@
                 ><input type="text" id="dk9-medical-unit" placeholder="e.g. Rescue 99" oninput="updateK9Medical('dk9')" />
               </div>
             </fieldset>
+            <fieldset class="item" id="dk9-warrant-wrap" hidden>
+              <legend>Search Warrant Details</legend>
+              <div class="g">
+                <div class="f"><span>Warrant Number *</span><input type="text" id="dk9-warrant-number" placeholder="Warrant number" autocomplete="off" /></div>
+                <div class="f"><span>Subject Property *</span><input type="text" id="dk9-warrant-property" placeholder="Subject property" autocomplete="off" /></div>
+              </div>
+            </fieldset>
             <div class="f">
               <span>Deployment Narrative</span
-              ><textarea id="dk9-narrative" placeholder="Fill in the narrative here."></textarea>
+              ><div class="ar-hl-wrap"><div class="ar-hl-back" id="dk9-hl-back" aria-hidden="true"><div id="dk9-hl-text"></div></div><textarea id="dk9-narrative" class="k9-narr" placeholder="Fill in the narrative here." oninput="updateK9Fill('dk9')" onscroll="updateK9Fill('dk9')"></textarea></div>
             </div>
             <div class="f">
               <span>Evidence Found</span>
@@ -4960,6 +4981,21 @@
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.3.6<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
+          <div class="body">
+            <h3>v2.3.6</h3>
+            <h3>K9 — Deployment Logs (Senora, Davis and CSD)</h3>
+            <ul>
+              <li>The deployment narrative now starts with an automatic opening: the date, time, your rank, name and badge number, and your callsign, ending where you continue writing. A yellow marker shows where to pick up; it is never part of the copied report. The opening updates as you change the date, time, callsign or signature fields, and anything you typed after it is left alone.</li>
+              <li>Choosing Search Warrant now asks for a Warrant Number and Subject Property, and the opening changes to say you assisted in the execution of that warrant, with the yellow marker on the line below.</li>
+            </ul>
+            <h3>Chatlog Parser</h3>
+            <ul>
+              <li>Scroll bars now match the rest of the tool: thin and rounded, in the accent colour, with a highlight on hover and drag.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.3.5<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
           <div class="body">
