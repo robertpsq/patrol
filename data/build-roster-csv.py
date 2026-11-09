@@ -33,8 +33,9 @@ RANK_FOR = {
     "SED": {"Probationary Team Member": DS, "Team Member": B1, "Team Scout": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant"},
     "ESD": {"Probationary Tactical Medic": DS, "Tactical Medic": B2, "Crew Chief": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant"},
     "CSD": {"Probationary Tactical Canine Handler": DS, "Tactical Canine Handler": B1, "Senior Tactical Canine Handler": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant"},
+    "TT": {"Team Leader": "Sergeant", "Detail Commander": "Lieutenant"},
 }
-ORDER = ["SEB", "SED", "ESD", "CSD"]  # the order the groups are listed on the site
+ORDER = ["SEB", "SED", "ESD", "CSD", "TT"]  # the order the groups are listed on the site
 
 
 def main(src):

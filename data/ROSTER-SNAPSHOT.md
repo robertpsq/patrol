@@ -23,8 +23,9 @@ Source page: https://fp.booskit.dev/lssd/roster?roster=SOD
 | `OPERATIONS` table just above `... RED TEAM`                | `SED`               | The SED Detail Commander                              |
 | `SPECIAL ENFORCEMENT DETAIL RED TEAM` and `BLUE TEAM`       | `SED`               | Both teams go into one SED group                      |
 | `Area Commander` row (in the page's top Headquarters/Fleet area; search the page for `AREA COMMANDER`) | `SEB`               | Listed first in SEB. Rank on the roster is `COMMANDER` |
+| `TRAINING TEAM DETAIL` (below CSD)                          | `TT`                | Only the Detail Commander (`LIEUTENANT` row) and the Team Leader (the `SERGEANT` row). The specialty slots (negotiations, aerial, long rifle, protection, instructors) are left out. Their people can also be in SED, ESD or CSD: that is kept, one entry per division |
 
-Left out on purpose: Division headquarters, Training Team Detail, Aero (Air 20/22 and 21/23), fleet, and empty slots
+Left out on purpose: Division headquarters, the Training Team's specialty slots, Aero (Air 20/22 and 21/23), fleet, and empty slots
 (rows whose name is `-`). Callsigns are not stored. If scope changes, edit the table above and the snippet below.
 
 ## Departmental rank
@@ -58,6 +59,7 @@ In the Squad Members form, picking a divisional rank fills in the Rank the same 
    const tabs = [...document.querySelectorAll('table')].map(tb => ({ tb, title: titleOf(tb) }));
    const MAP = { 'EMERGENCY SERVICES DETAIL': 'ESD', 'CANINE SERVICES DETAIL': 'CSD',
      'SPECIAL ENFORCEMENT DETAIL RED TEAM': 'SED', 'SPECIAL ENFORCEMENT DETAIL BLUE TEAM': 'SED' };
+   // Training Team Detail is read separately: DETAIL COMMANDER row and the SERGEANT row only, as TT|NAME|DETAIL COMMANDER / TT|NAME|TEAM LEADER
    const out = []; let seenOps = 0;
    tabs.forEach((t, i) => { let div = MAP[t.title];
      if (!div && t.title === 'OPERATIONS') { const nxt = (tabs[i + 1] || {}).title;

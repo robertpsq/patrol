@@ -250,7 +250,8 @@
     if (snap === null) {
       setNote("A roster of " + people(r.people.length) + " is available. Press Sync to load it. Nothing in your list changes until you do.", "info");
     } else {
-      const old = new Map(peopleOf(snap).map((p) => [nameKey(p.name), p])), now = new Map(r.people.map((p) => [nameKey(p.name), p]));
+      const slot = (p) => nameKey(p.name) + "|" + String(p.div || "").split(":")[0].trim();
+      const old = new Map(peopleOf(snap).map((p) => [slot(p), p])), now = new Map(r.people.map((p) => [slot(p), p]));
       let add = 0, del = 0, chg = 0;
       now.forEach((p, k) => { const o = old.get(k); if (!o) add++; else if (o.rank !== p.rank || o.div !== p.div) chg++; });
       old.forEach((p, k) => { if (!now.has(k)) del++; });
@@ -262,9 +263,14 @@
     const r = await fetchRoster();
     if (!r || !r.people.length) { toast("Could not load the roster. Try again."); return; }
     if (!lsSet(BAK_KEY, JSON.stringify({ at: Date.now(), members, snap: lsGet(SNAP_KEY) }))) { toast("Could not save a backup, so nothing was synced."); return; }
+    // One person can hold more than one assignment (for example a Team Leader who also sits on the Training Team), so an
+    // entry of yours is only replaced when the roster has the same name in the same division (or you gave no division).
+    const unit = (d) => String(d || "").split(":")[0].trim();
+    const slots = new Set(r.people.map((p) => nameKey(p.name) + "|" + unit(p.div)));
     const names = new Set(r.people.map((p) => nameKey(p.name)));
-    const replaced = members.filter((m) => m.src !== "roster" && names.has(nameKey(m.name))).length;
-    members = members.filter((m) => m.src !== "roster" && !names.has(nameKey(m.name))).concat(r.people.map((p) => ({ ...p, src: "roster" })));
+    const covered = (m) => names.has(nameKey(m.name)) && (!unit(m.div) || slots.has(nameKey(m.name) + "|" + unit(m.div)));
+    const replaced = members.filter((m) => m.src !== "roster" && covered(m)).length;
+    members = members.filter((m) => m.src !== "roster" && !covered(m)).concat(r.people.map((p) => ({ ...p, src: "roster" })));
     lsSet(SNAP_KEY, r.text);
     pending = null;
     save(); render();
