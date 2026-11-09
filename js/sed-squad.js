@@ -9,6 +9,17 @@
     CSD: ["Probationary Tactical Canine Handler", "Tactical Canine Handler", "Senior Tactical Canine Handler", "Team Leader", "Detail Commander"],
     TT: ["Team Leader", "Detail Commander"],
   };
+  // Each assignment carries one departmental rank, so choosing the divisional rank fills in the Rank.
+  // Keep in step with RANK_FOR in data/build-roster-csv.py.
+  const DS = "Deputy Sheriff", B1 = "Deputy Sheriff (Bonus I)", B2 = "Deputy Sheriff (Bonus II)";
+  const RANK_FOR = {
+    SEB: { "Area Commander": "Commander", "Unit Commander": "Captain", "Operations Lieutenant": "Lieutenant", "Operations Sergeant": "Sergeant" },
+    SED: { "Probationary Team Member": DS, "Team Member": B1, "Team Scout": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant" },
+    ESD: { "Probationary Tactical Medic": DS, "Tactical Medic": B2, "Crew Chief": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant" },
+    CSD: { "Probationary Tactical Canine Handler": DS, "Tactical Canine Handler": B1, "Senior Tactical Canine Handler": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant" },
+    TT: { "Team Leader": "Sergeant", "Detail Commander": "Lieutenant" },
+  };
+  const rankFor = (div) => { const [u, ...r] = String(div || "").split(":"); return (RANK_FOR[u.trim()] || {})[r.join(":").trim()] || ""; };
   const NAMES = { TT: "Training Team" }; // shown instead of the short code (the code is what the CSV stores, e.g. "TT: Team Leader")
   const nameOfUnit = (u) => NAMES[u] || u;
 
@@ -107,6 +118,7 @@
     const name = el("input"); name.type = "text"; name.value = m.name; name.placeholder = "Name Lastname"; name.setAttribute("aria-label", "Name");
     const rank = el("select"); rank.setAttribute("aria-label", "Rank"); const rankBox = otherBox(rank); rankSelect(rank, m.rank, "Select rank");
     const dv = el("select"); dv.setAttribute("aria-label", "Divisional rank"); const dvBox = otherBox(dv); divSelect(dv, m.div, "Select divisional rank");
+    dv.addEventListener("change", () => { const r = rankFor(dv.value); if (r) setVal(rank, r); });
     const ok = el("button", "b p", "Save"), no = el("button", "b", "Cancel"); ok.type = no.type = "button";
     const commit = () => {
       if (!name.value.trim()) { toast("Name can't be empty"); return; }
@@ -140,6 +152,7 @@
   otherBox($n("sq-rank")); otherBox($n("sq-div"));
   rankSelect($n("sq-rank"), "", "Select rank");
   divSelect($n("sq-div"), "", "Select divisional rank");
+  $n("sq-div").addEventListener("change", () => { const r = rankFor($n("sq-div").value); if (r) setVal($n("sq-rank"), r); });
   $n("sq-add").addEventListener("click", () => {
     const name = $n("sq-name").value.trim();
     if (!name) { toast("Enter a name first"); return; }
@@ -209,7 +222,7 @@
       const rows = parseCsv(await res.text());
       if (rows.length && /^name$/i.test((rows[0][0] || "").trim())) rows.shift();
       const hidden = hiddenNames(), mine = new Set(members.filter((m) => m.src !== "roster").map((m) => m.name.trim().toLowerCase()));
-      const fresh = rows.map(([name = "", rank = "", div = ""]) => ({ name: name.trim(), rank: rank.trim(), div: div.trim(), src: "roster" }))
+      const fresh = rows.map(([name = "", rank = "", div = ""]) => ({ name: name.trim(), rank: rankFor(div) || rank.trim(), div: div.trim(), src: "roster" }))
         .filter((m) => m.name && !hidden.has(m.name.toLowerCase()) && !mine.has(m.name.toLowerCase()));
       const before = JSON.stringify(members);
       members = members.filter((m) => m.src !== "roster").concat(fresh);

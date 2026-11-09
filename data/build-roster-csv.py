@@ -1,19 +1,13 @@
 """Turns the pipe-separated roster text (see data/ROSTER-SNAPSHOT.md) into data/sed-roster.csv.
 
 Usage:  python data/build-roster-csv.py roster.txt
-Each input line looks like:  DIV|RANK|NAME|POSITION   (DIV is SEB, SED, ESD or CSD)
+Each input line looks like:  DIV|NAME|POSITION   (DIV is SEB, SED, ESD or CSD)
+The departmental rank is not read from the roster: it is set from the position (RANK_FOR below).
 """
 import csv
 import sys
 from pathlib import Path
 
-RANK = {
-    "COMMANDER": "Commander",
-    "CAPTAIN": "Captain",
-    "LIEUTENANT": "Lieutenant",
-    "SERGEANT": "Sergeant",
-    "DEPUTY SHERIFF": "Deputy Sheriff",
-}
 # Roster wording -> the divisional rank names used by the site (js/sed-squad.js, DIV).
 POS = {
     "AREA COMMANDER": "Area Commander",
@@ -32,6 +26,14 @@ POS = {
     "P/TEAM MEMBER": "Probationary Team Member",
     "TEAM SCOUT": "Team Scout",
 }
+DS, B1, B2 = "Deputy Sheriff", "Deputy Sheriff (Bonus I)", "Deputy Sheriff (Bonus II)"
+# Departmental rank for each assignment. Keep in step with RANK_FOR in js/sed-squad.js.
+RANK_FOR = {
+    "SEB": {"Area Commander": "Commander", "Unit Commander": "Captain", "Operations Lieutenant": "Lieutenant", "Operations Sergeant": "Sergeant"},
+    "SED": {"Probationary Team Member": DS, "Team Member": B1, "Team Scout": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant"},
+    "ESD": {"Probationary Tactical Medic": DS, "Tactical Medic": B2, "Crew Chief": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant"},
+    "CSD": {"Probationary Tactical Canine Handler": DS, "Tactical Canine Handler": B1, "Senior Tactical Canine Handler": B2, "Team Leader": "Sergeant", "Detail Commander": "Lieutenant"},
+}
 ORDER = ["SEB", "SED", "ESD", "CSD"]  # the order the groups are listed on the site
 
 
@@ -41,14 +43,14 @@ def main(src):
         line = line.strip()
         if not line or line.startswith("#") or line.endswith(" rows"):
             continue
-        div, rank, name, pos = [p.strip() for p in line.split("|")]
+        div, name, pos = [p.strip() for p in line.split("|")]
         pos = pos.split(" (")[0].strip()  # drop the (EM)/(PM) shift tag
-        if div not in ORDER or rank not in RANK or pos not in POS:
+        if div not in ORDER or pos not in POS or POS[pos] not in RANK_FOR[div]:
             problems.append(f"line {n}: {line}")
             continue
-        rows.append((ORDER.index(div), [name.title(), RANK[rank], f"{div}: {POS[pos]}"]))
+        rows.append((ORDER.index(div), [name.title(), RANK_FOR[div][POS[pos]], f"{div}: {POS[pos]}"]))
     if problems:
-        sys.exit("Unknown division, rank or position (add it to the tables above):\n  " + "\n  ".join(problems))
+        sys.exit("Unknown division or position (add it to the tables above):\n  " + "\n  ".join(problems))
     rows.sort(key=lambda r: r[0])  # stable: keeps the roster's own order inside each group
     out = Path(__file__).with_name("sed-roster.csv")
     with out.open("w", newline="", encoding="utf-8") as f:

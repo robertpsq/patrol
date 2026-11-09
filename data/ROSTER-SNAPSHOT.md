@@ -27,10 +27,28 @@ Source page: https://fp.booskit.dev/lssd/roster?roster=SOD
 Left out on purpose: Division headquarters, Training Team Detail, Aero (Air 20/22 and 21/23), fleet, and empty slots
 (rows whose name is `-`). Callsigns are not stored. If scope changes, edit the table above and the snippet below.
 
+## Departmental rank
+
+Only the name and divisional rank are taken from the roster. The departmental rank is set from the assignment
+(`RANK_FOR` in `data/build-roster-csv.py` and in `js/sed-squad.js`, kept the same):
+
+| Divisional rank                                                   | Rank                         |
+| ----------------------------------------------------------------- | ---------------------------- |
+| SEB Area Commander / Unit Commander                               | Commander / Captain          |
+| Operations Lieutenant, any Detail Commander                       | Lieutenant                   |
+| Operations Sergeant, any Team Leader                              | Sergeant                     |
+| ESD Tactical Medic, Crew Chief                                    | Deputy Sheriff (Bonus II)    |
+| ESD Probationary Tactical Medic                                   | Deputy Sheriff               |
+| CSD Probationary Tactical Canine Handler                          | Deputy Sheriff               |
+| CSD Tactical Canine Handler / Senior Tactical Canine Handler      | Bonus I / Bonus II           |
+| SED Probationary Team Member / Team Member / Team Scout           | Deputy Sheriff / Bonus I / Bonus II |
+
+In the Squad Members form, picking a divisional rank fills in the Rank the same way (it can still be changed).
+
 ## Steps
 
 1. Open the roster page in the browser and wait about 5 seconds for it to load (it shows "Initializing faction..." first).
-2. Run this in the page (javascript tool). It returns `DIV|RANK|NAME|POSITION` lines, one per person:
+2. Run this in the page (javascript tool). It returns `DIV|NAME|POSITION` lines, one per person (the roster's own rank column is not used):
 
    ```js
    (() => { const L = c => c.innerText.split('\n').map(s => s.trim()).filter(Boolean);
@@ -48,7 +66,7 @@ Left out on purpose: Division headquarters, Training Team Detail, Aero (Air 20/2
      [...t.tb.querySelectorAll('tr')].forEach(tr => { const c = [...tr.children];
        if (c.length < 4 || !/^\d+$/.test(c[0].innerText.trim())) return;
        const nm = L(c[2])[0] || ''; if (nm === '-' || !nm) return;
-       out.push([div, L(c[1])[0], nm, L(c[3])[0]].join('|')); }); });
+       out.push([div, nm, L(c[3])[0]].join('|')); }); });
    return out.length + ' rows\n' + out.join('\n'); })()
    ```
 
@@ -59,7 +77,7 @@ Left out on purpose: Division headquarters, Training Team Detail, Aero (Air 20/2
    `roster.txt` outside the repo.
 4. Run `python data/build-roster-csv.py roster.txt`. It maps the roster's wording to the site's names, sorts the groups
    SEB, SED, ESD, CSD (roster order kept inside each group) and rewrites `data/sed-roster.csv`.
-   - If it says "Unknown division, rank or position", add the new wording to `RANK` or `POS` in the script. If the site
+   - If it says "Unknown division or position", add the new wording to `POS` and `RANK_FOR` in the script (and to `RANK_FOR` in `js/sed-squad.js`). If the site
      also needs a new divisional rank, add it to `DIV` in `js/sed-squad.js` too.
 5. Compare with the old file (`git diff data/sed-roster.csv`) and tell the user who was added, removed or changed.
 6. Check it works: serve the site locally (`python -m http.server`), open `#sed-squad`, and confirm the counts per group.
