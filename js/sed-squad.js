@@ -20,7 +20,7 @@
     TT: { "Team Leader": "Sergeant", "Detail Commander": "Lieutenant" },
   };
   const rankFor = (div) => { const [u, ...r] = String(div || "").split(":"); return (RANK_FOR[u.trim()] || {})[r.join(":").trim()] || ""; };
-  const NAMES = { TT: "Training Team" }; // shown instead of the short code (the code is what the CSV stores, e.g. "TT: Team Leader")
+  const NAMES = { TT: "Training Team (Alternative Characters)" }; // shown instead of the short code (the code is what the CSV stores, e.g. "TT: Team Leader")
   const nameOfUnit = (u) => NAMES[u] || u;
 
   const HEAD = ["Name", "Rank", "Divisional Rank"];
