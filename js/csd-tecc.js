@@ -290,10 +290,10 @@
         ${opts(TREE, true)}
         <div class="actions"><button class="b tc-reset" type="button" id="tecc-reset">Clear all</button></div>
       </div></div>
-      <aside class="card tc-plan"><h2><small>Plan</small>Do this</h2><div class="body">
+      <div class="card tc-plan" role="complementary" aria-label="Do this"><h2><small>Plan</small>Do this</h2><div class="body">
         <p class="tc-plan-empty">Tick the situation on the left and your steps appear here, in order.</p>
         <ol class="tc-plan-list" hidden></ol>
-      </div></aside>
+      </div></div>
     </div>
     <div class="card"><h2><small>Resources</small>Charts and kit</h2><div class="body">
       <p class="tc-intro">Reference charts from the CSD post. Open one to see it.</p>
