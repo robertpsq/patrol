@@ -15,6 +15,7 @@
     />
     <script src="js/theme-init.js"></script>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/facebrowser-esw.css" />
   </head>
   <body>
     <aside>
@@ -325,6 +326,7 @@
                   <button class="nav sub" id="nv-lab" data-k="laboratory services requests evidence dna" data-parent="nv-bu-ssb-csiu" onclick="show('lab')"><span>Laboratory Services Requests</span></button>
                   <button class="nav division" id="nv-bu-ssb-dfu" data-k="ssb dfu digital forensics unit" data-parent="nv-bu-ssb" disabled aria-disabled="true"><span><b>DFU</b> <small>Digital Forensics Unit</small></span></button>
                   <button class="nav sub" id="nv-dforensics" data-k="digital forensics requests evidence" data-parent="nv-bu-ssb-dfu" onclick="show('dforensics')"><span>Digital Forensics Requests</span></button>
+                  <button class="nav sub" id="nv-facebrowser-esw" data-k="facebrowser esw parser electronic surveillance warrant messages csv conversations messenger digital forensics dfu" data-parent="nv-bu-ssb-dfu" onclick="show('facebrowser-esw')"><span>Facebrowser ESW Parser</span></button>
                 </div>
               </div>
               <div class="bu-item" data-bu="cfmb">
@@ -4939,6 +4941,15 @@
           <button class="b p" type="button" id="sq-export">Export CSV</button><button class="b" type="button" id="sq-import">Import CSV</button><input type="file" id="sq-file" accept=".csv,text/csv" hidden />
         </div>
       </div>
+      <div id="f-facebrowser-esw" class="norail" hidden>
+        <div class="card">
+          <h2><small>DFU</small>Facebrowser ESW Parser</h2>
+          <div class="body">
+            <p class="fb-credit">Import a Facebrowser message export (CSV) to read it as a messenger: pick a conversation on the left, search it, and export a transcript. The file is read by this page only and nothing is uploaded.</p>
+            <div id="fb-host"></div>
+          </div>
+        </div>
+      </div>
       <div id="f-chatlog" class="norail" hidden>
         <div class="card">
           <h2><small>Misc</small>Chatlog Parser</h2>
@@ -4949,6 +4960,23 @@
         </div>
       </div>
       <div id="f-updates" hidden>
+        <div class="card">
+          <h2><small>Release</small>v2.3.5<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
+          <div class="body">
+            <h3>v2.3.5</h3>
+            <h3>DFU — Digital Forensics Unit</h3>
+            <ul>
+              <li>New Facebrowser ESW Parser under SSB, DFU. Import a Facebrowser message export (CSV or tab separated), or drop or paste it, and read it as a messenger: conversations in a sidebar, speech bubbles on the right and left, day separators and times.</li>
+              <li>The sidebar lists every conversation with the other person, a preview, the last date and the message count. Search people, IDs and message text (matching conversations show how many hits), filter by date range or photos only, and sort by latest, oldest, size or name.</li>
+              <li>Inside a conversation: find with next and previous, jump to a date, First and Latest, and a Details panel with the participants. Names are only labels you type for a user ID, kept in this browser. The subject account (the one in the most conversations) is picked automatically and can be changed.</li>
+              <li>New Photos tab: every picture from every conversation in one gallery, each with who posted it, the conversation and the time. Filter by conversation, person and date, sort newest or oldest, click a picture to enlarge it, or open it in its conversation. Pictures load automatically from Facebrowser's attachment address (face.gta.world/storage/chat-attachments/) using the file name in the export; if one cannot be loaded, its file name is shown. Export a conversation as a transcript (.txt) or as messages (.csv).</li>
+              <li>New Flagged tab: a flagger that checks every message against lists of terms for firearms (including everyday and coded words for guns), narcotics, violence and threats, illicit trade and money, and law enforcement and evasion. The lists sit on the left with how many messages each term hit, switch categories on or off, or click one term to see only its messages.</li>
+              <li>Each flagged message shows who sent it, the conversation, the time and the matched terms highlighted in the list's colour. Show context adds the message before and after. Filter by conversation, person and date, sort by newest, oldest or most flags, and press Chat to open the message in its conversation. Flagged messages also carry a small flag in the chat, and the results export to CSV. Hits are keyword matches only and need reviewing in context.</li>
+              <li>Importing opens a Map the columns window: pick which column in your file is the conversation ID, sender ID, message and time. Columns whose names match are pre-selected, a sample value is shown under each, and Import stays off until all four are chosen.</li>
+              <li>Multi-line messages and HTML entities in the export are handled. The file is read by the page only and nothing is uploaded.</li>
+            </ul>
+          </div>
+        </div>
         <div class="card">
           <h2><small>Release</small>v2.3.4<time class="rel-date" datetime="2026-11-09">November 9, 2026</time></h2>
           <div class="body">
@@ -6618,5 +6646,129 @@
     <script src="js/sed.js"></script>
     <script src="js/sed-squad.js"></script>
     <script src="js/chatlog-parser.js"></script>
+    <template id="fb-tpl">
+<div class="fb-app" id="fb-app" data-view="list">
+  <div class="fb-bar">
+    <button class="fb-btn p" id="fb-open" type="button">Import CSV</button>
+    <input type="file" id="fb-input" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain" hidden />
+    <button class="fb-btn" id="fb-paste" type="button">Paste</button>
+    <div class="fb-tabs" role="tablist" aria-label="View">
+      <button class="fb-tab on" id="fb-tabChat" role="tab" aria-selected="true" type="button">Conversations</button>
+      <button class="fb-tab" id="fb-tabPics" role="tab" aria-selected="false" type="button">Photos <em id="fb-picN">0</em></button>
+      <button class="fb-tab" id="fb-tabFlags" role="tab" aria-selected="false" type="button">Flagged <em id="fb-flagN">0</em></button>
+    </div>
+    <label class="fb-sel" id="fb-subjectWrap" hidden>Subject <select id="fb-subject" title="The account the export belongs to. Its messages sit on the right."></select></label>
+    <span class="fb-file" id="fb-file">No file imported</span>
+    <span class="fb-priv" title="The file is read by this page only. Nothing is uploaded."><i></i>Stays in your browser</span>
+    <button class="fb-btn g" id="fb-clear" type="button" disabled>Clear</button>
+  </div>
+  <div class="fb-body">
+    <div class="fb-side">
+      <h3>Conversations <small id="fb-listCount"></small></h3>
+      <div class="fb-filters">
+        <input type="search" id="fb-search" placeholder="Search people, IDs and messages" autocomplete="off" spellcheck="false" aria-label="Search conversations" />
+        <div class="fb-frow">
+          <label>From<input type="date" id="fb-from" /></label>
+          <label>To<input type="date" id="fb-to" /></label>
+        </div>
+        <div class="fb-frow">
+          <label>Show<select id="fb-media"><option value="all">All messages</option><option value="image">Photos only</option></select></label>
+          <label>Sort<select id="fb-sort"><option value="recent">Latest first</option><option value="oldest">Oldest first</option><option value="size">Most messages</option><option value="name">Name</option></select></label>
+        </div>
+      </div>
+      <div class="fb-list" id="fb-list"></div>
+    </div>
+
+    <section class="fb-chat" id="fb-chat">
+      <header class="fb-head" id="fb-head" hidden>
+        <button class="fb-btn g ic fb-back" id="fb-back" type="button" aria-label="Back to conversations">&#8592;</button>
+        <span id="fb-hav"></span>
+        <div class="fb-ht"><b id="fb-htitle"></b><span id="fb-hsub"></span></div>
+        <div class="fb-tools">
+          <div class="fb-find"><input type="text" id="fb-find" placeholder="Find in conversation" autocomplete="off" spellcheck="false" aria-label="Find in conversation" /><span id="fb-findCount"></span>
+            <button class="fb-btn g ic" id="fb-prev" type="button" aria-label="Previous match" disabled>&#9650;</button><button class="fb-btn g ic" id="fb-next" type="button" aria-label="Next match" disabled>&#9660;</button></div>
+          <input type="date" id="fb-jump" title="Jump to a date" aria-label="Jump to a date" />
+          <button class="fb-btn sm" id="fb-top" type="button">First</button>
+          <button class="fb-btn sm" id="fb-bottom" type="button">Latest</button>
+          <span id="fb-exportWrap"><button class="fb-btn sm" id="fb-export" type="button" disabled>Export</button>
+            <div class="fb-menu" id="fb-exportMenu" hidden><button id="fb-exTxt" type="button">Transcript (.txt)</button><button id="fb-exCsv" type="button">Messages (.csv)</button></div></span>
+          <button class="fb-btn sm" id="fb-infoBtn" type="button" title="Participants and names">Details</button>
+        </div>
+      </header>
+      <div class="fb-note" id="fb-note" hidden></div>
+      <div class="fb-thread" id="fb-thread"></div>
+      <button class="fb-fab" id="fb-fab" type="button" aria-label="Jump to the latest message" hidden>&#8595;</button>
+      <div class="fb-pickmsg" id="fb-pick" hidden>Select a conversation on the left.</div>
+      <div class="fb-emptymsg" id="fb-empty">
+        <h4>Import a Facebrowser export</h4>
+        <p>Open the exported CSV, drop it here, or paste its text. Each conversation becomes a chat you can search, filter by date and export.</p>
+        <div class="row"><button class="fb-btn p" id="fb-emptyOpen" type="button">Import CSV</button></div>
+      </div>
+    </section>
+
+    <div class="fb-info" id="fb-info" hidden>
+      <header><b>Details</b><button class="fb-btn g sm" id="fb-infoClose" type="button">Close</button></header>
+      <div id="fb-infoBody"></div>
+    </div>
+  </div>
+
+  <div class="fb-pics" id="fb-pics">
+    <div class="fb-pbar">
+      <label>Conversation<select id="fb-pConv"></select></label>
+      <label>Posted by<select id="fb-pUser"></select></label>
+      <label>From<input type="date" id="fb-pFrom" /></label>
+      <label>To<input type="date" id="fb-pTo" /></label>
+      <label>Sort<select id="fb-pSort"><option value="new">Newest first</option><option value="old">Oldest first</option></select></label>
+      <span class="fb-grow"></span>
+      <span class="fb-pstat" id="fb-pStat"></span>
+    </div>
+    <div class="fb-pgrid" id="fb-pgrid"></div>
+  </div>
+
+  <div class="fb-flags" id="fb-flags">
+    <div class="fb-fside">
+      <h3>Flag lists <small><button class="fb-link" id="fb-fAll" type="button">All</button> <button class="fb-link" id="fb-fNone" type="button">None</button></small></h3>
+      <p class="fb-fnote">Keyword hits, not findings. Each one needs to be read in context. Click a term to see only its messages.</p>
+      <div id="fb-fcats"></div>
+    </div>
+    <div class="fb-fmain">
+      <div class="fb-pbar">
+        <label>Conversation<select id="fb-fConv"></select></label>
+        <label>Sent by<select id="fb-fUser"></select></label>
+        <label>From<input type="date" id="fb-fFrom" /></label>
+        <label>To<input type="date" id="fb-fTo" /></label>
+        <label>Sort<select id="fb-fSort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="most">Most flags</option></select></label>
+        <label class="fb-chk"><input type="checkbox" id="fb-fCtx" /> Show context</label>
+        <span class="fb-grow"></span>
+        <span class="fb-pstat" id="fb-fStat"></span>
+        <button class="fb-btn sm" id="fb-fExport" type="button">Export CSV</button>
+      </div>
+      <div class="fb-flist" id="fb-flist"></div>
+    </div>
+  </div>
+
+  <div class="fb-dlgwrap" id="fb-pasteDlg" hidden>
+    <div class="fb-dlg" role="dialog" aria-label="Paste export">
+      <h4>Paste the export</h4>
+      <p>Paste the whole file, header row included.</p>
+      <textarea id="fb-pasteText" spellcheck="false" placeholder="message_id, conversation_id, user_id, message, image, time"></textarea>
+      <footer><button class="fb-btn" id="fb-pasteCancel" type="button">Cancel</button><button class="fb-btn p" id="fb-pasteOk" type="button">Read</button></footer>
+    </div>
+  </div>
+  <div class="fb-dlgwrap" id="fb-mapDlg" hidden>
+    <div class="fb-dlg" role="dialog" aria-label="Map columns">
+      <h4>Map the columns</h4>
+      <p id="fb-mapInfo">Choose which column in your file holds each field. Columns matched by name are already selected.</p>
+      <div class="fb-maprows" id="fb-mapRows"></div>
+      <footer><button class="fb-btn" id="fb-mapCancel" type="button">Cancel</button><button class="fb-btn p" id="fb-mapOk" type="button">Import</button></footer>
+    </div>
+  </div>
+  <div class="fb-lb" id="fb-lb" hidden><img id="fb-lbImg" alt="" /><div class="fb-lbcap"><div id="fb-lbCap"></div><span><button class="fb-btn sm" id="fb-lbGo" type="button">Open in conversation</button> <button class="fb-btn g sm" id="fb-lbX" type="button">Close</button></span></div></div>
+  <div class="fb-drop" id="fb-drop" hidden>Drop the CSV to read it</div>
+  <div class="fb-toast" id="fb-toast" hidden role="status"></div>
+</div>
+    </template>
+    <script src="js/facebrowser-terms.js"></script>
+    <script src="js/facebrowser-esw.js"></script>
   </body>
 </html>
