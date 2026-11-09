@@ -3,11 +3,14 @@
   const KEY = "lssd-sed-squad";
   // Order matters: SEB (the bureau above all three) first, then SED, ESD and CSD.
   const DIV = {
-    SEB: ["Unit Commander", "Operations Lieutenant", "Operations Sergeant"],
+    SEB: ["Area Commander", "Unit Commander", "Operations Lieutenant", "Operations Sergeant"],
     SED: ["Probationary Team Member", "Team Member", "Team Scout", "Team Leader", "Detail Commander"],
     ESD: ["Probationary Tactical Medic", "Tactical Medic", "Crew Chief", "Team Leader", "Detail Commander"],
     CSD: ["Probationary Tactical Canine Handler", "Tactical Canine Handler", "Senior Tactical Canine Handler", "Team Leader", "Detail Commander"],
+    TT: ["Team Leader", "Detail Commander"],
   };
+  const NAMES = { TT: "Training Team" }; // shown instead of the short code (the code is what the CSV stores, e.g. "TT: Team Leader")
+  const nameOfUnit = (u) => NAMES[u] || u;
 
   const HEAD = ["Name", "Rank", "Divisional Rank"];
   const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt) n.textContent = txt; return n; };
@@ -19,24 +22,43 @@
   };
   window.__sedSquad = { get: () => members.map((m) => ({ ...m })), label: (m) => [m.rank, m.name].filter(Boolean).join(" ") };
 
+  // "Other" choice: picking it shows a text box beside the list so anything can be typed.
+  const OTHER = "__other";
+  function otherBox(sel) {
+    const box = el("div", "sq-other"), inp = el("input");
+    inp.type = "text"; inp.hidden = true; inp.placeholder = "Type it here";
+    inp.setAttribute("aria-label", (sel.getAttribute("aria-label") || "Value") + " (typed)");
+    sel._inp = inp;
+    if (sel.parentNode) sel.replaceWith(box);
+    box.append(sel, inp);
+    sel.addEventListener("change", () => { inp.hidden = sel.value !== OTHER; if (!inp.hidden) inp.focus(); });
+    return box;
+  }
+  function getVal(sel) { return sel.value === OTHER ? (sel._inp ? sel._inp.value.trim() : "") : sel.value; }
+  function setVal(sel, value) {
+    const known = !value || [...sel.options].some((o) => o.value === value && o.value !== OTHER);
+    sel.value = known ? value || "" : OTHER;
+    if (sel._inp) { sel._inp.value = known ? "" : value; sel._inp.hidden = sel.value !== OTHER; }
+  }
+
   function rankSelect(sel, value, blank) {
     sel.replaceChildren();
     if (blank) sel.append(new Option(blank, ""));
     const list = typeof deputyRanks !== "undefined" ? deputyRanks : ["Deputy Sheriff"];
     list.forEach((r) => sel.append(new Option(r, r)));
-    if (value && !list.includes(value)) sel.append(new Option(value, value));
-    sel.value = value || "";
+    sel.append(new Option("Other (type your own)", OTHER));
+    setVal(sel, value);
   }
   function divSelect(sel, value, blank) {
     sel.replaceChildren();
     if (blank) sel.append(new Option(blank, ""));
     Object.entries(DIV).forEach(([u, rs]) => {
-      const og = document.createElement("optgroup"); og.label = u;
+      const og = document.createElement("optgroup"); og.label = nameOfUnit(u);
       rs.forEach((r) => og.append(new Option(r, u + ": " + r)));
       sel.append(og);
     });
-    if (value && ![...sel.options].some((o) => o.value === value)) sel.append(new Option(value, value));
-    sel.value = value || "";
+    sel.append(new Option("Other (type your own)", OTHER));
+    setVal(sel, value);
   }
 
   const $n = (i) => document.getElementById(i);
@@ -64,7 +86,7 @@
   }
   const unitOf = (m) => { const u = (m.div || "").split(":")[0]; return DIV[u] ? u : "Other"; };
   const shortDiv = (d) => (d || "").replace(/^\w+:\s*/, "");
-  Object.assign(window.__sedSquad, { avatar, unit: unitOf });
+  Object.assign(window.__sedSquad, { avatar, unit: unitOf, unitName: nameOfUnit });
   let editing = null;
 
   function viewRow(m) {
@@ -83,19 +105,19 @@
   function editRow(m) {
     const row = el("div", "sq-row editing");
     const name = el("input"); name.type = "text"; name.value = m.name; name.placeholder = "Name Lastname"; name.setAttribute("aria-label", "Name");
-    const rank = el("select"); rankSelect(rank, m.rank, "Select rank"); rank.setAttribute("aria-label", "Rank");
-    const dv = el("select"); divSelect(dv, m.div, "Select divisional rank"); dv.setAttribute("aria-label", "Divisional rank");
+    const rank = el("select"); rank.setAttribute("aria-label", "Rank"); const rankBox = otherBox(rank); rankSelect(rank, m.rank, "Select rank");
+    const dv = el("select"); dv.setAttribute("aria-label", "Divisional rank"); const dvBox = otherBox(dv); divSelect(dv, m.div, "Select divisional rank");
     const ok = el("button", "b p", "Save"), no = el("button", "b", "Cancel"); ok.type = no.type = "button";
     const commit = () => {
       if (!name.value.trim()) { toast("Name can't be empty"); return; }
-      m.name = name.value.trim(); m.rank = rank.value; m.div = dv.value; delete m.src; // hand-edited: no longer overwritten by the roster
+      m.name = name.value.trim(); m.rank = getVal(rank); m.div = getVal(dv); delete m.src; // hand-edited: no longer overwritten by the roster
       editing = null; save(); render();
     };
     ok.addEventListener("click", commit);
     no.addEventListener("click", () => { editing = null; render(); });
     name.addEventListener("keydown", (e) => { if (e.key === "Enter") commit(); if (e.key === "Escape") no.click(); });
     const fields = el("div", "sq-fields"), btns = el("div", "sq-btns");
-    fields.append(name, rank, dv); btns.append(ok, no);
+    fields.append(name, rankBox, dvBox); btns.append(ok, no);
     row.append(avatar(m.name), fields, btns);
     return row;
   }
@@ -107,7 +129,7 @@
     [...Object.keys(DIV), "Other"].forEach((u) => {
       const list = members.filter((m) => unitOf(m) === u);
       if (!list.length) return;
-      const grp = el("section", "sq-group"), h = el("h4", "", u === "Other" ? "No division" : u);
+      const grp = el("section", "sq-group"), h = el("h4", "", u === "Other" ? "No division" : nameOfUnit(u));
       h.append(el("span", "", String(list.length)));
       grp.append(h);
       list.forEach((m) => grp.append(m === editing ? editRow(m) : viewRow(m)));
@@ -115,14 +137,15 @@
     });
   }
 
+  otherBox($n("sq-rank")); otherBox($n("sq-div"));
   rankSelect($n("sq-rank"), "", "Select rank");
   divSelect($n("sq-div"), "", "Select divisional rank");
   $n("sq-add").addEventListener("click", () => {
     const name = $n("sq-name").value.trim();
     if (!name) { toast("Enter a name first"); return; }
-    members.push({ name, rank: $n("sq-rank").value, div: $n("sq-div").value });
+    members.push({ name, rank: getVal($n("sq-rank")), div: getVal($n("sq-div")) });
     save(); render();
-    $n("sq-name").value = ""; $n("sq-rank").value = ""; $n("sq-div").value = "";
+    $n("sq-name").value = ""; setVal($n("sq-rank"), ""); setVal($n("sq-div"), "");
     $n("sq-name").focus();
   });
   $n("sq-name").addEventListener("keydown", (e) => { if (e.key === "Enter") $n("sq-add").click(); });
@@ -232,14 +255,14 @@
       e.textContent = window.__sedSquad.get().length ? "No match. Keep typing to use it as written." : "No squad members saved yet.";
       c.list.append(e);
     }
-    const ORDER = ["SEB", "SED", "ESD", "CSD", "Other"];
+    const ORDER = ["SEB", "SED", "ESD", "CSD", "TT", "Other"];
     items.sort((a, b) => ORDER.indexOf(window.__sedSquad.unit(a)) - ORDER.indexOf(window.__sedSquad.unit(b)));
     let lastUnit = null;
     items.forEach((m) => {
       const u = window.__sedSquad.unit(m);
       if (u !== lastUnit) {
         lastUnit = u;
-        const h = document.createElement("div"); h.className = "sed-combo-grp"; h.textContent = u === "Other" ? "No division" : u;
+        const h = document.createElement("div"); h.className = "sed-combo-grp"; h.textContent = u === "Other" ? "No division" : window.__sedSquad.unitName(u);
         c.list.append(h);
       }
       const o = document.createElement("button"); o.type = "button"; o.className = "sed-combo-opt"; o.setAttribute("role", "option");

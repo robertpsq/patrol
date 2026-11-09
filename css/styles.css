@@ -3420,3 +3420,4 @@ main>#f-chatlog{max-width:none}
         position: relative;
         background: transparent;
       }
+.sq-other{display:grid;gap:6px;min-width:0}.sq-other>*{width:100%;min-width:0}

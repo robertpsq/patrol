@@ -22,6 +22,7 @@ Source page: https://fp.booskit.dev/lssd/roster?roster=SOD
 | `CANINE SERVICES DETAIL`                                    | `CSD`               | The CANINE (dog) column is ignored                    |
 | `OPERATIONS` table just above `... RED TEAM`                | `SED`               | The SED Detail Commander                              |
 | `SPECIAL ENFORCEMENT DETAIL RED TEAM` and `BLUE TEAM`       | `SED`               | Both teams go into one SED group                      |
+| `Area Commander` row (in the page's top Headquarters/Fleet area; search the page for `AREA COMMANDER`) | `SEB`               | Listed first in SEB. Rank on the roster is `COMMANDER` |
 
 Left out on purpose: Division headquarters, Training Team Detail, Aero (Air 20/22 and 21/23), fleet, and empty slots
 (rows whose name is `-`). Callsigns are not stored. If scope changes, edit the table above and the snippet below.

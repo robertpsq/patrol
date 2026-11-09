@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 RANK = {
+    "COMMANDER": "Commander",
     "CAPTAIN": "Captain",
     "LIEUTENANT": "Lieutenant",
     "SERGEANT": "Sergeant",
@@ -15,6 +16,7 @@ RANK = {
 }
 # Roster wording -> the divisional rank names used by the site (js/sed-squad.js, DIV).
 POS = {
+    "AREA COMMANDER": "Area Commander",
     "UNIT COMMANDER": "Unit Commander",
     "OPERATIONS LIEUTENANT": "Operations Lieutenant",
     "OPERATIONS SERGEANT": "Operations Sergeant",
