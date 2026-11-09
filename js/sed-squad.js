@@ -221,6 +221,16 @@
       if (!res.ok) return;
       const rows = parseCsv(await res.text());
       if (rows.length && /^name$/i.test((rows[0][0] || "").trim())) rows.shift();
+      // One-time catch-up per release: a person saved by hand (an imported CSV, or an old copy) with the same name AND the
+      // same divisional rank as the roster is just a stale copy, so it goes back to following the roster. People whose
+      // assignment was changed on purpose are left alone. Only this list is touched, never Character Details.
+      const REV = "2.3.9", REV_KEY = "lssd-sed-squad-rev";
+      let seen = ""; try { seen = localStorage.getItem(REV_KEY) || ""; } catch (e) { /* storage unavailable */ }
+      if (seen !== REV) {
+        const byName = new Map(rows.map(([n = "", , d = ""]) => [n.trim().toLowerCase(), d.trim()]));
+        members.forEach((m) => { if (m.src !== "roster" && byName.get(m.name.trim().toLowerCase()) === (m.div || "").trim()) m.src = "roster"; });
+        try { localStorage.setItem(REV_KEY, REV); } catch (e) { /* storage unavailable */ }
+      }
       const hidden = hiddenNames(), mine = new Set(members.filter((m) => m.src !== "roster").map((m) => m.name.trim().toLowerCase()));
       const fresh = rows.map(([name = "", rank = "", div = ""]) => ({ name: name.trim(), rank: rankFor(div) || rank.trim(), div: div.trim(), src: "roster" }))
         .filter((m) => m.name && !hidden.has(m.name.toLowerCase()) && !mine.has(m.name.toLowerCase()));
