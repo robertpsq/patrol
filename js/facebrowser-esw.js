@@ -1,5 +1,5 @@
 /* ===== DFU: Facebrowser ESW Parser =====
-   Reads a Facebrowser message export (CSV / TSV) and shows it as a Facebook-style messenger:
+   Reads a Facebrowser message export (CSV / TSV / XLSX) and shows it as a Facebook-style messenger:
    conversations in a sidebar, bubbles on the right. Nothing is uploaded; the file is read by this page only.
 
    The export format is fixed and maintained here, not by the user: everything format-specific lives in two places,
@@ -15,10 +15,14 @@
     conv: { label: "Conversation ID", names: ["conversation_id", "conv_id", "thread_id", "chat_id", "conversation", "thread"] },
     user: { label: "Sender ID", names: ["user_id", "sender_id", "from_id", "author_id", "sender", "author", "from", "user"] },
     text: { label: "Message", names: ["message", "text", "body", "content", "msg"] },
-    image: { label: "Image", names: ["image", "images", "photo", "photos", "image_url", "attachment", "picture"] },
-    time: { label: "Time", names: ["time", "timestamp", "datetime", "created_at", "sent_at", "date", "created"] },
+    image: { label: "Image", names: ["image", "images", "photo", "photos", "image_url", "attachment", "attachments", "picture"] },
+    time: { label: "Time", names: ["time", "timestamp", "datetime", "created_at", "sent_at", "sent_at_(utc)", "date", "created"] },
     userName: { label: "Sender name (optional)", names: ["user_name", "sender_name", "from_name", "display_name", "username", "name"] },
-    convName: { label: "Conversation name (optional)", names: ["conversation_name", "thread_name", "chat_name", "conversation_title", "title"] },
+    convName: { label: "Conversation name (optional)", names: ["conversation_name", "thread_name", "chat_name", "conversation_title", "title", "conversation"] },
+    target: { label: "From target user (optional)", names: ["from_target_user", "target_user", "is_target"] },
+    asPage: { label: "Sent as page (optional)", names: ["sent_as_page"] },
+    deleted: { label: "User deleted (optional)", names: ["user_deleted", "deleted"] },
+    edited: { label: "Edited (optional)", names: ["edited"] },
   };
   // Where Facebrowser serves attachments. The export only holds the file name (or a path ending in it), so the
   // preview address is this base plus the file name. Change it here if the storage address ever moves.
@@ -69,6 +73,7 @@
       field += c; atStart = false; i++;
     }
     if (field !== "" || row.length) endRow();
+    rows.shift(); // the first record is the header line
     return { header, rows, delim };
   }
 
@@ -96,10 +101,33 @@
     let m = s.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?/);
     if (m) return Date.UTC(+m[1], m[2] - 1, +m[3], +m[4], +m[5], +(m[6] || 0));
     if (/^\d{9,13}$/.test(s)) return s.length > 11 ? +s : +s * 1000;
+    if (/^\d{5}(\.\d+)?$/.test(s)) return Math.round((+s - 25569) * 86400000); // Excel date serial
     m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
     if (m) return Date.UTC(+m[1], m[2] - 1, +m[3]);
     const t = Date.parse(s);
     return isNaN(t) ? NaN : t;
+  }
+
+  // "@user (Name)", "@user (Name) — sent as page: Page (@page)", "Unknown/deleted sender (profile #123)"
+  // -> a stable user key (the @username, so page-sent messages stay with their person) and a display name.
+  // Anything else (plain IDs, plain names) is kept as it is.
+  function parseSender(v) {
+    v = String(v || "").trim();
+    let m = v.match(/^(Unknown\/deleted sender)\s*\(profile\s*#?(\d+)\)$/i);
+    if (m) return { user: "#" + m[2], name: m[1], page: "" };
+    m = v.match(/^(@[^\s(]+)\s*(?:\((.*?)\))?(?:\s+[—–-]\s+sent as page:\s*(.*))?$/i);
+    if (m) return { user: m[1], name: (m[2] || "").trim(), page: (m[3] || "").trim() };
+    return { user: v, name: "", page: "" };
+  }
+
+  // "a.jpg — https://x/a.jpg; b.png — https://x/b.png" -> ["https://x/a.jpg", ...]; a bare file name or path is kept as it is
+  function parseAttachments(v) {
+    v = String(v || "").trim();
+    if (!v) return [];
+    const out = [], rx = /(?:^|;\s*)([^;]*?)\s+[—–]\s+(https?:\/\/[^\s;]+)/g;
+    let m;
+    while ((m = rx.exec(v))) out.push(m[2]);
+    return out.length ? out : [v];
   }
 
   // table + column map -> normalised messages
@@ -115,23 +143,115 @@
         r = r.slice(0, map.text).concat([r.slice(map.text, map.text + extra + 1).join(table.delim || "	")], r.slice(map.text + extra + 1));
       }
       const text = decode(map.text == null ? "" : (r[map.text] || "")).replace(/^\s+|\s+$/g, "");
-      const image = get(r, "image");
+      const att = parseAttachments(get(r, "image"));
+      const image = att.length ? att[0] : "";
       const t = parseTime(get(r, "time"));
-      if (!text && !image && isNaN(t)) continue;
+      const who = parseSender(get(r, "user"));
+      let body = text;
+      // only one picture per message is shown: any further attachments are listed in the message text
+      if (att.length > 1) body = (body ? body + "\n" : "") + att.slice(1).map((a) => "Attachment: " + a).join("\n");
+      const yes = (k) => /^y/i.test(get(r, k));
+      if (!body && !image && yes("deleted")) body = "[Message deleted by user]";
+      if (!body && !image && isNaN(t)) continue;
       out.push({
-        seq: seq++, id: get(r, "id"), conv: get(r, "conv") || "(none)", user: get(r, "user") || "(unknown)",
-        text, image, t, timeRaw: get(r, "time"),
-        userName: decode(get(r, "userName")), convName: decode(get(r, "convName")),
+        seq: seq++, id: get(r, "id"), conv: get(r, "conv") || "(none)", user: who.user || "(unknown)",
+        text: body, image, t, timeRaw: get(r, "time"),
+        userName: decode(who.name || get(r, "userName")), convName: decode(get(r, "convName")),
+        target: yes("target"), asPage: who.page || get(r, "asPage"), deleted: yes("deleted"), edited: yes("edited"),
       });
     }
     return out;
+  }
+
+  /* ------------------------------------------------------------ XLSX (no library) */
+  // An .xlsx is a zip of XML files. Read the first worksheet into the same {header, rows, delim} shape parseTable gives.
+  async function inflateRaw(bytes) {
+    const ds = new DecompressionStream("deflate-raw");
+    const w = ds.writable.getWriter(); w.write(bytes); w.close();
+    return new Uint8Array(await new Response(ds.readable).arrayBuffer());
+  }
+  async function unzip(buf) {
+    const u8 = new Uint8Array(buf), dv = new DataView(buf), files = {};
+    let e = u8.length - 22;
+    while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+    if (e < 0) throw new Error("Not a zip file");
+    const n = dv.getUint16(e + 10, true);
+    let p = dv.getUint32(e + 16, true);
+    const dec = new TextDecoder();
+    for (let i = 0; i < n; i++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error("Bad zip directory");
+      const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true);
+      const nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+      const name = dec.decode(u8.subarray(p + 46, p + 46 + nl));
+      const start = off + 30 + dv.getUint16(off + 26, true) + dv.getUint16(off + 28, true);
+      files[name] = { method, data: u8.subarray(start, start + csize) };
+      p += 46 + nl + xl + cl;
+    }
+    const read = async (name) => {
+      const f = files[name]; if (!f) return null;
+      const bytes = f.method === 0 ? f.data : f.method === 8 ? await inflateRaw(f.data) : null;
+      if (!bytes) throw new Error("Unsupported zip compression");
+      return dec.decode(bytes);
+    };
+    return { files, read };
+  }
+  const xmlText = (s) => s.replace(/&(#x[0-9a-f]+|#\d+|lt|gt|amp|quot|apos);/gi, (m, k) => {
+    k = k.toLowerCase();
+    if (k[0] === "#") return String.fromCodePoint(k[1] === "x" ? parseInt(k.slice(2), 16) : +k.slice(1));
+    return { lt: "<", gt: ">", amp: "&", quot: '"', apos: "'" }[k];
+  });
+  // all <t> runs inside a string item or inline string, joined (rich text is split into several runs)
+  const tRuns = (x) => { let o = "", m; const rx = /<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/g; while ((m = rx.exec(x))) o += xmlText(m[1]); return o; };
+  const colIx = (ref) => { let n = 0; for (const ch of ref.replace(/[^A-Z]/gi, "").toUpperCase()) n = n * 26 + ch.charCodeAt(0) - 64; return n - 1; };
+
+  async function xlsxToTable(buf) {
+    const z = await unzip(buf);
+    const wb = (await z.read("xl/workbook.xml")) || "";
+    const rels = (await z.read("xl/_rels/workbook.xml.rels")) || "";
+    let sheetPath = "xl/worksheets/sheet1.xml";
+    const sh = wb.match(/<sheet\b[^>]*>/i);
+    const rid = sh && (sh[0].match(/r:id="([^"]+)"/) || [])[1];
+    if (rid) {
+      const rel = rels.match(new RegExp("<Relationship\\b[^>]*Id=\"" + rid + "\"[^>]*>"));
+      const tgt = rel && (rel[0].match(/Target="([^"]+)"/) || [])[1];
+      if (tgt) sheetPath = tgt[0] === "/" ? tgt.slice(1) : "xl/" + tgt;
+    }
+    const xml = await z.read(sheetPath);
+    if (xml == null) throw new Error("No worksheet found");
+    const sst = [];
+    const sx = await z.read("xl/sharedStrings.xml");
+    if (sx) { let m; const rx = /<si\b[^>]*?(?:\/>|>([\s\S]*?)<\/si>)/g; while ((m = rx.exec(sx))) sst.push(tRuns(m[1] || "")); }
+    const grid = [];
+    let rm; const rrx = /<row\b[^>]*?(?:\/>|>([\s\S]*?)<\/row>)/g;
+    while ((rm = rrx.exec(xml))) {
+      const row = []; let cm; const crx = /<c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g;
+      while ((cm = crx.exec(rm[1] || ""))) {
+        const attrs = cm[1], inner = cm[2] || "";
+        const ref = (attrs.match(/\br="([A-Z]+\d*)"/i) || [])[1], type = (attrs.match(/\bt="([^"]+)"/) || [])[1];
+        const v = (inner.match(/<v>([\s\S]*?)<\/v>/) || [])[1];
+        let val = "";
+        if (type === "inlineStr") val = tRuns(inner);
+        else if (type === "s") val = sst[+v] || "";
+        else if (v != null) val = xmlText(v);
+        const ix = ref ? colIx(ref) : row.length;
+        while (row.length < ix) row.push("");
+        row[ix] = val;
+      }
+      grid.push(row);
+    }
+    while (grid.length && grid[0].every((c) => !String(c).trim())) grid.shift();
+    if (!grid.length) return { header: [], rows: [], delim: "\t" };
+    const header = grid[0].map((c) => String(c).trim());
+    const width = header.length;
+    const rows = grid.slice(1).filter((r) => r.some((c) => String(c).trim())).map((r) => { const o = r.slice(); while (o.length < width) o.push(""); return o; });
+    return { header, rows, delim: "\t" };
   }
 
   /* ------------------------------------------------------------ DOM helpers */
   const HOST = document.getElementById("fb-host");
   const TPL = document.getElementById("fb-tpl");
   const isNode = typeof module !== "undefined" && module.exports;
-  if (isNode) module.exports = { parseTable, detectDelimiter, autoMap, buildMessages, decode, parseTime };
+  if (isNode) module.exports = { parseSender, parseAttachments, xlsxToTable, parseTable, detectDelimiter, autoMap, buildMessages, decode, parseTime };
   if (!HOST || !TPL) return;
 
   HOST.append(TPL.content.cloneNode(true));
@@ -254,7 +374,11 @@
     for (const c of convs.values()) for (const [u, n] of c.users) { seen.set(u, (seen.get(u) || 0) + 1); cnt.set(u, (cnt.get(u) || 0) + n); }
     const ranked = [...seen.keys()].sort((a, b) => seen.get(b) - seen.get(a) || cnt.get(b) - cnt.get(a));
     const saved = store.get("lssd-fb-subject", null);
-    S.subject = saved && seen.has(saved) ? saved : ranked[0] || null;
+    // when the export says which messages the warrant target sent, that account is the subject
+    const tgt = new Map();
+    for (const m of msgs) if (m.target) tgt.set(m.user, (tgt.get(m.user) || 0) + 1);
+    const target = [...tgt.keys()].sort((a, b) => tgt.get(b) - tgt.get(a))[0];
+    S.subject = saved && seen.has(saved) ? saved : target || ranked[0] || null;
     S.cur = null; S.find = ""; S.hits = []; S.hitAt = -1;
     $subject();
     fillPicFilters(); fillFlagFilters(true);
@@ -778,6 +902,13 @@
 
   function readFile(file) {
     if (!file) return;
+    if (/\.xlsx$/i.test(file.name) || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      file.arrayBuffer().then(xlsxToTable).then((t) => {
+        if (t.header.length < 2 || !t.rows.length) return toast("No columns or rows found in that file");
+        openMapping(t, t.delim, file.name);
+      }).catch(() => toast("Could not read that Excel file"));
+      return;
+    }
     const r = new FileReader();
     r.onload = () => load(String(r.result), file.name);
     r.onerror = () => toast("Could not read that file");
