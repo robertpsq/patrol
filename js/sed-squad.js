@@ -96,8 +96,14 @@
     return wrap;
   }
   const unitOf = (m) => { const u = (m.div || "").split(":")[0]; return DIV[u] ? u : "Other"; };
+  // Division first (SEB, SED, ESD, CSD, Training Team, then no division), then departmental rank from highest to lowest
+  // (the order of the site's rank list), then the divisional rank from highest to lowest, then name.
+  const unitIx = (m) => { const u = unitOf(m); return u === "Other" ? 99 : Object.keys(DIV).indexOf(u); };
+  const rankIx = (m) => (typeof deputyRanks !== "undefined" ? deputyRanks : []).indexOf(m.rank);
+  const posIx = (m) => { const [u, ...r] = String(m.div || "").split(":"); return (DIV[u.trim()] || []).indexOf(r.join(":").trim()); };
+  const byOrder = (a, b) => unitIx(a) - unitIx(b) || rankIx(b) - rankIx(a) || posIx(b) - posIx(a) || a.name.localeCompare(b.name);
   const shortDiv = (d) => (d || "").replace(/^\w+:\s*/, "");
-  Object.assign(window.__sedSquad, { avatar, unit: unitOf, unitName: nameOfUnit });
+  Object.assign(window.__sedSquad, { avatar, unit: unitOf, unitName: nameOfUnit, order: byOrder });
   let editing = null;
 
   function viewRow(m) {
@@ -138,7 +144,7 @@
     box.replaceChildren();
     if (!members.length) { box.append(el("p", "f", "No squad members yet. Add one above or import a CSV.")); return; }
     [...Object.keys(DIV), "Other"].forEach((u) => {
-      const list = members.filter((m) => unitOf(m) === u);
+      const list = members.filter((m) => unitOf(m) === u).sort(byOrder);
       if (!list.length) return;
       const grp = el("section", "sq-group"), h = el("h4", "", u === "Other" ? "No division" : nameOfUnit(u));
       h.append(el("span", "", String(list.length)));
@@ -318,8 +324,7 @@
       e.textContent = window.__sedSquad.get().length ? "No match. Keep typing to use it as written." : "No squad members saved yet.";
       c.list.append(e);
     }
-    const ORDER = ["SEB", "SED", "ESD", "CSD", "TT", "Other"];
-    items.sort((a, b) => ORDER.indexOf(window.__sedSquad.unit(a)) - ORDER.indexOf(window.__sedSquad.unit(b)));
+    items.sort(window.__sedSquad.order);
     let lastUnit = null;
     items.forEach((m) => {
       const u = window.__sedSquad.unit(m);
