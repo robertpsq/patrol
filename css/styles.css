@@ -3421,3 +3421,6 @@ main>#f-chatlog{max-width:none}
         background: transparent;
       }
 .sq-other{display:grid;gap:6px;min-width:0}.sq-other>*{width:100%;min-width:0}
+.sq-note{margin:0 0 12px;padding:9px 12px;border-radius:8px;border:1px solid var(--green);background:color-mix(in srgb,var(--green) 10%,transparent);font-size:13px;line-height:1.4}
+.sq-note[data-kind="ok"]{border-color:var(--line)}
+#nv-sed-squad.has-update span::after{content:"";display:inline-block;width:7px;height:7px;margin-left:7px;border-radius:50%;background:var(--green);vertical-align:middle}

@@ -81,8 +81,10 @@ In the Squad Members form, picking a divisional rank fills in the Rank the same 
      also needs a new divisional rank, add it to `DIV` in `js/sed-squad.js` too.
 5. Compare with the old file (`git diff data/sed-roster.csv`) and tell the user who was added, removed or changed.
 6. Check it works: serve the site locally (`python -m http.server`), open `#sed-squad`, and confirm the counts per group.
-   People already stored in a browser are refreshed on the next visit: roster people are replaced, hand-added or
-   hand-edited people are kept, and people the user removed stay removed.
+   Nothing reaches anyone's list by itself: Squad Members shows a notice and a dot when the roster changed, and the
+   Sync roster button brings it in (people on the roster replace same-name entries, everyone else is kept). Revert last
+   sync restores the list as it was. Bump the `?v=` on the script and style links in `index.html` with each release so
+   browsers do not serve cached files.
 7. Add a release note (a new card at the top of `#f-updates` in `index.html`, newest first), commit as the new version
    number and push, only when the user asks. Optionally copy the CSV to the user's Downloads folder so they can use
    Import CSV by hand.

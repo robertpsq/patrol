@@ -107,7 +107,6 @@
     const edit = iconBtn(PEN, "Edit " + m.name), del = iconBtn(MINUS, "Remove " + m.name, "danger");
     edit.addEventListener("click", () => { editing = m; render(); });
     del.addEventListener("click", () => {
-      if (m.src === "roster") hideRoster(m.name); // a removed roster member stays removed on later refreshes
       members.splice(members.indexOf(m), 1); if (editing === m) editing = null; save(); render();
     });
     row.append(avatar(m.name), info, edit, del);
@@ -205,46 +204,87 @@
   });
 
   // ---- roster snapshot (data/sed-roster.csv) ----
-  // A snapshot of the SOD roster (ESD, CSD and SED) shipped with the site. Each visit refreshes the entries that came
-  // from it, leaves anything added or edited by hand alone, and keeps removed people removed.
-  const HIDE_KEY = "lssd-sed-squad-hidden";
-  const hiddenNames = () => { try { return new Set(JSON.parse(localStorage.getItem(HIDE_KEY)) || []); } catch (e) { return new Set(); } };
-  function hideRoster(name) {
-    const h = hiddenNames(); h.add(name.trim().toLowerCase());
-    try { localStorage.setItem(HIDE_KEY, JSON.stringify([...h])); } catch (e) { /* storage unavailable */ }
+  // Nothing is loaded into the list by itself. The page only checks (read-only) whether the shipped roster has changed
+  // since the last Sync and says so. Sync brings the roster in: people on the roster replace any copy under the same name,
+  // everyone else is kept. Before it does, the whole list is stored, and Revert puts it back exactly as it was.
+  const SNAP_KEY = "lssd-sed-squad-snap", BAK_KEY = "lssd-sed-squad-backup";
+  const lsGet = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
+  const lsDel = (k) => { try { localStorage.removeItem(k); } catch (e) { /* storage unavailable */ } };
+  const nameKey = (n) => String(n || "").trim().toLowerCase();
+  function peopleOf(text) {
+    const rows = parseCsv(text);
+    if (rows.length && /^name$/i.test((rows[0][0] || "").trim())) rows.shift();
+    return rows.map(([name = "", rank = "", div = ""]) => ({ name: name.trim(), rank: rank.trim(), div: div.trim() })).filter((p) => p.name);
   }
-  let rosterBusy = false;
-  async function syncRoster() {
-    if (rosterBusy) return; rosterBusy = true;
+  async function fetchRoster() {
     try {
       const res = await fetch("data/sed-roster.csv", { cache: "no-cache" });
-      if (!res.ok) return;
-      const rows = parseCsv(await res.text());
-      if (rows.length && /^name$/i.test((rows[0][0] || "").trim())) rows.shift();
-      // One-time catch-up per release: a person saved by hand (an imported CSV, or an old copy) with the same name AND the
-      // same divisional rank as the roster is just a stale copy, so it goes back to following the roster. People whose
-      // assignment was changed on purpose are left alone. Only this list is touched, never Character Details.
-      const REV = "2.3.9", REV_KEY = "lssd-sed-squad-rev";
-      let seen = ""; try { seen = localStorage.getItem(REV_KEY) || ""; } catch (e) { /* storage unavailable */ }
-      if (seen !== REV) {
-        const byName = new Map(rows.map(([n = "", , d = ""]) => [n.trim().toLowerCase(), d.trim()]));
-        members.forEach((m) => { if (m.src !== "roster" && byName.get(m.name.trim().toLowerCase()) === (m.div || "").trim()) m.src = "roster"; });
-        try { localStorage.setItem(REV_KEY, REV); } catch (e) { /* storage unavailable */ }
-      }
-      const hidden = hiddenNames(), mine = new Set(members.filter((m) => m.src !== "roster").map((m) => m.name.trim().toLowerCase()));
-      const fresh = rows.map(([name = "", rank = "", div = ""]) => ({ name: name.trim(), rank: rankFor(div) || rank.trim(), div: div.trim(), src: "roster" }))
-        .filter((m) => m.name && !hidden.has(m.name.toLowerCase()) && !mine.has(m.name.toLowerCase()));
-      const before = JSON.stringify(members);
-      members = members.filter((m) => m.src !== "roster").concat(fresh);
-      if (JSON.stringify(members) !== before) { save(); render(); }
-    } catch (e) { /* offline or opened from a file: keep whatever is saved */ }
-    finally { rosterBusy = false; }
+      if (!res.ok) return null;
+      const text = await res.text();
+      return { text, people: peopleOf(text) };
+    } catch (e) { return null; } // offline or opened from a file
   }
+  const people = (n) => n + (n === 1 ? " person" : " people");
+
+  let pending = null; // a roster the user has not synced yet
+  function setNote(text, kind) {
+    const n = $n("sq-note"); if (!n) return;
+    n.hidden = !text; n.textContent = text || ""; n.dataset.kind = kind || "";
+  }
+  function refreshBar() {
+    const rv = $n("sq-revert"); if (rv) rv.hidden = !lsGet(BAK_KEY);
+    const nav = $n("nv-sed-squad"); if (nav) nav.classList.toggle("has-update", !!pending);
+  }
+  async function checkRoster() {
+    const r = await fetchRoster(); if (!r) return;
+    const snap = lsGet(SNAP_KEY);
+    if (snap !== null && snap.trim() === r.text.trim()) { pending = null; setNote(""); refreshBar(); return; }
+    pending = r;
+    if (snap === null) {
+      setNote("A roster of " + people(r.people.length) + " is available. Press Sync to load it. Nothing in your list changes until you do.", "info");
+    } else {
+      const old = new Map(peopleOf(snap).map((p) => [nameKey(p.name), p])), now = new Map(r.people.map((p) => [nameKey(p.name), p]));
+      let add = 0, del = 0, chg = 0;
+      now.forEach((p, k) => { const o = old.get(k); if (!o) add++; else if (o.rank !== p.rank || o.div !== p.div) chg++; });
+      old.forEach((p, k) => { if (!now.has(k)) del++; });
+      setNote("The roster has been updated since your last Sync: " + add + " added, " + del + " removed, " + chg + " changed. Press Sync to bring it in. Your list is not touched until you do.", "info");
+    }
+    refreshBar();
+  }
+  async function syncRoster() {
+    const r = await fetchRoster();
+    if (!r || !r.people.length) { toast("Could not load the roster. Try again."); return; }
+    if (!lsSet(BAK_KEY, JSON.stringify({ at: Date.now(), members, snap: lsGet(SNAP_KEY) }))) { toast("Could not save a backup, so nothing was synced."); return; }
+    const names = new Set(r.people.map((p) => nameKey(p.name)));
+    const replaced = members.filter((m) => m.src !== "roster" && names.has(nameKey(m.name))).length;
+    members = members.filter((m) => m.src !== "roster" && !names.has(nameKey(m.name))).concat(r.people.map((p) => ({ ...p, src: "roster" })));
+    lsSet(SNAP_KEY, r.text);
+    pending = null;
+    save(); render();
+    setNote("Synced " + people(r.people.length) + " from the roster" + (replaced ? " (" + replaced + " of your own " + (replaced === 1 ? "entry was" : "entries were") + " replaced)" : "") + ". Press Revert to undo.", "ok");
+    refreshBar();
+    toast("Roster synced");
+  }
+  function revertSync() {
+    let b = null;
+    try { b = JSON.parse(lsGet(BAK_KEY)); } catch (e) { /* unreadable backup */ }
+    if (!b || !Array.isArray(b.members)) { lsDel(BAK_KEY); refreshBar(); toast("Nothing to revert"); return; }
+    members = b.members;
+    if (typeof b.snap === "string") lsSet(SNAP_KEY, b.snap); else lsDel(SNAP_KEY);
+    lsDel(BAK_KEY);
+    editing = null; save(); render(); setNote("");
+    toast("Reverted to how your list was before the last Sync");
+    checkRoster();
+  }
+  $n("sq-sync").addEventListener("click", syncRoster);
+  $n("sq-revert").addEventListener("click", revertSync);
 
   render();
-  syncRoster();
+  refreshBar();
+  checkRoster();
   const baseShow = window.show;
-  window.show = function (k) { baseShow.apply(this, arguments); if (k === "sed-squad") { render(); syncRoster(); } };
+  window.show = function (k) { baseShow.apply(this, arguments); if (k === "sed-squad") { render(); refreshBar(); checkRoster(); } };
 })();
 
 /* ===== Deployment Log: one field per person; type anything, or open the list to pick a squad member ===== */
