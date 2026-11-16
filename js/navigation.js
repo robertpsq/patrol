@@ -48,7 +48,7 @@
       { id: "mcb", n: "Major Crimes Bureau", a: "MCB", f: [["mcb-poi", "Person of Interest File", "Major Crimes Bureau person of interest file.", "", "Person of Interest"], ["mcb-case", "MCB Case Package", "Major Crimes Bureau case package.", "", "Case Package"], ["mcb-supplemental", "MCB Supplemental Report", "Major Crimes Bureau supplemental report.", "", "Supplemental"]] },
       { id: "nb", n: "Narcotics Bureau", a: "NB", f: [["nb-poi", "Person of Interest File", "Narcotics Bureau person of interest file.", "", "Person of Interest"]] },
       { id: "hb", n: "Homicide Bureau", a: "HB", f: [["hb-poi", "Person of Interest File", "Homicide Bureau person of interest file.", "", "Person of Interest"], ["hb-case", "HB Case Package", "Homicide Bureau case package.", "", "Case Package"], ["hb-supplemental", "HB Supplemental Report", "Homicide Bureau supplemental report.", "", "Supplemental"]] },
-      { id: "ossb", n: "Operation Safe Streets Bureau", a: "OSSB", f: [["ossb-poi", "Person of Interest File", "Operation Safe Streets Bureau person of interest file.", "", "Person of Interest"], ["oss-incident", "OSS Case Package", "Operation Safe Streets Bureau case package.", "", "Case Package"], ["oss-supplemental", "OSS Supplemental", "Operation Safe Streets Bureau supplemental report.", "", "Supplemental"]] },
+      { id: "ossb", n: "Operation Safe Streets Bureau", a: "OSSB", f: [["ossb-poi", "Person of Interest File", "Operation Safe Streets Bureau person of interest file.", "", "Person of Interest"], ["oss-incident", "OSS Intelligence Report", "Operation Safe Streets Bureau intelligence report.", "", "Intelligence Report"], ["oss-supplemental", "OSS Supplemental", "Operation Safe Streets Bureau supplemental report.", "", "Supplemental"], ["oss-k9-deployment", "OSS K9 Deployment Log", "Operation Safe Streets Bureau canine deployment report.", "", "K9 Deployment Log"]] },
     ] },
     { n: "Personnel Command", id: "personnel", u: [
       { id: "peu", n: "Pre-Employment Unit", a: "PEU", f: [["peu-letters", "PEU Applicant Letters", "Deputy Sheriff Trainee hiring letters: application, written test and academy.", "", "Applicant Letters"], ["peu-admin", "PEU Administrative File", "Thread title with status tag and the applicant administrative file.", "", "Administrative File"]] },
@@ -130,6 +130,7 @@
     "ossb-poi": { unit: "ossb", mono: "OSSB" },
     "oss-incident": { unit: "ossb", mono: "OSSB" },
     "oss-supplemental": { unit: "ossb", mono: "OSSB" },
+    "oss-k9-deployment": { unit: "ossb", mono: "OSSB" },
     "davis-k9-deployment": { unit: "davis-k9", mono: "K9" },
     "senora-logbook": { unit: "senora", mono: "SEN" },
     nccit: { unit: "senora-nccit", mono: "NCCIT" },

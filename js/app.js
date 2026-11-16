@@ -53,6 +53,7 @@
         "oss-supplemental",
         "davis-k9-deployment",
         "csd-k9-deployment",
+        "oss-k9-deployment",
         "csd-training-log",
         "vst-request",
         "cfid",
@@ -1658,8 +1659,8 @@
         delete narr.dataset.autointro;
         updateK9Warrant(p);
       }
-      ["k9", "dk9", "ck9"].forEach((p) => {
-        const form = $({ k9: "f-senora-k9-deployment", dk9: "f-davis-k9-deployment", ck9: "f-csd-k9-deployment" }[p]);
+      ["k9", "dk9", "ck9", "ok9"].forEach((p) => {
+        const form = $({ k9: "f-senora-k9-deployment", dk9: "f-davis-k9-deployment", ck9: "f-csd-k9-deployment", ok9: "f-oss-k9-deployment" }[p]);
         const go = (e) => {
           if (e.target.id === p + "-narrative") return;
           if (e.target.id === p + "-type-warrant") updateK9Warrant(p);
@@ -1938,6 +1939,98 @@
       function initializeCsdK9Deployment() {
         if (!$("ck9-date").value) $("ck9-date").value = taskListTodayDate();
         applyCsdK9DeputyDetails();
+      }
+      function applyOssK9DeputyDetails() {
+        const badge = $("deputy-badge-number").value.trim().replace(/^#/, "");
+        prefillDeputyField("ok9-signature-name", $("deputy-full-name").value.trim());
+        prefillDeputyField("ok9-signature-rank", $("deputy-rank").value);
+        prefillDeputyField("ok9-signature-badge", badge ? "#" + badge : "");
+        prefillDeputyField("ok9-callsign", $("deputy-callsign").value.trim());
+        if ($("ok9-narrative")) syncK9Intro("ok9");
+      }
+      function buildOssK9Deployment() {
+        const val = (id) =>
+            id === "ok9-date" ? formatPickerDate($(id).value, "short") : $(id).value.trim(),
+          types = [
+            ["ok9-type-bite", "Bite"],
+            ["ok9-type-warrant", "Search Warrant"],
+            ["ok9-type-tracking", "Tracking"],
+            ["ok9-type-other", "Other: (Please detail in the narrative)"],
+          ]
+            .map(([id, label]) => `${$(id).checked ? "[cbc][/cbc]" : "[cb][/cb]"} ${label}`)
+            .join("\n"),
+          signature = [
+            `${val("ok9-signature-name") || "FIRSTNAME LASTNAME"},`,
+            `${val("ok9-signature-rank") || "RANK"},`,
+            val("ok9-signature-badge") || "#BADGE",
+          ].join("\n");
+        return [
+          "[divbox=white]",
+          "[center][img]https://i.imgur.com/ZsGt6H3.png[/img][/center]",
+          "[b][u][center]Operation Safe Streets Canine Deployment Report[/center][/u][/b]",
+          "",
+          "[center][table=Arial]",
+          "[tr]",
+          "[td][b]TIME AND DATE:[/b][/td]",
+          "[td][b]LOCATION:[/b][/td]",
+          "[td][b]CALLSIGN:[/b][/td]",
+          "[/tr]",
+          "[tr]",
+          `[td]${val("ok9-date") || "DD/MMM/YYYY"} - ${val("ok9-time") || "HH:MM"}[/td]`,
+          `[td]${val("ok9-street") || "STREET"}, ${val("ok9-district") || "DISTRICT"}, San Andreas[/td]`,
+          `[td]${val("ok9-callsign") || "CALLSIGN HERE"}[/td]`,
+          "[/tr]",
+          "[/table][/center]",
+          "[divbox=white]",
+          "DEPLOYMENT TYPE:",
+          "",
+          types,
+          "",
+          "[hr][/hr]",
+          "[center][b][u]DEPLOYMENT NARRATIVE:[/u][/b][/center]",
+          "",
+          val("ok9-narrative") || "FILL IN THE NARRATIVE HERE.",
+          "",
+          "[hr][/hr]",
+          "",
+          "[u][b][center]EVIDENCE FOUND:[/center][/b][/u]",
+          "",
+          k9EvidenceBbcode("ok9"),
+          "",
+          "[hr][/hr]",
+          "",
+          "Signed by:",
+          "",
+          signature,
+          "[/divbox]",
+        ].join("\n");
+      }
+      function resetOssK9Deployment() {
+        resetK9Exhibits("ok9");
+        [
+          "ok9-time",
+          "ok9-street",
+          "ok9-district",
+          "ok9-callsign",
+          "ok9-narrative",
+          "ok9-signature-name",
+          "ok9-signature-rank",
+          "ok9-signature-badge",
+        ].forEach((id) => ($(id).value = ""));
+        $("ok9-date").value = taskListTodayDate();
+        updateTaskListDateLabel("ok9-date");
+        ["ok9-type-bite", "ok9-type-warrant", "ok9-type-tracking", "ok9-type-other"].forEach(
+          (id) => ($(id).checked = false),
+        );
+        document.querySelectorAll('input[name="ok9-medical"]').forEach((r) => (r.checked = false));
+        $("ok9-medical-unit").value = "";
+        updateK9Medical("ok9");
+        resetK9Intro("ok9");
+        applyOssK9DeputyDetails();
+      }
+      function initializeOssK9Deployment() {
+        if (!$("ok9-date").value) $("ok9-date").value = taskListTodayDate();
+        applyOssK9DeputyDetails();
       }
       function csdTrainingType() {
         const t = $("ctl-type").value;
@@ -2344,7 +2437,7 @@
           .querySelectorAll(".oss-person-label")
           .forEach((label, index) => (label.textContent = `Person #${index + 1}`));
       }
-      // OSS Case Package evidence: lettered exhibits, same logic and BBCode as the MCB Case Package.
+      // OSS Intelligence Report evidence: lettered exhibits, same logic and BBCode as the MCB Case Package.
       function numberOssExhibits() {
         $("oss-ir-evidence")
           .querySelectorAll(".oss-e-label")
@@ -3684,6 +3777,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "oss-supplemental",
           "davis-k9-deployment",
           "csd-k9-deployment",
+          "oss-k9-deployment",
           "csd-training-log",
           "davis-k9-caselaws",
           "senora-k9-caselaws",
@@ -3762,7 +3856,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           citation: "TSD — Citation",
           "sib-story": "SIB — Story",
           "sib-activity": "SIB — Activity Tracker",
-          "oss-incident": "OSS — Case Package",
+          "oss-incident": "OSS — Intelligence Report",
           "oss-supplemental": "OSS — Supplemental",
           "ftp-phase1": "FTP — Phase 1 Patrol Summary",
           "ftp-phase2": "FTP — Phase 2 Report",
@@ -3781,6 +3875,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           "ossb-poi": "Person of Interest File",
           "davis-k9-deployment": "K9 — Deployment Log (Davis)",
           "csd-k9-deployment": "K9 — Deployment Log (CSD)",
+          "oss-k9-deployment": "OSS — K9 Deployment Log",
           "csd-training-log": "CSD — Training Log",
           "davis-k9-caselaws": "K9 — Caselaws (Davis)",
           "senora-k9-caselaws": "K9 — Caselaws (Senora)",
@@ -4473,8 +4568,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       const PLACE_LISTS = { street: GTAW_STREETS, district: GTAW_DISTRICTS };
       // Fields that ask for one street or one district.
       const PLACE_FIELDS = {
-        street: ["subject-road", "k9-street", "ck9-street", "dk9-street", "citation-sp-street", "citation-xs-street", "citation-y-street", "citation-y-cross", "mcb-case-street", "hb-case-street"],
-        district: ["k9-district", "ck9-district", "dk9-district", "mcb-case-district", "hb-case-district"],
+        street: ["subject-road", "k9-street", "ck9-street", "ok9-street", "dk9-street", "citation-sp-street", "citation-xs-street", "citation-y-street", "citation-y-cross", "mcb-case-street", "hb-case-street"],
+        district: ["k9-district", "ck9-district", "ok9-district", "dk9-district", "mcb-case-district", "hb-case-district"],
       };
       // "Location" fields: split into a Street picker + a District picker, written back to the
       // original field as "Street, District" (so every BBCode builder keeps reading that field).
@@ -4743,6 +4838,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "tc-time": "HH:MM",
         "k9-time": "HH:MM",
         "ck9-time": "HH:MM",
+        "ok9-time": "HH:MM",
         "ctl-time": "HH:MM",
         "dk9-time": "HH:MM",
         "kem-time": "HH:MM",
@@ -4872,6 +4968,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
         "k9-date",
         "dk9-date",
         "ck9-date",
+        "ok9-date",
         "ctl-date",
         "vsr-date",
         "kem-date",
@@ -5524,7 +5621,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       initializeTaskList();
       initTimeNowButtons();
       initPlacePickers();
-      ["k9", "ck9", "dk9"].forEach(addK9Exhibit);
+      ["k9", "ck9", "dk9", "ok9"].forEach(addK9Exhibit);
       addP();
       addE();
       addSevExhibit();
@@ -5537,6 +5634,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       initializeSenoraK9Deployment();
       initializeDavisK9Deployment();
       initializeCsdK9Deployment();
+      initializeOssK9Deployment();
       initializeCsdTrainingLog();
       initializeVsrRequest();
       initializeSenoraLogbook();
@@ -5556,6 +5654,9 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
       ["deputy-full-name", "deputy-rank", "deputy-badge-number", "deputy-callsign"].forEach((id) =>
         ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyCsdK9DeputyDetails)),
       );
+      ["deputy-full-name", "deputy-rank", "deputy-badge-number", "deputy-callsign"].forEach((id) =>
+        ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyOssK9DeputyDetails)),
+      );
       ["deputy-full-name", "deputy-rank"].forEach((id) =>
         ["input", "change"].forEach((ev) => $(id).addEventListener(ev, applyCsdTrainingDeputyDetails)),
       );
@@ -5567,6 +5668,7 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
           applySenoraK9DeputyDetails();
           applyDavisK9DeputyDetails();
           applyCsdK9DeputyDetails();
+          applyOssK9DeputyDetails();
           applyCsdTrainingDeputyDetails();
           applyVsrDeputyDetails();
         }
@@ -5838,6 +5940,8 @@ For the "Patrol Narrative", please try and use general timestamps to log your pa
                   ? buildDavisK9Deployment()
                   : k === "csd-training-log"
                   ? buildCsdTrainingLog()
+                  : k === "oss-k9-deployment"
+                  ? buildOssK9Deployment()
                   : k === "csd-k9-deployment"
                   ? buildCsdK9Deployment()
                   : k === "vst-request"
