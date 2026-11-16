@@ -21,6 +21,7 @@ POS = {
     "P/TACTICAL MEDIC": "Probationary Tactical Medic",
     "TAC. CANINE HANDLER": "Tactical Canine Handler",
     "SNR. TAC. CANINE HANDLER": "Senior Tactical Canine Handler",
+    "SNR TAC. CANINE HANDLER": "Senior Tactical Canine Handler",
     "P/TAC. CANINE HANDLER": "Probationary Tactical Canine Handler",
     "TEAM MEMBER": "Team Member",
     "P/TEAM MEMBER": "Probationary Team Member",
